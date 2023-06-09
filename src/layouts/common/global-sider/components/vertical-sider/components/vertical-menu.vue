@@ -31,7 +31,7 @@ const theme = useThemeStore();
 const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
 
-const menus = computed(() => translateMenuLabel(routeStore.menus as App.GlobalMenuOption[]));
+const menus = computed(() => translateMenuLabel(routeStore.menus as any[]));
 
 const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name) as string);
 const expandedKeys = ref<string[]>([]);

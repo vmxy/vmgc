@@ -64,8 +64,14 @@ declare namespace AuthRoute {
     multi?: boolean;
     /** 是否固定在tab卡不可关闭  */
     affix?: boolean;
+
+    /*******  附加属性 start ******/
     /** 是否显示在Tab */
     tab?: boolean;
+    /** 是否需要登录验证 */
+    requiresAuth?: boolean;
+    /*******  附加属性 end ******/
+    
   }
 
   type Route<K extends AllRouteKey = AllRouteKey> = K extends AllRouteKey

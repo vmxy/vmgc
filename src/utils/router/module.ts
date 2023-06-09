@@ -16,14 +16,23 @@ export function sortRoutes(routes: AuthRoute.Route[]) {
  * @param modules - 路由模块
  */
 export function handleModuleRoutes(modules: AuthRoute.RouteModule) {
+  const ssr = import.meta.env.SSR;
   const routes: AuthRoute.Route[] = [];
 
   Object.keys(modules).forEach((key) => {
     const item = modules[key].default;
     if (item) {
-      routes.push(item);
+      if (item instanceof Array) {
+        item.forEach((sitem: AuthRoute.Route) => {
+          if (sitem.path) {
+            ssr ? !sitem.meta.requiresAuth && routes.push(sitem) : routes.push(sitem);
+          }
+        });
+      } else if (item.path) {
+        ssr ? !item.meta.requiresAuth && routes.push(item) : routes.push(item);
+      }
     } else {
-      window.console.error(`路由模块解析出错: key = ${key}`);
+      console.error(`路由模块解析出错: key = ${key}`);
     }
   });
 

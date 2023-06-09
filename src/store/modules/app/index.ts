@@ -1,6 +1,8 @@
 import { nextTick } from "vue";
 import { defineStore } from "pinia";
 import { LAYOUT_SCROLL_EL_ID } from "@soybeanjs/vue-materials";
+import { langList, lang } from "@/locales/lang";
+import { localStg } from "@/utils";
 
 interface AppState {
   /** 滚动元素的id */
@@ -17,8 +19,17 @@ interface AppState {
   siderCollapse: boolean;
   /** vertical-mix模式下 侧边栏的固定状态 */
   mixSiderFixed: boolean;
-}
 
+  /** 当前 语言 */
+  lang: string;
+  /** 支持语言列表 */
+  langs: { label: string; key: string }[];
+  isLogin: boolean;
+  inSSR: boolean;
+  /** 是否是手机 */
+  isMobile: boolean;
+}
+const ssr = import.meta.env.SSR;
 export const useAppStore = defineStore("app-store", {
   state: (): AppState => ({
     scrollElId: LAYOUT_SCROLL_EL_ID,
@@ -28,6 +39,11 @@ export const useAppStore = defineStore("app-store", {
     settingDrawerVisible: false,
     siderCollapse: false,
     mixSiderFixed: false,
+    lang: lang,
+    langs: langList,
+    isLogin: Boolean(localStg.get("token")),
+    inSSR: ssr,
+    isMobile: ssr ? false : globalThis.innerWidth <= 640,
   }),
   actions: {
     /**

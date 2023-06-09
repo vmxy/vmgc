@@ -90,7 +90,7 @@ const activeChildMenus = computed(() => {
   routeStore.menus.some((item) => {
     const flag = item.routeName === activeParentRouteName.value && Boolean(item.children?.length);
     if (flag) {
-      menus.push(...translateMenuLabel((item.children || []) as App.GlobalMenuOption[]));
+      menus.push(...translateMenuLabel((item.children || []) as any[]));
     }
     return flag;
   });

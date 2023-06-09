@@ -9,7 +9,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue";
 import Player from "xgplayer";
-
+import 'xgplayer/dist/index.min.css';
 const domRef = ref<HTMLElement>();
 const player = ref<Player>();
 

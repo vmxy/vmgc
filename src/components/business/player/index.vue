@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, defineProps, watch, onBeforeUnmount, computed } from "vue";
+import { onMounted, onUnmounted, ref, watch, onBeforeUnmount, computed } from "vue";
 import { initScript } from "./loadres";
 import { useAppStore } from "@/store";
 import Event from "./event";
