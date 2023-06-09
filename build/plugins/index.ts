@@ -31,21 +31,26 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
     unocss(),
     //mock(viteEnv),
     //progress()
-    pageRoute({
-      //
-      pageDir: "src/views", // 默认
-      pageGlobs: ["**/**.{vue,tsx,jsx}", "!**/components/**"], // 默认
-      //routeDts: "src/typings/page-route.d.ts", // 默认
-      //routeModuleDir: "src/router/modules", // 默认
-      //routeModuleExt: "ts", // 默认
-      //routeModuleType: "AuthRoute.Route", // 默认
-      //name.replace(/^_([a-zA-Z]|[0-9]|$)+_*/, ""), // 默认
-      lazyImport: (_name) => true, // 默认
-      //onRouteModuleGenerate: (name) => !name.includes("_builtin"), // 对于系统内置路由不生成路由模块, 其他的都生成
-    }),
   ];
+  if (viteEnv.VITE_ROUTE_PLUGIN === "Y") {
+    plugins.push(
+      pageRoute({
+        //
+        pageDir: "src/views", // 默认
+        pageGlobs: ["**/**.{vue,tsx,jsx}", "!**/components/**"], // 默认
+        //routeDts: "src/typings/page-route.d.ts", // 默认
+        //routeModuleDir: "src/router/modules", // 默认
+        //routeModuleExt: "ts", // 默认
+        //routeModuleType: "AuthRoute.Route", // 默认
+        //name.replace(/^_([a-zA-Z]|[0-9]|$)+_*/, ""), // 默认
+        lazyImport: (_name) => true, // 默认
+        //onRouteModuleGenerate: (name) => !name.includes("_builtin"), // 对于系统内置路由不生成路由模块, 其他的都生成
+      }),
+    );
+  }
+
   if (isDev) {
-    plugins.push(mock);
+    plugins.push(mock(viteEnv));
   }
   if (viteEnv.VITE_VISUALIZER === "Y") {
     plugins.push(visualizer as any as PluginOption); //PluginOption
@@ -56,9 +61,6 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
   if (viteEnv.VITE_PWA === "Y" || viteEnv.VITE_VERCEL === "Y") {
     plugins.push(pwa());
   }
-  /* if (viteEnv.VITE_SOYBEAN_ROUTE_PLUGIN === "Y") {
-    plugins.push(pageRoute());
-  } */
 
   if (viteEnv.VITE_SSR == "Y") {
     console.info("====== enable ssr =======");
