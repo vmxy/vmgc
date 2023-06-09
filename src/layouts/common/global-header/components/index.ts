@@ -22,5 +22,5 @@ export {
   SettingButton,
   ToggleLang,
   GlobalRefresh,
-  UserLogin
+  UserLogin,
 };

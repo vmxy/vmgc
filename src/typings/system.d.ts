@@ -86,6 +86,8 @@ declare namespace Service {
 declare namespace Theme {
   /** 主题配置 */
   interface Setting {
+    /** 设备宽度 */
+    screenSize: "xs" | "s" | "m" | "l" | "xl" | "xxl";
     /** 暗黑模式 */
     darkMode: boolean;
     /** 是否自动跟随系统主题 */
@@ -120,6 +122,9 @@ declare namespace Theme {
     footer: Footer;
     /** 页面样式 */
     page: Page;
+    config: {
+      breakpoints: { xs: number; s: number; m: number; l: number; xl: number; xxl: number };
+    };
   }
   /** 布局样式 */
   interface Layout {
@@ -309,8 +314,6 @@ declare namespace I18nType {
     language: string;
     message: Schema;
     menu: { [key: string]: string };
-  };
-  interface Schema {
     video: {
       all: string;
       updated: string;
@@ -366,6 +369,8 @@ declare namespace I18nType {
         comedy: string;
       };
     };
+  };
+  interface Schema {
     system: {
       title: string;
     };

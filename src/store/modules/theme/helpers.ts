@@ -16,7 +16,7 @@ export function initThemeSettings() {
   const themeColor = localStg.get("themeColor") || themeSetting.themeColor;
   const info = themeSetting.isCustomizeInfoColor ? themeSetting.otherColor.info : getColorPalette(themeColor, 7);
   const otherColor = { ...themeSetting.otherColor, info };
-  const setting = cloneDeep({ ...themeSetting, themeColor, otherColor });
+  const setting = cloneDeep({ ...themeSetting, themeColor, otherColor, screenSize: getScreenSize() });
   return setting;
 }
 
@@ -77,4 +77,13 @@ export function getNaiveThemeOverrides(colors: Record<ColorType, string>): Globa
       colorLoading,
     },
   };
+}
+export function getScreenSize(): "xs" | "s" | "m" | "l" | "xl" | "xxl" {
+  let iwidth = globalThis.innerWidth || 1024;
+  if (iwidth >= themeSetting.config.breakpoints.xxl) return "xxl";
+  if (iwidth >= themeSetting.config.breakpoints.xl) return "xl";
+  if (iwidth >= themeSetting.config.breakpoints.l) return "l";
+  if (iwidth >= themeSetting.config.breakpoints.m) return "m";
+  if (iwidth >= themeSetting.config.breakpoints.s) return "s";
+  return "xs";
 }

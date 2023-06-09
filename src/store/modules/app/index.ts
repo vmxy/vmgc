@@ -31,20 +31,22 @@ interface AppState {
 }
 const ssr = import.meta.env.SSR;
 export const useAppStore = defineStore("app-store", {
-  state: (): AppState => ({
-    scrollElId: LAYOUT_SCROLL_EL_ID,
-    contentFull: false,
-    disableMainXScroll: false,
-    reloadFlag: true,
-    settingDrawerVisible: false,
-    siderCollapse: false,
-    mixSiderFixed: false,
-    lang: localStg.get("lang") || langList[navigator.language] ? navigator.language : "zh-CN",
-    langs: langList,
-    isLogin: Boolean(localStg.get("token")),
-    inSSR: ssr,
-    isMobile: ssr ? false : globalThis.innerWidth <= 640,
-  }),
+  state: (): AppState => {
+    return {
+      scrollElId: LAYOUT_SCROLL_EL_ID,
+      contentFull: false,
+      disableMainXScroll: false,
+      reloadFlag: true,
+      settingDrawerVisible: false,
+      siderCollapse: false,
+      mixSiderFixed: false,
+      lang: localStg.get("lang") || langList[navigator.language] ? navigator.language : "zh-CN",
+      langs: langList,
+      isLogin: Boolean(localStg.get("token")),
+      inSSR: ssr,
+      isMobile: ssr ? false : globalThis.innerWidth <= 640,
+    };
+  },
   actions: {
     /**
      * 获取滚动配置

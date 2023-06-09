@@ -16,6 +16,5 @@ for (let key in locales) {
     label: locale.language,
     key: key,
   });
-  console.info("langList", langList)
 }
 export default locales;

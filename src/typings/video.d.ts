@@ -9,7 +9,7 @@ declare namespace NVideo {
     sorts: Code[];
   }
   interface Query {
-    cata?: 'movie' | 'tv' | 'anime' | 'variety' | 'sport' | 'doc';
+    cata?: "movie" | "tv" | "anime" | "variety" | "sport" | "doc";
     /** 分类  */
     class?: string;
     /** 第几页 */
@@ -20,7 +20,7 @@ declare namespace NVideo {
     q?: string;
   }
   interface QueryTop {
-    type: 'hot' | 'rec';
+    type: "hot" | "rec";
     pageNo?: number;
     pageSize?: number;
   }

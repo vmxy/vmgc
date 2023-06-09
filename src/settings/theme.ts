@@ -5,6 +5,7 @@ import {
   themeHorizontalMenuPositionOptions,
   themeAnimateModeOptions,
 } from "@/constants";
+import { cloneDeep } from "lodash-es";
 import jsonSetting from "./theme.json";
 
 const themeColorList = [
@@ -35,6 +36,7 @@ const themeColorList = [
 ];
 
 const defaultThemeSetting: Theme.Setting = {
+  screenSize: "l",
   darkMode: false,
   followSystemTheme: true,
   layout: {
@@ -94,6 +96,10 @@ const defaultThemeSetting: Theme.Setting = {
     animateMode: "fade-slide",
     animateModeList: themeAnimateModeOptions,
   },
+  config: {
+    breakpoints: { xs: 480, s: 640, m: 1024, l: 1280, xl: 1536, xxl: 1920 },
+  },
 };
 
-export const themeSetting = (jsonSetting as Theme.Setting) || defaultThemeSetting;
+//export const themeSetting =  (jsonSetting as Theme.Setting) || defaultThemeSetting;
+export const themeSetting = cloneDeep({ ...defaultThemeSetting, ...jsonSetting });

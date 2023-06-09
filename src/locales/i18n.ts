@@ -10,7 +10,6 @@ const i18n = createI18n({
   messages,
   legacy: false,
 });
-
 export function setupI18n(app: App) {
   app.use(i18n);
 }

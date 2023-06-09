@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineProps, watch, getCurrentInstance } from "vue";
+import { ref, onMounted, watch, getCurrentInstance } from "vue";
 import * as service from "@/service";
 import { useThemeStore, useAppStore } from "@/store";
 const { proxy } = getCurrentInstance();
@@ -28,7 +28,7 @@ onMounted(async () => {
   showList(theme.screenSize);
 });
 function showList(ds) {
-  let limit = ds == "xxl" ? 12 : ds == "xl" ? 10 : ds == "l" ? 8 : ds == "m" ? 6 : ds == "s" ? 4 : 2;
+  let limit = ds == "xxl" ? 24 : ds == "xl" ? 20 : ds == "l" ? 16 : ds == "m" ? 12 : ds == "s" ? 8 : 4;
   dataList.value = dataSource.slice(0, limit);
 }
 

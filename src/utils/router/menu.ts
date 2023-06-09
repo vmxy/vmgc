@@ -1,5 +1,6 @@
 import { useIconRender } from "@/composables";
 import { t } from "@/locales";
+import { localStg } from "@/utils";
 
 /**
  * 将权限路由转换成菜单
@@ -80,7 +81,16 @@ function getActiveKeyPathsOfMenu(activeKey: string, menu: App.GlobalMenuOption) 
 
 /** 路由不转换菜单 */
 function hideInMenu(route: AuthRoute.Route) {
-  return Boolean(route.meta.hide);
+  //设定在菜单隐藏
+  let hide = Boolean(route.meta.hide);
+  if (hide) return hide;
+
+  let isLogin = Boolean(localStg.get("token"));
+  //没有登录的情况下, 只显示不需要登录菜单
+  if (!isLogin) {
+    return route.meta.requiresAuth != false;
+  }
+  return true;
 }
 
 /** 给菜单添加可选属性 */

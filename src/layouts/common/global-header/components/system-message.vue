@@ -2,7 +2,7 @@
   <n-popover class="!p-0" trigger="click" placement="bottom">
     <template #trigger>
       <hover-container tooltip-content="消息通知" :inverted="theme.header.inverted" class="relative w-40px h-full">
-        <icon-clarity:notification-line class="text-18px" />
+        <icon-clarity:notification-line class="text-22px" />
         <n-badge
           :value="count"
           :max="99"

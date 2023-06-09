@@ -39,7 +39,6 @@ const video: AuthRoute.Route[] = [
       icon: "mdi:youtube-tv",
       order: 3,
       i18nTitle: "menu.tv",
-
     },
   },
   {
@@ -54,7 +53,6 @@ const video: AuthRoute.Route[] = [
       icon: "mdi:atv",
       order: 4,
       i18nTitle: "menu.anime",
-
     },
   },
   {
@@ -69,7 +67,6 @@ const video: AuthRoute.Route[] = [
       icon: "mdi:eye",
       order: 5,
       i18nTitle: "menu.variety",
-
     },
   },
   {
@@ -84,7 +81,6 @@ const video: AuthRoute.Route[] = [
       icon: "mdi:basketball",
       order: 6,
       i18nTitle: "menu.sport",
-
     },
   },
   {
@@ -99,7 +95,6 @@ const video: AuthRoute.Route[] = [
       icon: "mdi:video-vintage",
       order: 7,
       i18nTitle: "menu.doc",
-
     },
   },
   {
@@ -115,7 +110,6 @@ const video: AuthRoute.Route[] = [
       order: 8,
       hide: true,
       tab: false,
-      
     },
   },
   {

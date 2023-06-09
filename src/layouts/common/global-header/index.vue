@@ -6,7 +6,7 @@
       <global-breadcrumb v-if="theme.header.crumb.visible && !isMobile" />
     </div>
     <header-menu v-else />
-    <div class="flex justify-end h-full">
+    <div class="flex justify-end h-full mr-20px">
       <global-search />
       <global-refresh />
       <!--github-site /-->
@@ -36,7 +36,7 @@ import {
   ThemeMode,
   UserAvatar,
   ToggleLang,
-  GlobalRefresh
+  GlobalRefresh,
 } from "./components";
 
 defineOptions({ name: "GlobalHeader" });

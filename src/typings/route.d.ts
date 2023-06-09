@@ -71,7 +71,6 @@ declare namespace AuthRoute {
     /** 是否需要登录验证 */
     requiresAuth?: boolean;
     /*******  附加属性 end ******/
-    
   }
 
   type Route<K extends AllRouteKey = AllRouteKey> = K extends AllRouteKey

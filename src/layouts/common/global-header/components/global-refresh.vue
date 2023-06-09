@@ -1,5 +1,5 @@
 <template>
-  <hover-container class="w-32px h-full" tooltip-content="重新加载" placement="bottom-end" @click="handleRefresh">
+  <hover-container class="w-40px h-full" tooltip-content="重新加载" placement="bottom-end" @click="handleRefresh">
     <icon-mdi-refresh class="text-22px" :class="{ 'animate-spin': loading }" />
   </hover-container>
 </template>

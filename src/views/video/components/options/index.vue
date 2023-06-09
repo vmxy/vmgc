@@ -82,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, getCurrentInstance } from "vue";
+import { ref, getCurrentInstance } from "vue";
 import { useThemeStore, useVideoStore } from "@/store";
 import { classs, types } from "./config";
 import { useRoute } from "vue-router";
