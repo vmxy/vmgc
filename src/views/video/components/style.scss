@@ -1,0 +1,46 @@
+.v-item {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  min-height: 90px;
+  position: relative;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  height: 100%;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  img {
+    width: 100%;
+    max-height: 200px;
+    //min-height: 100px;
+    object-fit: cover;
+  }
+  .label {
+    white-space: nowrap;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-top: -3px;
+  }
+  .tag {
+    position: absolute;
+    bottom: 60px;
+    text-align: center;
+    width: 100%;
+    color: #830876;
+    font-size: 1.1rem;
+    font-weight: 900;
+  }
+
+  @media screen and (max-width: 640px) {
+    img {
+      height: 150px;
+    }
+  }
+  @media screen and (min-width: 640px) {
+    img {
+      height: 200px;
+    }
+  }
+}

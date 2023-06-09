@@ -1,0 +1,12 @@
+import "./style.scss";
+//import VList from "./vlist.vue";
+import VList from "./list/index.vue";
+import VOption from "./options/index.vue";
+import VHot from "./hot/index.vue";
+import VRec from "./rec/index.vue";
+import VDetail from "./detail/index.vue";
+import VBanner from "./banner/index.vue";
+import VPage from "./page/index.vue";
+import VInfo from "./detail/info.vue";
+import VLine from "./detail/line.vue";
+export { VList, VOption, VHot, VRec, VDetail, VBanner, VPage, VInfo, VLine };
