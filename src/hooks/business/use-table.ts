@@ -1,13 +1,13 @@
-import { ref, reactive } from 'vue';
-import type { Ref } from 'vue';
-import type { DataTableBaseColumn, DataTableSelectionColumn, DataTableExpandColumn, PaginationProps } from 'naive-ui';
-import type { TableColumnGroup, InternalRowData } from 'naive-ui/es/data-table/src/interface';
-import { useLoadingEmpty } from '../common';
+import { ref, reactive } from "vue";
+import type { Ref } from "vue";
+import type { DataTableBaseColumn, DataTableSelectionColumn, DataTableExpandColumn, PaginationProps } from "naive-ui";
+import type { TableColumnGroup, InternalRowData } from "naive-ui/es/data-table/src/interface";
+import { useLoadingEmpty } from "../common";
 
 /**
  * 表格分页参数
  */
-type PaginationParams = Pick<PaginationProps, 'page' | 'pageSize'>;
+type PaginationParams = Pick<PaginationProps, "page" | "pageSize">;
 
 /**
  * 表格请求接口的参数
@@ -26,7 +26,7 @@ type ApiData<TableData = Record<string, unknown>> = Record<string, unknown> & {
  * 表格接口的请求函数
  */
 type ApiFn<Params = ApiParams, TableData = Record<string, unknown>> = (
-  params: Params
+  params: Params,
 ) => Promise<Service.RequestResult<ApiData<TableData>>>;
 
 /**
@@ -43,8 +43,8 @@ type TransformedTableData<TableData = Record<string, unknown>> = {
  * 表格的列
  */
 type DataTableColumn<T = InternalRowData> =
-  | (Omit<TableColumnGroup<T>, 'key'> & { key: keyof T })
-  | (Omit<DataTableBaseColumn<T>, 'key'> & { key: keyof T })
+  | (Omit<TableColumnGroup<T>, "key"> & { key: keyof T })
+  | (Omit<DataTableBaseColumn<T>, "key"> & { key: keyof T })
   | DataTableSelectionColumn<T>
   | DataTableExpandColumn<T>;
 
@@ -53,7 +53,7 @@ type DataTableColumn<T = InternalRowData> =
  * @description 将不同接口的表格数据转换成统一的类型
  */
 type Transformer<TableData = Record<string, unknown>> = (
-  apiData: ApiData<TableData>
+  apiData: ApiData<TableData>,
 ) => TransformedTableData<TableData>;
 
 type TableParams<TableData = Record<string, unknown>, Params = ApiParams> = {
@@ -66,7 +66,7 @@ type TableParams<TableData = Record<string, unknown>, Params = ApiParams> = {
 
 export function useTable<TableData extends Record<string, unknown>, Params extends ApiParams>(
   params: TableParams<TableData, Params>,
-  immediate = true
+  immediate = true,
 ) {
   const { loading, startLoading, endLoading, empty, setEmpty } = useLoadingEmpty();
   const data: Ref<TableData[]> = ref([]);
@@ -94,7 +94,7 @@ export function useTable<TableData extends Record<string, unknown>, Params exten
     onUpdatePageSize: (pageSize: number) => {
       pagination.pageSize = pageSize;
       pagination.page = 1;
-    }
+    },
   }) as PaginationProps;
 
   function updatePagination(update: Partial<PaginationProps>) {
@@ -120,7 +120,7 @@ export function useTable<TableData extends Record<string, unknown>, Params exten
 
       updatePagination({
         page: transformedData.pageNum,
-        pageSize: transformedData.pageSize
+        pageSize: transformedData.pageSize,
       });
     }
 
@@ -139,7 +139,7 @@ export function useTable<TableData extends Record<string, unknown>, Params exten
     pagination,
     getData,
     updateData,
-    resetData
+    resetData,
   };
 }
 
@@ -148,7 +148,7 @@ function getPagination(pagination?: Partial<PaginationProps>) {
     page: 1,
     pageSize: 10,
     showSizePicker: true,
-    pageSizes: [10, 15, 20, 25, 30]
+    pageSizes: [10, 15, 20, 25, 30],
   };
   Object.assign(defaultPagination, pagination);
 

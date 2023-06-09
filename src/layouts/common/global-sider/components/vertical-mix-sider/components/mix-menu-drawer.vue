@@ -2,14 +2,14 @@
   <div
     class="relative h-full transition-width duration-300 ease-in-out"
     :style="{
-      width: app.mixSiderFixed ? theme.sider.mixChildMenuWidth + 'px' : '0px'
+      width: app.mixSiderFixed ? theme.sider.mixChildMenuWidth + 'px' : '0px',
     }"
   >
     <dark-mode-container
       class="drawer-shadow absolute-lt flex-col-stretch h-full nowrap-hidden"
       :inverted="theme.sider.inverted"
       :style="{
-        width: showDrawer ? theme.sider.mixChildMenuWidth + 'px' : '0px'
+        width: showDrawer ? theme.sider.mixChildMenuWidth + 'px' : '0px',
       }"
     >
       <header class="header-height flex-y-center justify-between" :style="{ height: theme.header.height + 'px' }">
@@ -35,14 +35,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import type { MenuOption } from 'naive-ui';
-import { useAppStore, useThemeStore } from '@/store';
-import { useAppInfo, useRouterPush } from '@/composables';
-import { getActiveKeyPathsOfMenus } from '@/utils';
+import { computed, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import type { MenuOption } from "naive-ui";
+import { useAppStore, useThemeStore } from "@/store";
+import { useAppInfo, useRouterPush } from "@/composables";
+import { getActiveKeyPathsOfMenus } from "@/utils";
 
-defineOptions({ name: 'MixMenuDrawer' });
+defineOptions({ name: "MixMenuDrawer" });
 
 interface Props {
   /** 菜单抽屉可见性 */
@@ -78,7 +78,7 @@ watch(
   () => {
     expandedKeys.value = getActiveKeyPathsOfMenus(activeKey.value, props.menus);
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

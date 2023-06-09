@@ -1,6 +1,6 @@
-import { nextTick } from 'vue';
-import { defineStore } from 'pinia';
-import { LAYOUT_SCROLL_EL_ID } from '@soybeanjs/vue-materials';
+import { nextTick } from "vue";
+import { defineStore } from "pinia";
+import { LAYOUT_SCROLL_EL_ID } from "@soybeanjs/vue-materials";
 
 interface AppState {
   /** 滚动元素的id */
@@ -19,7 +19,7 @@ interface AppState {
   mixSiderFixed: boolean;
 }
 
-export const useAppStore = defineStore('app-store', {
+export const useAppStore = defineStore("app-store", {
   state: (): AppState => ({
     scrollElId: LAYOUT_SCROLL_EL_ID,
     contentFull: false,
@@ -27,7 +27,7 @@ export const useAppStore = defineStore('app-store', {
     reloadFlag: true,
     settingDrawerVisible: false,
     siderCollapse: false,
-    mixSiderFixed: false
+    mixSiderFixed: false,
   }),
   actions: {
     /**
@@ -41,7 +41,7 @@ export const useAppStore = defineStore('app-store', {
       return {
         scrollEl,
         scrollLeft,
-        scrollTop
+        scrollTop,
       };
     },
     /**
@@ -97,6 +97,6 @@ export const useAppStore = defineStore('app-store', {
     /** 设置主体内容全屏 */
     setContentFull(full: boolean) {
       this.contentFull = full;
-    }
-  }
+    },
+  },
 });

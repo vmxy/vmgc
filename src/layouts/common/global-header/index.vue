@@ -20,10 +20,10 @@
 </template>
 
 <script setup lang="ts">
-import { useThemeStore } from '@/store';
-import { useBasicLayout } from '@/composables';
-import GlobalLogo from '../global-logo/index.vue';
-import GlobalSearch from '../global-search/index.vue';
+import { useThemeStore } from "@/store";
+import { useBasicLayout } from "@/composables";
+import GlobalLogo from "../global-logo/index.vue";
+import GlobalSearch from "../global-search/index.vue";
 import {
   FullScreen,
   GithubSite,
@@ -34,18 +34,18 @@ import {
   SystemMessage,
   ThemeMode,
   UserAvatar,
-  ToggleLang
-} from './components';
+  ToggleLang,
+} from "./components";
 
-defineOptions({ name: 'GlobalHeader' });
+defineOptions({ name: "GlobalHeader" });
 
 interface Props {
   /** 显示logo */
-  showLogo: App.GlobalHeaderProps['showLogo'];
+  showLogo: App.GlobalHeaderProps["showLogo"];
   /** 显示头部菜单 */
-  showHeaderMenu: App.GlobalHeaderProps['showHeaderMenu'];
+  showHeaderMenu: App.GlobalHeaderProps["showHeaderMenu"];
   /** 显示菜单折叠按钮 */
-  showMenuCollapse: App.GlobalHeaderProps['showMenuCollapse'];
+  showMenuCollapse: App.GlobalHeaderProps["showMenuCollapse"];
 }
 
 defineProps<Props>();
@@ -53,7 +53,7 @@ defineProps<Props>();
 const theme = useThemeStore();
 const { isMobile } = useBasicLayout();
 
-const showButton = import.meta.env.PROD && import.meta.env.VITE_VERCEL !== 'Y';
+const showButton = import.meta.env.PROD && import.meta.env.VITE_VERCEL !== "Y";
 </script>
 
 <style scoped>

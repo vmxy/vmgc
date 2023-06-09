@@ -33,16 +33,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, reactive, ref, watch } from 'vue';
-import { PageTab } from '@soybeanjs/vue-materials';
-import { useTabStore, useThemeStore } from '@/store';
-import { t } from '@/locales';
-import { ContextMenu } from './components';
+import { computed, nextTick, reactive, ref, watch } from "vue";
+import { PageTab } from "@soybeanjs/vue-materials";
+import { useTabStore, useThemeStore } from "@/store";
+import { t } from "@/locales";
+import { ContextMenu } from "./components";
 
-defineOptions({ name: 'TabDetail' });
+defineOptions({ name: "TabDetail" });
 
 interface Emits {
-  (e: 'scroll', clientX: number): void;
+  (e: "scroll", clientX: number): void;
 }
 
 const emit = defineEmits<Emits>();
@@ -50,7 +50,7 @@ const emit = defineEmits<Emits>();
 const theme = useThemeStore();
 const tab = useTabStore();
 
-const isChromeMode = computed(() => theme.tab.mode === 'chrome');
+const isChromeMode = computed(() => theme.tab.mode === "chrome");
 
 // 获取当前激活的tab的clientX
 const tabRef = ref<HTMLElement>();
@@ -61,7 +61,7 @@ async function getActiveTabClientX() {
     const { x, width } = activeTabElement.getBoundingClientRect();
     const clientX = x + width / 2;
     setTimeout(() => {
-      emit('scroll', clientX);
+      emit("scroll", clientX);
     }, 50);
   }
 }
@@ -79,7 +79,7 @@ const dropdown: DropdownConfig = reactive({
   affix: false,
   x: 0,
   y: 0,
-  currentPath: ''
+  currentPath: "",
 });
 
 function setDropdown(config: Partial<DropdownConfig>) {
@@ -112,7 +112,7 @@ async function handleContextMenu(e: MouseEvent, currentPath: string, affix?: boo
       x: clientX,
       y: clientY,
       currentPath,
-      affix
+      affix,
     });
     isClickContextMenu = false;
   }, DURATION);
@@ -124,8 +124,8 @@ watch(
     getActiveTabClientX();
   },
   {
-    immediate: true
-  }
+    immediate: true,
+  },
 );
 </script>
 

@@ -6,7 +6,7 @@ declare namespace Service {
    * - http: 请求成功，响应的http状态码非200的错误
    * - backend: 请求成功，响应的http状态码为200，由后端定义的业务错误
    */
-  type RequestErrorType = 'axios' | 'http' | 'backend';
+  type RequestErrorType = "axios" | "http" | "backend";
 
   /** 请求错误 */
   interface RequestError {
@@ -235,33 +235,33 @@ declare namespace App {
   }
 
   /** 菜单项配置 */
-  type GlobalMenuOption = import('naive-ui').MenuOption & {
+  type GlobalMenuOption = import("naive-ui").MenuOption & {
     key: string;
     label: string;
     routeName: string;
     routePath: string;
-    icon?: () => import('vue').VNodeChild;
+    icon?: () => import("vue").VNodeChild;
     children?: GlobalMenuOption[];
     i18nTitle?: string;
   };
 
   /** 面包屑 */
-  type GlobalBreadcrumb = Omit<import('naive-ui').DropdownOption, 'icon'> & {
+  type GlobalBreadcrumb = Omit<import("naive-ui").DropdownOption, "icon"> & {
     key: string;
     label: string;
     disabled: boolean;
     routeName: string;
     hasChildren: boolean;
-    icon?: import('vue').Component;
+    icon?: import("vue").Component;
     i18nTitle?: string;
-    options?: (import('naive-ui/es/dropdown/src/interface').DropdownMixedOption & {
+    options?: (import("naive-ui/es/dropdown/src/interface").DropdownMixedOption & {
       i18nTitle?: string;
     })[];
   };
 
   /** 多页签Tab的路由 */
   interface GlobalTabRoute
-    extends Pick<import('vue-router').RouteLocationNormalizedLoaded, 'name' | 'fullPath' | 'meta'> {
+    extends Pick<import("vue-router").RouteLocationNormalizedLoaded, "name" | "fullPath" | "meta"> {
     /** 滚动的位置 */
     scrollPosition: {
       left: number;
@@ -275,7 +275,7 @@ declare namespace App {
     /** tab名称 */
     name: string;
     /** badge类型 */
-    badgeProps?: import('naive-ui').BadgeProps;
+    badgeProps?: import("naive-ui").BadgeProps;
     /** 消息数据 */
     list: MessageList[];
   }
@@ -299,12 +299,12 @@ declare namespace App {
     /** 标签名称 */
     tagTitle?: string;
     /** 标签props */
-    tagProps?: import('naive-ui').TagProps;
+    tagProps?: import("naive-ui").TagProps;
   }
 }
 
 declare namespace I18nType {
-  type langType = 'en' | 'zh-CN' | 'km-KH';
+  type langType = "en" | "zh-CN" | "km-KH";
 
   interface Schema {
     system: {
@@ -322,7 +322,7 @@ declare namespace I18nType {
         vite: string;
         naive: string;
         project: string;
-        'project-link': string;
+        "project-link": string;
       };
       component: {
         _value: string;
@@ -349,7 +349,7 @@ declare namespace I18nType {
         swiper: string;
         video: string;
       };
-      'auth-demo': {
+      "auth-demo": {
         _value: string;
         permission: string;
         super: string;
@@ -364,12 +364,12 @@ declare namespace I18nType {
         404: string;
         500: string;
       };
-      'multi-menu': {
+      "multi-menu": {
         _value: string;
         first: {
           _value: string;
           second: string;
-          'second-new': {
+          "second-new": {
             _value: string;
             third: string;
           };

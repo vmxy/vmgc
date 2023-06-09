@@ -16,14 +16,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import type { MenuOption } from 'naive-ui';
-import { useAppStore, useRouteStore, useThemeStore } from '@/store';
-import { useRouterPush } from '@/composables';
-import { getActiveKeyPathsOfMenus, translateMenuLabel } from '@/utils';
+import { computed, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import type { MenuOption } from "naive-ui";
+import { useAppStore, useRouteStore, useThemeStore } from "@/store";
+import { useRouterPush } from "@/composables";
+import { getActiveKeyPathsOfMenus, translateMenuLabel } from "@/utils";
 
-defineOptions({ name: 'VerticalMenu' });
+defineOptions({ name: "VerticalMenu" });
 
 const route = useRoute();
 const app = useAppStore();
@@ -50,7 +50,7 @@ watch(
   () => {
     expandedKeys.value = getActiveKeyPathsOfMenus(activeKey.value, menus.value);
   },
-  { immediate: true }
+  { immediate: true },
 );
 </script>
 

@@ -29,15 +29,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-import { routePath } from '@/router';
-import { useRouteStore, useThemeStore } from '@/store';
-import { useRouterPush } from '@/composables';
-import { getBreadcrumbByRouteKey } from '@/utils';
-import { t } from '@/locales';
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import { routePath } from "@/router";
+import { useRouteStore, useThemeStore } from "@/store";
+import { useRouterPush } from "@/composables";
+import { getBreadcrumbByRouteKey } from "@/utils";
+import { t } from "@/locales";
 
-defineOptions({ name: 'GlobalBreadcrumb' });
+defineOptions({ name: "GlobalBreadcrumb" });
 
 const route = useRoute();
 const theme = useThemeStore();
@@ -45,16 +45,16 @@ const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
 
 const breadcrumbs = computed(() =>
-  getBreadcrumbByRouteKey(route.name as string, routeStore.menus as App.GlobalMenuOption[], routePath('root')).map(
-    item => ({
+  getBreadcrumbByRouteKey(route.name as string, routeStore.menus as App.GlobalMenuOption[], routePath("root")).map(
+    (item) => ({
       ...item,
       label: item.i18nTitle ? t(item.i18nTitle) : item.label,
-      options: item.options?.map(oItem => ({
+      options: item.options?.map((oItem) => ({
         ...oItem,
-        label: oItem.i18nTitle ? t(oItem.i18nTitle) : oItem.label
-      }))
-    })
-  )
+        label: oItem.i18nTitle ? t(oItem.i18nTitle) : oItem.label,
+      })),
+    }),
+  ),
 );
 
 function dropdownSelect(key: string) {

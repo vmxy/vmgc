@@ -1,8 +1,8 @@
-import { effectScope, onScopeDispose, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { useEventListener } from '@vueuse/core';
-import { useI18n } from 'vue-i18n';
-import { useTabStore, useThemeStore } from '@/store';
+import { effectScope, onScopeDispose, watch } from "vue";
+import { useRoute } from "vue-router";
+import { useEventListener } from "@vueuse/core";
+import { useI18n } from "vue-i18n";
+import { useTabStore, useThemeStore } from "@/store";
 
 /** 全局事件 */
 export function useGlobalEvents() {
@@ -13,7 +13,7 @@ export function useGlobalEvents() {
   const scope = effectScope();
 
   /** 页面离开时缓存多页签数据 */
-  useEventListener(window, 'beforeunload', () => {
+  useEventListener(window, "beforeunload", () => {
     theme.cacheThemeSettings();
     tab.cacheTabRoutes();
   });
@@ -24,7 +24,7 @@ export function useGlobalEvents() {
       () => locale.value,
       () => {
         document.title = route.meta.i18nTitle ? t(route.meta.i18nTitle) : route.meta.title;
-      }
+      },
     );
   });
 

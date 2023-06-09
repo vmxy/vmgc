@@ -1,18 +1,18 @@
-import { defineStore } from 'pinia';
-import { darkTheme } from 'naive-ui';
-import { localStg } from '@/utils';
-import { getNaiveThemeOverrides, initThemeSettings } from './helpers';
+import { defineStore } from "pinia";
+import { darkTheme } from "naive-ui";
+import { localStg } from "@/utils";
+import { getNaiveThemeOverrides, initThemeSettings } from "./helpers";
 
 type ThemeState = Theme.Setting;
 
-export const useThemeStore = defineStore('theme-store', {
+export const useThemeStore = defineStore("theme-store", {
   state: (): ThemeState => initThemeSettings(),
   getters: {
     /** naiveUI的主题配置 */
     naiveThemeOverrides(state) {
       const overrides = getNaiveThemeOverrides({
         primary: state.themeColor,
-        ...state.otherColor
+        ...state.otherColor,
       });
       return overrides;
     },
@@ -23,19 +23,19 @@ export const useThemeStore = defineStore('theme-store', {
     /** 页面动画模式 */
     pageAnimateMode(state) {
       return state.page.animate ? state.page.animateMode : undefined;
-    }
+    },
   },
   actions: {
     /** 重置theme状态 */
     resetThemeStore() {
-      localStg.remove('themeSettings');
+      localStg.remove("themeSettings");
       this.$reset();
     },
     /** 缓存主题配置 */
     cacheThemeSettings() {
       const isProd = import.meta.env.PROD;
       if (isProd) {
-        localStg.set('themeSettings', this.$state);
+        localStg.set("themeSettings", this.$state);
       }
     },
     /** 设置暗黑模式 */
@@ -175,6 +175,6 @@ export const useThemeStore = defineStore('theme-store', {
     /** 设置页面过渡动画类型 */
     setPageAnimateMode(mode: UnionKey.ThemeAnimateMode) {
       this.page.animateMode = mode;
-    }
-  }
+    },
+  },
 });

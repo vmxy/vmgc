@@ -1,5 +1,5 @@
-import { useIconRender } from '@/composables';
-import { t } from '@/locales';
+import { useIconRender } from "@/composables";
+import { t } from "@/locales";
 
 /**
  * 将权限路由转换成菜单
@@ -7,7 +7,7 @@ import { t } from '@/locales';
  */
 export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalMenuOption[] {
   const globalMenu: App.GlobalMenuOption[] = [];
-  routes.forEach(route => {
+  routes.forEach((route) => {
     const { name, path, meta } = route;
     const routeName = name as string;
     let menuChildren: App.GlobalMenuOption[] | undefined;
@@ -20,11 +20,11 @@ export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalM
         label: meta.title,
         routeName,
         routePath: path,
-        i18nTitle: meta.i18nTitle
+        i18nTitle: meta.i18nTitle,
       },
       icon: meta.icon,
       localIcon: meta.localIcon,
-      children: menuChildren
+      children: menuChildren,
     });
 
     if (!hideInMenu(route)) {
@@ -42,7 +42,7 @@ export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalM
  */
 export function translateMenuLabel(menus: App.GlobalMenuOption[]): App.GlobalMenuOption[] {
   const globalMenu: App.GlobalMenuOption[] = [];
-  menus.forEach(menu => {
+  menus.forEach((menu) => {
     let menuChildren: App.GlobalMenuOption[] | undefined;
     if (menu.children && menu.children.length > 0) {
       menuChildren = translateMenuLabel(menu.children);
@@ -50,7 +50,7 @@ export function translateMenuLabel(menus: App.GlobalMenuOption[]): App.GlobalMen
     const menuItem: App.GlobalMenuOption = {
       ...menu,
       children: menuChildren,
-      label: menu.i18nTitle ? t(menu.i18nTitle) : menu.label
+      label: menu.i18nTitle ? t(menu.i18nTitle) : menu.label,
     };
     globalMenu.push(menuItem);
   });
@@ -63,7 +63,7 @@ export function translateMenuLabel(menus: App.GlobalMenuOption[]): App.GlobalMen
  * @param menus - 菜单数据
  */
 export function getActiveKeyPathsOfMenus(activeKey: string, menus: App.GlobalMenuOption[]) {
-  const keys = menus.map(menu => getActiveKeyPathsOfMenu(activeKey, menu)).flat(1);
+  const keys = menus.map((menu) => getActiveKeyPathsOfMenu(activeKey, menu)).flat(1);
   return keys;
 }
 
@@ -73,7 +73,7 @@ function getActiveKeyPathsOfMenu(activeKey: string, menu: App.GlobalMenuOption) 
     keys.push(menu.routeName);
   }
   if (menu.children) {
-    keys.push(...menu.children.map(item => getActiveKeyPathsOfMenu(activeKey, item as App.GlobalMenuOption)).flat(1));
+    keys.push(...menu.children.map((item) => getActiveKeyPathsOfMenu(activeKey, item as App.GlobalMenuOption)).flat(1));
   }
   return keys;
 }

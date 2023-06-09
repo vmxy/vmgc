@@ -4,7 +4,7 @@
       class="flex-center flex-col py-12px rounded-2px bg-transparent transition-colors duration-300 ease-in-out"
       :class="{
         'text-primary !bg-primary_active': isActive,
-        'text-primary': isHover
+        'text-primary': isHover,
       }"
     >
       <component :is="icon" :class="[isMini ? 'text-16px' : 'text-20px']" />
@@ -19,11 +19,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import type { Component } from 'vue';
-import { useBoolean } from '@/hooks';
+import { computed } from "vue";
+import type { Component } from "vue";
+import { useBoolean } from "@/hooks";
 
-defineOptions({ name: 'MixMenuDetail' });
+defineOptions({ name: "MixMenuDetail" });
 
 interface Props {
   /** 路由名称 */
@@ -40,7 +40,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   icon: undefined,
-  isMini: false
+  isMini: false,
 });
 
 const { bool: isHover, setTrue, setFalse } = useBoolean();

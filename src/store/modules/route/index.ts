@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
-import { ROOT_ROUTE, constantRoutes, router, routes as staticRoutes } from '@/router';
-import { fetchUserRoutes } from '@/service';
+import { defineStore } from "pinia";
+import { ROOT_ROUTE, constantRoutes, router, routes as staticRoutes } from "@/router";
+import { fetchUserRoutes } from "@/service";
 import {
   localStg,
   filterAuthRoutesByUserPermission,
@@ -12,10 +12,10 @@ import {
   transformAuthRouteToSearchMenus,
   transformRouteNameToRoutePath,
   transformRoutePathToRouteName,
-  sortRoutes
-} from '@/utils';
-import { useAuthStore } from '../auth';
-import { useTabStore } from '../tab';
+  sortRoutes,
+} from "@/utils";
+import { useAuthStore } from "../auth";
+import { useTabStore } from "../tab";
 
 interface RouteState {
   /**
@@ -23,7 +23,7 @@ interface RouteState {
    * - static - 前端声明的静态
    * - dynamic - 后端返回的动态
    */
-  authRouteMode: ImportMetaEnv['VITE_AUTH_ROUTE_MODE'];
+  authRouteMode: ImportMetaEnv["VITE_AUTH_ROUTE_MODE"];
   /** 是否初始化了权限路由 */
   isInitAuthRoute: boolean;
   /** 路由首页name(前端静态路由时生效，后端动态路由该值会被后端返回的值覆盖) */
@@ -36,14 +36,14 @@ interface RouteState {
   cacheRoutes: string[];
 }
 
-export const useRouteStore = defineStore('route-store', {
+export const useRouteStore = defineStore("route-store", {
   state: (): RouteState => ({
     authRouteMode: import.meta.env.VITE_AUTH_ROUTE_MODE,
     isInitAuthRoute: false,
     routeHomeName: transformRoutePathToRouteName(import.meta.env.VITE_ROUTE_HOME_PATH),
     menus: [],
     searchMenus: [],
-    cacheRoutes: []
+    cacheRoutes: [],
   }),
   actions: {
     /** 重置路由的store */
@@ -54,8 +54,8 @@ export const useRouteStore = defineStore('route-store', {
     /** 重置路由数据，保留固定路由 */
     resetRoutes() {
       const routes = router.getRoutes();
-      routes.forEach(route => {
-        const name = (route.name || 'root') as AuthRoute.AllRouteKey;
+      routes.forEach((route) => {
+        const name = (route.name || "root") as AuthRoute.AllRouteKey;
         if (!this.isConstantRoute(name)) {
           router.removeRoute(name);
         }
@@ -74,7 +74,7 @@ export const useRouteStore = defineStore('route-store', {
      * @param name 路由名称
      */
     isValidConstantRoute(name: AuthRoute.AllRouteKey) {
-      const NOT_FOUND_PAGE_NAME: AuthRoute.NotFoundRouteKey = 'not-found';
+      const NOT_FOUND_PAGE_NAME: AuthRoute.NotFoundRouteKey = "not-found";
       const constantRouteNames = getConstantRouteNames(constantRoutes);
       return constantRouteNames.includes(name) && name !== NOT_FOUND_PAGE_NAME;
     },
@@ -88,7 +88,7 @@ export const useRouteStore = defineStore('route-store', {
 
       const vueRoutes = transformAuthRouteToVueRoutes(routes);
 
-      vueRoutes.forEach(route => {
+      vueRoutes.forEach((route) => {
         router.addRoute(route);
       });
 
@@ -96,14 +96,14 @@ export const useRouteStore = defineStore('route-store', {
     },
     /** 动态路由模式下：更新根路由的重定向 */
     handleUpdateRootRedirect(routeKey: AuthRoute.AllRouteKey) {
-      if (routeKey === 'root' || routeKey === 'not-found') {
-        throw new Error('routeKey的值不能为root或者not-found');
+      if (routeKey === "root" || routeKey === "not-found") {
+        throw new Error("routeKey的值不能为root或者not-found");
       }
       const rootRoute: AuthRoute.Route = {
         ...ROOT_ROUTE,
-        redirect: transformRouteNameToRoutePath(routeKey)
+        redirect: transformRouteNameToRoutePath(routeKey),
       };
-      const rootRouteName: AuthRoute.AllRouteKey = 'root';
+      const rootRouteName: AuthRoute.AllRouteKey = "root";
       router.removeRoute(rootRouteName);
       const rootVueRoute = transformAuthRouteToVueRoute(rootRoute)[0];
       router.addRoute(rootVueRoute);
@@ -113,10 +113,10 @@ export const useRouteStore = defineStore('route-store', {
       const { resetAuthStore } = useAuthStore();
       const { initHomeTab } = useTabStore();
 
-      const { userId } = localStg.get('userInfo') || {};
+      const { userId } = localStg.get("userInfo") || {};
 
       if (!userId) {
-        throw new Error('userId 不能为空!');
+        throw new Error("userId 不能为空!");
       }
 
       const { error, data } = await fetchUserRoutes(userId);
@@ -147,7 +147,7 @@ export const useRouteStore = defineStore('route-store', {
     },
     /** 初始化权限路由 */
     async initAuthRoute() {
-      if (this.authRouteMode === 'dynamic') {
+      if (this.authRouteMode === "dynamic") {
         await this.initDynamicRoute();
       } else {
         await this.initStaticRoute();
@@ -168,6 +168,6 @@ export const useRouteStore = defineStore('route-store', {
       if (index === -1) {
         this.cacheRoutes.push(name);
       }
-    }
-  }
+    },
+  },
 });
