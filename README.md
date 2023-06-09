@@ -1,6 +1,6 @@
 <div align="center">
 	<img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/soybean.svg" style="width: 160px;"/>
-	<h1>Soybean Admin</h1>
+	<h1> vmgc ui项目,依赖于 Soybean Admin</h1>
 </div>
 
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE) ![](https://img.shields.io/github/stars/honghuangdc/soybean-admin) ![](https://img.shields.io/github/forks/honghuangdc/soybean-admin)

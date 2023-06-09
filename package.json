@@ -35,24 +35,30 @@
     "UnoCSS"
   ],
   "scripts": {
+    "start": "cross-env VITE_SERVICE_ENV=prod NODE_ENV=production API_SERVER=https://blog.iee.one node server.js",
+    "ssr": "cross-env VITE_SERVICE_ENV=dev VITE_SSR=Y API_SERVER=https://blog.iee.one vite",
     "dev": "cross-env VITE_SERVICE_ENV=dev vite",
     "dev:test": "cross-env VITE_SERVICE_ENV=test vite",
     "dev:prod": "cross-env VITE_SERVICE_ENV=prod vite",
-    "build": "npm run typecheck && cross-env VITE_SERVICE_ENV=prod vite build",
-    "build:dev": "npm run typecheck && cross-env VITE_SERVICE_ENV=dev vite build",
+    "build": "cross-env VITE_SERVICE_ENV=prod vite build",
+    "build:page": "cross-env PROD=false VITE_SERVICE_ENV=prod VITE_BASE_URL=/soybean-admin vite build",
+    "build:ssr": "cross-env VITE_SERVICE_ENV=prod VITE_SSR=Y vite build",
+    "build:dev": "npm run typecheck && cross-env VITE_SERVICE_ENV=dev vite build",    
     "build:test": "npm run typecheck && cross-env VITE_SERVICE_ENV=test vite build",
     "build:vercel": "cross-env VITE_HASH_ROUTE=Y VITE_VERCEL=Y vite build",
     "preview": "vite preview",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
     "lint": "eslint . --fix",
-    "format": "soy prettier-format",
+    "formatx": "soy prettier-format",
+    "format": "run-s format:*",
+    "format:js": " prettier --write \"src/**/*.(ts|js|vue|css|less|scss)\"  ",
     "commit": "soy git-commit",
     "cleanup": "soy cleanup",
     "update-pkg": "soy update-pkg",
     "release": "soy release",
     "tsx": "tsx",
     "logo": "tsx ./scripts/logo.ts",
-    "prepare": "soy init-git-hooks"
+    "prepare": "soy init-git-hooks",
   },
   "dependencies": {
     "@antv/data-set": "0.11.8",
@@ -80,13 +86,15 @@
     "vue-router": "4.2.2",
     "vuedraggable": "4.1.0",
     "wangeditor": "4.7.15",
-    "xgplayer": "3.0.4"
+    "xgplayer": "3.0.4",
+    "vite-plugin-ssr": "^0.4.123"
   },
   "devDependencies": {
     "@amap/amap-jsapi-types": "0.0.13",
     "@iconify/json": "2.2.75",
     "@iconify/vue": "4.1.1",
     "@soybeanjs/cli": "0.5.4",
+    "@ai-lion/vite-plugin-vue-page-route": "^1.0.3",
     "@soybeanjs/vite-plugin-vue-page-route": "0.0.6",
     "@types/bmapgl": "0.0.7",
     "@types/crypto-js": "4.1.1",
@@ -115,7 +123,10 @@
     "vite-plugin-progress": "0.0.7",
     "vite-plugin-pwa": "0.16.3",
     "vite-plugin-svg-icons": "2.0.1",
-    "vue-tsc": "1.6.5"
+    "vue-tsc": "1.6.5",
+    "vite-plugin-static-copy": "^0.15.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.8"
   },
   "pnpm": {
     "patchedDependencies": {
