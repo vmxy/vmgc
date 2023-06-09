@@ -305,8 +305,67 @@ declare namespace App {
 
 declare namespace I18nType {
   type langType = "en" | "zh-CN" | "km-KH";
-
+  type Locale = {
+    language: string;
+    message: Schema;
+    menu: { [key: string]: string };
+  };
   interface Schema {
+    video: {
+      all: string;
+      updated: string;
+      menu: {
+        class: string;
+        area: string;
+        year: string;
+        type: string;
+        sort: string;
+      };
+      detail: {
+        director: string;
+        actor: string;
+        year: string;
+        updateAt: string;
+        quality: string;
+        line: string;
+      };
+      sort: {
+        time: string;
+        score: string;
+        hot: string;
+      };
+      top: {
+        hot: string;
+        rec: string;
+        new: string;
+      };
+      class: {
+        cn: string;
+        hktw: string;
+        japan: string;
+        korea: string;
+        euus: string;
+        other: string;
+      };
+      type: {
+        all: string;
+        love: string;
+        costume: string;
+        history: string;
+        scifi: string;
+        martial: string;
+        crime: string;
+        family: string;
+        war: string;
+        suspense: string;
+        horror: string;
+        action: string;
+        thriller: string;
+        fantasy: string;
+        adventure: string;
+        comedy: string;
+      };
+    };
     system: {
       title: string;
     };

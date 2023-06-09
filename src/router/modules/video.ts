@@ -10,6 +10,7 @@ const video: AuthRoute.Route[] = [
       singleLayout: "basic",
       icon: "mdi:video-2d",
       order: 1,
+      i18nTitle: "menu.home",
     },
   },
   {
@@ -23,6 +24,7 @@ const video: AuthRoute.Route[] = [
       singleLayout: "basic",
       icon: "mdi:video-input-svideo",
       order: 2,
+      i18nTitle: "menu.movie",
     },
   },
   {
@@ -36,6 +38,8 @@ const video: AuthRoute.Route[] = [
       singleLayout: "basic",
       icon: "mdi:youtube-tv",
       order: 3,
+      i18nTitle: "menu.tv",
+
     },
   },
   {
@@ -49,6 +53,8 @@ const video: AuthRoute.Route[] = [
       singleLayout: "basic",
       icon: "mdi:atv",
       order: 4,
+      i18nTitle: "menu.anime",
+
     },
   },
   {
@@ -62,6 +68,8 @@ const video: AuthRoute.Route[] = [
       singleLayout: "basic",
       icon: "mdi:eye",
       order: 5,
+      i18nTitle: "menu.variety",
+
     },
   },
   {
@@ -75,6 +83,8 @@ const video: AuthRoute.Route[] = [
       singleLayout: "basic",
       icon: "mdi:basketball",
       order: 6,
+      i18nTitle: "menu.sport",
+
     },
   },
   {
@@ -88,6 +98,8 @@ const video: AuthRoute.Route[] = [
       singleLayout: "basic",
       icon: "mdi:video-vintage",
       order: 7,
+      i18nTitle: "menu.doc",
+
     },
   },
   {
@@ -103,6 +115,7 @@ const video: AuthRoute.Route[] = [
       order: 8,
       hide: true,
       tab: false,
+      
     },
   },
   {

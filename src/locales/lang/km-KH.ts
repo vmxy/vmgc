@@ -1,7 +1,70 @@
-import type { LocaleMessages } from "vue-i18n";
-
-const locale: LocaleMessages<I18nType.Schema> = {
+const locale: I18nType.Locale = {
+  language: "ភាសាខ្មែរ",
+  menu: {
+    movie: "Movie",
+    tv: "TV",
+    anime: "Anime",
+    variety: "Variety",
+    sport: "Sport",
+    doc: "Documentary",
+    home: "Home"
+  },
   message: {
+    video: {
+      all: "All",
+      updated: "更新时间",
+      menu: {
+        class: "Class",
+        area: "Arda",
+        year: "Year",
+        type: "Type",
+        sort: "Sort",
+      },
+      detail: {
+        director: "Director",
+        actor: "Actor",
+        year: "Year",
+        updateAt: "Update",
+        quality: "Quality",
+        line: "Line",
+      },
+      sort: {
+        time: "Time",
+        score: "Score",
+        hot: "Hot",
+      },
+      top: {
+        hot: "Hot",
+        rec: "Rec",
+        new: "New",
+      },
+      class: {
+        cn: "China",
+        hktw: "HongKong",
+        japan: "Japan",
+        korea: "Korea",
+        euus: "American",
+        other: "Other",
+      },
+      type: {
+        all: "All",
+        love: "Love",
+        costume: "Costume",
+        history: "History",
+        scifi: "SCI-FI",
+        martial: "Martial",
+        crime: "Crime",
+        family: "Family",
+        war: "War",
+        suspense: "Suspense",
+        horror: "Horror",
+        action: "Action",
+        thriller: "Thriller",
+        fantasy: "Fantasy",
+        adventure: "Adventure",
+        comedy: "Comedy",
+      },
+    },
     system: {
       title: "ប្រព័ន្ធគ្រប់គ្រង",
     },

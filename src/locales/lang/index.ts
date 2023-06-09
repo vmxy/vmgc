@@ -1,7 +1,6 @@
 import zhCN from "./zh-cn";
 import en from "./en";
 import kmKH from "./km-KH";
-import { LocaleMessages } from "vue-i18n";
 
 const locales = {
   "zh-CN": zhCN,
@@ -10,7 +9,6 @@ const locales = {
 };
 
 export type LocaleKey = keyof typeof locales;
-export const lang = locales[navigator.language] ? navigator.language : "zh-CN";
 export const langList: { label: string; key: string }[] = [];
 for (let key in locales) {
   let locale = locales[key];
@@ -18,5 +16,6 @@ for (let key in locales) {
     label: locale.language,
     key: key,
   });
+  console.info("langList", langList)
 }
 export default locales;

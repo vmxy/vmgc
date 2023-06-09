@@ -1,6 +1,6 @@
 <template>
   <hover-container class="w-40px h-full">
-    <n-dropdown :options="options" trigger="hover" :value="language" @select="handleSelect">
+    <n-dropdown :options="langList" trigger="hover" :value="app.lang" @select="handleSelect">
       <icon-cil:language class="text-18px outline-transparent" />
     </n-dropdown>
   </hover-container>
@@ -8,12 +8,14 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { useI18n } from "vue-i18n";
+import { useI18n } from "vue-i18n"; 
 import { localStg } from "@/utils";
+import { useAppStore } from "@/store";
+import { langList } from "@/locales/lang";
 
 const { locale } = useI18n();
-
-const language = ref<I18nType.langType>(localStg.get("lang") || "zh-CN");
+const app = useAppStore();
+/* 
 const options = [
   {
     label: "中文",
@@ -27,11 +29,13 @@ const options = [
     label: "ភាសាខ្មែរ",
     key: "km-KH",
   },
-];
+]; */
 const handleSelect = (key: string) => {
-  language.value = key as I18nType.langType;
-  locale.value = key;
-  localStg.set("lang", key as I18nType.langType);
+  let lang = key as I18nType.langType;
+  //language.value = lang;
+  locale.value = lang;
+  //localStg.set("lang", lang);
+  app.setLang(lang);
 };
 </script>
 <style scoped></style>

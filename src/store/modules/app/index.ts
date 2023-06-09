@@ -1,7 +1,7 @@
 import { nextTick } from "vue";
 import { defineStore } from "pinia";
 import { LAYOUT_SCROLL_EL_ID } from "@soybeanjs/vue-materials";
-import { langList, lang } from "@/locales/lang";
+import { langList } from "@/locales/lang";
 import { localStg } from "@/utils";
 
 interface AppState {
@@ -39,7 +39,7 @@ export const useAppStore = defineStore("app-store", {
     settingDrawerVisible: false,
     siderCollapse: false,
     mixSiderFixed: false,
-    lang: lang,
+    lang: localStg.get("lang") || langList[navigator.language] ? navigator.language : "zh-CN",
     langs: langList,
     isLogin: Boolean(localStg.get("token")),
     inSSR: ssr,
@@ -113,6 +113,10 @@ export const useAppStore = defineStore("app-store", {
     /** 设置主体内容全屏 */
     setContentFull(full: boolean) {
       this.contentFull = full;
+    },
+    setLang(lang: I18nType.langType) {
+      this.lang = lang;
+      localStg.set("lang", lang);
     },
   },
 });

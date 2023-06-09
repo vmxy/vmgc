@@ -8,7 +8,8 @@ import UserAvatar from "./user-avatar.vue";
 import SystemMessage from "./system-message.vue";
 import SettingButton from "./setting-button.vue";
 import ToggleLang from "./toggle-lang.vue";
-
+import GlobalRefresh from "./global-refresh.vue";
+import UserLogin from "./user-login.vue";
 export {
   MenuCollapse,
   GlobalBreadcrumb,
@@ -20,4 +21,6 @@ export {
   SystemMessage,
   SettingButton,
   ToggleLang,
+  GlobalRefresh,
+  UserLogin
 };

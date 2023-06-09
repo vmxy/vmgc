@@ -1,7 +1,70 @@
-import type { LocaleMessages } from "vue-i18n";
-
-const locale: LocaleMessages<I18nType.Schema> = {
+const locale: I18nType.Locale = {
+  language: "中文",
+  menu: {
+    movie: "电影",
+    tv: "电视",
+    anime: "动漫",
+    variety: "综艺",
+    sport: "体育",
+    doc: "纪录",
+    home: "首页"
+  },
   message: {
+    video: {
+      all: "所有",
+      updated: "更新到",
+      menu: {
+        class: "分类",
+        area: "地区",
+        year: "年代",
+        type: "类型",
+        sort: "排序",
+      },
+      detail: {
+        director: "导演",
+        actor: "演员",
+        year: "上映时间",
+        updateAt: "更新时间",
+        quality: "集数",
+        line: "线路",
+      },
+      sort: {
+        time: "时间",
+        score: "评分",
+        hot: "热度",
+      },
+      top: {
+        hot: "最热",
+        rec: "推荐",
+        new: "最新",
+      },
+      class: {
+        cn: "国产",
+        hktw: "港台",
+        japan: "日本",
+        korea: "韩国",
+        euus: "欧美",
+        other: "其他",
+      },
+      type: {
+        all: "全部",
+        love: "爱情",
+        costume: "古装",
+        history: "历史",
+        scifi: "科幻",
+        martial: "武侠",
+        crime: "犯罪",
+        family: "家庭",
+        war: "战争",
+        suspense: "悬疑",
+        horror: "恐怖",
+        action: "动作",
+        thriller: "惊悚",
+        fantasy: "奇幻",
+        adventure: "冒险",
+        comedy: "喜剧",
+      },
+    },
     system: {
       title: "Soybean管理系统",
     },
