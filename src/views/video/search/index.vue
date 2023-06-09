@@ -23,7 +23,7 @@
     </n-spin>
     <n-pagination
       v-if="searchStore.list.length > 0"
-      v-model:page="searchStore.page.pageNo"
+      v-model:page="pageNo"
       :page-slot="10"
       :item-count="searchStore.page.total"
       :page-size="searchStore.page.pageSize"
@@ -42,27 +42,26 @@
 
 <script setup lang="ts">
 import "../components/style.scss";
-import { ref, computed, Ref, onMounted } from "vue";
+import { ref, onMounted, computed } from 'vue';
 import { useAppStore, useSearchStore } from "@/store";
-import * as service from "@/service";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
 const searchStore = useSearchStore();
-const app = useAppStore();
-//const page = ref({ pageNo: parseInt(route.query.pageNo as string) || 1, pageCount: 0, total: 0, pageSize: 24 });
-//const dataList: Ref<NVideo.VideoInfo[]> = ref([]);
-const loading = ref(true);
-const query = ref({
-  q: (route.query.q as string) || "all",
-});
+const loading = ref(false);
+
+const pageNo = computed(()=>{
+  let pageNo = parseInt(route.query.pageNo?.toString()) || 1;
+  return pageNo;
+})
+
 function onOpenNotify() {
   searchStore.setHide();
 }
 function newUrl(pageNo: number) {
   let nquery = Object.assign({}, route.query);
   nquery.pageNo = pageNo + "";
-  nquery.q = query.value.q;
+  nquery.q = searchStore.q;
   return (
     route.path +
     "?" +
@@ -72,13 +71,16 @@ function newUrl(pageNo: number) {
   );
 }
 onMounted(() => {
-  let pageNo = parseInt(route.query.pageNo as string) || 1;
-  search({ ...query.value, pageNo: pageNo });
+  let q = route.query.q?.toString();
+  let pageNo = parseInt(route.query.pageNo?.toString()) || 1;
+  if (!q) return;
+  if (q == searchStore.q && searchStore.page.pageNo == pageNo) return;
+  search({ q: q, pageNo: pageNo });
 });
 
 async function onUpdatePage(pageNo: number) {
   let path = route.path;
-  let nquery = Object.assign({}, query.value, { pageNo });
+  let nquery = Object.assign({}, { q: searchStore.q, pageNo });
   router.push(
     path +
       "?" +
@@ -89,26 +91,12 @@ async function onUpdatePage(pageNo: number) {
 }
 
 async function search(opts: { q: string; pageNo: number }) {
-  //page.value.pageNo = opts.pageNo;
-  query.value.q = opts.q || "";
-
   globalThis.$loadingBar?.start();
   loading.value = true;
   await searchStore.search(opts);
-  /*   let { data } = await service.searchVideo({
-    pageNo: opts.pageNo,
-    q: opts.q,
-  }); */
   globalThis.$loadingBar?.finish();
   loading.value = false;
-
-  //page.value.total = searchStore.page.total;
-  //page.value.pageSize = searchStore.page.pageSize;
-  /* dataList.value = searchStore.list || []; */
 }
 </script>
 
-<style scoped lang="scss">
-.module-page {
-}
-</style>
+<style scoped lang="scss"></style>

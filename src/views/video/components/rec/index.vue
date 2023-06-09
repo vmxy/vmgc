@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, defineProps, watch, computed, getCurrentInstance } from "vue";
+import { ref, onMounted, watch, computed, getCurrentInstance } from "vue";
 import * as service from "@/service";
 import { useAppStore } from "@/store";
 const { proxy } = getCurrentInstance();

@@ -1,8 +1,6 @@
 import { defineStore } from "pinia";
 import { sessionStg } from "@/utils";
 import { useRoute } from "vue-router";
-import * as service from "@/service";
-import { ref, Ref } from "vue";
 import { searchVideo } from "@/service";
 
 let states = sessionStg.get("search");
@@ -35,12 +33,15 @@ export const useSearchStore = defineStore("search-store", {
       this.list = list;
       let total = page.total,
         pageSize = page.pageSize || 24;
+      if (list.length < pageSize) {
+        total = pageSize * (this.page.pageNo - 1) + list.length;
+      }
       this.page.total = total;
       this.page.pageSize = pageSize;
       sessionStg.set("search", this.$state);
     },
     async search(opts: { q: string; pageNo?: number }) {
-      if (opts.q == this.q && opts.pageNo == this.page.pageNo) return this.list;
+      //if (opts.q == this.q) return this.list;
       this.q = opts.q;
       this.page.pageNo = opts.pageNo || 1;
       let { data } = await searchVideo(opts);

@@ -75,4 +75,17 @@ export const constantRoutes: AuthRoute.Route[] = [
       singleLayout: "blank",
     },
   },
+  {
+    name: "search",
+    path: "/search",
+    component: "self",
+    meta: {
+      title: "搜索",
+      requiresAuth: false,
+      keepAlive: false,
+      singleLayout: "basic",
+      order: 1,
+      tab: false,
+    },
+  },
 ];
