@@ -70,6 +70,20 @@ interface ImportMetaEnv {
   readonly VITE_SOYBEAN_ROUTE_PLUGIN?: "Y" | "N";
   /** 是否是部署的vercel */
   readonly VITE_VERCEL?: "Y" | "N";
+
+  /*******  附加 start  ****/
+  /** api接口地址 */
+  readonly VITE_API_SERVER: string;
+  /** 项目基本地址 */
+  readonly VITE_BASE_URL: string;
+  /** 是否启用tab标签栏 */
+  readonly VITE_TABS: "Y" | "N";
+  /**video是否运行在iframe里 */
+  readonly VITE_VIDEO_IF: "Y" | "N";
+  /** 视频播放地址 */
+  readonly VITE_VIDEO_URL: string;
+
+  /*******  附加 end    ****/
 }
 
 interface ImportMeta {

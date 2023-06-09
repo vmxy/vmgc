@@ -29,8 +29,7 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, ref, onMounted } from "vue";
-import { formatImageUrl } from "@/utils";
+import { ref, onMounted } from "vue";
 import { fetchBanerList } from "@/service";
 const banners = ref([
   {
