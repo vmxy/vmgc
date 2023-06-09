@@ -1,4 +1,5 @@
 import { decrypto, encrypto } from "../crypto";
+import { localStorage } from "@/adapter";
 interface StorageData<T> {
   value: T;
   expire: number | null;
@@ -14,11 +15,11 @@ function createLocalStorage<T extends StorageInterface.Local = StorageInterface.
       expire: expire !== null ? new Date().getTime() + expire * 1000 : null,
     };
     const json = encrypto(storageData);
-    window.localStorage.setItem(key as string, json);
+    localStorage.setItem(key as string, json);
   }
 
   function get<K extends keyof T>(key: K) {
-    const json = window.localStorage.getItem(key as string);
+    const json = localStorage.getItem(key as string);
     if (json) {
       let storageData: StorageData<T[K]> | null = null;
       try {
@@ -40,10 +41,10 @@ function createLocalStorage<T extends StorageInterface.Local = StorageInterface.
   }
 
   function remove(key: keyof T) {
-    window.localStorage.removeItem(key as string);
+    localStorage.removeItem(key as string);
   }
   function clear() {
-    window.localStorage.clear();
+    localStorage.clear();
   }
 
   return {

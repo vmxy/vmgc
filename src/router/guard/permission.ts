@@ -12,12 +12,18 @@ export async function createPermissionGuard(
 ) {
   // 动态路由
   const permission = await createDynamicRouteGuard(to, from, next);
+  console.info("===permission", permission, from.path, to.path);
   if (!permission) return;
 
   // 外链路由, 从新标签打开，返回上一个路由
   if (to.meta.href) {
     window.open(to.meta.href);
     next({ path: from.fullPath, replace: true, query: from.query });
+    return;
+  }
+
+  if(!to.meta.requiresAuth){
+    next();
     return;
   }
 

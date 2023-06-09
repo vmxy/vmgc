@@ -1,4 +1,5 @@
 import { decrypto, encrypto } from "../crypto";
+import { sessionStorage } from "@/adapter";
 
 function createSessionStorage<T extends StorageInterface.Session = StorageInterface.Session>() {
   function set<K extends keyof T>(key: K, value: T[K]) {

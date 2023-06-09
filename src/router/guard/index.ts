@@ -19,5 +19,8 @@ export function createRouterGuard(router: Router) {
     useTitle(to.meta.i18nTitle ? t(to.meta.i18nTitle) : to.meta.title);
     // 结束 loadingBar
     ssr || globalThis.$loadingBar?.finish();
+    if (!ssr) {
+      globalThis.document.querySelector("#app-loading")?.remove();
+    }
   });
 }
