@@ -1,8 +1,11 @@
+console.info("==========load s1");
 export * from "./common";
+console.info("==========load s2");
 export * from "./storage";
+console.info("==========load s3");
 export * from "./service";
+console.info("==========load s4");
 export * from "./router";
+console.info("==========load s5");
 export * from "./form";
-import * as qrcode from "./qrcode";
-
-export { qrcode };
+console.info("==========load s6");

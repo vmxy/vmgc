@@ -56,7 +56,7 @@ async function render(pageContext) {
     const homeData = (await getHome()) || {};
     context.homeData = Object.assign({}, homeData);
   }
-  const { app, appLoading, router } = createApp({
+  const { app, router } = createApp({
     Page: Page,
     context: context,
   });
@@ -84,7 +84,7 @@ async function render(pageContext) {
         ${dangerouslySkipEscape(descriptionTag)}
       </head>
       <body>
-        <div id="app-loading" style="position: fixed;width: 100%;height: 100%; left: 0;top: 0; z-index: 9999;background:#fff;">
+        <div id="appLoading" style="position: fixed;width: 100%;height: 100%; left: 0;top: 0; z-index: 9999;background:#fff;">
           <div style="display: flex;flex-wrap: wrap; justify-content: center;align-items: center; width:100%; height: 100%; text-align: center;">
               <img src="/loading.gif" />
           </div>

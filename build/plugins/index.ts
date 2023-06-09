@@ -12,11 +12,14 @@ import pwa from "./pwa";
 import { pageRoute } from "@ai-lion/vite-plugin-vue-page-route";
 import ssr from "vite-plugin-ssr/plugin";
 import { viteStaticCopy } from "vite-plugin-static-copy"; //引入插件
+import os from "os";
 /**
  * vite插件
  * @param viteEnv - 环境变量配置
  */
 export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | PluginOption[])[] {
+  const isDev = viteEnv.VITE_SERVICE_ENV == "dev";
+
   const plugins: any[] = [
     vue({
       script: {
@@ -26,7 +29,7 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
     vueJsx(),
     ...unplugin(viteEnv),
     unocss(),
-    mock(viteEnv),
+    //mock(viteEnv),
     //progress()
     pageRoute({
       //
@@ -41,7 +44,9 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
       //onRouteModuleGenerate: (name) => !name.includes("_builtin"), // 对于系统内置路由不生成路由模块, 其他的都生成
     }),
   ];
-
+  if (isDev) {
+    plugins.push(mock);
+  }
   if (viteEnv.VITE_VISUALIZER === "Y") {
     plugins.push(visualizer as any as PluginOption); //PluginOption
   }

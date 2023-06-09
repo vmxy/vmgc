@@ -1,6 +1,6 @@
-import { createApp } from "vue";
+import * as vue from "vue";
 import App from "./App.vue";
-import AppLoading from "./components/common/app-loading.vue";
+//import AppLoading from "./components/common/app-loading.vue";
 import { setupDirectives } from "./directives";
 import { setupRouter } from "./router";
 import { setupAssets } from "./plugins";
@@ -12,16 +12,16 @@ globalThis.wait = async (ttl: number) => {
     setTimeout(() => resolve(), ttl);
   });
 };
-async function setupApp() {
+export function createApp(opts: { Page: any; context?: any }) {
+  const { Page, context } = opts;
   // import assets: js、css
   setupAssets();
 
   // app loading
-  const appLoading = createApp(AppLoading);
+  //const appLoading = vue.createApp(AppLoading);
+  //appLoading.mount("#appLoading");
 
-  appLoading.mount("#appLoading");
-
-  const app = createApp(App);
+  const app = vue.createApp(App);
 
   // store plugin: pinia
   setupStore(app);
@@ -30,14 +30,16 @@ async function setupApp() {
   setupDirectives(app);
 
   // vue router
-  await setupRouter(app);
+  const router = setupRouter(app);
 
   setupI18n(app);
 
-  appLoading.unmount();
+  //appLoading.unmount();
 
   // mount app
-  app.mount("#app");
+  //app.mount("#app");
+  return {
+    app,
+    router,
+  };
 }
-
-setupApp();

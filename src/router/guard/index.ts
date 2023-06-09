@@ -21,8 +21,8 @@ export function createRouterGuard(router: Router) {
     useTitle(AppTitle + " - " + subTitle);
     // 结束 loadingBar
     ssr || globalThis.$loadingBar?.finish();
-    if (!ssr) {
-      globalThis.document.querySelector("#app-loading")?.remove();
-    }
+   /*  if (!ssr) {
+      globalThis.document.querySelector("#appLoading")?.remove();
+    } */
   });
 }

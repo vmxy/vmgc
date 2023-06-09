@@ -35,7 +35,7 @@
               <n-icon><icon-mdi-qrcode-scan /></n-icon>
             </template>
           </n-button>
-          <qrcode ref="refQRCode"></qrcode>
+          <qrcode v-if="!app.inSSR" ref="refQRCode"></qrcode>
 
           <!--n-select
             v-if="app.isMobile"
