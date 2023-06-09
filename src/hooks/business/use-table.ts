@@ -18,7 +18,9 @@ type ApiParams = Record<string, unknown> & PaginationParams;
  * 表格请求接口的结果
  * @description 这里用属性list来表示后端接口返回的表格数据
  */
-type ApiData<TableData = Record<string, unknown>> = Record<string, unknown> & { list: TableData[] };
+type ApiData<TableData = Record<string, unknown>> = Record<string, unknown> & {
+  list: TableData[];
+};
 
 /**
  * 表格接口的请求函数
@@ -116,7 +118,10 @@ export function useTable<TableData extends Record<string, unknown>, Params exten
 
       setEmpty(transformedData.data.length === 0);
 
-      updatePagination({ page: transformedData.pageNum, pageSize: transformedData.pageSize });
+      updatePagination({
+        page: transformedData.pageNum,
+        pageSize: transformedData.pageSize
+      });
     }
 
     endLoading();

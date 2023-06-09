@@ -12,7 +12,9 @@
           <n-gradient-text type="primary" :size="28">{{ title }}</n-gradient-text>
         </header>
         <main class="pt-24px">
-          <h3 class="text-18px text-primary font-medium">{{ activeModule.label }}</h3>
+          <h3 class="text-18px text-primary font-medium">
+            {{ activeModule.label }}
+          </h3>
           <div class="pt-24px">
             <transition name="fade-slide" mode="out-in" appear>
               <component :is="activeModule.component" />
@@ -51,11 +53,27 @@ interface LoginModule {
 }
 
 const modules: LoginModule[] = [
-  { key: 'pwd-login', label: loginModuleLabels['pwd-login'], component: PwdLogin },
-  { key: 'code-login', label: loginModuleLabels['code-login'], component: CodeLogin },
+  {
+    key: 'pwd-login',
+    label: loginModuleLabels['pwd-login'],
+    component: PwdLogin
+  },
+  {
+    key: 'code-login',
+    label: loginModuleLabels['code-login'],
+    component: CodeLogin
+  },
   { key: 'register', label: loginModuleLabels.register, component: Register },
-  { key: 'reset-pwd', label: loginModuleLabels['reset-pwd'], component: ResetPwd },
-  { key: 'bind-wechat', label: loginModuleLabels['bind-wechat'], component: BindWechat }
+  {
+    key: 'reset-pwd',
+    label: loginModuleLabels['reset-pwd'],
+    component: ResetPwd
+  },
+  {
+    key: 'bind-wechat',
+    label: loginModuleLabels['bind-wechat'],
+    component: BindWechat
+  }
 ];
 
 const activeModule = computed(() => {

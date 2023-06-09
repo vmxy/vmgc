@@ -25,7 +25,10 @@ export const scrollBehavior: RouterScrollBehavior = (to, from) => {
 
     const isFromCached = Boolean(from.meta.keepAlive);
     if (isFromCached) {
-      tab.recordTabScrollPosition(from.path, { left: scrollLeft, top: scrollTop });
+      tab.recordTabScrollPosition(from.path, {
+        left: scrollLeft,
+        top: scrollTop
+      });
     }
 
     setTimeout(() => {

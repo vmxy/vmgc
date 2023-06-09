@@ -10,7 +10,10 @@ export const useThemeStore = defineStore('theme-store', {
   getters: {
     /** naiveUI的主题配置 */
     naiveThemeOverrides(state) {
-      const overrides = getNaiveThemeOverrides({ primary: state.themeColor, ...state.otherColor });
+      const overrides = getNaiveThemeOverrides({
+        primary: state.themeColor,
+        ...state.otherColor
+      });
       return overrides;
     },
     /** naive-ui暗黑主题 */

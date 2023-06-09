@@ -1,12 +1,16 @@
 <template>
   <div
     class="relative h-full transition-width duration-300 ease-in-out"
-    :style="{ width: app.mixSiderFixed ? theme.sider.mixChildMenuWidth + 'px' : '0px' }"
+    :style="{
+      width: app.mixSiderFixed ? theme.sider.mixChildMenuWidth + 'px' : '0px'
+    }"
   >
     <dark-mode-container
       class="drawer-shadow absolute-lt flex-col-stretch h-full nowrap-hidden"
       :inverted="theme.sider.inverted"
-      :style="{ width: showDrawer ? theme.sider.mixChildMenuWidth + 'px' : '0px' }"
+      :style="{
+        width: showDrawer ? theme.sider.mixChildMenuWidth + 'px' : '0px'
+      }"
     >
       <header class="header-height flex-y-center justify-between" :style="{ height: theme.header.height + 'px' }">
         <h2 class="text-primary pl-8px text-16px font-bold">{{ title }}</h2>

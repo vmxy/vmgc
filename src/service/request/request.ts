@@ -132,9 +132,13 @@ export function createHookRequest(axiosConfig: AxiosRequestConfig, backendConfig
     const method = param.method || 'get';
     const { instance } = customInstance;
 
-    getRequestResponse({ instance, method, url, data: param.data, config: param.axiosConfig }).then(
-      handleRequestResult
-    );
+    getRequestResponse({
+      instance,
+      method,
+      url,
+      data: param.data,
+      config: param.axiosConfig
+    }).then(handleRequestResult);
 
     return {
       data,

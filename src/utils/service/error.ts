@@ -29,14 +29,20 @@ export function handleAxiosError(axiosError: AxiosError) {
       // 网路错误
       !window.navigator.onLine || axiosError.message === 'Network Error',
       () => {
-        Object.assign(error, { code: NETWORK_ERROR_CODE, msg: NETWORK_ERROR_MSG });
+        Object.assign(error, {
+          code: NETWORK_ERROR_CODE,
+          msg: NETWORK_ERROR_MSG
+        });
       }
     ],
     [
       // 超时错误
       axiosError.code === REQUEST_TIMEOUT_CODE && axiosError.message.includes('timeout'),
       () => {
-        Object.assign(error, { code: REQUEST_TIMEOUT_CODE, msg: REQUEST_TIMEOUT_MSG });
+        Object.assign(error, {
+          code: REQUEST_TIMEOUT_CODE,
+          msg: REQUEST_TIMEOUT_MSG
+        });
       }
     ],
     [

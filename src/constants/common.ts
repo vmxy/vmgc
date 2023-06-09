@@ -1,4 +1,6 @@
-export const dataTypeLabels: { [K in TypeUtil.DataTypeStringKey]: TypeUtil.DataTypeString<K> } = {
+export const dataTypeLabels: {
+  [K in TypeUtil.DataTypeStringKey]: TypeUtil.DataTypeString<K>;
+} = {
   string: '[object String]',
   number: '[object Number]',
   boolean: '[object Boolean]',

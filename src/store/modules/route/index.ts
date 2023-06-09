@@ -99,7 +99,10 @@ export const useRouteStore = defineStore('route-store', {
       if (routeKey === 'root' || routeKey === 'not-found') {
         throw new Error('routeKey的值不能为root或者not-found');
       }
-      const rootRoute: AuthRoute.Route = { ...ROOT_ROUTE, redirect: transformRouteNameToRoutePath(routeKey) };
+      const rootRoute: AuthRoute.Route = {
+        ...ROOT_ROUTE,
+        redirect: transformRouteNameToRoutePath(routeKey)
+      };
       const rootRouteName: AuthRoute.AllRouteKey = 'root';
       router.removeRoute(rootRouteName);
       const rootVueRoute = transformAuthRouteToVueRoute(rootRoute)[0];

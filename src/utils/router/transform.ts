@@ -43,7 +43,9 @@ export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
       multi() {
         // 多级路由一定有子路由
         if (hasChildren(item)) {
-          Object.assign(itemRoute, { meta: { ...itemRoute.meta, multi: true } });
+          Object.assign(itemRoute, {
+            meta: { ...itemRoute.meta, multi: true }
+          });
           delete itemRoute.component;
         } else {
           window.console.error('多级路由缺少子路由: ', item);

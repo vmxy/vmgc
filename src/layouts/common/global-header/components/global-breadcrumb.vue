@@ -49,7 +49,10 @@ const breadcrumbs = computed(() =>
     item => ({
       ...item,
       label: item.i18nTitle ? t(item.i18nTitle) : item.label,
-      options: item.options?.map(oItem => ({ ...oItem, label: oItem.i18nTitle ? t(oItem.i18nTitle) : oItem.label }))
+      options: item.options?.map(oItem => ({
+        ...oItem,
+        label: oItem.i18nTitle ? t(oItem.i18nTitle) : oItem.label
+      }))
     })
   )
 );

@@ -3,7 +3,10 @@ import type { FormItemRule } from 'naive-ui';
 import { REGEXP_CODE_SIX, REGEXP_EMAIL, REGEXP_PHONE, REGEXP_PWD } from '@/config';
 
 /** 创建自定义错误信息的必填表单规则 */
-export const createRequiredFormRule = (message = '不能为空'): FormItemRule => ({ required: true, message });
+export const createRequiredFormRule = (message = '不能为空'): FormItemRule => ({
+  required: true,
+  message
+});
 
 export const requiredFormRule = createRequiredFormRule();
 
@@ -27,7 +30,11 @@ export const formRules: CustomFormRules = {
   ],
   pwd: [
     createRequiredFormRule('请输入密码'),
-    { pattern: REGEXP_PWD, message: '密码为6-18位数字/字符/符号，至少2种组合', trigger: 'input' }
+    {
+      pattern: REGEXP_PWD,
+      message: '密码为6-18位数字/字符/符号，至少2种组合',
+      trigger: 'input'
+    }
   ],
   code: [
     createRequiredFormRule('请输入验证码'),

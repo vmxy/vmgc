@@ -25,11 +25,19 @@ const tabStore = useTabStore();
 const title = ref('');
 
 function handleToTabDetail() {
-  routerPush({ name: routeName('function_tab-detail'), query: { name: 'abc' }, hash: '#DEMO_HASH' });
+  routerPush({
+    name: routeName('function_tab-detail'),
+    query: { name: 'abc' },
+    hash: '#DEMO_HASH'
+  });
 }
 
 function handleToTabMultiDetail(num: number) {
-  routerPush({ name: routeName('function_tab-multi-detail'), query: { name: 'abc', num }, hash: '#DEMO_HASH' });
+  routerPush({
+    name: routeName('function_tab-multi-detail'),
+    query: { name: 'abc', num },
+    hash: '#DEMO_HASH'
+  });
 }
 
 function handleSetTitle() {
