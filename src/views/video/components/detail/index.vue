@@ -9,12 +9,13 @@
 
 <script setup lang="ts">
 import { getCurrentInstance, computed } from "vue";
-import { ref, defineProps, onMounted, Ref, watch } from "vue";
+import { ref, onMounted, Ref, watch } from "vue";
 import * as service from "@/service";
 import VInfo from "./info.vue";
 import VLine from "./line.vue";
 import { useTitle } from "@vueuse/core";
 import { VHot, VRec } from "../";
+import { useAppStore } from "@/store";
 
 const { proxy } = getCurrentInstance();
 
@@ -23,7 +24,7 @@ const props = defineProps({
     type: String,
   },
 });
-
+const app = useAppStore();
 const id = computed(() => {
   let id = props.id || proxy.$route.params.id;
   return id instanceof Array ? id[0] : id;
@@ -38,7 +39,7 @@ async function fetchDetail(id: string) {
   if (!data) return data;
   Object.assign(detail.value, data);
   proxy.$route.meta.title = data.title;
-  useTitle(data.title);
+  app.setTitle(data.title);
 
   return data;
 }

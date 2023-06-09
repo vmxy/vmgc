@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { getCurrentInstance, computed } from "vue";
-import { ref, defineProps, onMounted, Ref, watch } from "vue";
+import { ref, onMounted, Ref, watch } from "vue";
 import * as service from "@/service";
 import { VHot, VRec, VInfo, VLine } from "../components";
 import { useTitle } from "@vueuse/core";
@@ -33,7 +33,7 @@ async function fetchDetail(id: string) {
   if (!data) return data;
   Object.assign(detail.value, data);
   proxy.$route.meta.title = data.title;
-  useTitle(data.title);
+  app.setTitle(data.title);
   return data;
 }
 /* watch(id, (val) => {

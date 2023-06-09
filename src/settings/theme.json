@@ -96,11 +96,11 @@
   },
   "sider": {
     "inverted": false,
-    "width": 220,
-    "collapsedWidth": 64,
+    "width": 180,
+    "collapsedWidth": 80,
     "mixWidth": 80,
     "mixCollapsedWidth": 48,
-    "mixChildMenuWidth": 200
+    "mixChildMenuWidth": 160
   },
   "menu": {
     "horizontalPosition": "flex-start",

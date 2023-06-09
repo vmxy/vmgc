@@ -102,4 +102,4 @@ const defaultThemeSetting: Theme.Setting = {
 };
 
 //export const themeSetting =  (jsonSetting as Theme.Setting) || defaultThemeSetting;
-export const themeSetting = cloneDeep({ ...defaultThemeSetting, ...jsonSetting });
+export const themeSetting = cloneDeep({ ...defaultThemeSetting, ...jsonSetting }) as Theme.Setting;

@@ -17,13 +17,14 @@
     :footer-visible="theme.footer.visible"
     :fixed-footer="theme.footer.fixed"
     :right-footer="theme.footer.right"
+    :tab-class="app.isMobile || !enableTabs ? 'tab-hide' : ''"
     @click-mobile-sider-mask="app.setSiderCollapse(true)"
   >
     <template #header>
       <global-header v-bind="headerProps" />
     </template>
     <template #tab>
-      <global-tab />
+      <global-tab v-if="!app.inSSR && enableTabs" :show="!app.isMobile && enableTabs" />
     </template>
     <template #sider>
       <global-sider />
@@ -44,11 +45,32 @@ import { useBasicLayout } from "@/composables";
 import { GlobalContent, GlobalFooter, GlobalHeader, GlobalSider, GlobalTab, SettingDrawer } from "../common";
 
 defineOptions({ name: "BasicLayout" });
-
+const ssr = import.meta.env.SSR;
 const app = useAppStore();
 const theme = useThemeStore();
+const enableTabs = import.meta.env.VITE_TABS == "Y";
 
 const { mode, isMobile, headerProps, siderVisible, siderWidth, siderCollapsedWidth } = useBasicLayout();
+
+if (!ssr) {
+  //移动端, 设置为horizontal模式
+  theme.setScrollMode("wrapper");
+  if (app.isMobile) {
+    theme.setLayoutMode("horizontal");
+  } else {
+    theme.setLayoutMode("vertical");
+  }
+  globalThis.addEventListener("resize", () => {
+    let width = globalThis.innerWidth;
+    if (width <= 640) {
+      //isMobile.value = true;
+      theme.setLayoutMode("horizontal");
+    } else {
+      //isMobile.value = false;
+      theme.setLayoutMode("vertical");
+    }
+  });
+}
 </script>
 
 <style lang="scss">
@@ -58,5 +80,11 @@ const { mode, isMobile, headerProps, siderVisible, siderWidth, siderCollapsedWid
 
 .dark #__SCROLL_EL_ID__ {
   @include scrollbar(8px, #555);
+}
+.tab-hide,
+.tab-hide + .soybeanjs-hg8qlw {
+  display: none;
+  flex-shrink: unset;
+  max-height: 5px !important;
 }
 </style>

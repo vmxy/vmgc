@@ -66,7 +66,7 @@ const locale: I18nType.Locale = {
   },
   message: {
     system: {
-      title: "ប្រព័ន្ធគ្រប់គ្រង",
+      title: "VMGC",
     },
     routes: {
       dashboard: {

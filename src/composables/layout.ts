@@ -16,7 +16,13 @@ export function useBasicLayout() {
     return theme.layout.mode.includes(vertical) ? vertical : horizontal;
   });
 
-  const isMobile = breakpoints.smaller("sm");
+  //const isMobile = breakpoints.smaller("sm");
+  const isMobile = computed(() => app.isMobile);
+
+  const isSmallScreen = computed(() => {
+    let width = theme.config.breakpoints.s;
+    return globalThis.innerWidth <= width;
+  });
 
   const layoutHeaderProps: LayoutHeaderProps = {
     vertical: {
@@ -80,5 +86,6 @@ export function useBasicLayout() {
     siderVisible,
     siderWidth,
     siderCollapsedWidth,
+    isSmallScreen,
   };
 }

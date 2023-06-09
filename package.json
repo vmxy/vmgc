@@ -38,7 +38,7 @@
     "dev:test": "cross-env VITE_SERVICE_ENV=test vite",
     "dev:prod": "cross-env VITE_SERVICE_ENV=prod vite",
     "build": "cross-env VITE_SERVICE_ENV=prod vite build",
-    "build:page": "cross-env PROD=false VITE_SERVICE_ENV=prod VITE_BASE_URL=/soybean-admin vite build",
+    "build:page": "cross-env PROD=false VITE_SERVICE_ENV=prod VITE_BASE_URL=/vmgc vite build",
     "build:ssr": "cross-env VITE_SERVICE_ENV=prod VITE_SSR=Y vite build",
     "build:dev": "cross-env VITE_SERVICE_ENV=dev vite build",
     "build:test": "cross-env VITE_SERVICE_ENV=test vite build",

@@ -1,7 +1,6 @@
 <template>
   <icon-local-logo-fill v-if="fill" />
-  <icon-local-logo v-else />
-</template>
+  <icon-local-logo v-else /> </template>
 
 <script lang="ts" setup>
 defineOptions({ name: "SystemLogo" });

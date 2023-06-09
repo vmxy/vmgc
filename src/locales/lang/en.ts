@@ -66,7 +66,7 @@ const locale: I18nType.Locale = {
   },
   message: {
     system: {
-      title: "SoybeanAdmin",
+      title: "VMGC",
     },
     routes: {
       dashboard: {

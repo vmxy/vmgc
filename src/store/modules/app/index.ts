@@ -1,8 +1,9 @@
-import { nextTick } from "vue";
+import { nextTick, computed } from "vue";
 import { defineStore } from "pinia";
 import { LAYOUT_SCROLL_EL_ID } from "@soybeanjs/vue-materials";
 import { langList } from "@/locales/lang";
 import { localStg } from "@/utils";
+import { useTitle } from "@vueuse/core";
 
 interface AppState {
   /** 滚动元素的id */
@@ -40,7 +41,7 @@ export const useAppStore = defineStore("app-store", {
       settingDrawerVisible: false,
       siderCollapse: false,
       mixSiderFixed: false,
-      lang: localStg.get("lang") || langList[navigator.language] ? navigator.language : "zh-CN",
+      lang: localStg.get("lang") || (langList[navigator.language] ? navigator.language : "zh-CN"),
       langs: langList,
       isLogin: Boolean(localStg.get("token")),
       inSSR: ssr,
@@ -48,6 +49,12 @@ export const useAppStore = defineStore("app-store", {
     };
   },
   actions: {
+    initWatch() {
+      if (ssr) return;
+      globalThis.addEventListener("resize", () => {
+        this.isMobile = globalThis.innerWidth <= 640;
+      });
+    },
     /**
      * 获取滚动配置
      */
@@ -119,6 +126,10 @@ export const useAppStore = defineStore("app-store", {
     setLang(lang: I18nType.langType) {
       this.lang = lang;
       localStg.set("lang", lang);
+    },
+    setTitle(title: string) {
+      let AppTitle = import.meta.env.VITE_APP_TITLE;
+      useTitle(AppTitle + " - " + title);
     },
   },
 });

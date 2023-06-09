@@ -2,7 +2,7 @@
   <div>
     <n-grid class="player" cols="20" responsive="screen" :item-responsive="true" x-gap="6 m:6" y-gap="6 m:12">
       <n-gi span="20 m:13">
-        <g-c-player :res="res"></g-c-player>
+        <g-player :res="res"></g-player>
         <div>
           <p class="text-28px">{{ res.title }}</p>
         </div>
@@ -25,7 +25,6 @@ import { onMounted, ref, computed, Ref, getCurrentInstance } from "vue";
 import * as service from "@/service";
 import { useTitle } from "@vueuse/core";
 import { VRec, VHot, VLine } from "../components";
-import { GCPlayer } from "@/components";
 import { useAppStore } from "@/store";
 import { sessionStg } from "@/utils";
 const app = useAppStore();
@@ -43,7 +42,7 @@ onMounted(async () => {
 
 async function fetchDetail(id: string): Promise<any> {
   globalThis.$loadingBar?.start();
-  let { code, data } = await service.fetchVideoRes(id);
+  let { data } = await service.fetchVideoRes(id);
   globalThis.$loadingBar?.finish();
   if (!data) {
     globalThis.$message?.warning("video is no data");
@@ -51,7 +50,7 @@ async function fetchDetail(id: string): Promise<any> {
   }
   Object.assign(res.value, data);
   proxy.$route.meta.title = data.title;
-  useTitle(data.title);
+  app.setTitle(data.title);
   urls.value = [data.url];
   return data;
 }
