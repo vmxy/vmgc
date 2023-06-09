@@ -78,9 +78,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, onMounted, Ref, watch } from "vue";
+import { ref, Ref, watch } from "vue";
 import dayjs from "dayjs";
-import { formatImageUrl } from "@/utils";
 
 const props = defineProps({
   detail: {

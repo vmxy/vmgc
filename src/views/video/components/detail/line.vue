@@ -7,7 +7,6 @@
         </n-space>
       </div>
     </div>
-
     <n-tabs
       v-if="!ssr"
       :value="selectLineId"
@@ -31,6 +30,13 @@
               <n-icon><icon-mdi-sort-numeric-ascending /></n-icon>
             </template>
           </n-button>
+          <n-button tertiary circle type="primary" size="small" text @click="showQRCode">
+            <template #icon>
+              <n-icon><icon-mdi-qrcode-scan /></n-icon>
+            </template>
+          </n-button>
+          <qrcode ref="refQRCode"></qrcode>
+
           <!--n-select
             v-if="app.isMobile"
             :loading="loading"
@@ -94,6 +100,8 @@ const selectLineId = ref("");
 const loading = ref(true);
 const selectResId = ref(proxy.$route.params.id);
 const lineRef = ref<any>();
+const refQRCode = ref<any>();
+
 /* const showSameLine = computed(() => {
   if(!lineRef.value) return true;
   let el = lineRef.value.$el as HTMLElement;
@@ -132,7 +140,10 @@ function onSort(bool: boolean = true) {
     });
   });
 }
-
+async function showQRCode() {
+  let text = globalThis.location?.href || "";
+  refQRCode.value.show(text);
+}
 function openView(id: string) {
   location.href = `/video/player/${id}`;
 }

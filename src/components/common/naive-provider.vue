@@ -23,6 +23,7 @@ function registerNaiveTools() {
   window.$dialog = useDialog();
   window.$message = useMessage();
   window.$notification = useNotification();
+  
 }
 
 const NaiveProviderContent = defineComponent({

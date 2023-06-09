@@ -7,6 +7,11 @@ import { setupAssets } from "./plugins";
 import { setupStore } from "./store";
 import { setupI18n } from "./locales";
 
+globalThis.wait = async (ttl: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), ttl);
+  });
+};
 async function setupApp() {
   // import assets: js、css
   setupAssets();
