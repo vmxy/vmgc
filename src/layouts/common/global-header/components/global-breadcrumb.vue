@@ -45,7 +45,7 @@ const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
 
 const breadcrumbs = computed(() =>
-  getBreadcrumbByRouteKey(route.name as string, routeStore.menus as App.GlobalMenuOption[], routePath("root")).map(
+  getBreadcrumbByRouteKey(route.name as string, routeStore.menus as any[], routePath("root")).map(
     (item) => ({
       ...item,
       label: item.i18nTitle ? t(item.i18nTitle) : item.label,
