@@ -68,10 +68,11 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
       ssr({
         prerender: {
           parallel: Math.max(os.cpus.length - 1, 1),
-          partial: true,
-          disableAutoRun: false,
+          //partial: true,
+          //disableAutoRun: false,
         },
-        includeAssetsImportedByServer: false,
+        includeAssetsImportedByServer: true,
+        //disableAutoFullBuild: false
       }),
     );
   }

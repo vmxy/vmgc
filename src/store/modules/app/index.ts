@@ -29,6 +29,8 @@ interface AppState {
   inSSR: boolean;
   /** 是否是手机 */
   isMobile: boolean;
+
+  screenWidth: number;
 }
 const ssr = import.meta.env.SSR;
 export const useAppStore = defineStore("app-store", {
@@ -46,6 +48,7 @@ export const useAppStore = defineStore("app-store", {
       isLogin: Boolean(localStg.get("token")),
       inSSR: ssr,
       isMobile: ssr ? false : globalThis.innerWidth <= 640,
+      screenWidth: ssr ? 1024 : globalThis.innerWidth,
     };
   },
   actions: {
@@ -53,6 +56,7 @@ export const useAppStore = defineStore("app-store", {
       if (ssr) return;
       globalThis.addEventListener("resize", () => {
         this.isMobile = globalThis.innerWidth <= 640;
+        this.screenWidth = globalThis.innerWidth;
       });
     },
     /**

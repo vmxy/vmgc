@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "module": "ESNext", //ESNext
     "target": "ESNext",
-    "lib": ["DOM", "ESNext"],
+    "lib": ["DOM", "ESNext", "ES2015", "ES2016"],
     "strict": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -12,7 +12,7 @@
     "isolatedModules": true,
     "resolveJsonModule": true,
     "noUnusedLocals": false,
-    "noUnusedParameters": false ,
+    "noUnusedParameters": false,
     "strictNullChecks": false,
     "forceConsistentCasingInFileNames": true,
 
@@ -59,8 +59,8 @@
       "vite/client",
       "node",
       "unplugin-icons/types/vue",
-      "naive-ui/volar",
-      "unplugin-vue-define-options/macros-global"
+      "naive-ui/volar"
+      //"unplugin-vue-define-options/macros-global"
     ]
   },
   //"include": ["src/**/*", "worker/**/*"],

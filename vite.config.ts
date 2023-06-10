@@ -1,53 +1,53 @@
-import { defineConfig, loadEnv } from 'vite';
-import { createViteProxy, getRootPath, getSrcPath, setupVitePlugins, viteDefine } from './build';
-import { getServiceEnvConfig } from './.env-config';
+import { defineConfig, loadEnv } from "vite";
+import { createViteProxy, getRootPath, getSrcPath, setupVitePlugins, viteDefine } from "./build";
+import { getServiceEnvConfig } from "./.env-config";
 
-export default defineConfig(configEnv => {
+export default defineConfig((configEnv) => {
   const viteEnv = loadEnv(configEnv.mode, process.cwd()) as unknown as ImportMetaEnv;
 
   const rootPath = getRootPath();
   const srcPath = getSrcPath();
-
-  const isOpenProxy = viteEnv.VITE_HTTP_PROXY === 'Y';
+  console.info("app", rootPath, srcPath);
+  const isOpenProxy = viteEnv.VITE_HTTP_PROXY === "Y";
   const envConfig = getServiceEnvConfig(viteEnv);
 
   return {
     base: viteEnv.VITE_BASE_URL,
     resolve: {
       alias: {
-        '~': rootPath,
-        '@': srcPath,
-        'vue-i18n': 'vue-i18n/dist/vue-i18n.cjs.js',
-        "naive-ui": "naive-ui/dist"
-      }
+        "~": rootPath,
+        "@": srcPath,
+        "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js",
+        "naive-ui": "naive-ui/dist",
+      },
     },
     define: viteDefine,
     plugins: setupVitePlugins(viteEnv),
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@use "./src/styles/scss/global.scss" as *;`
-        }
-      }
+          additionalData: `@use "./src/styles/scss/global.scss" as *;`,
+        },
+      },
     },
     server: {
-      host: '0.0.0.0',
+      host: "0.0.0.0",
       port: 3000,
       open: false,
-      proxy: createViteProxy(isOpenProxy, envConfig)
+      proxy: createViteProxy(isOpenProxy, envConfig),
     },
     optimizeDeps: {
       include: [
-        '@antv/data-set',
-        '@antv/g2',
-        '@better-scroll/core',
-        'echarts',
-        'swiper',
-        'swiper/vue',
-        'vditor',
-        'wangeditor',
-        'xgplayer'
-      ]
+        "@antv/data-set",
+        "@antv/g2",
+        "@better-scroll/core",
+        "echarts",
+        "swiper",
+        "swiper/vue",
+        "vditor",
+        "wangeditor",
+        "xgplayer",
+      ],
     },
     ssr: {
       //external: ["naive-ui"],
@@ -57,6 +57,7 @@ export default defineConfig(configEnv => {
       //buildSsrCjsExternalHeuristics: true
     },
     build: {
+      emptyOutDir: true,
       //target: "modules",
       outDir: "dist",
       //publicDir: "public",
@@ -74,7 +75,7 @@ export default defineConfig(configEnv => {
             if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(extType)) {
               extType = "img";
             }
-            if (assetInfo.name.includes("id")) console.info("==========", assetInfo);
+            //if (assetInfo.name.includes("id")) console.info("==========", assetInfo);
             return `assets/${extType}/[name]-[hash][extname]`;
           },
         },
@@ -95,6 +96,6 @@ export default defineConfig(configEnv => {
           return deps.filter((dep) => ["vue", "vue-router", "pinia", "naive-ui"].includes(dep));
         }, 
       },*/
-    }
+    },
   };
 });

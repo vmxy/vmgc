@@ -19,18 +19,25 @@
     >
       <template #prefix>
         <n-space>
-          <span class="text-24px"> {{ $t("video.detail.line") }} </span>
-          <n-button tertiary circle type="error" size="small" text @click="onSort(true)">
+          <span v-if="isSingleLine" class="text-24px"> {{ $t("video.detail.line") }} </span>
+          <n-button v-if="isSingleLine" tertiary type="error" size="small" text @click="onSort(true)">
             <template #icon>
               <n-icon><icon-mdi-sort-numeric-descending /></n-icon>
             </template>
           </n-button>
-          <n-button tertiary circle type="warning" size="small" text @click="onSort(false)">
+          <n-button v-if="isSingleLine" tertiary type="warning" size="small" text @click="onSort(false)">
             <template #icon>
               <n-icon><icon-mdi-sort-numeric-ascending /></n-icon>
             </template>
           </n-button>
-          <n-button tertiary circle type="primary" size="small" text @click="showQRCode">
+          <n-button
+            v-if="!app.isMobile"
+            tertiary
+            type="primary"
+            :size="isSingleLine ? 'small' : 'large'"
+            text
+            @click="showQRCode"
+          >
             <template #icon>
               <n-icon><icon-mdi-qrcode-scan /></n-icon>
             </template>
@@ -58,17 +65,15 @@
         /-->
         <n-scrollbar class="max-h-220px">
           <div>
-            <n-space size="small" style="text-align: center">
-              <router-link v-for="item in line.items" :to="`/video/xplay/${item.id}`">
-                <n-button
-                  :type="isPlay(item.id) ? 'error' : 'default'"
-                  :disabled="selectResId == item.id"
-                  :data-href="`/video/xplay/${item.id}`"
-                >
-                  {{ item.label }}
-                </n-button>
-              </router-link>
-            </n-space>
+            <a
+              v-for="item in line.items"
+              :class="['box-a', isPlay(item.id) ? 'box-a-red' : '']"
+              :disabled="selectResId == item.id"
+              :href="`/video/xplay/${item.id}`"
+              @click.native="openPlay(`/video/xplay/${item.id}`)"
+            >
+              {{ item.label }}
+            </a>
           </div>
         </n-scrollbar>
       </n-tab-pane>
@@ -80,9 +85,11 @@
 import { ref, watch, getCurrentInstance, computed, Ref, onMounted } from "vue";
 import { useThemeStore, useAppStore } from "@/store";
 import { sessionStg } from "@/utils";
+import { useRouter } from "vue-router";
 const ssr = import.meta.env.SSR;
 const theme = useThemeStore();
 const app = useAppStore();
+const router = useRouter();
 const props = defineProps({
   detail: {
     type: Object,
@@ -95,13 +102,13 @@ const props = defineProps({
 });
 const { proxy } = getCurrentInstance();
 const detail: Ref<NVideo.VideoDetail> = ref(<any>props.detail); // || proxy.$root.$attrs.detail
-const items = ref([] as Code[]);
+//const items = ref([] as Code[]);
 const selectLineId = ref("");
 const loading = ref(true);
 const selectResId = ref(proxy.$route.params.id);
 const lineRef = ref<any>();
 const refQRCode = ref<any>();
-
+const isSingleLine = computed(() => app.screenWidth < 1024);
 /* const showSameLine = computed(() => {
   if(!lineRef.value) return true;
   let el = lineRef.value.$el as HTMLElement;
@@ -121,15 +128,14 @@ function getInitLineId() {
 function onUpdateTab(lineId: string) {
   loading.value = false;
   selectLineId.value = lineId;
-  let lines = detail.value.lines;
+  /*   let lines = detail.value.lines;
   let selectList = lines.find((v) => v.id == lineId) || lines[0];
   let list = (selectList?.items || []).map((v) => ({
     label: v.label,
     value: v.id,
     disabled: selectResId.value == v.id,
   }));
-  items.value.splice(0, items.value.length);
-  items.value.push(...list);
+  items.value = list;  */
 }
 function onSort(bool: boolean = true) {
   detail.value.lines.forEach((line) => {
@@ -144,8 +150,13 @@ async function showQRCode() {
   let text = globalThis.location?.href || "";
   refQRCode.value.show(text);
 }
-function openView(id: string) {
-  location.href = `/video/player/${id}`;
+function openPlay(url: string) {
+  let e = globalThis.event as Event;
+  console.info("e", e);
+  //location.href = `/video/player/${id}`;
+  e.preventDefault();
+  e.stopPropagation();
+  router.push(url);
 }
 onMounted(() => {
   let lineId = getInitLineId();
@@ -163,6 +174,28 @@ watch(
 </script>
 
 <style scoped lang="scss">
+.box-a {
+  display: inline-block;
+  padding: 3px 7px;
+  box-sizing: border-box;
+  //border-image: linear-gradient(to bottom, transparent 50%, #5a5959 50%) 0 0 100%/1px 0;
+  margin: 3px 3px;
+  position: relative;
+}
+.box-a::before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  border: 1px solid #5a5959;
+  transform-origin: 0 0;
+  transform: scale(0.5);
+}
+.box-a-red {
+  background-color: #bf1067;
+}
 .line {
   :deep(.inline-block) {
     margin-top: 14px;
