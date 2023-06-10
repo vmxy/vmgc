@@ -21,6 +21,8 @@ declare namespace Common {
 declare const PROJECT_BUILD_TIME: string;
 
 declare var wait: (ttl: number) => Promise<void>;
+/** 是否在服务端渲染 */
+declare var ssr: boolean;
 declare var $loadingBar: import("naive-ui").LoadingBarProviderInst;
 declare var $message: import("naive-ui").MessageProviderInst;
 declare var $dialog: import("naive-ui").DialogProviderInst;

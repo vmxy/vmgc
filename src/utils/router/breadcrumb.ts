@@ -68,7 +68,7 @@ function transformBreadcrumbMenuToBreadcrumb(menu: App.GlobalMenuOption, rootPat
   if (hasChildren) {
     breadcrumb.options = menu.children?.map((item) =>
       transformBreadcrumbMenuToBreadcrumb(item as App.GlobalMenuOption, rootPath),
-    ) as NonNullable<App.GlobalBreadcrumb["options"]>;
+    ) as any as NonNullable<App.GlobalBreadcrumb["options"]>;
   }
   return breadcrumb;
 }

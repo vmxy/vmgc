@@ -21,7 +21,7 @@ import { useRoute } from "vue-router";
 import type { MenuOption } from "naive-ui";
 import { useAppStore, useRouteStore, useThemeStore } from "@/store";
 import { useRouterPush } from "@/composables";
-import { getActiveKeyPathsOfMenus, translateMenuLabel } from "@/utils";
+import { getActiveKeyPathsOfMenus, translateMenuLabel } from "@/utils/router/menu";
 
 defineOptions({ name: "VerticalMenu" });
 

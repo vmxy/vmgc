@@ -1,6 +1,6 @@
 import { useIconRender } from "@/composables";
 import { t } from "@/locales";
-import { localStg } from "@/utils";
+import { localStg } from "@/utils/storage";
 
 /**
  * 将权限路由转换成菜单

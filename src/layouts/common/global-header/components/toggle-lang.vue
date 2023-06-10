@@ -19,7 +19,7 @@ const handleSelect = (key: string) => {
   app.setLang(lang);
 };
 onMounted(() => {
- // app.setLang(locale.value as any);
+  // app.setLang(locale.value as any);
 });
 </script>
 <style scoped></style>

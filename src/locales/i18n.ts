@@ -1,6 +1,6 @@
 import type { App } from "vue";
 import { createI18n } from "vue-i18n";
-import { localStg } from "@/utils";
+import { localStg } from "@/utils/storage";
 import messages from "./lang";
 import type { LocaleKey } from "./lang";
 

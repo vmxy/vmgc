@@ -22,11 +22,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted, watch } from "vue";
-import QRCode from "qrcode-with-logos";
 const canvasRef = ref<HTMLCanvasElement>();
 
 const showModal = ref(false);
 const show = async (content: string) => {
+  if (ssr) return;
   showModal.value = true;
   await wait(100);
   buileQRCode({ content: content, logo: "/logo.png" });
@@ -36,6 +36,7 @@ defineExpose({
   show,
 });
 async function buileQRCode(opts: { content: string; logo?: string }) {
+  const QRCode = (await import("qrcode-with-logos")) as any;
   await new QRCode({
     canvas: canvasRef.value,
     content: opts.content,

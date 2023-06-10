@@ -26,7 +26,7 @@ import { useRoute } from "vue-router";
 import { useAppStore, useRouteStore, useThemeStore } from "@/store";
 import { useRouterPush } from "@/composables";
 import { useBoolean } from "@/hooks";
-import { translateMenuLabel } from "@/utils";
+import { translateMenuLabel } from "@/utils/router/menu";
 import { GlobalLogo } from "@/layouts/common";
 import { t } from "@/locales";
 import { MixMenuCollapse, MixMenuDetail, MixMenuDrawer } from "./components";

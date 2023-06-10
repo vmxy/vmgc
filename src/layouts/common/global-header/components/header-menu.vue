@@ -20,7 +20,7 @@ import { useRoute } from "vue-router";
 import type { MenuOption } from "naive-ui";
 import { useRouteStore, useThemeStore, useAppStore } from "@/store";
 import { useRouterPush } from "@/composables";
-import { translateMenuLabel } from "@/utils";
+import { translateMenuLabel } from "@/utils/router/menu";
 
 defineOptions({ name: "HeaderMenu" });
 
@@ -48,7 +48,7 @@ function handleUpdateMenu(_key: string, item: MenuOption) {
 :deep(.n-menu-item-content-header) {
   overflow: inherit !important;
 }
-:deep(.n-menu.n-menu--horizontal .n-menu-item-content){
+:deep(.n-menu.n-menu--horizontal .n-menu-item-content) {
   padding: 0 10px;
 }
 </style>

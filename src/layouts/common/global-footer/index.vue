@@ -6,12 +6,12 @@
 
 <script setup lang="ts">
 import { useThemeStore } from "@/store";
-import { computed } from 'vue';
+import { computed } from "vue";
 
 defineOptions({ name: "GlobalFooter" });
 
 const theme = useThemeStore();
-const year = computed(()=>new Date().getFullYear());
+const year = computed(() => new Date().getFullYear());
 </script>
 
 <style scoped></style>

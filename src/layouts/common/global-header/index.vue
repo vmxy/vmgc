@@ -19,7 +19,7 @@
       <global-search />
     </div>
 
-    <div  v-if="showQuickMenu" class="flex justify-end h-full mr-20px">
+    <div v-if="showQuickMenu" class="flex justify-end h-full mr-20px">
       <global-refresh />
       <!--github-site /-->
       <full-screen />
@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-import {computed} from "vue";
+import { computed } from "vue";
 import { useThemeStore, useAppStore } from "@/store";
 import { useBasicLayout } from "@/composables";
 import GlobalLogo from "../global-logo/index.vue";

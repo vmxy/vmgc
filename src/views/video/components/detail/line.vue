@@ -20,12 +20,12 @@
       <template #prefix>
         <n-space>
           <span v-if="isSingleLine" class="text-24px"> {{ $t("video.detail.line") }} </span>
-          <n-button v-if="isSingleLine"  type="error" size="small" text @click="onSort(true)">
+          <n-button v-if="isSingleLine" type="error" size="small" text @click="onSort(true)">
             <template #icon>
               <n-icon><icon-mdi-sort-numeric-descending /></n-icon>
             </template>
           </n-button>
-          <n-button v-if="isSingleLine"  type="warning" size="small" text @click="onSort(false)">
+          <n-button v-if="isSingleLine" type="warning" size="small" text @click="onSort(false)">
             <template #icon>
               <n-icon><icon-mdi-sort-numeric-ascending /></n-icon>
             </template>
@@ -67,7 +67,7 @@
             <a
               v-for="item in line.items"
               v-if="line.id == selectLineId"
-              :class="['box-a', isPlay(item.id) ? 'box-a-red' : '', selectResId == item.id ? 'box-a-disabled': '']"
+              :class="['box-a', isPlay(item.id) ? 'box-a-red' : '', selectResId == item.id ? 'box-a-disabled' : '']"
               :disabled="selectResId == item.id"
               :href="`/video/xplay/${item.id}`"
               @click.native="openPlay(`/video/xplay/${item.id}`)"
@@ -197,7 +197,7 @@ watch(
   background-color: #bf1067;
 }
 .box-a-disabled {
-  cursor:not-allowed;
+  cursor: not-allowed;
   user-select: none;
   pointer-events: none;
   background-color: #5a5959 !important;

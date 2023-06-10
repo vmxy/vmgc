@@ -19,7 +19,7 @@ export default defineConfig((configEnv) => {
         "@": srcPath,
         "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js",
         "naive-ui": "naive-ui/dist",
-      },
+      }
     },
     define: viteDefine,
     plugins: setupVitePlugins(viteEnv),

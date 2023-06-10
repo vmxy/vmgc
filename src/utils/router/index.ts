@@ -1,9 +1,8 @@
-console.info("=============load utils.router")
-export * from "./module";
-export * from "./helpers";
-export * from "./cache";
 export * from "./auth";
-export * from "./menu";
 export * from "./breadcrumb";
+export * from "./cache";
+export * from "./helpers";
+//export * from "./menu";
+export * from "./module";
 export * from "./regexp";
 export * from "./transform";

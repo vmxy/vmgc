@@ -40,7 +40,7 @@ import { useRoute } from "vue-router";
 import type { MenuOption } from "naive-ui";
 import { useAppStore, useThemeStore } from "@/store";
 import { useAppInfo, useRouterPush } from "@/composables";
-import { getActiveKeyPathsOfMenus } from "@/utils";
+import { getActiveKeyPathsOfMenus } from "@/utils/router/menu";
 
 defineOptions({ name: "MixMenuDrawer" });
 

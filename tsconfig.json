@@ -59,10 +59,10 @@
       "vite/client",
       "node",
       "unplugin-icons/types/vue",
-      "naive-ui/volar"
+      "naive-ui/volar",
       //"unplugin-vue-define-options/macros-global"
     ]
   },
   //"include": ["src/**/*", "worker/**/*"],
-  "exclude": ["node_modules", "dist", "public", "pages", "server.js"]
+  "exclude": ["node_modules", "dist", "public", "server.js", "pages"]
 }

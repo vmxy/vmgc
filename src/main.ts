@@ -1,11 +1,13 @@
 import * as vue from "vue";
-import App from "./App.vue";
 //import AppLoading from "./components/common/app-loading.vue";
 import { setupDirectives } from "./directives";
 import { setupRouter } from "./router";
 import { setupAssets } from "./plugins";
 import { setupStore } from "./store";
 import { setupI18n } from "./locales";
+const ssr = import.meta.env.SSR;
+globalThis.ssr = ssr;
+console.info("=====================ssr", ssr);
 
 globalThis.wait = async (ttl: number) => {
   return new Promise((resolve) => {
@@ -13,6 +15,7 @@ globalThis.wait = async (ttl: number) => {
   });
 };
 export function createApp(opts: { Page: any; context?: any }) {
+  console.info("============createApp", "ssr=" + ssr);
   const { Page, context } = opts;
   // import assets: js、css
   setupAssets();
@@ -21,7 +24,8 @@ export function createApp(opts: { Page: any; context?: any }) {
   //const appLoading = vue.createApp(AppLoading);
   //appLoading.mount("#appLoading");
 
-  const app = vue.createApp(App);
+  //const app = vue.createApp(App);
+  const app = ssr ? vue.createSSRApp(Page) : vue.createApp(Page);
 
   // store plugin: pinia
   setupStore(app);
@@ -31,7 +35,7 @@ export function createApp(opts: { Page: any; context?: any }) {
 
   // vue router
   const router = setupRouter(app);
-
+  if (!ssr) globalThis.router = router;
   setupI18n(app);
 
   //appLoading.unmount();

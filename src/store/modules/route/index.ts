@@ -8,12 +8,12 @@ import {
   getConstantRouteNames,
   transformAuthRouteToVueRoutes,
   transformAuthRouteToVueRoute,
-  transformAuthRouteToMenu,
   transformAuthRouteToSearchMenus,
   transformRouteNameToRoutePath,
   transformRoutePathToRouteName,
   sortRoutes,
 } from "@/utils";
+import { transformAuthRouteToMenu } from "@/utils/router/menu";
 import { useAuthStore } from "../auth";
 import { useTabStore } from "../tab";
 

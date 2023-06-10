@@ -175,6 +175,6 @@ export const useThemeStore = defineStore("theme-store", {
     /** 设置页面过渡动画类型 */
     setPageAnimateMode(mode: UnionKey.ThemeAnimateMode) {
       this.page.animateMode = mode;
-    }
+    },
   },
 });

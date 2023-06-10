@@ -1,8 +1,9 @@
 interface VideoModel extends NVideo.VideoDetail {}
 export const banners = [
   {
-    image: 'https://www.qfitv.com/upload/vod/20230413-1/c5ea21aefa10c4bd9d6fd8b75de08438.jpg',
-    url: 'https://www.qq.com'
+    img: 'https://www.qfitv.com/upload/vod/20230413-1/c5ea21aefa10c4bd9d6fd8b75de08438.jpg',
+    url: 'https://www.qq.com',
+    label: 'ttit'
   }
 ];
 export const videoModel: VideoModel[] = [];

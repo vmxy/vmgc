@@ -155,7 +155,7 @@ export function transformRouteNameToRoutePath(name: Exclude<AuthRoute.AllRouteKe
 
 /** 将路由路径转换成路由名字 */
 export function transformRoutePathToRouteName<K extends AuthRoute.RoutePath>(path: K) {
-  if (path === "/") return "root";
+  if ((path as any) === "/") return "root";
 
   const pathSplitMark = "/";
   const routeSplitMark = "_";
