@@ -42,12 +42,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, computed, Ref, onMounted } from "vue";
+import { ref, computed, Ref, onMounted } from "vue";
 import { useAppStore } from "@/store";
 import { VOption } from "../";
 import * as service from "@/service";
 import { useRoute, useRouter } from "vue-router";
-import { formatImageUrl } from "@/utils";
 
 const props = defineProps({
   id: {

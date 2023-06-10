@@ -31,7 +31,7 @@
     </template>
     <global-content />
     <template #footer>
-      <global-footer />
+      <global-footer/>
     </template>
   </admin-layout>
   <n-back-top :key="theme.scrollMode" :listen-to="`#${app.scrollElId}`" class="z-100" />

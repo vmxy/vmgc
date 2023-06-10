@@ -18,7 +18,7 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
 import type { MenuOption } from "naive-ui";
-import { useRouteStore, useThemeStore } from "@/store";
+import { useRouteStore, useThemeStore, useAppStore } from "@/store";
 import { useRouterPush } from "@/composables";
 import { translateMenuLabel } from "@/utils";
 
@@ -26,10 +26,16 @@ defineOptions({ name: "HeaderMenu" });
 
 const route = useRoute();
 const routeStore = useRouteStore();
+const app = useAppStore();
 const theme = useThemeStore();
 const { routerPush } = useRouterPush();
 
-const menus = computed(() => translateMenuLabel(routeStore.menus as any[]));
+const menus = computed(() =>
+  translateMenuLabel(routeStore.menus as any[]).map((v) => {
+    if (app.isMobile) delete v.icon;
+    return v;
+  }),
+);
 const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name) as string);
 
 function handleUpdateMenu(_key: string, item: MenuOption) {
@@ -41,5 +47,8 @@ function handleUpdateMenu(_key: string, item: MenuOption) {
 <style scoped>
 :deep(.n-menu-item-content-header) {
   overflow: inherit !important;
+}
+:deep(.n-menu.n-menu--horizontal .n-menu-item-content){
+  padding: 0 10px;
 }
 </style>

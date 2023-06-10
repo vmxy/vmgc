@@ -20,19 +20,18 @@
       <template #prefix>
         <n-space>
           <span v-if="isSingleLine" class="text-24px"> {{ $t("video.detail.line") }} </span>
-          <n-button v-if="isSingleLine" tertiary type="error" size="small" text @click="onSort(true)">
+          <n-button v-if="isSingleLine"  type="error" size="small" text @click="onSort(true)">
             <template #icon>
               <n-icon><icon-mdi-sort-numeric-descending /></n-icon>
             </template>
           </n-button>
-          <n-button v-if="isSingleLine" tertiary type="warning" size="small" text @click="onSort(false)">
+          <n-button v-if="isSingleLine"  type="warning" size="small" text @click="onSort(false)">
             <template #icon>
               <n-icon><icon-mdi-sort-numeric-ascending /></n-icon>
             </template>
           </n-button>
           <n-button
             v-if="!app.isMobile"
-            tertiary
             type="primary"
             :size="isSingleLine ? 'small' : 'large'"
             text

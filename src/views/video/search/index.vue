@@ -1,7 +1,7 @@
 <template>
-  <div class="mt-10px">
+  <div>
     <n-spin :show="loading" size="large">
-      <n-card class="mt-16px module-page">
+      <n-card class="module-page">
         <template #header> </template>
         <n-grid
           v-if="searchStore.list.length > 0"
@@ -12,7 +12,7 @@
         >
           <n-gi v-for="item in searchStore.list" :key="item.id" span="1" class="min-h-90px">
             <router-link :to="'/video/detail/' + item.id" class="v-item" @click="onOpenNotify">
-              <img :src="item.logo" :alt="item.desc" />
+              <g-image :src="item.logo" :alt="item.title" />
               <p class="label">{{ item.title }}</p>
               <p class="tag">{{ $t("video.updated") }} {{ item.quality }}</p>
             </router-link>

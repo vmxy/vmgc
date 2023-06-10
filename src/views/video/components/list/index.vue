@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, computed, Ref, onMounted, defineComponent, getCurrentInstance } from "vue";
+import { ref, computed, Ref, onMounted, defineComponent, getCurrentInstance } from "vue";
 import { useVideoStore, useTabStore, useAppStore } from "@/store";
 import * as service from "@/service";
 

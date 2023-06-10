@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 defineOptions({ name: "GImage" });
 const props = defineProps({
   src: {
@@ -26,8 +26,10 @@ function getSourceUrl(url: string) {
 function formatImageUrl(url: string) {
   if (!url) return "/logo.png";
   url = getSourceUrl(url);
-  let rand = Math.floor(Math.random() * 10);
-  if (rand < 6) return url;
+  return url;
+}
+function proxyImageUrl(url: string) {
+  url = getSourceUrl(url);
   let host = hosts[Math.floor(Math.random() * hosts.length)];
   return host + "/img/" + url.replace("://", "_--");
 }
@@ -35,7 +37,7 @@ let isLoadError = false;
 function onLoadError(ev) {
   if (isLoadError) return;
   isLoadError = true;
-  let url = getSourceUrl(props.src);
+  let url = proxyImageUrl(props.src);
   refImg.value.src = url;
 }
 onMounted(() => {
