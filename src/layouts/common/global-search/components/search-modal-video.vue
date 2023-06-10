@@ -72,7 +72,13 @@ watch(show, async (val) => {
     inputRef.value?.focus();
   }
 });
-
+watch(
+  () => route.fullPath,
+  () => {
+    let q = route.query.q?.toString() || "";
+    if (q) query.value.q = q;
+  },
+);
 /** 查询 */
 async function search() {
   let q = query.value.q;

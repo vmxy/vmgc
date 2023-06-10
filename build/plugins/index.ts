@@ -62,20 +62,6 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
     plugins.push(pwa());
   }
 
-  if (viteEnv.VITE_SSR == "Y") {
-    console.info("====== enable ssr =======");
-    plugins.push(
-      ssr({
-        prerender: {
-          parallel: Math.max(os.cpus.length - 1, 1),
-          //partial: true,
-          //disableAutoRun: false,
-        },
-        includeAssetsImportedByServer: true,
-        //disableAutoFullBuild: false
-      }),
-    );
-  }
   if (viteEnv.VITE_SSR != "Y") {
     plugins.push(
       viteStaticCopy({
@@ -100,6 +86,21 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
             rename: "404.md",
           },
         ],
+      }),
+    );
+  }
+
+  if (viteEnv.VITE_SSR == "Y") {
+    console.info("====== enable ssr =======");
+    plugins.push(
+      ssr({
+        prerender: {
+          parallel: Math.max(os.cpus.length - 1, 1),
+          //partial: true,
+          //disableAutoRun: false,
+        },
+        includeAssetsImportedByServer: true,
+        //disableAutoFullBuild: false
       }),
     );
   }

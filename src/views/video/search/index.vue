@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import "../components/style.scss";
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed } from "vue";
 import { useAppStore, useSearchStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
@@ -50,10 +50,10 @@ const router = useRouter();
 const searchStore = useSearchStore();
 const loading = ref(false);
 
-const pageNo = computed(()=>{
+const pageNo = computed(() => {
   let pageNo = parseInt(route.query.pageNo?.toString()) || 1;
   return pageNo;
-})
+});
 
 function onOpenNotify() {
   searchStore.setHide();
@@ -73,8 +73,11 @@ function newUrl(pageNo: number) {
 onMounted(() => {
   let q = route.query.q?.toString();
   let pageNo = parseInt(route.query.pageNo?.toString()) || 1;
+  console.info("search q", q, searchStore.q, q == searchStore.q, searchStore.page.pageNo == pageNo);
   if (!q) return;
-  if (q == searchStore.q && searchStore.page.pageNo == pageNo) return;
+  if (q == searchStore.q && searchStore.page.pageNo == pageNo) {
+    if (searchStore.list.length > 0) return;
+  }
   search({ q: q, pageNo: pageNo });
 });
 
