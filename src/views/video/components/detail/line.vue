@@ -67,7 +67,8 @@
           <div>
             <a
               v-for="item in line.items"
-              :class="['box-a', isPlay(item.id) ? 'box-a-red' : '']"
+              v-if="line.id == selectLineId"
+              :class="['box-a', isPlay(item.id) ? 'box-a-red' : '', selectResId == item.id ? 'box-a-disabled': '']"
               :disabled="selectResId == item.id"
               :href="`/video/xplay/${item.id}`"
               @click.native="openPlay(`/video/xplay/${item.id}`)"
@@ -195,6 +196,12 @@ watch(
 }
 .box-a-red {
   background-color: #bf1067;
+}
+.box-a-disabled {
+  cursor:not-allowed;
+  user-select: none;
+  pointer-events: none;
+  background-color: #5a5959 !important;
 }
 .line {
   :deep(.inline-block) {
