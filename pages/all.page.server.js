@@ -25,7 +25,7 @@ async function render(pageContext) {
   const { Page, urlPathname: url } = pageContext;
   let info = nodeUrl.pathToFileURL(url);
   console.info("req", url);
-  let context = { menus: [] };
+  let context = { menus: Menus };
   //let apiPrefix = import.meta.env.DEV ? "/mock" : "/api";
   if (/^\/video\/(detail|xplay)\/[a-z0-9]+/i.test(url)) {
     let model = /\/detail\//.test(url) ? "detail" : "xplay";

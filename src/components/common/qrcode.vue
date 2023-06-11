@@ -36,7 +36,9 @@ defineExpose({
   show,
 });
 async function buileQRCode(opts: { content: string; logo?: string }) {
-  const QRCode = (await import("qrcode-with-logos")) as any;
+  let QRCode = (await import("qrcode-with-logos")) as any;
+  QRCode = QRCode.default || QRCode;
+  console.info("====QRCode", QRCode);
   await new QRCode({
     canvas: canvasRef.value,
     content: opts.content,

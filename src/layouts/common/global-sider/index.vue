@@ -1,18 +1,28 @@
 <template>
-  <vertical-mix-sider v-if="isVerticalMix" class="global-sider" />
-  <vertical-sider v-else class="global-sider" />
+  <div>
+    <ul v-if="app.inSSR" class="n-menu">
+      <li v-for="item in menus">
+        <a :href="item.routePath">{{ item.label }}</a>
+      </li>
+    </ul>
+    <template v-else>
+      <vertical-mix-sider v-if="isVerticalMix" class="global-sider" />
+      <vertical-sider v-else class="global-sider" />
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useThemeStore } from "@/store";
+import { computed, getCurrentInstance } from "vue";
+import { useThemeStore, useAppStore } from "@/store";
 import { VerticalMixSider, VerticalSider } from "./components";
 
 defineOptions({ name: "GlobalSider" });
 
 const theme = useThemeStore();
-
+const app = useAppStore();
 const isVerticalMix = computed(() => theme.layout.mode === "vertical-mix");
+const menus: App.GlobalMenuOption[] = (getCurrentInstance().root.attrs.menus as any[]) || [];
 </script>
 
 <style scoped>
