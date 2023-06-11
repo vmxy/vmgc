@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, getCurrentInstance } from "vue";
 import { useRoute } from "vue-router";
 import { useAppStore, useRouteStore, useThemeStore } from "@/store";
 import { useRouterPush } from "@/composables";
@@ -86,6 +86,7 @@ function resetFirstDegreeMenus() {
 }
 
 const activeChildMenus = computed(() => {
+  if (ssr) return getCurrentInstance().root.attrs.menus as any[];
   const menus: App.GlobalMenuOption[] = [];
   routeStore.menus.some((item) => {
     const flag = item.routeName === activeParentRouteName.value && Boolean(item.children?.length);

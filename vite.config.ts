@@ -19,7 +19,7 @@ export default defineConfig((configEnv) => {
         "@": srcPath,
         "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js",
         "naive-ui": "naive-ui/dist",
-      }
+      },
     },
     define: viteDefine,
     plugins: setupVitePlugins(viteEnv),
@@ -52,6 +52,7 @@ export default defineConfig((configEnv) => {
     ssr: {
       //external: ["naive-ui"],
       //format: "cjs"
+      //noExternal: [/vue/, /vue-.*/, "pinia", "naive-ui"],
     },
     legacy: {
       //buildSsrCjsExternalHeuristics: true

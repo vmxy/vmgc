@@ -7,7 +7,6 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { document } from "@/adapter";
 defineOptions({ name: "DarkModeSwitch" });
 
 interface Props {
@@ -33,23 +32,23 @@ const darkMode = computed({
     emit("update:dark", newValue);
   },
 });
-
+const doc = globalThis.document as any;
 function handleSwitch(event: MouseEvent) {
   if (ssr) return;
   const x = event.clientX;
   const y = event.clientY;
   const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
 
-  if (!document.startViewTransition) {
+  if (!doc?.startViewTransition) {
     darkMode.value = !darkMode.value;
     return;
   }
-  const transition = document.startViewTransition(() => {
+  const transition = doc?.startViewTransition(() => {
     darkMode.value = !darkMode.value;
   });
   transition.ready.then(() => {
     const clipPath = [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`];
-    document.documentElement.animate(
+    doc?.documentElement?.animate(
       {
         clipPath: darkMode.value ? clipPath : [...clipPath].reverse(),
       },

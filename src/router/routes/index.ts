@@ -1,6 +1,5 @@
-import * as utils from "@/utils/router";
+import { getLoginModuleRegExp } from "@/utils/router";
 
-console.info("===============getLoginModuleRegExp", utils.getLoginModuleRegExp);
 /** 根路由: / */
 export const ROOT_ROUTE: AuthRoute.Route = {
   name: "root",
@@ -26,7 +25,7 @@ export const constantRoutes: AuthRoute.Route[] = [
     },
     meta: {
       title: "登录",
-      dynamicPath: `/login/:module(${utils.getLoginModuleRegExp()})?`,
+      dynamicPath: `/login/:module(${getLoginModuleRegExp()})?`,
       singleLayout: "blank",
     },
   },

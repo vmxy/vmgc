@@ -1,5 +1,5 @@
 import { localStg } from "@/utils/storage";
-import { useIconRender } from "@/composables";
+import { useIconRender } from "@/composables/icon";
 import { t } from "@/locales";
 
 /**

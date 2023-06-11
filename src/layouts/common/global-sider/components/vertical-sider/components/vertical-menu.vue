@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref, watch, getCurrentInstance } from "vue";
 import { useRoute } from "vue-router";
 import type { MenuOption } from "naive-ui";
 import { useAppStore, useRouteStore, useThemeStore } from "@/store";
@@ -31,7 +31,9 @@ const theme = useThemeStore();
 const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
 
-const menus = computed(() => translateMenuLabel(routeStore.menus as any[]));
+const menus = computed(() =>
+  ssr ? (getCurrentInstance().root.attrs.menus as any[]) : translateMenuLabel(routeStore.menus as any[]),
+);
 
 const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name) as string);
 const expandedKeys = ref<string[]>([]);

@@ -4,32 +4,28 @@ import { createApp } from "@/main";
 import axios from "axios";
 export { render };
 import nodeUrl from "url";
+import { createCache } from "@/utils";
+import routes from "@/router/modules/video";
+import { transformAuthRouteToMenu } from "@/utils/router/menu";
 
+const CachePageData = createCache({ ttl: 5 * 60 * 1000 });
 const API_SERVER = process.env.API_SERVER || "";
+const Menus = transformAuthRouteToMenu(routes);
+
 Object.defineProperties(import.meta.env, {
   VITE_API_SERVER: {
     value: API_SERVER,
     writable: false,
   },
 });
-/* Object.defineProperties(globalThis, {
-  window: {
-    value: window,
-  },
-  navigator: {
-    value: window.navigator
-  },
-  document: {
-    value: window.document
-  }
-}); */
+
 console.info("env==>", import.meta.env.MODE, "API_SERVER=", API_SERVER);
 
 async function render(pageContext) {
   const { Page, urlPathname: url } = pageContext;
   let info = nodeUrl.pathToFileURL(url);
   console.info("req", url);
-  let context = {};
+  let context = { menus: [] };
   //let apiPrefix = import.meta.env.DEV ? "/mock" : "/api";
   if (/^\/video\/(detail|xplay)\/[a-z0-9]+/i.test(url)) {
     let model = /\/detail\//.test(url) ? "detail" : "xplay";
@@ -53,7 +49,7 @@ async function render(pageContext) {
     let data = await search(q, pageNo);
     context.searchData = data;
   } else if (/\/(home)/i.test(url)) {
-    const homeData = (await getHome()) || {};
+    const homeData = await getHome();
     context.homeData = Object.assign({}, homeData);
   }
   const { app, router } = createApp({
@@ -106,20 +102,28 @@ async function getRes(id) {
     .catch((err) => ({}));
 }
 async function getHot() {
-  return axios(`${API_SERVER}/api/v/hot`, { responseType: "json" }) //
-    .then((res) => {
-      let data = res.data.data || { list: [] };
-      return data.list;
-    })
-    .catch((err) => []);
+  let list =
+    CachePageData.get("hot") ||
+    (await axios(`${API_SERVER}/api/v/hot`, { responseType: "json" }) //
+      .then((res) => {
+        let data = res.data.data || { list: [] };
+        return data.list;
+      })
+      .catch((err) => []));
+  CachePageData.set("host", list);
+  return list;
 }
 async function getRec(vid) {
-  return axios(`${API_SERVER}/api/v/rec/${vid}`, { responseType: "json" }) //
-    .then((res) => {
-      let data = res.data.data || { list: [] };
-      return data.list;
-    })
-    .catch((err) => []);
+  let list =
+    CachePageData.get("rec-" + vid) ||
+    (await axios(`${API_SERVER}/api/v/rec/${vid}`, { responseType: "json" }) //
+      .then((res) => {
+        let data = res.data.data || { list: [] };
+        return data.list;
+      })
+      .catch((err) => []));
+  CachePageData.set("rec-" + vid, list);
+  return list;
 }
 async function search(q, pageNo) {
   return axios(`${API_SERVER}/api/v/search?q=${encodeURIComponent(q)}&pageNo=${pageNo || 1}`, { responseType: "json" }) //
@@ -131,10 +135,14 @@ async function search(q, pageNo) {
 }
 
 async function getHome() {
-  return axios(`${API_SERVER}/api/v/xhome`, { responseType: "json" }) //
-    .then((res) => {
-      let data = res.data.data || {};
-      return data;
-    })
-    .catch((err) => ({}));
+  let data =
+    CachePageData.get("home") ||
+    (await axios(`${API_SERVER}/api/v/xhome`, { responseType: "json" }) //
+      .then((res) => {
+        let data = res.data.data || {};
+        return data;
+      })
+      .catch((err) => ({})));
+  CachePageData.set("home", data);
+  return data;
 }

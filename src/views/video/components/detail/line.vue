@@ -63,18 +63,16 @@
           @update:value="openView"
         /-->
         <n-scrollbar class="max-h-220px">
-          <div>
-            <a
-              v-for="item in line.items"
-              v-if="line.id == selectLineId"
-              :class="['box-a', isPlay(item.id) ? 'box-a-red' : '', selectResId == item.id ? 'box-a-disabled' : '']"
-              :disabled="selectResId == item.id"
-              :href="`/video/xplay/${item.id}`"
-              @click.native="openPlay(`/video/xplay/${item.id}`)"
-            >
-              {{ item.label }}
-            </a>
-          </div>
+          <a
+            v-for="item in line.items"
+            v-if="line.id == selectLineId"
+            :class="['box-a', isPlay(item.id) ? 'box-a-red' : '', selectResId == item.id ? 'box-a-disabled' : '']"
+            :disabled="selectResId == item.id"
+            :href="`/video/xplay/${item.id}`"
+            @click.native="openPlay(`/video/xplay/${item.id}`)"
+          >
+            {{ item.label }}
+          </a>
         </n-scrollbar>
       </n-tab-pane>
     </n-tabs>
