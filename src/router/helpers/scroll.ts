@@ -3,11 +3,12 @@ import { useAppStore, useTabStore } from "@/store";
 
 export const scrollBehavior: RouterScrollBehavior = (to, from) => {
   return new Promise((resolve) => {
+    if (ssr) return resolve({});
     const app = useAppStore();
     const tab = useTabStore();
 
     if (to.hash) {
-      const el = document.querySelector(to.hash);
+      const el = globalThis.document?.querySelector(to.hash);
       if (el) {
         resolve({
           el,

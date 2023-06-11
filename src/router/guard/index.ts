@@ -22,7 +22,7 @@ export function createRouterGuard(router: Router) {
     // 结束 loadingBar
     ssr || globalThis.$loadingBar?.finish();
     if (!ssr) {
-      globalThis.document.querySelector("#appLoading")?.remove();
+      globalThis.document?.querySelector("#appLoading")?.remove();
     }
   });
 }

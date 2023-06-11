@@ -61,9 +61,9 @@ const props = withDefaults(defineProps<Props>(), {
   descClass: "text-16px text-#666",
   showNetworkReload: false,
 });
-
+const nav = globalThis.navigator;
 // 网络状态
-const { bool: network, setBool: setNetwork } = useBoolean(window.navigator.onLine);
+const { bool: network, setBool: setNetwork } = useBoolean(!!nav?.onLine);
 const { bool: reloadFlag, setBool: setReload } = useBoolean(true);
 
 // 数据是否为空
@@ -88,7 +88,7 @@ const stopHandle = watch(
   (newValue) => {
     // 结束加载判断一下网络状态
     if (!newValue) {
-      setNetwork(window.navigator.onLine);
+      setNetwork(!!nav?.onLine);
     }
   },
 );

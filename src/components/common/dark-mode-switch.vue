@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-
+import { document } from "@/adapter";
 defineOptions({ name: "DarkModeSwitch" });
 
 interface Props {
@@ -35,15 +35,15 @@ const darkMode = computed({
 });
 
 function handleSwitch(event: MouseEvent) {
+  if (ssr) return;
   const x = event.clientX;
   const y = event.clientY;
   const endRadius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
-  // @ts-expect-error: Transition API
+
   if (!document.startViewTransition) {
     darkMode.value = !darkMode.value;
     return;
   }
-  // @ts-expect-error: Transition API
   const transition = document.startViewTransition(() => {
     darkMode.value = !darkMode.value;
   });

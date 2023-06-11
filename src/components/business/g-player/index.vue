@@ -82,7 +82,7 @@ async function init(urls: string[]) {
     keyShortcut: true,
     playsinline: true,
     enableContextmenu: true,
-    lang: /(cn|zh)/i.test(navigator.language) ? "zh" : "en",
+    lang: /(cn|zh)/i.test(globalThis.navigator?.language) ? "zh" : "en",
     crossOrigin: true,
     plugins: [globalThis.HlsJsPlugin],
   });

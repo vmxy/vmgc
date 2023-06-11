@@ -25,7 +25,7 @@ export function createApp(opts: { Page: any; context?: any }) {
   //appLoading.mount("#appLoading");
 
   //const app = vue.createApp(App);
-  const app = ssr ? vue.createSSRApp(Page) : vue.createApp(Page);
+  const app = ssr ? vue.createSSRApp(Page, context) : vue.createApp(Page, context);
 
   // store plugin: pinia
   setupStore(app);

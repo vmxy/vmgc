@@ -33,6 +33,7 @@ interface AppState {
   screenWidth: number;
 }
 const ssr = import.meta.env.SSR;
+const language = globalThis.navigator?.language || "zh-CN";
 export const useAppStore = defineStore("app-store", {
   state: (): AppState => {
     return {
@@ -43,7 +44,7 @@ export const useAppStore = defineStore("app-store", {
       settingDrawerVisible: false,
       siderCollapse: false,
       mixSiderFixed: false,
-      lang: localStg.get("lang") || (langList[navigator.language] ? navigator.language : "zh-CN"),
+      lang: localStg.get("lang") || (langList[language] ? language : "zh-CN"),
       langs: langList,
       isLogin: Boolean(localStg.get("token")),
       inSSR: ssr,
@@ -63,7 +64,8 @@ export const useAppStore = defineStore("app-store", {
      * 获取滚动配置
      */
     getScrollConfig() {
-      const scrollEl = document.querySelector(`#${this.scrollElId}`);
+      if (ssr) return {};
+      const scrollEl = globalThis.document?.querySelector(`#${this.scrollElId}`);
 
       const { scrollLeft = 0, scrollTop = 0 } = scrollEl || {};
 
@@ -88,7 +90,7 @@ export const useAppStore = defineStore("app-store", {
         this.reloadFlag = true;
       }
       setTimeout(() => {
-        document.documentElement.scrollTo({ left: 0, top: 0 });
+        globalThis.document?.documentElement.scrollTo({ left: 0, top: 0 });
       }, 100);
     },
     /** 打开设置抽屉 */

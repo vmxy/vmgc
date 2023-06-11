@@ -36,7 +36,7 @@ function addThemeColorCssVars() {
   const { r, g, b } = getRgbOfColor(themeColor);
 
   const cssVars = `--primary-color: ${r},${g},${b}`;
-  document.documentElement.style.cssText = cssVars;
+  if (globalThis.document) globalThis.document.documentElement.style.cssText = cssVars;
 }
 
 addThemeColorCssVars();

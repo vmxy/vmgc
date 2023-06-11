@@ -5,12 +5,14 @@ import { useElementSize } from "@vueuse/core";
 import { kebabCase } from "lodash-es";
 import { localStg, getColorPalettes, getRgbOfColor } from "@/utils";
 import { useThemeStore } from "../modules";
+import { document } from "@/adapter";
 
 /** 订阅theme store */
 export default function subscribeThemeStore() {
+  if (ssr) return;
   const theme = useThemeStore();
   const osTheme = useOsTheme();
-  const { width } = useElementSize(document.documentElement);
+  const { width } = useElementSize(globalThis.document?.documentElement);
   const { addDarkClass, removeDarkClass } = handleCssDarkMode();
   const scope = effectScope();
 

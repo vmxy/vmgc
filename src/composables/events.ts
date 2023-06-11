@@ -18,15 +18,17 @@ export function useGlobalEvents() {
     tab.cacheTabRoutes();
   });
 
-  scope.run(() => {
-    // 国际化切换时更新浏览器标签文本
-    watch(
-      () => locale.value,
-      () => {
-        document.title = route.meta.i18nTitle ? t(route.meta.i18nTitle) : route.meta.title;
-      },
-    );
-  });
+  if (!ssr) {
+    scope.run(() => {
+      // 国际化切换时更新浏览器标签文本
+      watch(
+        () => locale.value,
+        () => {
+          document.title = route.meta.i18nTitle ? t(route.meta.i18nTitle) : route.meta.title;
+        },
+      );
+    });
+  }
 
   onScopeDispose(() => {
     scope.stop();
