@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { ROOT_ROUTE, constantRoutes, router, routes as staticRoutes } from "@/router";
 import { fetchUserRoutes } from "@/service";
 import {
-  localStg,
   filterAuthRoutesByUserPermission,
   getCacheRoutes,
   getConstantRouteNames,
@@ -12,7 +11,8 @@ import {
   transformRouteNameToRoutePath,
   transformRoutePathToRouteName,
   sortRoutes,
-} from "@/utils";
+} from "@/utils/router";
+import { localStg } from "@/utils";
 import { transformAuthRouteToMenu } from "@/utils/router/menu";
 import { useAuthStore } from "../auth";
 import { useTabStore } from "../tab";

@@ -34,7 +34,7 @@ import { useRoute } from "vue-router";
 import { routePath } from "@/router";
 import { useRouteStore, useThemeStore } from "@/store";
 import { useRouterPush } from "@/composables";
-import { getBreadcrumbByRouteKey } from "@/utils";
+import { getBreadcrumbByRouteKey } from "@/utils/router";
 import { t } from "@/locales";
 
 defineOptions({ name: "GlobalBreadcrumb" });

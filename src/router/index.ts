@@ -1,6 +1,6 @@
 import type { App } from "vue";
 import { createRouter, createWebHashHistory, createWebHistory, createMemoryHistory } from "vue-router";
-import { transformRouteNameToRoutePath } from "@/utils";
+import { transformRouteNameToRoutePath } from "@/utils/router";
 import { transformAuthRouteToVueRoutes } from "@/utils/router/transform";
 import { constantRoutes } from "./routes";
 import { scrollBehavior } from "./helpers";
