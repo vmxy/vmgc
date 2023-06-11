@@ -12,7 +12,7 @@
           <n-gi span="10">
             <n-space>
               <n-button>{{ detail.year }}</n-button>
-              <n-button>{{ detail.class }}</n-button>
+              <n-button>{{ $t(`video.class.${detail?.class || "other"}`) }}</n-button>
             </n-space>
           </n-gi>
           <n-gi span="10" class="mt-10px">
