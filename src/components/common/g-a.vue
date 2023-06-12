@@ -60,9 +60,12 @@ function onOpen(ev: Event) {
   left: 0;
   width: 200%;
   height: 200%;
-  border: 1px solid #5a5959;
+  border: 1px solid #5a5959; 
   transform-origin: 0 0;
   transform: scale(0.5);
+}
+.g-a-button:hover{
+  background-color: #8e9c91;
 }
 .g-a-red {
   background-color: #bf1067;

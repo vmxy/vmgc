@@ -62,13 +62,11 @@
           :options="items"
           @update:value="openView"
         /-->
-        <!--             :class="['box-a', isPlay(item.id) ? 'box-a-red' : '', selectResId == item.id ? 'box-a-disabled' : '']"
- -->
         <n-scrollbar class="max-h-220px">
           <g-a
-            button
             v-for="item in line.items"
             v-if="line.id == selectLineId"
+            button
             :disabled="selectResId == item.id"
             :href="`/video/xplay/${item.id}`"
             :type="isPlay(item.id) ? 'red' : ''"
