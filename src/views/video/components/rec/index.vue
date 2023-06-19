@@ -32,7 +32,7 @@ const dataList = ref(app.inSSR ? (proxy.$root.$attrs.hot as any) : ([] as NVideo
 
 async function loadRec(id) {
   let { data } = await service.fetchVideoRec(id);
-  dataList.value = data.list.slice(0, 12);
+  dataList.value = data.list.slice(0, 24);
 }
 onMounted(async () => {
   loadRec(id.value);
