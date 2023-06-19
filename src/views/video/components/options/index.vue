@@ -11,7 +11,7 @@
       :show-feedback="false"
     >
       <n-form-item :label="$t('video.menu.class')" path="inputValue">
-        <n-scrollbar x-scrollable>
+        <n-scrollbar x-scrollable :size="0">
           <div class="v-option-line" style="">
             <n-button
               :type="query.class == item.value ? 'primary' : 'tertiary'"
@@ -31,7 +31,7 @@
 
       <template v-if="id == 'tv'">
         <n-form-item :label="$t('video.menu.type')">
-          <n-scrollbar x-scrollable>
+          <n-scrollbar x-scrollable :size="0">
             <div class="v-option-line">
               <n-button
                 :type="query.type == item.value ? 'primary' : 'tertiary'"
@@ -51,7 +51,7 @@
       </template>
 
       <n-form-item :label="$t('video.menu.year')">
-        <n-scrollbar x-scrollable>
+        <n-scrollbar x-scrollable :size="0">
           <div class="v-option-line">
             <n-button
               :type="query.year == item.value ? 'primary' : 'tertiary'"
