@@ -1,5 +1,8 @@
 <template>
   <n-card class="mt-16px min-h-200px" :title="$t('menu.' + props.id)">
+    <template #header>
+      <router-link :to="`/video/${props.id}`">{{ $t('menu.' + props.id) }}</router-link>
+    </template>
     <n-grid cols="xs:2 s:4 m:5 l:6 xl:7 2xl:12" responsive="screen" x-gap="3 x:6 s:9 m:12" y-gap="3 x:6 s:9 m:12">
       <n-gi span="1" v-for="item in dataList" :key="item.id">
         <router-link :to="'/video/detail/' + item.id" class="v-item">

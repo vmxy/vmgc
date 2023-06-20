@@ -2,8 +2,8 @@ export const classs = [
   { label: "video.all", value: "all" },
   { label: "video.class.cn", value: "cn" },
   { label: "video.class.hktw", value: "hktw" },
-  { label: "video.class.japan", value: "ja" },
-  { label: "video.class.korea", value: "ko" },
+  { label: "video.class.ja", value: "ja" },
+  { label: "video.class.ko", value: "ko" },
   { label: "video.class.euus", value: "euus" },
   { label: "video.class.other", value: "other" },
 ];
