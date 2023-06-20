@@ -1,3 +1,7 @@
+import { Model } from "@ai-lion/liondb";
+console.info("app name", import.meta.env.VITE_APP_NAME);
+Model.setApp(import.meta.env.VITE_APP_NAME);
+
 import * as vue from "vue";
 //import AppLoading from "./components/common/app-loading.vue";
 import { setupDirectives } from "./directives";

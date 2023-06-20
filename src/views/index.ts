@@ -50,6 +50,7 @@ export const views: Record<
   'video_anime': () => import('./video/anime/index.vue'),
   'video_detail_:id': () => import('./video/detail/[id].vue'),
   'video_doc': () => import('./video/doc/index.vue'),
+  'video_fav': () => import('./video/fav/index.vue'),
   'video_home': () => import('./video/home/index.vue'),
   'video_movie': () => import('./video/movie/index.vue'),
   'video_search': () => import('./video/search/index.vue'),

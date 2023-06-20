@@ -8,6 +8,7 @@ const locale: I18nType.Locale = {
     sport: "体育",
     doc: "纪录",
     home: "首页",
+    fav: "收藏",
   },
   video: {
     all: "所有",

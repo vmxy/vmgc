@@ -13,6 +13,9 @@
             <n-space>
               <n-button>{{ detail.year }}</n-button>
               <n-button>{{ $t(`video.class.${detail?.class || "other"}`) }}</n-button>
+              <n-button @click="toggleFav(detail)">
+                <template #icon> <icon-mdi-heart :style="{ color: hasFav ? '#ff0000' : '#ffffff' }" /> </template>
+              </n-button>
             </n-space>
           </n-gi>
           <n-gi span="10" class="mt-10px">
@@ -80,6 +83,7 @@
 <script setup lang="ts">
 import { ref, Ref, watch } from "vue";
 import dayjs from "dayjs";
+import { useVideoStore } from "@/store";
 
 const props = defineProps({
   detail: {
@@ -87,10 +91,20 @@ const props = defineProps({
     required: true,
   },
 });
+const video = useVideoStore();
 const detail: Ref<NVideo.VideoDetail> = ref(props.detail as NVideo.VideoDetail);
-
-watch(props.detail, (newVal) => {
+const hasFav = ref(false);
+async function toggleFav(data) {
+  let has = await video.toggleFav(data);
+  hasFav.value = has;
+}
+watch(props.detail, async (newVal) => {
+  hasFav.value = false;
   Object.assign(detail.value, newVal);
+  hasFav.value = await video.hasFav(newVal.id);
+  if (hasFav.value) {
+    video.saveFav(detail.value);
+  }
 });
 </script>
 

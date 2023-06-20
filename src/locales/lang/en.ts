@@ -8,6 +8,7 @@ const locale: I18nType.Locale = {
     sport: "Sport",
     doc: "Documentary",
     home: "Home",
+    fav: "Favorite",
   },
   video: {
     all: "All",

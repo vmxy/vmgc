@@ -20,7 +20,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "menu.movie",
       requiresAuth: false,
-      keepAlive: true,
+      keepAlive: false,
       singleLayout: "basic",
       icon: "mdi:video-input-svideo",
       order: 2,
@@ -34,7 +34,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "电视剧",
       requiresAuth: false,
-      keepAlive: true,
+      keepAlive: false,
       singleLayout: "basic",
       icon: "mdi:youtube-tv",
       order: 3,
@@ -48,7 +48,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "动漫",
       requiresAuth: false,
-      keepAlive: true,
+      keepAlive: false,
       singleLayout: "basic",
       icon: "mdi:atv",
       order: 4,
@@ -62,7 +62,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "综艺",
       requiresAuth: false,
-      keepAlive: true,
+      keepAlive: false,
       singleLayout: "basic",
       icon: "mdi:eye",
       order: 5,
@@ -76,7 +76,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "体育",
       requiresAuth: false,
-      keepAlive: true,
+      keepAlive: false,
       singleLayout: "basic",
       icon: "mdi:basketball",
       order: 6,
@@ -90,11 +90,25 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "纪录片",
       requiresAuth: false,
-      keepAlive: true,
+      keepAlive: false,
       singleLayout: "basic",
       icon: "mdi:video-vintage",
       order: 7,
       i18nTitle: "menu.doc",
+    },
+  },
+  {
+    name: "video_fav",
+    path: "/video/fav",
+    component: "self",
+    meta: {
+      title: "收藏",
+      requiresAuth: false,
+      keepAlive: false,
+      singleLayout: "basic",
+      icon: "mdi:heart",
+      order: 7,
+      i18nTitle: "menu.fav",
     },
   },
   {
@@ -104,7 +118,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "详情",
       requiresAuth: false,
-      keepAlive: true,
+      keepAlive: false,
       singleLayout: "basic",
       icon: "mdi:video-vintage",
       order: 8,
@@ -119,7 +133,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "搜索",
       requiresAuth: false,
-      keepAlive: true,
+      keepAlive: false,
       singleLayout: "basic",
       //icon: "mdi:video-vintage",
       //order: 8,
