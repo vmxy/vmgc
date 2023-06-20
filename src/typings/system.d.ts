@@ -345,8 +345,8 @@ declare namespace I18nType {
       class: {
         cn: string;
         hktw: string;
-        japan: string;
-        korea: string;
+        ja: string;
+        ko: string;
         euus: string;
         other: string;
       };

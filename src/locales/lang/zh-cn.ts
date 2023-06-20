@@ -40,8 +40,8 @@ const locale: I18nType.Locale = {
     class: {
       cn: "国产",
       hktw: "港台",
-      japan: "日本",
-      korea: "韩国",
+      ja: "日本",
+      ko: "韩国",
       euus: "欧美",
       other: "其他",
     },
