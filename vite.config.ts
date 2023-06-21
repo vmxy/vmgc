@@ -62,7 +62,7 @@ export default defineConfig((configEnv) => {
       //target: "modules",
       outDir: "dist",
       //publicDir: "public",
-      minify: false,
+      minify: true,
       cssMinify: true,
       manifest: true,
       ssrManifest: true,
