@@ -53,6 +53,7 @@ async function toggleFav(data) {
 onMounted(async () => {
   await fetchDetail(id.value);
   sessionStg.set(("playid-" + id.value) as any, "1");
+  hasFav.value = await video.hasFav(id.value);
 });
 
 async function fetchDetail(id: string): Promise<any> {
