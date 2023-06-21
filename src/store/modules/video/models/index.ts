@@ -7,7 +7,7 @@ class ModelExport {
   constructor() {
     setTimeout(() => {
       this.init();
-    }, 1000);
+    }, 100);
   }
   private init() {
     this.fav = new FavModel();
