@@ -23,6 +23,14 @@ export class Fav extends Schema {
   })
   @IsNotEmpty()
   cata: Cata;
+
+  @Column({ type: "string" })
+  @IsNotEmpty()
+  desc: string;
+
+  @Column({ type: "number" })
+  @IsNotEmpty()
+  quality: number;
 }
 
 export class FavModel extends Model<Fav> {
