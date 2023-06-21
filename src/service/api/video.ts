@@ -17,7 +17,9 @@ export function fetchVideoHot(query: SearchPage) {
   let qs = [];
   query = Object.assign({ page: 1 }, query);
   Object.keys(query || {}).forEach((k) => query[k] && qs.push(k + "=" + encodeURIComponent(query[k])));
-  return request.get<{ list: NVideo.VideoInfo[]; page: Page }>(`/v/hot?${qs.join("&")}`);
+  return request.get<{ list: NVideo.VideoInfo[]; page: Page }>(`/v/hot?${qs.join("&")}`).catch((err) => {
+    return { data: { list: [] } };
+  });
 }
 /** 最热数据 */
 export function fetchVideoRec(vid: string) {

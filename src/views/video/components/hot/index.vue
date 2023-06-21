@@ -24,7 +24,8 @@ let dataSource = [];
 
 onMounted(async () => {
   let { data } = await service.fetchVideoHot({ pageNo: 1 });
-  dataSource = data.list;
+  if (!data) return;
+  dataSource = data?.list || [];
   showList(theme.screenSize);
 });
 function showList(ds) {

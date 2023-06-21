@@ -13,9 +13,10 @@ import { ref, onMounted, Ref, watch } from "vue";
 import * as service from "@/service";
 import { VHot, VRec, VInfo, VLine } from "../components";
 import { useTitle } from "@vueuse/core";
-import { useAppStore } from "@/store";
+import { useAppStore, useVideoStore } from "@/store";
 
 const app = useAppStore();
+const video = useVideoStore();
 const { proxy } = getCurrentInstance();
 const id = computed(() => {
   let id = proxy.$route.params.id;
@@ -29,8 +30,12 @@ onMounted(() => {
 async function fetchDetail(id: string) {
   globalThis.$loadingBar?.start();
   let { data } = await service.fetchVideoDetail(id);
+  console.info("detail===", data);
   globalThis.$loadingBar?.finish();
-  if (!data) return data;
+  if (!data) {
+    video.deleteFav(id);
+    return data;
+  }
   Object.assign(detail.value, data);
   proxy.$route.meta.title = data.title;
   app.setTitle(data.title);
