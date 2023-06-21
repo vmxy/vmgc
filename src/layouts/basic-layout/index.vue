@@ -75,11 +75,13 @@ if (!ssr) {
 
 <style lang="scss">
 #__SCROLL_EL_ID__ {
-  @include scrollbar(8px, #e1e1e1);
+  @include scrollbar(1px, #e1e1e1);
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .dark #__SCROLL_EL_ID__ {
-  @include scrollbar(8px, #555);
+  @include scrollbar(1px, #555);
 }
 .tab-hide,
 .tab-hide + .soybeanjs-hg8qlw {

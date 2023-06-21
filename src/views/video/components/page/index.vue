@@ -25,7 +25,7 @@
     <n-pagination
       v-if="dataList.length > 0"
       v-model:page="page.pageNo"
-      :page-slot="10"
+      :page-slot="maxShowPage"
       :item-count="page.total"
       :page-size="page.pageSize"
       class="mt-10px"
@@ -67,6 +67,7 @@ const app = useAppStore();
 const page = ref({ pageNo: parseInt(route.query.pageNo as string) || 1, pageCount: 0, total: 0, pageSize: 24 });
 const dataList: Ref<NVideo.VideoInfo[]> = ref([]);
 const loading = ref(true);
+const maxShowPage = ref(app.screenWidth <= 420 ? 6 : 10);
 const query = ref({
   class: (route.query.class as string) || "all",
   type: (route.query.type as string) || "all",
