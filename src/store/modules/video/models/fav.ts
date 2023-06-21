@@ -18,10 +18,9 @@ export class Fav extends Schema {
   logo: string;
 
   @Column({ type: "string" })
-  @IsNotEmpty()
   desc: string;
 
-  @Column({ type: "number" })
+  @Column({ type: "number", default: 0 })
   @IsNotEmpty()
   quality: number;
 }
