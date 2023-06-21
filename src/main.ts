@@ -1,7 +1,7 @@
 import { Model } from "@ai-lion/liondb";
 console.info("app name", import.meta.env.VITE_APP_NAME);
 Model.setApp(import.meta.env.VITE_APP_NAME);
-
+import { Buffer } from "buffer";
 import * as vue from "vue";
 //import AppLoading from "./components/common/app-loading.vue";
 import { setupDirectives } from "./directives";
@@ -12,7 +12,7 @@ import { setupI18n } from "./locales";
 const ssr = import.meta.env.SSR;
 globalThis.ssr = ssr;
 console.info("=====================ssr", ssr);
-
+globalThis.Buffer = Buffer;
 globalThis.wait = async (ttl: number) => {
   return new Promise((resolve) => {
     setTimeout(() => resolve(), ttl);
