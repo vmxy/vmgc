@@ -4,7 +4,10 @@
       <n-gi span="20 m:13">
         <g-player :res="res"></g-player>
         <div>
-          <p class="text-28px">{{ res.title }}</p>
+          <p class="text-28px" style="display:inline-block;margin-right: 30px;">{{ res.title }}</p>
+          <n-button @click="toggleFav(res)">
+            <template #icon> <icon-mdi-heart :style="{ color: hasFav ? '#ff0000' : '#ffffff' }" /> </template>
+          </n-button>
         </div>
       </n-gi>
       <n-gi span="20 m:7">
@@ -25,9 +28,10 @@ import { onMounted, ref, computed, Ref, getCurrentInstance } from "vue";
 import * as service from "@/service";
 import { useTitle } from "@vueuse/core";
 import { VRec, VHot, VLine } from "../components";
-import { useAppStore } from "@/store";
+import { useAppStore, useVideoStore } from "@/store";
 import { sessionStg } from "@/utils";
 const app = useAppStore();
+const video = useVideoStore();
 const { proxy } = getCurrentInstance();
 const id = computed(() => {
   let id = proxy.$route.params.id;
@@ -35,6 +39,17 @@ const id = computed(() => {
 });
 const res: Ref<NVideo.Res> = ref(app.inSSR ? proxy.$root.$attrs.detail : <any>{ id: "", lines: [] });
 const urls: Ref<string[]> = ref([]);
+const hasFav = ref(false);
+async function toggleFav(data) {
+  let has = await video.toggleFav({
+    id: data.vid,
+    title: data.title,
+    logo: data.logo,
+    desc: data.desc,
+    quality: data.quality,
+  });
+  hasFav.value = has;
+}
 onMounted(async () => {
   await fetchDetail(id.value);
   sessionStg.set(("playid-" + id.value) as any, "1");
