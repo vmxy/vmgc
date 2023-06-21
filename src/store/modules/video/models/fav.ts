@@ -16,13 +16,6 @@ export class Fav extends Schema {
   })
   @IsNotEmpty()
   logo: string;
-  /** 类目 */
-  @Column({
-    default: "tv",
-    type: "string",
-  })
-  @IsNotEmpty()
-  cata: Cata;
 
   @Column({ type: "string" })
   @IsNotEmpty()
