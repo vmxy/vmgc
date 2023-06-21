@@ -37,13 +37,13 @@ export const useVideoStore = defineStore("video-store", {
       });
     },
     async findFav(opts: { start: number; limit?: number }) {
-      return model.fav.list({ start: opts.start, limit: opts.limit || 24 });
+      return model.fav?.list({ start: opts.start, limit: opts.limit || 24 }) || [];
     },
     async deleteFav(id: string) {
       model.fav.delete(id);
     },
     async findFavCount() {
-      return model.fav.listCount();
+      return model.fav?.listCount() || 0;
     },
     async hasFav(id: string) {
       let v = await model.fav.get(id);

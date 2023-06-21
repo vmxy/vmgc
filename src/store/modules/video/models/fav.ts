@@ -34,12 +34,14 @@ export class Fav extends Schema {
 }
 
 export class FavModel extends Model<Fav> {
+  static readonly Table = "fav";
   constructor() {
     super({
-      table: "fav",
+      table: FavModel.Table,
       indexs: [],
       SchemaClass: Fav,
     });
+    console.info("create table", this.table);
   }
 
   async insert(data: Fav): Promise<Fav> {
@@ -57,6 +59,13 @@ export class FavModel extends Model<Fav> {
 
   async list(opts: { start: number; limit: number }) {
     let list = await this.find(opts);
+    list = list.filter((v) => {
+      if (!v || !v.title) {
+        this.delete(v.id);
+        return false;
+      }
+      return true;
+    });
     return list;
   }
   async listCount() {

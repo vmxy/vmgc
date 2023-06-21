@@ -59,7 +59,7 @@
     "prepare": "soy init-git-hooks"
   },
   "dependencies": {
-    "@ai-lion/liondb": "^6.1.13",
+    "@ai-lion/liondb": "6.1.15",
     "@antv/data-set": "0.11.8",
     "@antv/g2": "4.2.10",
     "@better-scroll/core": "2.5.1",

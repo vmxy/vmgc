@@ -10,12 +10,14 @@ export class Played extends Schema {
 }
 
 export class PlayedModel extends Model<Played> {
+  static readonly Table = "played";
   constructor() {
     super({
-      table: "fav",
+      table: PlayedModel.Table,
       indexs: [],
       SchemaClass: Played,
     });
+    console.info("create table", this.table);
   }
   async hasPlayed(id: string) {
     let v = await this.get(id);
