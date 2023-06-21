@@ -44,7 +44,7 @@ export const useVideoStore = defineStore("video-store", {
     },
     async hasFav(id: string) {
       let v = await model.fav.get(id);
-      return !!v && v.id && v.title;
+      return !!v && !!v.id && !!v.title;
     },
   },
 });
