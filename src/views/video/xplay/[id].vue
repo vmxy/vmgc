@@ -4,7 +4,7 @@
       <n-gi span="20 m:13">
         <g-player :res="res"></g-player>
         <div>
-          <p class="text-28px" style="display:inline-block;margin-right: 30px;">{{ res.title }}</p>
+          <p class="text-28px" style="display: inline-block; margin-right: 30px">{{ res.title }}</p>
           <n-button @click="toggleFav(res)">
             <template #icon> <icon-mdi-heart :style="{ color: hasFav ? '#ff0000' : '#ffffff' }" /> </template>
           </n-button>
@@ -54,6 +54,7 @@ onMounted(async () => {
   await fetchDetail(id.value);
   sessionStg.set(("playid-" + id.value) as any, "1");
   hasFav.value = await video.hasFav(id.value);
+  video.addPlayed(id.value);
 });
 
 async function fetchDetail(id: string): Promise<any> {

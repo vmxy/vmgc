@@ -39,7 +39,7 @@ export const useVideoStore = defineStore("video-store", {
     async findFav(opts: { start: number; limit?: number }) {
       return model.fav.list({ start: opts.start, limit: opts.limit || 24 });
     },
-    async deleteFav(id: string){
+    async deleteFav(id: string) {
       model.fav.delete(id);
     },
     async findFavCount() {
@@ -48,6 +48,13 @@ export const useVideoStore = defineStore("video-store", {
     async hasFav(id: string) {
       let v = await model.fav.get(id);
       return !!v && !!v.id && !!v.title;
+    },
+
+    async hasPlayed(id: string) {
+      return model.played.hasPlayed(id);
+    },
+    async addPlayed(id: string) {
+      model.played.save(id, { id });
     },
   },
 });

@@ -69,7 +69,7 @@
             button
             :disabled="selectResId == item.id"
             :href="`/video/xplay/${item.id}`"
-            :type="isPlay(item.id) ? 'red' : ''"
+            :type="playeds[item.id] ? 'red' : ''"
           >
             {{ item.label }}
           </g-a>
@@ -81,12 +81,13 @@
 
 <script setup lang="ts">
 import { ref, watch, getCurrentInstance, computed, Ref, onMounted } from "vue";
-import { useThemeStore, useAppStore } from "@/store";
+import { useThemeStore, useAppStore, useVideoStore } from "@/store";
 import { sessionStg } from "@/utils";
 import { useRouter } from "vue-router";
 const ssr = import.meta.env.SSR;
 const theme = useThemeStore();
 const app = useAppStore();
+const video = useVideoStore();
 const router = useRouter();
 const props = defineProps({
   detail: {
@@ -115,13 +116,22 @@ const isSingleLine = computed(() => app.screenWidth < 1024);
 }); */
 function isPlay(resId: string) {
   let is = sessionStg.get(("playid-" + resId) as any) == "1";
+  //let is = await video.hasPlayed(resId);
   return is;
 }
-function getInitLineId() {
+const playeds = ref({} as { [key: string]: boolean });
+async function getInitLineId() {
   if (!detail.value || !detail.value?.lines) return "";
   let line = detail.value?.lines?.find((v) => v.items.find((item) => item.id == selectResId.value));
-  if (line) return line.id;
-  return detail.value?.lines[0]?.id || "";
+  if (!line) line = detail.value?.lines[0];
+  if (line) {
+    for (let item of line.items) {
+      let has = await video.hasPlayed(item.id);
+      playeds.value[item.id] = has;
+    }
+    console.info("playeds", playeds.value);
+  }
+  return line?.id || "";
 }
 function onUpdateTab(lineId: string) {
   loading.value = false;
@@ -156,15 +166,15 @@ function openPlay(url: string) {
   e.stopPropagation();
   router.push(url);
 }
-onMounted(() => {
-  let lineId = getInitLineId();
+onMounted(async () => {
+  let lineId = await getInitLineId();
   lineId && onUpdateTab(lineId);
 });
 watch(
   props.detail,
-  (nitem) => {
+  async (nitem) => {
     Object.assign(detail.value, nitem);
-    let lineId = getInitLineId();
+    let lineId = await getInitLineId();
     lineId && onUpdateTab(lineId);
   },
   { immediate: true },
