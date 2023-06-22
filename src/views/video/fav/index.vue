@@ -1,6 +1,13 @@
 <template>
   <n-card :title="$t('menu.fav')" class="shadow-sm mt-16px">
-    <n-grid cols="xs:2 s:2 m:5 l:6 xl:7 2xl:12" responsive="screen" x-gap="6 m:12" y-gap="6 m:12">
+    <n-grid
+      v-if="dataList.length > 0"
+      cols="xs:2 s:2 m:5 l:6 xl:7 2xl:12"
+      responsive="screen"
+      x-gap="6 m:12"
+      y-gap="6 m:12"
+      class="min-h-500px"
+    >
       <n-gi span="1" v-for="item in dataList" :key="item.id" class="min-h-90px">
         <router-link :to="'/video/detail/' + item.id" class="v-item">
           <g-image :src="item.logo" :alt="item.title" />
@@ -9,6 +16,8 @@
         </router-link>
       </n-gi>
     </n-grid>
+    <loading-empty-wrapper v-else class="h-500px" :loading="loading" empty />
+
     <n-pagination
       v-if="dataList.length > 0"
       v-model:page="page.pageNo"
@@ -39,17 +48,19 @@ const app = useAppStore();
 const route = useRoute();
 const router = useRouter();
 const video = useVideoStore();
+const loading = ref(true);
 const page = ref({ pageNo: parseInt(route.query.pageNo as string) || 1, pageCount: 0, total: 0, pageSize: 24 });
 const maxShowPage = ref(app.screenWidth <= 420 ? 6 : 10);
 const dataList = ref(app.inSSR ? [] : ([] as any[]));
 
 async function loadRec() {
+  loading.value = true;
   let pageNo = page.value.pageNo || 1;
   let limit = page.value.pageSize || 24;
   let start = (pageNo - 1) * limit;
   let list = await video.findFav({ start, limit: limit });
   let count = await video.findFavCount();
-  console.info("list", list, count);
+  loading.value = false;
   dataList.value = list;
   page.value.total = count;
   page.value.pageCount = Math.ceil(count / limit);

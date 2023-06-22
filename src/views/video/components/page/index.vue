@@ -19,7 +19,7 @@
             </router-link>
           </n-gi>
         </n-grid>
-        <loading-empty-wrapper v-else class="h-360px" :loading="loading" empty />
+        <loading-empty-wrapper v-else class="h-500px" :loading="loading" empty />
       </n-card>
     </n-spin>
     <n-pagination
@@ -148,6 +148,6 @@ onKeyStroke("ArrowRight", () => {
 
 <style scoped lang="scss">
 .module-page {
-  min-height: 200px;
+  min-height: 500px;
 }
 </style>
