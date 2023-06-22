@@ -32,10 +32,10 @@
                 {{ detail.desc }}
               </n-ellipsis>
               <n-form-item :label="$t('video.detail.director')">
-                {{ detail.directors?.join("/") || "" }}
+               <g-a v-for="(name, idx) in detail.directors" :href="`/search?q=${name}`">{{ name || '' }}{{ idx < detail.directors.length - 1 ? "/" : "" }} </g-a> 
               </n-form-item>
               <n-form-item :label="$t('video.detail.actor')">
-                {{ detail.actors?.join("/") || "" }}
+                <g-a v-for="(name, idx) in detail.actors" :href="`/search?q=${name}`">{{ name || '' }}{{ idx < detail.actors.length - 1 ? "/" : "" }} </g-a> 
               </n-form-item>
               <n-form-item :label="$t('video.detail.year')">
                 {{ detail.year }}
