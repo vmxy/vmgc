@@ -1,5 +1,6 @@
 name: Build/Electron
 
+
 on:
   push:
     branches:
@@ -15,13 +16,14 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
       - name: install NodeJS
         uses: actions/setup-node@v3
         with:
             node-version: 16
       - run: npm install --global yarn
+      
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1

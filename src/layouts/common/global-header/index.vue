@@ -17,6 +17,7 @@
 
     <div v-if="!app.inSSR" class="flex justify-end h-full w-full">
       <global-search />
+      <global-goback />
     </div>
 
     <div v-if="showQuickMenu" class="flex justify-end h-full mr-20px">
@@ -50,6 +51,7 @@ import {
   UserAvatar,
   ToggleLang,
   GlobalRefresh,
+  GlobalGoback
 } from "./components";
 
 defineOptions({ name: "GlobalHeader" });

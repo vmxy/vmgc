@@ -10,6 +10,8 @@ import SettingButton from "./setting-button.vue";
 import ToggleLang from "./toggle-lang.vue";
 import GlobalRefresh from "./global-refresh.vue";
 import UserLogin from "./user-login.vue";
+import GlobalGoback from "./global-goback.vue";
+
 export {
   MenuCollapse,
   GlobalBreadcrumb,
@@ -23,4 +25,5 @@ export {
   ToggleLang,
   GlobalRefresh,
   UserLogin,
+  GlobalGoback,
 };

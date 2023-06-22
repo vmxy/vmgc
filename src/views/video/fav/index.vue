@@ -12,7 +12,7 @@
     <n-pagination
       v-if="dataList.length > 0"
       v-model:page="page.pageNo"
-      :page-slot="10"
+      :page-slot="maxShowPage"
       :item-count="page.total"
       :page-size="page.pageSize"
       class="mt-10px"
@@ -32,13 +32,15 @@
 import { ref, onMounted, watch, computed, getCurrentInstance } from "vue";
 import { useAppStore, useVideoStore } from "@/store";
 import { useRoute, useRouter } from "vue-router";
+import { onKeyStroke, useDebounceFn } from "@vueuse/core";
+
 const { proxy } = getCurrentInstance();
 const app = useAppStore();
 const route = useRoute();
 const router = useRouter();
 const video = useVideoStore();
 const page = ref({ pageNo: parseInt(route.query.pageNo as string) || 1, pageCount: 0, total: 0, pageSize: 24 });
-
+const maxShowPage = ref(app.screenWidth <= 420 ? 6 : 10);
 const dataList = ref(app.inSSR ? [] : ([] as any[]));
 
 async function loadRec() {
@@ -64,6 +66,9 @@ function newUrl(pageNo: number) {
   );
 }
 async function onUpdatePage(pageNo: number) {
+  let pageCount = page.value.pageCount || 1;
+  pageNo = pageNo < 1 ? 1 : pageNo;
+  pageNo = pageNo > pageCount ? pageCount : pageNo;
   let path = route.path;
   let nquery = Object.assign({}, { pageNo });
   router.push(
@@ -76,6 +81,13 @@ async function onUpdatePage(pageNo: number) {
 }
 onMounted(async () => {
   loadRec();
+});
+
+onKeyStroke("ArrowLeft", () => {
+  onUpdatePage(page.value.pageNo - 1);
+});
+onKeyStroke("ArrowRight", () => {
+  onUpdatePage(page.value.pageNo + 1);
 });
 </script>
 

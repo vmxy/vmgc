@@ -47,6 +47,7 @@ import { useAppStore } from "@/store";
 import { VOption } from "../";
 import * as service from "@/service";
 import { useRoute, useRouter } from "vue-router";
+import { onKeyStroke, useDebounceFn } from "@vueuse/core";
 
 const props = defineProps({
   id: {
@@ -94,6 +95,9 @@ onMounted(() => {
 });
 
 async function onUpdatePage(pageNo: number) {
+  let pageCount = page.value.pageCount || 1;
+  pageNo = pageNo < 1 ? 1 : pageNo;
+  pageNo = pageNo > pageCount ? pageCount : pageNo;
   let path = route.path;
   let nquery = Object.assign({}, query.value, { pageNo });
   router.push(
@@ -130,8 +134,16 @@ async function search(opts: { cata?: string; type?: string; class?: string; year
 
   page.value.total = data.page.total;
   page.value.pageSize = data.page.pageSize;
+  page.value.pageCount = Math.ceil(data.page.total / data.page.pageSize);
   dataList.value = (data.list || []).slice(0, props.limit);
 }
+
+onKeyStroke("ArrowLeft", () => {
+  onUpdatePage(page.value.pageNo - 1);
+});
+onKeyStroke("ArrowRight", () => {
+  onUpdatePage(page.value.pageNo + 1);
+});
 </script>
 
 <style scoped lang="scss">
