@@ -1,6 +1,6 @@
 {
   "name": "electron",
-  "main": "dist/electron/main.js",
+  "main": "dist/electron/electron.js",
   "scripts": {
     "build": "electron-builder"
   },
