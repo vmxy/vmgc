@@ -3,7 +3,7 @@
   "appId": "io.vmxy.vmgc",
   "copyright": "vmxy",
   "directories": {
-    "output": "../../dist"
+    "output": "build-app"
   },
   "publish": [
     {

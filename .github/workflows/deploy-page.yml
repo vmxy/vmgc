@@ -15,11 +15,7 @@ concurrency:
 
 jobs:
   build:
-    # runs-on: ubuntu-latest
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -35,16 +31,29 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: npm i -g yarn pnpm
 
-      - name: Install and Build
+      - name: Build Page
         run: |
           rm -rf node_modules && yarn install
           yarn build:page
-
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
           path: "./dist"
+
+  electron:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    needs: build
+    steps:
+      - name: Build Electron
+        run: |
+          cd ./build/electron
+          yarn install
+          yarn build
 
   # Deployment job
   deploy:
