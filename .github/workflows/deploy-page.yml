@@ -64,7 +64,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           mv -f ./github-pages/artifact.tar ./
-          tar zxvf artifact.tar
+          tar -xvf artifact.tar
           
   # Deployment job
   deploy:
