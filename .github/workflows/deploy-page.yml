@@ -3,7 +3,8 @@ on:
   push:
     branches:
       - dev
-
+env:
+  APP_NAME: vmgc
 permissions:
   contents: read
   pages: write
@@ -67,6 +68,17 @@ jobs:
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
           cd ../
+          mv -f ${{ env.APP_NAME }} app
+          mv -f ./github-pages ./dist
+          ls -R
+          cp ./app/build/electron/package.json ./
+          mkdir ./dist/electron
+          cp -f ./app/build/electron/*.js ./dist/electron
+          cd ./dist
+          tar -xvf artifact.tar && rm -rf artifact.tar
+          cd ../
+          yarn install
+          yarn build
           ls -R
           
   # Deployment job
