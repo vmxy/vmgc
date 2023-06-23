@@ -186,7 +186,7 @@ ssr ||
 }
 @media screen and (min-width: 640px) {
   .player {
-    height: 400px;
+    height: 425px;
   }
 }
 </style>
