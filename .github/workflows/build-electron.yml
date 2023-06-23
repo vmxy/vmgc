@@ -4,7 +4,7 @@ name: Build/Electron
 on:
   push:
     branches:
-      - dev
+      - devxxx
 
 jobs:
   release:
@@ -24,6 +24,13 @@ jobs:
             node-version: 16
       - run: npm install --global yarn
       
+      - name: Install and Build
+        run: |
+          rm -rf node_modules && yarn install
+          yarn build:page
+          cd ./build/electron
+          yarn install
+          yarn build
 
       - name: Build/release Electron app
         uses: samuelmeuli/action-electron-builder@v1
