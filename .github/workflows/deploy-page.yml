@@ -46,8 +46,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
-    needs: build
+        os: [macos-latest, ubuntu-latest] #, windows-latest
+    #needs: build
     steps:
       - name: Build Electron
         run: |
