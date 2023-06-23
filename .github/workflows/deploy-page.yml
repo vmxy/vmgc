@@ -93,6 +93,7 @@ jobs:
           cd ../
           copy ${{ env.APP_NAME }} project
           move github-pages app
+          dir
           copy project\build\electron\package.json .
           mkdir app\electron
           copy project\build\electron\*.js app\electron
