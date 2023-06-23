@@ -74,7 +74,7 @@ jobs:
           mkdir ./dist/electron
           cp -f ./app/build/electron/*.js ./dist/electron
           cd ./dist
-          tar -xvf artifact.tar && rm -rf artifact.tar
+          tar -xf artifact.tar && rm -rf artifact.tar
           cd ../
           pwd
           yarn install
