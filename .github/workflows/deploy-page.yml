@@ -51,9 +51,7 @@ jobs:
     steps:
       - name: Build Electron
         run: |
-          cd ./build/electron
-          yarn install
-          yarn build
+          ls -lh
 
   # Deployment job
   deploy:
