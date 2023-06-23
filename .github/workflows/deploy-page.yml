@@ -79,7 +79,7 @@ jobs:
           yarn install
           yarn build
           ls
-          cd buils-app && ls
+          cd build-app && ls
       - name: End
         id: electron
         run: |
