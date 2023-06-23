@@ -1,5 +1,8 @@
 {
   "name": "electron",
+  "version": "1.0.0",
+  "author": "vmxy",
+  
   "main": "dist/electron/electron.js",
   "scripts": {
     "build": "electron-builder"
@@ -11,5 +14,6 @@
     "electron": "^25.1.0",
     "electron-builder": "^23.6.0"
   },
-  "license": "none"
+  "license": "none",
+  "description": ""
 }
