@@ -42,7 +42,7 @@ jobs:
         #uses: actions/upload-artifact@v3
         with:
           # Upload entire repository
-          name: app
+          name: build-app
           path: |
             "./dist"
             "./build/electron"
