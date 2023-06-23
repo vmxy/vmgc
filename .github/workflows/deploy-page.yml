@@ -56,25 +56,17 @@ jobs:
       - name: Checkout
         id: electron
         uses: actions/checkout@v3
+        with:
+          checkout_base_path: ./project
 
       - name: Download build
         uses: actions/download-artifact@v3
         with:
-          path: ./
+          path: ./dist
       
       - name: unzip linux
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
-          rm -rf dist && mv -f ./github-pages ./dist
-          mv package.json package.o.json && cp /build/electron/package.json ./
-          mkdir ./dist/electron
-          cp -f ./build/electron/*.js ./dist/electron
-          cd ./dist
-          tar -xvf artifact.tar && rm -rf artifact.tar
-          ls -R
-          cd ../
-          yarn install
-          yarn build
           ls -R
           
   # Deployment job
