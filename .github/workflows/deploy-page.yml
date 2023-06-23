@@ -65,9 +65,9 @@ jobs:
       - name: unzip linux
         if: runner.os == 'Linux'
         run: |
-          ls -R
           cd ./github-pages
           tar -xvf artifact.tar
+          ls -R
           
   # Deployment job
   deploy:
