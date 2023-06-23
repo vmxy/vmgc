@@ -70,8 +70,8 @@ jobs:
           mkdir ./dist/electron
           cp -f ./build/electron/*.js ./dist/electron
           cd ./dist
-          ls -R
           tar -xvf artifact.tar && rm -rf artifact.tar
+          ls -R
           cd ../
           yarn install
           yarn build
