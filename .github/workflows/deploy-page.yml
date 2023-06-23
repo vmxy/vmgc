@@ -55,18 +55,16 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           path: ./
-      - name: Build Electron
+      - name: 
         id: electron
         run: |
           echo "build electron"        
-          ls -R
-          cd ./github-pages
-          ls -R
       
-      - name: tar-linux
+      - name: unzip linux
         if: runner.os == 'Linux'
         run: |
-          ls -R
+          mv -f ./github-pages/artifact.tar ./
+          tar zxvf artifact.tar
           
   # Deployment job
   deploy:
