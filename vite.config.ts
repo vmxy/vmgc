@@ -4,10 +4,10 @@ import { getServiceEnvConfig } from "./.env-config";
 
 export default defineConfig((configEnv) => {
   const viteEnv = loadEnv(configEnv.mode, process.cwd()) as unknown as ImportMetaEnv;
-
+  const ssr = viteEnv.VITE_SSR == "Y";
   const rootPath = getRootPath();
   const srcPath = getSrcPath();
-  console.info("app", rootPath, srcPath);
+  console.info("app", rootPath, srcPath, "ssr=" + ssr);
   const isOpenProxy = viteEnv.VITE_HTTP_PROXY === "Y";
   const envConfig = getServiceEnvConfig(viteEnv);
 
@@ -60,7 +60,7 @@ export default defineConfig((configEnv) => {
     build: {
       emptyOutDir: true,
       //target: "modules",
-      outDir: "dist",
+      outDir: ssr ? "dist-ssr" : "dist",
       //publicDir: "public",
       minify: true,
       cssMinify: true,

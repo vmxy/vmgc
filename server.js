@@ -29,7 +29,7 @@ async function startServer() {
   if (isProduction) {
     console.info("====clients");
     app.use(
-      express.static(`${root}/dist`, {
+      express.static(`${root}/dist-ssr`, {
         maxAge: "7d",
         setHeaders: setCustomCacheControl,
       }),

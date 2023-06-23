@@ -1,0 +1,1 @@
+import{o,a as s,b as t,d as c}from"./chunk-b8a590ba.js";import{_ as r}from"./chunk-c27b6911.js";const a={},n={class:"h-full"};function d(_,l){const e=c.NCard;return o(),s("div",n,[t(e,{title:"多级菜单 - 三级菜单",class:"h-full shadow-sm rounded-16px"})])}const m=r(a,[["render",d]]);export{m as default};

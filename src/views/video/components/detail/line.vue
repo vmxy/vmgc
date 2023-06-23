@@ -124,12 +124,11 @@ async function getInitLineId() {
   if (!detail.value || !detail.value?.lines) return "";
   let line = detail.value?.lines?.find((v) => v.items.find((item) => item.id == selectResId.value));
   if (!line) line = detail.value?.lines[0];
-  if (line) {
+  if (line && !ssr) {
     for (let item of line.items) {
       let has = await video.hasPlayed(item.id);
       playeds.value[item.id] = has;
     }
-    console.info("playeds", playeds.value);
   }
   return line?.id || "";
 }

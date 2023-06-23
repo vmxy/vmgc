@@ -1,0 +1,1 @@
+import{j as s,r as t,o as a,a as c,f as o}from"./chunk-b8a590ba.js";const n={class:"h-full"},r=["src"],d=s({__name:"index",setup(l){const e=t("https://cn.vitejs.dev/");return(_,f)=>(a(),c("div",n,[o("iframe",{class:"wh-full",src:e.value},null,8,r)]))}});export{d as default};

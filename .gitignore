@@ -9,8 +9,8 @@ lerna-debug.log*
 .npmrc
 node_modules
 .DS_Store
-dist
-dist-ssr
+# dist
+# dist-ssr
 dist.zip
 coverage
 *.local
