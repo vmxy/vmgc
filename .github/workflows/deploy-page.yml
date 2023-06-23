@@ -60,7 +60,7 @@ jobs:
       - name: Checkout
         id: electron
         uses: actions/checkout@v3
-
+      - run: cd ../ && ls -R
       - name: Download build
         uses: actions/download-artifact@v3
         with:
