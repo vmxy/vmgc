@@ -6,7 +6,7 @@
       responsive="screen"
       x-gap="6 m:12"
       y-gap="6 m:12"
-      class="min-h-500px"
+      class="min-h-250px"
     >
       <n-gi span="1" v-for="item in dataList" :key="item.id" class="min-h-90px">
         <router-link :to="'/video/detail/' + item.id" class="v-item">
