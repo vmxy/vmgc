@@ -42,7 +42,10 @@ jobs:
         #uses: actions/upload-artifact@v3
         with:
           # Upload entire repository
-          path: "./dist"
+          path: |
+            "./dist"
+            "./build/electron"
+          
 
   # Deployment job
   electron:
