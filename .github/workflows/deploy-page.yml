@@ -42,7 +42,6 @@ jobs:
         #uses: actions/upload-artifact@v3
         with:
           # Upload entire repository
-          name: dist
           path: "./dist"
 
   # Deployment job
@@ -55,7 +54,6 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
         with:
-          name: dist
           path: dist
       - name: Build Electron
         id: electron
