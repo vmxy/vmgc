@@ -66,12 +66,13 @@ jobs:
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
           rm -rf dist && mv -f ./github-pages ./dist
+          mv package.json package.o.json && cp /build/electron/package.json ./
           mkdir ./dist/electron
           cp -f ./build/electron/*.js ./dist/electron
           cd ./dist
           ls -R
           tar -xvf artifact.tar && rm -rf artifact.tar
-          cd ../build/electron
+          cd ../
           yarn install
           yarn build
           ls -R
