@@ -76,9 +76,10 @@ jobs:
           cd ./dist
           tar -xvf artifact.tar && rm -rf artifact.tar
           cd ../
+          pwd
+          ls
           yarn install
           yarn build
-          cp build-app/
   # Deployment job
   deploy:
     environment:
