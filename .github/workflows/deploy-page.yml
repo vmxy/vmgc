@@ -42,6 +42,7 @@ jobs:
         #uses: actions/upload-artifact@v3
         with:
           # Upload entire repository
+          name: dist
           path: "./dist"
 
   # Deployment job
@@ -61,7 +62,7 @@ jobs:
         run: |
           echo "build electron"        
           ls -R
-          
+
   # Deployment job
   deploy:
     environment:
