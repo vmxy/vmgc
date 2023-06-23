@@ -56,7 +56,7 @@ jobs:
         id: electron
         run: |
           echo "build electron"
-          cd dist   
+          tar xvf $RUNNER_TEMP/artifact.tar
       
   # Deployment job
   deploy:
