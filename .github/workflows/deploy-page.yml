@@ -78,8 +78,9 @@ jobs:
           cd ../
           pwd
           yarn install
-          ls
           yarn build
+          ls
+          cd buils-app && ls
   # Deployment job
   deploy:
     environment:
