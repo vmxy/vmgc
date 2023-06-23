@@ -78,7 +78,7 @@ jobs:
           cd ../
           yarn install
           yarn build
-          
+          cp build-app/
   # Deployment job
   deploy:
     environment:
