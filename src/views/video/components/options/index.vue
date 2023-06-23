@@ -29,9 +29,9 @@
       </n-form-item>
       <n-divider />
 
-      <template v-if="id == 'tv'">
+      <template v-if="/^(tv|movie)$/i.test(id)">
         <n-form-item :label="$t('video.menu.type')">
-          <n-scrollbar x-scrollable :size="0">
+          <n-scrollbar x-scrollable :size="1">
             <div class="v-option-line">
               <n-button
                 :type="query.type == item.value ? 'primary' : 'tertiary'"
@@ -51,7 +51,7 @@
       </template>
 
       <n-form-item :label="$t('video.menu.year')">
-        <n-scrollbar x-scrollable :size="0">
+        <n-scrollbar x-scrollable :size="1">
           <div class="v-option-line">
             <n-button
               :type="query.year == item.value ? 'primary' : 'tertiary'"
