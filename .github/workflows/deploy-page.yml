@@ -55,7 +55,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest] #windows-latest
+        os: [macos-latest, ubuntu-latest, windows-latest] #windows-latest
     needs: build
     steps:
       - name: Checkout
@@ -67,7 +67,7 @@ jobs:
         with:
           path: ../
       
-      - name: Build linux
+      - name: Build Macos and Linux
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
           cd ../
@@ -85,6 +85,25 @@ jobs:
           yarn build
           ls
           cd build-app && ls
+
+      - name: Build Windows
+        if: runner.os == 'windows'
+        run: |
+          cd ../
+          mv -f ${{ env.APP_NAME }} project
+          mv -f ./github-pages ./app
+          mkdir ${{ env.APP_NAME }} 
+          cp ./project/build/electron/package.json ./
+          mkdir ./app/electron
+          cp -f ./project/build/electron/*.js ./app/electron
+          cd ./app
+          tar -xf artifact.tar && rm -rf artifact.tar
+          cd ../
+          pwd
+          yarn install
+          yarn build
+          ls
+          cd build-app && ls          
       - name: End
         id: electron
         run: |
