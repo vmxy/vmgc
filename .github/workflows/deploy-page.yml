@@ -90,9 +90,8 @@ jobs:
         if: runner.os == 'windows'
         run: |
           cd ../
-          move ${{ env.APP_NAME }} project
+          copy ${{ env.APP_NAME }} project
           move github-pages app
-          mkdir ${{ env.APP_NAME }} 
           copy project\build\electron\package.json .
           mkdir app\electron
           copy project\build\electron\*.js app\electron
