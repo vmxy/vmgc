@@ -89,6 +89,7 @@ jobs:
       - name: Build Windows
         if: runner.os == 'windows'
         run: |
+          dir
           cd ../
           copy ${{ env.APP_NAME }} project
           move github-pages app
