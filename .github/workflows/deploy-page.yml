@@ -62,7 +62,12 @@ jobs:
           ls -R
           cd ./github-pages
           ls -R
-
+      
+      - name: tar-linux
+        if: runner.os == 'Linux'
+        run: |
+          ls -R
+          
   # Deployment job
   deploy:
     environment:
