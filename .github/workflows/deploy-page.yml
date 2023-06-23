@@ -77,8 +77,8 @@ jobs:
           tar -xvf artifact.tar && rm -rf artifact.tar
           cd ../
           pwd
-          ls
           yarn install
+          ls
           yarn build
   # Deployment job
   deploy:
