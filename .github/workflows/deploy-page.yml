@@ -56,6 +56,7 @@ jobs:
         id: electron
         run: |
           echo "build electron"
+          echo "url=${{ env.url }} ${{ env.page_url }} ${{ env.pages }}"
           tar xvf $RUNNER_TEMP/github-pages.tar
       
   # Deployment job
