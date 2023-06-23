@@ -54,13 +54,13 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
         with:
-          path: dist
+          path: ./
       - name: Build Electron
         id: electron
         run: |
           echo "build electron"        
           ls -R
-          cd ./dist/github-pages
+          cd ./github-pages
           ls -R
 
   # Deployment job
