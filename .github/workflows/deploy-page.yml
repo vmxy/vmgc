@@ -68,12 +68,12 @@ jobs:
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
           cd ../
-          mv -f ${{ env.APP_NAME }} app
-          mv -f ./github-pages ./dist
-          cp ./app/build/electron/package.json ./
-          mkdir ./dist/electron
-          cp -f ./app/build/electron/*.js ./dist/electron
-          cd ./dist
+          mv -f ${{ env.APP_NAME }} project
+          mv -f ./github-pages ./app
+          cp ./project/build/electron/package.json ./
+          mkdir ./app/electron
+          cp -f ./project/build/electron/*.js ./app/electron
+          cd ./app
           tar -xf artifact.tar && rm -rf artifact.tar
           cd ../
           pwd

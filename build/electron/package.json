@@ -2,7 +2,7 @@
   "name": "electron",
   "version": "1.0.0",
   "author": "vmxy",
-  "main": "dist/electron/electron.js",
+  "main": "app/electron/electron.js",
   "scripts": {
     "build": "electron-builder"
   },
@@ -27,7 +27,7 @@
       }
     ],
     "files": [
-      "./dist/**/*"
+      "./app/**/*"
     ],
     "dmg": {
       "contents": [
@@ -45,7 +45,7 @@
       ]
     },
     "mac": {
-      "icon": "./dist/logo.png",
+      "icon": "./app/logo.png",
       "artifactName": "${productName}-release-v${version}.${ext}"
     },
     "win": {
@@ -58,7 +58,7 @@
           ]
         }
       ],
-      "icon": "./dist/logo.png",
+      "icon": "./app/logo.png",
       "artifactName": "${productName}-release-v${version}.${ext}"
     },
     "nsis": {
@@ -68,7 +68,7 @@
       "allowToChangeInstallationDirectory": true
     },
     "linux": {
-      "icon": "./dist/logo.png"
+      "icon": "./app/logo.png"
     }
   },
   "license": "none",
