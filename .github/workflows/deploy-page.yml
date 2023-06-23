@@ -65,7 +65,7 @@ jobs:
       - name: unzip linux
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
-          rm -rf dist && mv -rf github-pages dist
+          rm -rf dist && mv -f ./github-pages ./dist
           cd ./dist
           tar -xvf artifact.tar && rm -rf artifact.tar
           cd ../build/electron
