@@ -27,7 +27,7 @@
       }
     ],
     "files": [
-      "./dist"
+      "./dist/**/*"
     ],
     "dmg": {
       "contents": [
@@ -45,7 +45,7 @@
       ]
     },
     "mac": {
-      "icon": "../../dist/logo.png",
+      "icon": "./dist/logo.png",
       "artifactName": "${productName}-release-v${version}.${ext}"
     },
     "win": {
@@ -58,7 +58,7 @@
           ]
         }
       ],
-      "icon": "../../dist/logo.png",
+      "icon": "./dist/logo.png",
       "artifactName": "${productName}-release-v${version}.${ext}"
     },
     "nsis": {
@@ -68,7 +68,7 @@
       "allowToChangeInstallationDirectory": true
     },
     "linux": {
-      "icon": "../../dist/logo.png"
+      "icon": "./dist/logo.png"
     }
   },
   "license": "none",
