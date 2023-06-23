@@ -61,11 +61,12 @@ jobs:
       - name: Download build
         uses: actions/download-artifact@v3
         with:
-          path: ./
+          path: ../
       
       - name: Build linux
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
+          cd ../
           ls -R
           
   # Deployment job
