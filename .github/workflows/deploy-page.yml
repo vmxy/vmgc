@@ -90,15 +90,15 @@ jobs:
         if: runner.os == 'windows'
         run: |
           cd ../
-          mv -f ${{ env.APP_NAME }} project
-          mv -f ./github-pages ./app
+          move ${{ env.APP_NAME }} project
+          move ./github-pages ./app
           mkdir ${{ env.APP_NAME }} 
-          cp ./project/build/electron/package.json ./
-          mkdir ./app/electron
-          cp -f ./project/build/electron/*.js ./app/electron
-          cd ./app
+          copy project\build\electron/package.json .
+          mkdir app\electron
+          copy project\build\electron\*.js app\electron
+          cd app
           tar -xf artifact.tar && rm -rf artifact.tar
-          cd ../
+          cd ..
           pwd
           yarn install
           yarn build
