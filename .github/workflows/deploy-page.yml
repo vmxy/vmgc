@@ -62,6 +62,7 @@ jobs:
         run: |
           echo "build electron"        
           ls -R
+          cd dist
 
   # Deployment job
   deploy:
@@ -74,5 +75,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+        with:
+          name: dist
 
 
