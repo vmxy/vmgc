@@ -73,6 +73,7 @@ jobs:
           cd ../build/electron
           yarn install
           yarn build
+          ls -R
           
   # Deployment job
   deploy:
