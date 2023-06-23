@@ -38,8 +38,8 @@ jobs:
           yarn build:page
       
       - name: Upload artifact
-        #uses: actions/upload-pages-artifact@v1
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v1
+        #uses: actions/upload-artifact@v3
         with:
           # Upload entire repository
           path: "./dist"
