@@ -55,7 +55,7 @@ jobs:
     steps:
       - name: Init
         run: |
-          make project && cd project 
+          mkdir project && cd project 
 
       - name: Checkout
         id: electron
