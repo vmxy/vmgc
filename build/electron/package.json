@@ -13,7 +13,7 @@
     "electron": "^25.1.0",
     "electron-builder": "^23.6.0"
   },
-  "electron-builder": {
+  "build": {
     "productName": "vmgc",
     "appId": "io.vmxy.vmgc",
     "copyright": "vmxy",

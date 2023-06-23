@@ -70,7 +70,6 @@ jobs:
           cd ../
           mv -f ${{ env.APP_NAME }} app
           mv -f ./github-pages ./dist
-          ls -R
           cp ./app/build/electron/package.json ./
           mkdir ./dist/electron
           cp -f ./app/build/electron/*.js ./dist/electron
@@ -79,7 +78,6 @@ jobs:
           cd ../
           yarn install
           yarn build
-          ls -R
           
   # Deployment job
   deploy:
