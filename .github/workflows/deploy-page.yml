@@ -61,6 +61,7 @@ jobs:
           echo "build electron"        
           ls -R
           cd ./dist/github-pages
+          ls -R
 
   # Deployment job
   deploy:
