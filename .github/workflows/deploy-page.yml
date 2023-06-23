@@ -52,13 +52,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
       - name: Build Electron
         id: electron
         run: |
-          echo "build electron"
-          echo "url=${{ env.url }} ${{ env.page_url }} ${{ env.pages }}"
-          tar xvf $RUNNER_TEMP/github-pages.tar
-      
+          echo "build electron"        
+          ls -R
+          
   # Deployment job
   deploy:
     environment:
