@@ -69,6 +69,7 @@ jobs:
           cd ../
           mv -f ${{ env.APP_NAME }} project
           mv -f ./github-pages ./app
+          mkdir ${{ env.APP_NAME }} 
           cp ./project/build/electron/package.json ./
           mkdir ./app/electron
           cp -f ./project/build/electron/*.js ./app/electron
@@ -83,7 +84,7 @@ jobs:
       - name: End
         id: electron
         run: |
-          echo end
+          echo "end"
 
 
   # Deployment job
