@@ -31,11 +31,11 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: npm i -g yarn pnpm
 
-      - name: Build Page
-        run: |
-          echo ${{ steps.project.outputs }}
-          rm -rf node_modules && yarn install
-          yarn build:page
+      #- name: Build Page
+      #  run: |
+      #    echo ${{ steps.project.outputs }}
+      #    rm -rf node_modules && yarn install
+      #    yarn build:page
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
@@ -56,7 +56,7 @@ jobs:
         id: electron
         run: |
           echo "build electron"
-          tar xvf $RUNNER_TEMP/artifact.tar
+          tar xvf $RUNNER_TEMP/github-pages.tar
       
   # Deployment job
   deploy:
