@@ -24,7 +24,7 @@
       <n-button v-if="app.isMobile" type="primary" ghost @click="handleClose">取消</n-button>
     </n-input-group>
 
-    <v-search class="mt-16px"></v-search>
+    <v-search class="mt-6px"></v-search>
   </n-modal>
 </template>
 
@@ -97,4 +97,8 @@ onKeyStroke("Escape", handleClose);
 //onKeyStroke("ArrowDown", handleDown);
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.n-card__content) {
+  padding: 6px !important;
+}
+</style>

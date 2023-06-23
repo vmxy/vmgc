@@ -1,7 +1,7 @@
 <template>
   <dark-mode-container class="global-header flex-y-center h-full" :inverted="theme.header.inverted">
     <global-logo v-if="showLogo" class="h-full ml-10px" :style="{ width: theme.sider.width + 'px' }" />
-    <div :class="showQuickMenu ? 'w-128px' : 'w-85%'">
+    <div :class="showQuickMenu ? 'w-128px' : 'w-85%'" style="max-width: calc(100% - 60px);">
       <header-menu v-if="showHeaderMenu" />
       <div v-else class="flex-1-hidden flex-y-center h-full mr-4">
         <menu-collapse v-if="showMenuCollapse || isSmallScreen" />
@@ -17,7 +17,7 @@
 
     <div v-if="!app.inSSR" class="flex justify-end h-full w-full">
       <global-search />
-      <global-goback />
+      <!--global-goback /-->
     </div>
 
     <div v-if="showQuickMenu" class="flex justify-end h-full mr-20px">
@@ -79,5 +79,6 @@ const showQuickMenu = computed(() => {
 <style scoped lang="scss">
 .global-header {
   box-shadow: 0 1px 2px rgb(0 21 41 / 8%);
+  overflow: hidden;
 }
 </style>

@@ -102,4 +102,8 @@ async function search(opts: { q: string; pageNo: number }) {
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+:deep(.n-card__content){
+  padding: 6px 6px !important;
+}
+</style>
