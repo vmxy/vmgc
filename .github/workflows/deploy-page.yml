@@ -67,8 +67,9 @@ jobs:
         run: |
           rm -rf dist && mv -f ./github-pages ./dist
           mkdir ./dist/electron
-          mv ./build/electron/*.js ./dist/electron
-          cd ./dist
+          cp -f ./build/electron/*.js ./dist/electron
+          cd ./dist/electron && ls -R
+          cd ../
           tar -xvf artifact.tar && rm -rf artifact.tar
           cd ../build/electron
           yarn install
