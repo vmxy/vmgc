@@ -65,7 +65,7 @@ export default defineConfig((configEnv) => {
       minify: true,
       cssMinify: true,
       manifest: true,
-      ssrManifest: true,
+      ssrManifest: ssr ? true : false,
       //ssr: true,
       reportCompressedSize: false,
       sourcemap: false,

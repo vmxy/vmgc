@@ -143,7 +143,26 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           path: ./
-      
+
+      - name: Window
+        if: runner.os == 'windows'
+        run: |
+          cd Windows
+          tar -xf artifact.tar && del artifact.tar
+          ls
+      - name: macOS
+        if: runner.os == 'macOS'
+        run: |
+          cd macOS
+          tar -xf artifact.tar && rm artifact.tar
+          ls
+      - name: Linux
+        if: runner.os == 'Linux'
+        run: |
+          cd Linux
+          tar -xf artifact.tar && rm artifact.tar
+          ls      
+              
       - name: merge
         run: |
           pwd
