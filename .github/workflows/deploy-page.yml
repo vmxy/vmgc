@@ -101,7 +101,7 @@ jobs:
           cd ../
           cp -f build-app/latest-linux.yml artifact/
           cp -f build-app/vmgc-*.AppImage artifact/
-          cp -f build-app/electron_*_amd64.snap artifact/
+          cp -f build-app/vmgc-*.snap artifact/
         
       - name: Build Windows
         if: runner.os == 'windows'
