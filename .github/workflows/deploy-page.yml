@@ -110,7 +110,7 @@ jobs:
         with:
           # Upload entire repository
           name: ${{ runner.os }}
-          path: "./build-app"
+          path: "../build-app"
 
 
   # Deployment job
