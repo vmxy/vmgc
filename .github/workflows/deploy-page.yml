@@ -146,6 +146,8 @@ jobs:
       
       - name: merge
         run: |
+          pwd
+          echo "============"
           ls
           echo "=============="
           cd ../
