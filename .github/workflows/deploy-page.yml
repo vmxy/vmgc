@@ -93,14 +93,11 @@ jobs:
           xcopy ${{ env.APP_NAME }} project /E/I
           move github-pages app
           dir
-          cd project
-          dir
-          cd ../
           copy project\build\electron\package.json .
           mkdir app\electron
           copy project\build\electron\*.js app\electron
           cd app
-          tar -xf artifact.tar && rm -rf artifact.tar
+          tar -xf artifact.tar && del artifact.tar
           cd ..
           pwd
           yarn install
