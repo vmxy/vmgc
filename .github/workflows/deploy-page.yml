@@ -153,12 +153,12 @@ jobs:
         #  cp -r macOS/* github-pages
         #  cp -r Windows/* github-pages
       
-      - name: Upload pages artifact
-        uses: actions/upload-pages-artifact@v1
+      #- name: Upload pages artifact
+      #  uses: actions/upload-pages-artifact@v1
         #uses: actions/upload-artifact@v3
-        with:
+      #  with:
           # Upload entire repository
-          path: "./github-pages"
+      #    path: "./github-pages"
 
   # Deployment job
   deploy:
