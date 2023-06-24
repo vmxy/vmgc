@@ -121,9 +121,9 @@ jobs:
           ls
           cd build-app && ls  && cd ..
           mkdir artifact
-          cp -f build-app\latest.yml artifact\
-          cp -f build-app\vmgc-*.exe artifact\
-          cp -f build-app\vmgc-*.exe.blockmap artifact\
+          copy build-app\latest.yml artifact\
+          copy build-app\vmgc-*.exe artifact\
+          copy build-app\vmgc-*.exe.blockmap artifact\
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
