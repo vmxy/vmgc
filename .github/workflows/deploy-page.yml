@@ -144,19 +144,24 @@ jobs:
         with:
           path: ./
 
-      - name: Linux
+      - name: Handle
         run: |
-          echo "handle linux"
+          echo ""===========handle github-pages"
+          cd github-pages
+          tar -xf artifact.tar && rm artifact.tar
+          ls
+          cd ..
+          echo "===========handle linux"
           cd Linux
           tar -xf artifact.tar && rm artifact.tar
           ls
           cd ..
-          echo "handle macOS"
+          echo "===========handle macOS"
           cd macOS
           tar -xf artifact.tar && rm artifact.tar
           ls    
           cd ..  
-          echo "handle Windows"
+          echo "===========handle Windows"
           cd Windows
           tar -xf artifact.tar && rm artifact.tar
           ls    
