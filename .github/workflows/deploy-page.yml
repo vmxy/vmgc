@@ -146,7 +146,7 @@ jobs:
 
       - name: Handle
         run: |
-          echo ""===========handle github-pages"
+          echo "===========handle github-pages"
           cd github-pages
           tar -xf artifact.tar && rm artifact.tar
           ls
