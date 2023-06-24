@@ -1,5 +1,5 @@
 {
-  "name": "io-video",
+  "name": "tvshow",
   "version": "1.0.0",
   "author": "vmxy",
   "main": "app/electron/electron.js",
@@ -14,8 +14,8 @@
     "electron-builder": "^23.6.0"
   },
   "build": {
-    "productName": "io-video",
-    "appId": "io.vmxy.io-video",
+    "productName": "tvshow",
+    "appId": "io.vmxy.tvshow",
     "copyright": "vmxy",
     "directories": {
       "output": "build-app"
