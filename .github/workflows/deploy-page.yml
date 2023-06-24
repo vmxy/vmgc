@@ -172,9 +172,10 @@ jobs:
           pwd
           echo "============merge=============="
           ls -lh
-          mkdir github-pages/linux && cp Linux/* github-pages/linux
-          mkdir github-pages/macos && cp macOS/* github-pages/macos
-          mkdir github-pages/windows && cp Windows/* github-pages/windows
+          mkdir github-pages/apps
+          cp Linux/* github-pages/apps
+          cp macOS/* github-pages/apps
+          cp Windows/* github-pages/apps
           echo "============show github-pages=============="
           cd github-pages && ls -lh
       
