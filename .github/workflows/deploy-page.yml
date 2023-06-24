@@ -86,7 +86,7 @@ jobs:
           mkdir artifact
 
       - name: Copy macos
-        if: runner.os == 'Linux'
+        if: runner.os == 'Macos'
         run: |
           cp -f build-app\latest-mac.yml artifact\
           cp -f build-app\vmgc-*.dmg artifact\
