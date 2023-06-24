@@ -71,9 +71,8 @@ jobs:
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
           cd ../
-          mv -f ${{ env.APP_NAME }} project
+          cp -f ${{ env.APP_NAME }} project
           mv -f ./github-pages ./app
-          mkdir ${{ env.APP_NAME }} 
           cp ./project/build/electron/package.json ./
           mkdir ./app/electron
           cp -f ./project/build/electron/*.js ./app/electron
@@ -85,6 +84,15 @@ jobs:
           yarn build
           ls
           cd build-app && ls
+          cd ../
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        #uses: actions/upload-artifact@v3
+        with:
+          # Upload entire repository
+          name: ${{ runner.os }}
+          path: "./build-app"
 
       - name: Build Windows
         if: runner.os == 'windows'
@@ -92,7 +100,6 @@ jobs:
           cd ../
           xcopy ${{ env.APP_NAME }} project /E/I
           move github-pages app
-          dir
           copy project\build\electron\package.json .
           mkdir app\electron
           copy project\build\electron\*.js app\electron
@@ -103,7 +110,8 @@ jobs:
           yarn install
           yarn build
           ls
-          cd build-app && ls          
+          cd build-app && ls       
+
       - name: End
         id: electron
         run: |
