@@ -147,10 +147,11 @@ jobs:
       
       - name: merge
         run: |
+          cd ../
           ls
-          cp -r Linux/* github-pages
-          cp -r macOS/* github-pages
-          cp -r Windows/* github-pages
+        #  cp -r Linux/* github-pages
+        #  cp -r macOS/* github-pages
+        #  cp -r Windows/* github-pages
       
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
