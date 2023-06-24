@@ -133,6 +133,23 @@ jobs:
           name: ${{ runner.os }}
           path: "../artifact"
 
+  merge-artifact:
+    environment:
+      name: github-pages
+    runs-on: ubuntu-latest
+    needs: [build, electron]
+    steps:
+      - run: cd ../
+      - name: Download
+        uses: actions/download-artifact@v3
+        with:
+          path: ../
+      
+      - name: merge
+        run: |
+          ls
+          cd .. && ls
+      
 
   # Deployment job
   deploy:
