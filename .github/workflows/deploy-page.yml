@@ -85,14 +85,6 @@ jobs:
           ls
           cd build-app && ls
           cd ../
-      
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        #uses: actions/upload-artifact@v3
-        with:
-          # Upload entire repository
-          name: ${{ runner.os }}
-          path: "./build-app"
 
       - name: Build Windows
         if: runner.os == 'windows'
@@ -112,10 +104,13 @@ jobs:
           ls
           cd build-app && ls       
 
-      - name: End
-        id: electron
-        run: |
-          echo "end"
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        #uses: actions/upload-artifact@v3
+        with:
+          # Upload entire repository
+          name: ${{ runner.os }}
+          path: "./build-app"
 
 
   # Deployment job
