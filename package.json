@@ -50,7 +50,7 @@
     "formatx": "soy prettier-format",
     "format": "run-s format:*",
     "format:js": " prettier --write \"src/**/*.(ts|js|vue|css|less|scss)\"  ",
-    "commit": "soy git-commit",
+    "commitx": "soy git-commit",
     "cleanup": "soy cleanup",
     "update-pkg": "soy update-pkg",
     "releasex": "soy release",
