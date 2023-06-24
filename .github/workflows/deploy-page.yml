@@ -139,14 +139,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, electron]
     steps:
-      - run: cd ../
       - name: Download
         uses: actions/download-artifact@v3
         with:
-          path: ../
+          path: ./
       
       - name: merge
         run: |
+          ls
+          echo "=============="
           cd ../
           ls
         #  cp -r Linux/* github-pages
