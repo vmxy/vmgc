@@ -4,7 +4,8 @@ on:
     branches:
       - dev
 env:
-  APP_NAME: vmgc
+  Project_Name: vmgc
+  App_Name: tvshow
 permissions:
   contents: read
   pages: write
@@ -70,7 +71,7 @@ jobs:
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
           cd ../
-          cp -r ${{ env.APP_NAME }} project
+          cp -r ${{ env.Project_Name }} project
           mv -f ./github-pages ./app
           cp ./project/build/electron/package.json ./
           mkdir ./app/electron
@@ -90,24 +91,24 @@ jobs:
         run: |
           cd ../
           cp -f build-app/latest-mac.yml artifact/
-          cp -f build-app/vmgc-*.dmg artifact/
-          cp -f build-app/vmgc-*.dmg.blockmap artifact/
-          cp -f build-app/vmgc-*.zip artifact/
-          cp -f build-app/vmgc-*.zip.blockmap artifact/
+          cp -f build-app/*.dmg artifact/
+          cp -f build-app/*.dmg.blockmap artifact/
+          cp -f build-app/*.zip artifact/
+          cp -f build-app/*.zip.blockmap artifact/
           
       - name: Copy Linux
         if: runner.os == 'Linux'
         run: |
           cd ../
           cp -f build-app/latest-linux.yml artifact/
-          cp -f build-app/vmgc-*.AppImage artifact/
-          cp -f build-app/vmgc-*.snap artifact/
+          cp -f build-app/*.AppImage artifact/
+          cp -f build-app/*.snap artifact/
         
       - name: Build Windows
         if: runner.os == 'windows'
         run: |
           cd ../
-          xcopy ${{ env.APP_NAME }} project /E/I
+          xcopy ${{ env.Project_Name }} project /E/I
           move github-pages app
           copy project\build\electron\package.json .
           mkdir app\electron
@@ -122,8 +123,8 @@ jobs:
           cd build-app && ls  && cd ..
           mkdir artifact
           copy build-app\latest.yml artifact\
-          copy build-app\vmgc-*.exe artifact\
-          copy build-app\vmgc-*.exe.blockmap artifact\
+          copy build-app\*.exe artifact\
+          copy build-app\*.exe.blockmap artifact\
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
