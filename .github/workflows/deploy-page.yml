@@ -82,12 +82,13 @@ jobs:
           yarn install
           yarn build
           ls
-          cd build-app && ls && cd ..
+          cd build-app && ls && cd ../
           mkdir artifact
 
       - name: Copy macos
         if: runner.os == 'Macos'
         run: |
+          cd ../
           cp -f build-app\latest-mac.yml artifact\
           cp -f build-app\vmgc-*.dmg artifact\
           cp -f build-app\vmgc-*.dmg.blockmap artifact\
@@ -97,6 +98,7 @@ jobs:
       - name: Copy Linux
         if: runner.os == 'Linux'
         run: |
+          cd ../
           cp -f build-app\latest-linux.yml artifact\
           cp -f build-app\vmgc-*.AppImage artifact\
           cp -f build-app\electron_*_amd64.snap artifact\
