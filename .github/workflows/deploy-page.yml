@@ -89,19 +89,19 @@ jobs:
         if: runner.os == 'Macos'
         run: |
           cd ../
-          cp -f build-app\latest-mac.yml artifact\
-          cp -f build-app\vmgc-*.dmg artifact\
-          cp -f build-app\vmgc-*.dmg.blockmap artifact\
-          cp -f build-app\vmgc-*.zip artifact\
-          cp -f build-app\vmgc-*.zip.blockmap artifact\     
+          cp -f build-app/latest-mac.yml artifact/
+          cp -f build-app/vmgc-*.dmg artifact/
+          cp -f build-app/vmgc-*.dmg.blockmap artifact/
+          cp -f build-app/vmgc-*.zip artifact/
+          cp -f build-app/vmgc-*.zip.blockmap artifact/
           
       - name: Copy Linux
         if: runner.os == 'Linux'
         run: |
           cd ../
-          cp -f build-app\latest-linux.yml artifact\
-          cp -f build-app\vmgc-*.AppImage artifact\
-          cp -f build-app\electron_*_amd64.snap artifact\
+          cp -f build-app/latest-linux.yml artifact/
+          cp -f build-app/vmgc-*.AppImage artifact/
+          cp -f build-app/electron_*_amd64.snap artifact/
         
       - name: Build Windows
         if: runner.os == 'windows'
