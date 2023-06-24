@@ -152,6 +152,7 @@ jobs:
           cp Linux/* github-pages
           cp macOS/* github-pages
           cp Windows/* github-pages
+          cd github-pages && ls -lh
       
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
