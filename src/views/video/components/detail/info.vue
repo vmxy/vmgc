@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="v-detail-info">
     <n-grid cols="10" :collapsed="false" responsive="screen" :item-responsive="true" x-gap="10" y-gap="20">
       <n-gi span="10 xs:10 s:0" class="text-align-center">
         <g-image class="info-logo" :src="detail.logo" :alt="detail.desc" />
@@ -32,10 +32,14 @@
                 {{ detail.desc }}
               </n-ellipsis>
               <n-form-item :label="$t('video.detail.director')">
-               <g-a v-for="(name, idx) in detail.directors" :href="`/search?q=${name}`">{{ name || '' }}{{ idx < detail.directors.length - 1 ? "/" : "" }} </g-a> 
+                <g-a v-for="(name, idx) in detail.directors" :href="`/search?q=${name}`"
+                  >{{ name || "" }}{{ idx < detail.directors.length - 1 ? "/" : "" }}
+                </g-a>
               </n-form-item>
               <n-form-item :label="$t('video.detail.actor')">
-                <g-a v-for="(name, idx) in detail.actors" :href="`/search?q=${name}`">{{ name || '' }}{{ idx < detail.actors.length - 1 ? "/" : "" }} </g-a> 
+                <g-a v-for="(name, idx) in detail.actors" :href="`/search?q=${name}`"
+                  >{{ name || "" }}{{ idx < detail.actors.length - 1 ? "/" : "" }}
+                </g-a>
               </n-form-item>
               <n-form-item :label="$t('video.detail.year')">
                 {{ detail.year }}
@@ -109,19 +113,24 @@ watch(props.detail, async (newVal) => {
 </script>
 
 <style scoped lang="scss">
-.info-logo {
-  max-height: 300px;
-  object-fit: cover;
-}
-.actions {
-  :deep(svg.inline-block) {
-    margin-top: -8px;
-    margin-left: -5px;
+.v-detail-info {
+  .info-logo {
+    max-height: 300px;
+    object-fit: cover;
   }
+  :deep(.n-form-item .n-form-item-blank) {
+    flex-wrap: wrap; 
+  }
+  .actions {
+    :deep(svg.inline-block) {
+      margin-top: -8px;
+      margin-left: -5px;
+    }
 
-  :deep(.n-button) {
-    font-size: 16px;
-    top: -0.1em;
+    :deep(.n-button) {
+      font-size: 16px;
+      top: -0.1em;
+    }
   }
 }
 </style>
