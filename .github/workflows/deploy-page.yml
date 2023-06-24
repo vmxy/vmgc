@@ -144,33 +144,33 @@ jobs:
         with:
           path: ./
 
-      - name: Window
-        if: runner.os == 'windows'
-        run: |
-          cd Windows
-          tar -xf artifact.tar && del artifact.tar
-          ls
-      - name: macOS
-        if: runner.os == 'macOS'
-        run: |
-          cd macOS
-          tar -xf artifact.tar && rm artifact.tar
-          ls
       - name: Linux
-        if: runner.os == 'Linux'
         run: |
+          echo "handle linux"
           cd Linux
           tar -xf artifact.tar && rm artifact.tar
-          ls      
-              
+          ls
+          cd ..
+          echo "handle macOS"
+          cd macOS
+          tar -xf artifact.tar && rm artifact.tar
+          ls    
+          cd ..  
+          echo "handle Windows"
+          cd Windows
+          tar -xf artifact.tar && rm artifact.tar
+          ls    
+          cd .. 
+
       - name: merge
         run: |
           pwd
-          echo "============"
+          echo "============merge=============="
           ls -lh
           cp Linux/* github-pages
           cp macOS/* github-pages
           cp Windows/* github-pages
+          echo "============show github-pages=============="
           cd github-pages && ls -lh
       
       - name: Upload pages artifact
