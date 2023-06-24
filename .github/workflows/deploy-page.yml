@@ -85,18 +85,22 @@ jobs:
           cd build-app && ls && cd ..
           mkdir artifact
 
-          echo "macos"
+      - name: Copy macos
+        if: runner.os == 'Linux'
+        run: |
           cp -f build-app\latest-mac.yml artifact\
           cp -f build-app\vmgc-*.dmg artifact\
           cp -f build-app\vmgc-*.dmg.blockmap artifact\
           cp -f build-app\vmgc-*.zip artifact\
-          cp -f build-app\vmgc-*.zip.blockmap artifact\
-
-          echo "linux"
+          cp -f build-app\vmgc-*.zip.blockmap artifact\     
+          
+      - name: Copy Linux
+        if: runner.os == 'Linux'
+        run: |
           cp -f build-app\latest-linux.yml artifact\
           cp -f build-app\vmgc-*.AppImage artifact\
           cp -f build-app\electron_*_amd64.snap artifact\
-
+        
       - name: Build Windows
         if: runner.os == 'windows'
         run: |
