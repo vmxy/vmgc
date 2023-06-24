@@ -17,11 +17,11 @@
 
     <div v-if="!app.inSSR" class="flex justify-end h-full w-full">
       <global-search />
-      <!--global-goback /-->
     </div>
 
     <div v-if="showQuickMenu" class="flex justify-end h-full mr-20px">
       <global-refresh />
+      <global-goback />
       <!--github-site /-->
       <full-screen />
       <theme-mode />

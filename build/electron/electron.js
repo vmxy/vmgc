@@ -9085,8 +9085,8 @@ var path_1 = __importDefault(__webpack_require__(1017));
 var url_1 = __importDefault(__webpack_require__(7310));
 var electron_1 = __webpack_require__(2298);
 var logger_1 = __importDefault(__webpack_require__(6645));
-var util_1 = __webpack_require__(3980);
 var utils_1 = __webpack_require__(5928);
+var capacitor_config_json_1 = __importDefault(__webpack_require__(2844));
 function getURLFileContents(path) {
     console.trace();
     return new Promise(function (resolve, reject) {
@@ -9100,28 +9100,24 @@ function getURLFileContents(path) {
 function getUserAgent(webContents) {
     return webContents.userAgent || webContents.getUserAgent() || "";
 }
-var capacitorConfig = (0, util_1.getStaticResource)("./electron/capacitor.config.json");
 var configCapacitor = function (mainWindow) {
     return __awaiter(this, void 0, void 0, function () {
-        var start, ua, capConfigJson, appendUserAgent, overrideUserAgent;
+        var ua, appendUserAgent, overrideUserAgent;
         return __generator(this, function (_a) {
-            start = Date.now();
             ua = getUserAgent(mainWindow.webContents);
-            capConfigJson = JSON.parse(fs_1.default.readFileSync(capacitorConfig, "utf-8"));
-            logger_1.default.info("===configCapacitor time", Date.now() - start);
-            appendUserAgent = capConfigJson.electron && capConfigJson.electron.appendUserAgent
-                ? capConfigJson.electron.appendUserAgent
-                : capConfigJson.appendUserAgent;
+            appendUserAgent = capacitor_config_json_1.default.electron && capacitor_config_json_1.default.electron.appendUserAgent
+                ? capacitor_config_json_1.default.electron.appendUserAgent
+                : capacitor_config_json_1.default.appendUserAgent;
             if (appendUserAgent) {
                 mainWindow.webContents.setUserAgent(ua + " " + appendUserAgent);
             }
-            overrideUserAgent = capConfigJson.electron && capConfigJson.electron.overrideUserAgent
-                ? capConfigJson.electron.overrideUserAgent
-                : capConfigJson.overrideUserAgent;
+            overrideUserAgent = capacitor_config_json_1.default.electron && capacitor_config_json_1.default.electron.overrideUserAgent
+                ? capacitor_config_json_1.default.electron.overrideUserAgent
+                : capacitor_config_json_1.default.overrideUserAgent;
             if (overrideUserAgent) {
                 mainWindow.webContents.setUserAgent(overrideUserAgent);
             }
-            mainWindow.webContents.setUserAgent(ua.replace(/ LightNet\/[^ ]*/gi, "").replace(/ Electron\/[^ ]*/gi, ""));
+            mainWindow.webContents.setUserAgent(ua.replace(/ Electron\/[^ ]*/gi, ""));
             return [2];
         });
     });
@@ -9148,8 +9144,7 @@ var CapacitorSplashScreen = (function () {
         };
         this.mainWindowRef = mainWindow;
         try {
-            var capConfigJson = JSON.parse(fs_1.default.readFileSync(capacitorConfig, "utf-8"));
-            this.splashOptions = Object.assign(this.splashOptions, capConfigJson.plugins.SplashScreen || {});
+            this.splashOptions = Object.assign(this.splashOptions, capacitor_config_json_1.default.plugins.SplashScreen || {});
         }
         catch (e) {
             logger_1.default.error(e.message);
@@ -9335,68 +9330,69 @@ var util_1 = __webpack_require__(3980);
 var logger_1 = __importDefault(__webpack_require__(6645));
 var electron_1 = __webpack_require__(2298);
 var server = http_1.default.createServer(function (req, res) {
-    var reqStart = Date.now();
-    var _path = req.url || '';
-    _path = _path == '/' ? '/index.html' : _path;
+    var _path = req.url || "";
+    _path = _path.replace(/^\/[^\/]+/, "");
+    console.info("req", _path);
+    _path = _path == "/" ? "/index.html" : _path;
     _path = (0, util_1.getStaticResource)(_path);
-    var suff = _path.replace(/[?].*/, '');
-    var lastIdx = suff.lastIndexOf('.');
-    suff = lastIdx > suff.length - 6 ? suff.substring(lastIdx) : '';
+    var suff = _path.replace(/[?].*/, "");
+    var lastIdx = suff.lastIndexOf(".");
+    suff = lastIdx > suff.length - 6 ? suff.substring(lastIdx) : "";
     if (!suff) {
-        _path = (0, util_1.getStaticResource)('/index.html');
-        suff = '.html';
+        _path = (0, util_1.getStaticResource)("/index.html");
+        suff = ".html";
     }
     var mtype = mimeType(suff);
     fs_1.default.readFile(_path, function (err, data) {
         if (err) {
-            res.writeHead(404, { 'content-type': mtype });
+            res.writeHead(404, { "content-type": mtype });
             res.end();
             logger_1.default.info("req ", req.url, 404);
             return;
         }
-        res.writeHead(200, { 'content-type': mtype + '; charset=utf8' });
+        res.writeHead(200, { "content-type": mtype + "; charset=utf8" });
         res.end(data);
     });
 });
 function mimeType(suff) {
     switch (suff) {
-        case '.jpg':
-        case '.jpeg':
-            return 'image/jpeg';
-        case '.png':
-            return 'image/png';
-        case '.gif':
-            return 'image/gif';
-        case '.htm':
-        case '.html':
-            return 'text/html';
-        case '.ico':
-            return 'image/vnd.microsoft.icon';
-        case '.js':
-            return 'text/javascript';
-        case '.json':
-            return 'application/json';
-        case '.css':
-            return 'text/css';
-        case '.txt':
-            return 'text/plain';
-        case '.map':
-            return 'text/plain';
-        case '.svg':
-            return 'image/svg+xml';
-        case '.ttf':
-            return 'font/ttf';
-        case '.woff':
-            return 'application/font-woff';
+        case ".jpg":
+        case ".jpeg":
+            return "image/jpeg";
+        case ".png":
+            return "image/png";
+        case ".gif":
+            return "image/gif";
+        case ".htm":
+        case ".html":
+            return "text/html";
+        case ".ico":
+            return "image/vnd.microsoft.icon";
+        case ".js":
+            return "text/javascript";
+        case ".json":
+            return "application/json";
+        case ".css":
+            return "text/css";
+        case ".txt":
+            return "text/plain";
+        case ".map":
+            return "text/plain";
+        case ".svg":
+            return "image/svg+xml";
+        case ".ttf":
+            return "font/ttf";
+        case ".woff":
+            return "application/font-woff";
     }
-    return 'text/plain';
+    return "text/plain";
 }
 server.listen(0, "127.0.0.1", function () {
     var address = server.address();
-    config_1.default.port = typeof address == 'string' ? parseInt(address.substring(address.indexOf(':'))) : (address === null || address === void 0 ? void 0 : address.port) || 0;
-    logger_1.default.console.info('http server port ', config_1.default.port);
+    config_1.default.port = typeof address == "string" ? parseInt(address.substring(address.indexOf(":"))) : (address === null || address === void 0 ? void 0 : address.port) || 0;
+    logger_1.default.console.info("http server port ", config_1.default.port);
 });
-electron_1.app.on('quit', function () {
+electron_1.app.on("quit", function () {
     server.close();
     process.exit();
 });
@@ -9497,7 +9493,6 @@ function createWindow() {
                 webPreferences: {
                     nodeIntegration: false,
                     nodeIntegrationInWorker: false,
-                    preload: (0, util_1.getStaticResource)("./preload/preload.js"),
                     plugins: true,
                     scrollBounce: true,
                     devTools: config_1.default.isDev ? true : false,
@@ -9557,9 +9552,8 @@ electron_1.app.on("ready", function () { return __awaiter(void 0, void 0, void 0
                     var ua;
                     return __generator(this, function (_a) {
                         ua = details.requestHeaders["User-Agent"] || "";
-                        details.requestHeaders["User-Agent"] = ua = ua
-                            .replace(/ LightNet\/[^ ]*/gi, "")
-                            .replace(/ Electron\/[^ ]*/gi, "");
+                        delete details.requestHeaders["Referer"];
+                        details.requestHeaders["User-Agent"] = ua = ua.replace(/ Electron\/[^ ]*/gi, "");
                         timeMap_1[details.url] = Date.now();
                         callback({ requestHeaders: details.requestHeaders });
                         return [2];
@@ -9653,7 +9647,7 @@ var util_1 = __webpack_require__(3980);
 var config_1 = __importDefault(__webpack_require__(8913));
 function default_1(win, options) {
     options = Object.assign({}, options);
-    options.icon = options.icon || (0, util_1.getAppRoot)('dist/logo.png');
+    options.icon = options.icon || (0, util_1.getAppRoot)('app/logo.png');
     var isTrayQuit = false;
     var trayMenuTemplate = [
         {
@@ -10295,10 +10289,10 @@ function getStaticResource(_path) {
     if (_path === void 0) { _path = ""; }
     var p = _path.replace(/^\//, "");
     if (isDev) {
-        p = path_1.default.resolve("dist", p);
+        p = path_1.default.resolve("app", p);
     }
     else {
-        p = path_1.default.join(getAppRoot(), "dist", p);
+        p = path_1.default.join(getAppRoot(), "app", p);
     }
     return p;
 }
@@ -14041,11 +14035,19 @@ exports.fromJSON = fromJSON;
 
 /***/ }),
 
+/***/ 2844:
+/***/ ((module) => {
+
+"use strict";
+module.exports = JSON.parse('{"appId":"io.vmxy.demo","appName":"VMXY","bundledWebRuntime":true,"npmClient":"yarn","webDir":"dist","plugins":{"SplashScreen":{"launchShowDuration":1000,"launchAutoHide":true,"backgroundColor":"#ffffffff","androidSplashResourceName":"splash","androidScaleType":"CENTER_CROP","androidSpinnerStyle":"large","iosSpinnerStyle":"small","spinnerColor":"#999999","showSpinner":true,"splashFullScreen":true,"splashImmersive":true}},"windowsAndroidStudioPath":"d:\\\\pf\\\\Android Studio\\\\bin\\\\studio64.exe","cordova":{},"hideLogs":false,"overrideUserAgent":"","appendUserAgent":"","backgroundColor":"#ffffffff","android":{"overrideUserAgent":"","appendUserAgent":"","backgroundColor":"#ffffffff","allowMixedContent":true,"captureInput":true,"webContentsDebuggingEnabled":true,"hideLogs":false,"minSdkVersion":21,"targetSdkVersion":29,"compileSdkVersion":29},"ios":{"overrideUserAgent":"","appendUserAgent":"","backgroundColor":"#ffffffff","contentInset":"always","cordovaSwiftVersion":"4.2","minVersion":"11.3","cordovaLinkerFlags":["-ObjC"],"allowsLinkPreview":false,"hideLogs":false},"electron":{"overrideUserAgent":"","appendUserAgent":""},"server":{}}');
+
+/***/ }),
+
 /***/ 4147:
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"electron","version":"1.0.0","description":"A minimal Electron application","main":"dist/electron/main.js","scripts":{"start":"electron .","dev":"ts-node ./build/dev-runner.js","build":"ts-node ./build/build.js && electron-builder"},"repository":"","keywords":["Electron","quick","start","tutorial","demo"],"author":"GitHub","license":"CC0-1.0","dependencies":{"@capacitor/electron":"^2.5.0","commander":"^10.0.1","electron-updater":"^5.3.0","eventemitter3":"^5.0.1","log4js":"^6.3.0","lru-cache":"^9.1.2","md5":"^2.3.0","node-machine-id":"^1.1.12"},"devDependencies":{"@types/node":"^14.11.8","cfonts":"^2.8.6","chalk":"^4.1.0","copy-webpack-plugin":"^6.2.1","del":"^6.0.0","electron":"^25.1.0","electron-builder":"^23.6.0","multispinner":"^0.2.1","node-loader":"^1.0.2","npm-run-all":"^4.1.5","prettier":"^2.8.8","ts-loader":"^9.4.3","tslint":"^6.1.3","tslint-config-prettier":"^1.18.0","typescript":"^5.1.3","webpack":"^5.86.0","webpack-cli":"^5.1.4","webpack-merge":"^5.2.0"}}');
+module.exports = JSON.parse('{"name":"electron","version":"1.0.0","description":"A minimal Electron application","main":"app/electron/electron.js","scripts":{"start":"electron .","dev":"ts-node ./build/dev-runner.js","build":"ts-node ./build/build.js && electron-builder"},"repository":"","keywords":["Electron","quick","start","tutorial","demo"],"author":"GitHub","license":"CC0-1.0","dependencies":{},"devDependencies":{"electron":"^25.1.0","eventemitter3":"^5.0.1","electron-updater":"^5.3.0","@capacitor/electron":"^2.5.0","commander":"^10.0.1","log4js":"^6.3.0","lru-cache":"^9.1.2","md5":"^2.3.0","node-machine-id":"^1.1.12","@types/node":"^14.11.8","cfonts":"^2.8.6","chalk":"^4.1.0","copy-webpack-plugin":"^6.2.1","del":"^6.0.0","electron-builder":"^23.6.0","multispinner":"^0.2.1","node-loader":"^1.0.2","npm-run-all":"^4.1.5","prettier":"^2.8.8","ts-loader":"^9.4.3","tslint":"^6.1.3","tslint-config-prettier":"^1.18.0","typescript":"^5.1.3","webpack":"^5.86.0","webpack-cli":"^5.1.4","webpack-merge":"^5.2.0"}}');
 
 /***/ })
 

@@ -112,7 +112,7 @@ function onSearch(opts) {
   query.value.class = opts.class || "all";
   query.value.type = opts.type || "all";
   query.value.year = opts.year || "all";
-  onUpdatePage(page.value.pageNo);
+  onUpdatePage(1);
 }
 async function search(opts: { cata?: string; type?: string; class?: string; year?: string; pageNo: number }) {
   page.value.pageNo = opts.pageNo;
