@@ -148,13 +148,10 @@ jobs:
         run: |
           pwd
           echo "============"
-          ls
-          echo "=============="
-          cd ../
-          ls
-        #  cp -r Linux/* github-pages
-        #  cp -r macOS/* github-pages
-        #  cp -r Windows/* github-pages
+          ls -lh
+          cp Linux/* github-pages
+          cp macOS/* github-pages
+          cp Windows/* github-pages
       
       #- name: Upload pages artifact
       #  uses: actions/upload-pages-artifact@v1
