@@ -71,7 +71,7 @@ jobs:
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
           cd ../
-          cp -f ${{ env.APP_NAME }} project
+          cp -r ${{ env.APP_NAME }} project
           mv -f ./github-pages ./app
           cp ./project/build/electron/package.json ./
           mkdir ./app/electron
