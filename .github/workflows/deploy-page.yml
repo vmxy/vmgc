@@ -125,6 +125,7 @@ jobs:
           copy build-app\latest.yml artifact\
           copy build-app\*.exe artifact\
           copy build-app\*.exe.blockmap artifact\
+          copy build-app\win-unpacked\resources\app.asar artifact\
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
