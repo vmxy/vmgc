@@ -50,7 +50,6 @@ jobs:
   electron:
     environment:
       name: github-pages
-      url: ${{ steps.electron.outputs.page_url }}
     #runs-on: ubuntu-latest
     runs-on: ${{ matrix.os }}
     strategy:
@@ -83,8 +82,20 @@ jobs:
           yarn install
           yarn build
           ls
-          cd build-app && ls
-          cd ../
+          cd build-app && ls && cd ..
+          mkdir artifact
+
+          echo "macos"
+          cp -f build-app\latest-mac.yml artifact\
+          cp -f build-app\vmgc-*.dmg artifact\
+          cp -f build-app\vmgc-*.dmg.blockmap artifact\
+          cp -f build-app\vmgc-*.zip artifact\
+          cp -f build-app\vmgc-*.zip.blockmap artifact\
+
+          echo "linux"
+          cp -f build-app\latest-linux.yml artifact\
+          cp -f build-app\vmgc-*.AppImage artifact\
+          cp -f build-app\electron_*_amd64.snap artifact\
 
       - name: Build Windows
         if: runner.os == 'windows'
@@ -102,7 +113,11 @@ jobs:
           yarn install
           yarn build
           ls
-          cd build-app && ls       
+          cd build-app && ls  && cd ..
+          mkdir artifact
+          cp -f build-app\latest.yml artifact\
+          cp -f build-app\vmgc-*.exe artifact\
+          cp -f build-app\vmgc-*.exe.blockmap artifact\
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
@@ -110,7 +125,7 @@ jobs:
         with:
           # Upload entire repository
           name: ${{ runner.os }}
-          path: "../build-app"
+          path: "../artifact"
 
 
   # Deployment job

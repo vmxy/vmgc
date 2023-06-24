@@ -46,7 +46,7 @@
     },
     "mac": {
       "icon": "./app/logo.png",
-      "artifactName": "${productName}-release-v${version}.${ext}"
+      "artifactName": "${productName}-v${version}.${ext}"
     },
     "win": {
       "target": [
@@ -59,7 +59,7 @@
         }
       ],
       "icon": "./app/logo.png",
-      "artifactName": "${productName}-release-v${version}.${ext}"
+      "artifactName": "${productName}-v${version}.${ext}"
     },
     "nsis": {
       "oneClick": false,
@@ -68,7 +68,8 @@
       "allowToChangeInstallationDirectory": true
     },
     "linux": {
-      "icon": "./app/logo.png"
+      "icon": "./app/logo.png",
+      "artifactName": "${productName}-v${version}.${ext}"
     }
   },
   "license": "none",
