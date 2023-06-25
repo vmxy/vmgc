@@ -14463,18 +14463,17 @@ var fs_1 = __importDefault(__webpack_require__(7147));
 var util_1 = __webpack_require__(3980);
 var path_1 = __importDefault(__webpack_require__(1017));
 var logger_1 = __importDefault(__webpack_require__(6645));
-var AppUpdateUrl = process.env.APP_UPDATE_URL || "";
-var AppVersion = process.env.APP_VERSION || "";
-AppUpdateUrl && console.info("AppUpdateUrl", AppUpdateUrl);
+var AppUpdateUrl = globalThis.AppUpdateUrl || "https://ai-peer.github.io/vmgc/apps";
 function check() {
     return __awaiter(this, void 0, void 0, function () {
-        var updateUrl, version, vs1, vs2, i, v1, v2, buf, tmp, base, saveDir;
+        var updateUrl, localVersion, latestVersion, isUpdate, contentLength, buf, base, saveDir;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     updateUrl = AppUpdateUrl || "";
-                    logger_1.default.info("App", AppVersion, AppUpdateUrl);
-                    if (!updateUrl || !AppVersion)
+                    localVersion = (0, util_1.getLatestVersion)();
+                    logger_1.default.info("App", localVersion, AppUpdateUrl, globalThis.AppUpdateUrl);
+                    if (!updateUrl)
                         return [2];
                     return [4, (0, electron_fetch_1.default)(updateUrl + "/latest.yml")
                             .then(function (res) {
@@ -14493,25 +14492,33 @@ function check() {
                             return ((_a = kv[1]) === null || _a === void 0 ? void 0 : _a.trim()) || "";
                         })];
                 case 1:
-                    version = _a.sent();
-                    vs1 = version.split("."), vs2 = AppVersion.split(".");
-                    for (i = 0; i < vs1.length; i++) {
-                        v1 = vs1[i], v2 = vs2[i];
-                        if (v1 == v2)
-                            continue;
-                        if (v2 >= v1)
-                            return [2];
+                    latestVersion = _a.sent();
+                    logger_1.default.info("new app", localVersion, latestVersion);
+                    isUpdate = !localVersion;
+                    if (!isUpdate) {
+                        isUpdate = (0, util_1.isUpdated)(latestVersion, localVersion);
                     }
-                    return [4, (0, electron_fetch_1.default)(updateUrl + "/app-v".concat(version, ".asar"), {})
-                            .then(function (res) { return res.arrayBuffer(); })
+                    logger_1.default.info("==========download asar", isUpdate);
+                    if (!isUpdate)
+                        return [2];
+                    contentLength = 0;
+                    return [4, (0, electron_fetch_1.default)(updateUrl + "/app-v".concat(latestVersion, ".asar"), {})
+                            .then(function (res) {
+                            if (res.status != 200)
+                                return Buffer.alloc(0);
+                            contentLength = parseInt(res.headers.get("content-length")) || 0;
+                            return res.arrayBuffer();
+                        })
                             .then(function (bf) { return Buffer.from(bf); })
                             .catch(function (err) { return Buffer.alloc(0); })];
                 case 2:
                     buf = _a.sent();
-                    tmp = "";
                     base = path_1.default.join((0, util_1.getAppRoot)(), "../");
-                    saveDir = path_1.default.join(base, "/app-v".concat(version, ".asar"));
+                    saveDir = path_1.default.join(base, "/app-v".concat(latestVersion, ".asa"));
+                    logger_1.default.info("save asar", saveDir, buf.byteLength, contentLength, buf.byteLength == contentLength);
                     fs_1.default.writeFileSync(saveDir, buf);
+                    fs_1.default.renameSync(saveDir, path_1.default.join(base, "/app-v".concat(latestVersion, ".asar")));
+                    logger_1.default.info("save asar ok");
                     return [2];
             }
         });
@@ -14668,7 +14675,7 @@ var filename = isWindows ? "log.log" : config_1.default.homedir("log.log");
 console.log("filename", filename);
 var layout = {
     type: "pattern",
-    pattern: "%[[%d{yyyy-MM-dd hh:mm:ss}] [%p] %c%] %m",
+    pattern: "[%d{yyyy-MM-dd hh:mm:ss}] [%p] %c %m",
 };
 (0, log4js_1.configure)({
     appenders: {
@@ -15120,7 +15127,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.buffer2array = exports.cycle = exports.random2Int = exports.bit2Int = exports.int2Bit = exports.string2Bit = exports.md5 = exports.getPage = exports.loadResource = exports.getResourceAbsPath = exports.getAppRoot = exports.getProjectDistPath = exports.getStaticResource = exports.getResourceBrowserPath = exports.isLinux = exports.isMac = exports.isWindows = void 0;
+exports.buffer2array = exports.cycle = exports.random2Int = exports.bit2Int = exports.int2Bit = exports.string2Bit = exports.md5 = exports.getPage = exports.loadResource = exports.getResourceAbsPath = exports.getAppRoot = exports.getProjectDistPath = exports.getStaticResource = exports.getLatestVersion = exports.isUpdated = exports.getResourceBrowserPath = exports.isLinux = exports.isMac = exports.isWindows = void 0;
 var config_1 = __importDefault(__webpack_require__(8913));
 var path_1 = __importDefault(__webpack_require__(1017));
 var fs_1 = __importDefault(__webpack_require__(7147));
@@ -15153,7 +15160,25 @@ exports.getResourceBrowserPath = getResourceBrowserPath;
 var Latests = {};
 var StaticResourceRoot = path_1.default.join(getAppRoot(), "app");
 logger_1.default.info("app root", getAppRoot());
-(function () {
+function isUpdated(newVersion, oldVersion) {
+    var isUpdate = false;
+    newVersion = (newVersion || "").trim();
+    oldVersion = (oldVersion || "").trim();
+    if (!newVersion)
+        return false;
+    if (newVersion == oldVersion)
+        return false;
+    var newVersions = newVersion.split(".").map(function (v) { return parseInt(v); }), oldVersions = oldVersion.split(".").map(function (v) { return parseInt(v); });
+    if (newVersions[0] > oldVersions[0])
+        isUpdate = true;
+    else if (newVersions[0] == oldVersions[0] && newVersions[1] > oldVersions[1])
+        isUpdate = true;
+    else if (newVersions[0] == oldVersions[0] && newVersions[1] == oldVersions[1] && newVersions[2] > oldVersions[2])
+        isUpdate = true;
+    return isUpdate;
+}
+exports.isUpdated = isUpdated;
+function getLatestVersion() {
     var base = path_1.default.join(getAppRoot(), "../");
     var files = fs_1.default.readdirSync(base) || [];
     files = files.filter(function (v) { return /^app-v/i.test(v) && /\.asar$/i.test(v); });
@@ -15162,17 +15187,23 @@ logger_1.default.info("app root", getAppRoot());
         .sort(function (a, b) {
         var s1 = a.split("."), s2 = b.split(".");
         for (var i = 0; i < s1.length; i++) {
-            var v1 = parseInt(s1[i]), v2 = parseInt(s2[i]);
+            var v1 = parseInt(s1[i]) || 0, v2 = parseInt(s2[i]) || 0;
             if (v1 == v2)
                 continue;
             return v2 - v1;
         }
         return 0;
     });
-    if (files.length > 0) {
-        StaticResourceRoot = path_1.default.join(base, "app-v" + files[0] + ".asar");
+    return files[0] || "";
+}
+exports.getLatestVersion = getLatestVersion;
+(function () {
+    var base = path_1.default.join(getAppRoot(), "../");
+    var version = getLatestVersion();
+    if (version) {
+        StaticResourceRoot = path_1.default.join(base, "app-v" + version + ".asar");
     }
-    logger_1.default.info("=====base url", base, files, StaticResourceRoot);
+    logger_1.default.info("=====base url", base, version, StaticResourceRoot);
 })();
 function getStaticResource(_path) {
     if (_path === void 0) { _path = ""; }
@@ -19017,7 +19048,7 @@ module.exports = JSON.parse('[["0","\\u0000",128],["a1","｡",62],["8140","　�
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"electron","version":"1.0.0","description":"A minimal Electron application","main":"app/electron/electron.js","scripts":{"start":"electron .","dev":"ts-node ./build/dev-runner.js","build":"ts-node ./build/build.js && electron-builder"},"repository":"","keywords":["Electron","quick","start","tutorial","demo"],"author":"GitHub","license":"CC0-1.0","dependencies":{},"devDependencies":{"electron-fetch":"^1.9.1","@capacitor/electron":"^2.5.0","@types/node":"^14.11.8","cfonts":"^2.8.6","chalk":"^4.1.0","commander":"^10.0.1","compressing":"^1.9.0","copy-webpack-plugin":"^6.2.1","del":"^6.0.0","electron":"^25.1.0","electron-builder":"^23.6.0","electron-updater":"^5.3.0","eventemitter3":"^5.0.1","log4js":"^6.3.0","lru-cache":"^9.1.2","md5":"^2.3.0","multispinner":"^0.2.1","node-loader":"^1.0.2","node-machine-id":"^1.1.12","npm-run-all":"^4.1.5","prettier":"^2.8.8","ts-loader":"^9.4.3","tslint":"^6.1.3","tslint-config-prettier":"^1.18.0","typescript":"^5.1.3","webpack":"^5.86.0","webpack-cli":"^5.1.4","webpack-merge":"^5.2.0"}}');
+module.exports = JSON.parse('{"name":"electron","version":"1.0.0","description":"A minimal Electron application","main":"app/electron/electron.js","scripts":{"start":"electron .","dev":"ts-node ./build/dev-runner.js","build":"ts-node ./build/build.js && electron-builder"},"repository":"","keywords":["Electron","quick","start","tutorial","demo"],"author":"GitHub","license":"CC0-1.0","dependencies":{},"devDependencies":{"@capacitor/electron":"^2.5.0","@types/node":"^14.11.8","cfonts":"^2.8.6","chalk":"^4.1.0","commander":"^10.0.1","copy-webpack-plugin":"^6.2.1","del":"^6.0.0","electron":"^25.1.0","electron-builder":"^23.6.0","electron-fetch":"^1.9.1","electron-updater":"^5.3.0","eventemitter3":"^5.0.1","log4js":"^6.3.0","lru-cache":"^9.1.2","md5":"^2.3.0","multispinner":"^0.2.1","node-loader":"^1.0.2","node-machine-id":"^1.1.12","npm-run-all":"^4.1.5","prettier":"^2.8.8","ts-loader":"^9.4.3","tslint":"^6.1.3","tslint-config-prettier":"^1.18.0","typescript":"^5.1.3","webpack":"^5.86.0","webpack-cli":"^5.1.4","webpack-merge":"^5.2.0"}}');
 
 /***/ })
 
