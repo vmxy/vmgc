@@ -1,5 +1,4 @@
 exports.default = async function (context) {
-  //console.log(context)
   const fs = require("fs");
   const localeDir = context.appOutDir + "/locales/";
 
