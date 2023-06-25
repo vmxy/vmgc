@@ -29,7 +29,7 @@ import * as service from "@/service";
 import { useTitle } from "@vueuse/core";
 import { VRec, VHot, VLine } from "../components";
 import { useAppStore, useVideoStore } from "@/store";
-import { sessionStg } from "@/utils";
+
 const app = useAppStore();
 const video = useVideoStore();
 const { proxy } = getCurrentInstance();
@@ -59,6 +59,7 @@ onMounted(async () => {
 });
 
 async function fetchDetail(id: string): Promise<any> {
+  if (!id) return;
   globalThis.$loadingBar?.start();
   let { data } = await service.fetchVideoRes(id);
   globalThis.$loadingBar?.finish();

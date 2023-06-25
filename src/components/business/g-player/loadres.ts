@@ -1,6 +1,6 @@
 let initScriptState = false;
 export async function initScript(callback?: () => void) {
-  if (initScriptState) return;
+  if (initScriptState) return callback && callback();
   initScriptState = true;
   //globalThis.Player = Player;
   await loadCss(

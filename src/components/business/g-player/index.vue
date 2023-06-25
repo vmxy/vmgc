@@ -38,7 +38,7 @@ const loading = ref(true);
 const playUrl = ref("");
 const videoRef = ref<HTMLElement>();
 const isDestroy = ref(false);
-const inIframe = import.meta.env.VITE_VIDEO_IF == "Y";
+const inIframe = false;// !!globalThis.env ? false : import.meta.env.VITE_VIDEO_IF == "Y";
 let player;
 
 function changePlayUrl(url) {
@@ -53,16 +53,18 @@ const destroy = () => {
   player = undefined;
 };
 async function init(urls: string[]) {
+  if (ssr) return;
   console.info("init=============", urls);
   if (!urls || urls.length < 1) return;
   let url = urls[0];
   if (!videoRef.value || !url) return;
   if (!!player) destroy();
-  //let url = "https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/byted-player-videos/1.0.0/xgplayer-demo.mp4";
   //url =
   //  "https://m3u.haiwaikan.com/xm3u8/9df98f18a3f5614ef85b0e5369de07a316877bb3ee411965cb32065413c5dae79921f11e97d0da21.m3u8";
   const width = 700;
-  let lastPlayTime = parseInt(localStorage.getItem(url)) || 1;
+  const Key = "playTime-" + url;
+  let lastPlayTime = parseInt(localStorage.getItem(Key)) || 1;
+  let volume = parseFloat(localStorage.getItem("volume")) || 0.3;
   loading.value = false;
   player = new globalThis.Player({
     el: videoRef.value,
@@ -74,7 +76,7 @@ async function init(urls: string[]) {
     width: width,
     height: (width * 9) / 16,
     fluid: true,
-    volume: 0.4,
+    volume: volume,
     progressDot: [],
     //screenShot: {name: "图"},
     //download: true,
@@ -88,19 +90,6 @@ async function init(urls: string[]) {
   });
   new Event(videoRef.value);
 
-  /* if (props.urls.length > 0) {
-    //_player.emit("resourceReady", [{ name: "default", url: url }, { name: "720", url: url }]);
-    console.info("urls", props.urls);
-    _player.emit("resourceReady", props.urls.map((v) => {
-      if (typeof (v) === "string") {
-        return {
-          name: v.replace(/.*\//g, ""),
-          url: v
-        }
-      }
-      return v
-    }));
-  } */
   player.once("ready", () => {
     setTimeout(() => {
       player.currentTime = lastPlayTime;
@@ -110,26 +99,18 @@ async function init(urls: string[]) {
   player.once("complete", () => {
     player.pause();
   });
-  //player.value = _player;
+  player.on("volumechange", (v) => {
+    localStorage.setItem("volume", player.volume);
+  });
+  player.on("timeupdate", () => {
+    sessionStorage.setItem(Key, player.currentTime);
+  });
 }
 function onLoad() {
   loading.value = false;
   new Event(videoRef.value);
 }
-function toUrlObject(urls: Array<String | { name: String; url: String }>) {
-  urls = (urls || []).filter((v) => !!v);
-  let nurls: { url: string; label: string }[] = (urls || []).map((v) => {
-    if (typeof v === "string") {
-      return {
-        label: "720",
-        url: v,
-      };
-    } else {
-      return v;
-    }
-  }) as any[];
-  return nurls;
-}
+
 function getVideoPlayUrl(id: string) {
   let url = globalThis.VIDEO_URL || import.meta.env.VITE_VIDEO_URL;
   return `${url}?id=${encodeURIComponent(id)}`;
@@ -149,7 +130,9 @@ watch(props.res, (res) => {
   if (inIframe) {
     changePlayUrl(getVideoPlayUrl(res.url));
   } else {
-    initScript(() => init([res.url]));
+    initScript(() => {
+      init([res.url]);
+    });
   }
 });
 onBeforeUnmount(() => {
@@ -159,11 +142,6 @@ onUnmounted(() => {
   destroy();
 });
 
-ssr ||
-  globalThis.addEventListener("beforeunload", () => {
-    console.info("set lastPlayTime", player.currentTime);
-    localStorage.setItem(props.res.url, player.currentTime + "");
-  });
 /* globalThis.addEventListener("message", (ev) => {
   let { event, data } = ev.data;
   if (event == "video_resize") {
