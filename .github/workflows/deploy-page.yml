@@ -35,10 +35,11 @@ jobs:
 
       - name: Build Page
         run: |
-          echo ${{ steps.project.outputs }}
+          echo ${{ github.ref_name }}
           rm -rf node_modules && yarn install
           yarn build:page
-      
+          zip -r app-${{github.ref_name}}.zip ./dist
+          mv app-${{github.ref_name}}.zip ./dist
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         #uses: actions/upload-artifact@v3
@@ -104,7 +105,8 @@ jobs:
           cp -f build-app/latest-linux.yml artifact/
           cp -f build-app/*.AppImage artifact/
           cp -f build-app/*.snap artifact/
-        
+          cp -f app/app-${{github.ref_name}}.zip artifact/
+
       - name: Build Windows
         if: runner.os == 'windows'
         run: |
@@ -127,7 +129,6 @@ jobs:
           copy build-app\latest.yml artifact\
           copy build-app\*.exe artifact\
           copy build-app\*.exe.blockmap artifact\
-          copy build-app\win-unpacked\resources\app.asar artifact\
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
