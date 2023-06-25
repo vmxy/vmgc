@@ -43,6 +43,7 @@ import { AdminLayout } from "@soybeanjs/vue-materials";
 import { useAppStore, useThemeStore } from "@/store";
 import { useBasicLayout } from "@/composables";
 import { GlobalContent, GlobalFooter, GlobalHeader, GlobalSider, GlobalTab, SettingDrawer } from "../common";
+import { onKeyStroke } from "@vueuse/core";
 
 defineOptions({ name: "BasicLayout" });
 const ssr = import.meta.env.SSR;
@@ -70,6 +71,13 @@ if (!ssr) {
       theme.setLayoutMode("vertical");
     }
   });
+
+  !ssr &&
+    globalThis.document?.addEventListener("keydown", (e) => {
+      if (e.ctrlKey && e.code === "KeyR") {
+        location.reload();
+      }
+    });
 }
 </script>
 
