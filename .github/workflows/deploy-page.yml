@@ -127,6 +127,8 @@ jobs:
       - name: Build Windows
         if: runner.os == 'windows'
         run: |
+          set APP_VERSION=${{ steps.version.outputs.value }}
+          set APP_UPDATE_URL=https://ai-peer.github.io/${{ env.Project_Name }}/apps
           cd ../
           xcopy ${{ env.Project_Name }} project /E/I
           move github-pages app
