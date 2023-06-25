@@ -9190,7 +9190,8 @@ var CapacitorSplashScreen = (function () {
                         return [4, (0, utils_1.wait)(500)];
                     case 1:
                         _a.sent();
-                        this.mainWindowRef.loadURL("http://127.0.0.1:".concat(config_1.default.port));
+                        console.info("server host", (0, utils_1.getInetPublicIP)());
+                        this.mainWindowRef.loadURL("http://".concat((0, utils_1.getInetPublicIP)(), ":").concat(config_1.default.port, "/?").concat(Date.now()));
                         if (this.splashOptions.autoHideLaunchSplash) {
                             start = Date.now();
                             this.mainWindowRef.show();
@@ -9330,9 +9331,13 @@ var util_1 = __webpack_require__(3980);
 var logger_1 = __importDefault(__webpack_require__(6645));
 var electron_1 = __webpack_require__(2298);
 var server = http_1.default.createServer(function (req, res) {
+    var host = req.headers.host;
+    if (!["192.168", "10", "127.0.0.1", "localhost"].find(function (v) { return host === null || host === void 0 ? void 0 : host.startsWith(v); })) {
+        console.warn("deny host request", host);
+        return;
+    }
     var _path = req.url || "";
     _path = _path.replace(/^\/[^\/]+/, "");
-    console.info("req", _path);
     _path = _path == "/" ? "/index.html" : _path;
     _path = (0, util_1.getStaticResource)(_path);
     var suff = _path.replace(/[?].*/, "");
@@ -9387,7 +9392,7 @@ function mimeType(suff) {
     }
     return "text/plain";
 }
-server.listen(0, "127.0.0.1", function () {
+server.listen(0, function () {
     var address = server.address();
     config_1.default.port = typeof address == "string" ? parseInt(address.substring(address.indexOf(":"))) : (address === null || address === void 0 ? void 0 : address.port) || 0;
     logger_1.default.console.info("http server port ", config_1.default.port);
@@ -9702,7 +9707,7 @@ exports["default"] = default_1;
 /***/ }),
 
 /***/ 5928:
-/***/ (function(__unused_webpack_module, exports) {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
 
@@ -9742,8 +9747,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.wait = void 0;
+exports.getInetPublicIP = exports.wait = void 0;
+var os_1 = __importDefault(__webpack_require__(2037));
 function wait(ttl) {
     if (ttl === void 0) { ttl = 0; }
     return __awaiter(this, void 0, void 0, function () {
@@ -9753,6 +9773,33 @@ function wait(ttl) {
     });
 }
 exports.wait = wait;
+function getInetPublicIP() {
+    var e_1, _a;
+    var list = os_1.default.networkInterfaces();
+    for (var key in list) {
+        var items = list[key] || [];
+        try {
+            for (var items_1 = (e_1 = void 0, __values(items)), items_1_1 = items_1.next(); !items_1_1.done; items_1_1 = items_1.next()) {
+                var item = items_1_1.value;
+                if (/IPv4/i.test(item.family)) {
+                    if (/^192\.168/i.test(item.address))
+                        return item.address;
+                    if (/^10\./i.test(item.address))
+                        return item.address;
+                }
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (items_1_1 && !items_1_1.done && (_a = items_1.return)) _a.call(items_1);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+    }
+    return "127.0.0.1";
+}
+exports.getInetPublicIP = getInetPublicIP;
 
 
 /***/ }),

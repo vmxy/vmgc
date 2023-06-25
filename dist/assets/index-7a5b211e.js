@@ -1,1 +1,0 @@
-import{o,e as s,l as t,k as c}from"./index-cc9450de.js";import{_ as r}from"./_plugin-vue_export-helper-c27b6911.js";const n={},a={class:"h-full"};function _(d,l){const e=c.NCard;return o(),s("div",a,[t(e,{title:"多级菜单 - 三级菜单",class:"h-full shadow-sm rounded-16px"})])}const m=r(n,[["render",_]]);export{m as default};

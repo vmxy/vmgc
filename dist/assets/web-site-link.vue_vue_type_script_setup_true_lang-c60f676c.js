@@ -1,1 +1,0 @@
-import{g as l,o as s,e as t,f as n,t as a}from"./index-cc9450de.js";const o=["href"],_=l({name:"WebSiteLink",__name:"web-site-link",props:{label:{},link:{}},setup(r){return(e,i)=>(s(),t("p",null,[n("span",null,a(e.label),1),n("a",{class:"text-blue-500",href:e.link,target:"_blank"},a(e.link),9,o)]))}});export{_};
