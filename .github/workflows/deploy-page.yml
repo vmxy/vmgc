@@ -46,7 +46,7 @@ jobs:
           echo "version ${{ steps.version.outputs.value }} "
           rm -rf node_modules && yarn install
           yarn build:page
-          asar pack ./dist app-${{steps.version.outputs.value}}.asar
+          asar pack ./dist app-v${{steps.version.outputs.value}}.asar
           mv app-v${{steps.version.outputs.value}}.asar ./dist
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
