@@ -14,7 +14,6 @@ const props = defineProps({
     type: String,
   },
 });
-const hosts = ["https://img1.iei.one", "https://img2.iei.one", "https://img3.iei.one"];
 
 const refImg = ref<HTMLImageElement>();
 function getSourceUrl(url: string) {
@@ -28,17 +27,17 @@ function formatImageUrl(url: string) {
   url = getSourceUrl(url);
   return url;
 }
-function proxyImageUrl(url: string) {
+/* function proxyImageUrl(url: string) {
   url = getSourceUrl(url);
   let host = hosts[Math.floor(Math.random() * hosts.length)];
   return host + "/img/" + url.replace("://", "_--");
-}
+} */
 let isLoadError = false;
 function onLoadError(ev) {
   if (isLoadError) return;
   isLoadError = true;
-  let url = proxyImageUrl(props.src);
-  refImg.value.src = url;
+  //let url = proxyImageUrl(props.src);
+  refImg.value.src = "/logo.png";
 }
 onMounted(() => {
   if (!refImg.value) return;
