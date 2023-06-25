@@ -38,7 +38,7 @@ const loading = ref(true);
 const playUrl = ref("");
 const videoRef = ref<HTMLElement>();
 const isDestroy = ref(false);
-const inIframe = false;// !!globalThis.env ? false : import.meta.env.VITE_VIDEO_IF == "Y";
+const inIframe = !!globalThis.env ? false : import.meta.env.VITE_VIDEO_IF == "Y";
 let player;
 
 function changePlayUrl(url) {
