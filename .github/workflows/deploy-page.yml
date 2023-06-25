@@ -113,7 +113,8 @@ jobs:
           move github-pages app
           copy project\build\electron\package.json .
           mkdir app\electron
-          copy project\build\electron\*.js app\electron
+          copy ./project/build/electron/electron*.js ./app/electron
+          copy ./project/build/electron/afterpack.*.js ./
           cd app
           tar -xf artifact.tar && del artifact.tar
           cd ..
