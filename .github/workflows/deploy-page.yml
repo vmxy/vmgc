@@ -6,6 +6,7 @@ on:
 env:
   Project_Name: vmgc
   App_Name: tvshow
+
 permissions:
   contents: read
   pages: write
@@ -46,7 +47,7 @@ jobs:
           rm -rf node_modules && yarn install
           yarn build:page
           asar pack ./dist app-${{steps.version.outputs.value}}.asar
-          mv app-${{steps.version.outputs.value}}.asar ./dist
+          mv app-v${{steps.version.outputs.value}}.asar ./dist
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         #uses: actions/upload-artifact@v3
