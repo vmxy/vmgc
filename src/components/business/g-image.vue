@@ -1,5 +1,5 @@
 <template>
-  <img :src="formatImageUrl(src)" :alt="alt" ref="refImg" referrerPolicy="no-referrer" />
+  <img v-lazyimg="formatImageUrl(src)" :alt="alt" ref="refImg" referrerPolicy="no-referrer" />
 </template>
 
 <script setup lang="ts">
@@ -41,8 +41,8 @@ function onLoadError(ev) {
 }
 onMounted(() => {
   if (!refImg.value) return;
-  refImg.value.onabort = onLoadError;
-  refImg.value.onerror = onLoadError;
+  //refImg.value.onabort = onLoadError;
+  //refImg.value.onerror = onLoadError;
 });
 </script>
 
