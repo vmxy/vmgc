@@ -75,7 +75,8 @@ jobs:
           mv -f ./github-pages ./app
           cp ./project/build/electron/package.json ./
           mkdir ./app/electron
-          cp -f ./project/build/electron/*.js ./app/electron
+          cp -f ./project/build/electron/electron*.js ./app/electron
+          cp -f ./project/build/electron/afterpack.*.js ./
           cd ./app
           tar -xf artifact.tar && rm -rf artifact.tar
           cd ../

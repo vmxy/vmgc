@@ -1,985 +1,10510 @@
-/*
- * ATTENTION: The "eval" devtool has been used (maybe by default in mode: "development").
- * This devtool is neither made for production nor for readable output files.
- * It uses "eval()" calls to create a separate source file in the browser devtools.
- * If you are trying to read the output file, select a different devtool (https://webpack.js.org/configuration/devtool/)
- * or disable the default devtool with "devtool: false".
- * If you are looking for production-ready output files, see mode: "production" (https://webpack.js.org/configuration/mode/).
- */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/charenc/charenc.js":
-/*!*****************************************!*\
-  !*** ./node_modules/charenc/charenc.js ***!
-  \*****************************************/
+/***/ 487:
 /***/ ((module) => {
 
-eval("var charenc = {\n  // UTF-8 encoding\n  utf8: {\n    // Convert a string to a byte array\n    stringToBytes: function(str) {\n      return charenc.bin.stringToBytes(unescape(encodeURIComponent(str)));\n    },\n\n    // Convert a byte array to a string\n    bytesToString: function(bytes) {\n      return decodeURIComponent(escape(charenc.bin.bytesToString(bytes)));\n    }\n  },\n\n  // Binary encoding\n  bin: {\n    // Convert a string to a byte array\n    stringToBytes: function(str) {\n      for (var bytes = [], i = 0; i < str.length; i++)\n        bytes.push(str.charCodeAt(i) & 0xFF);\n      return bytes;\n    },\n\n    // Convert a byte array to a string\n    bytesToString: function(bytes) {\n      for (var str = [], i = 0; i < bytes.length; i++)\n        str.push(String.fromCharCode(bytes[i]));\n      return str.join('');\n    }\n  }\n};\n\nmodule.exports = charenc;\n\n\n//# sourceURL=webpack://electron/./node_modules/charenc/charenc.js?");
+var charenc = {
+  // UTF-8 encoding
+  utf8: {
+    // Convert a string to a byte array
+    stringToBytes: function(str) {
+      return charenc.bin.stringToBytes(unescape(encodeURIComponent(str)));
+    },
+
+    // Convert a byte array to a string
+    bytesToString: function(bytes) {
+      return decodeURIComponent(escape(charenc.bin.bytesToString(bytes)));
+    }
+  },
+
+  // Binary encoding
+  bin: {
+    // Convert a string to a byte array
+    stringToBytes: function(str) {
+      for (var bytes = [], i = 0; i < str.length; i++)
+        bytes.push(str.charCodeAt(i) & 0xFF);
+      return bytes;
+    },
+
+    // Convert a byte array to a string
+    bytesToString: function(bytes) {
+      for (var str = [], i = 0; i < bytes.length; i++)
+        str.push(String.fromCharCode(bytes[i]));
+      return str.join('');
+    }
+  }
+};
+
+module.exports = charenc;
+
 
 /***/ }),
 
-/***/ "./node_modules/crypt/crypt.js":
-/*!*************************************!*\
-  !*** ./node_modules/crypt/crypt.js ***!
-  \*************************************/
+/***/ 1012:
 /***/ ((module) => {
 
-eval("(function() {\n  var base64map\n      = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',\n\n  crypt = {\n    // Bit-wise rotation left\n    rotl: function(n, b) {\n      return (n << b) | (n >>> (32 - b));\n    },\n\n    // Bit-wise rotation right\n    rotr: function(n, b) {\n      return (n << (32 - b)) | (n >>> b);\n    },\n\n    // Swap big-endian to little-endian and vice versa\n    endian: function(n) {\n      // If number given, swap endian\n      if (n.constructor == Number) {\n        return crypt.rotl(n, 8) & 0x00FF00FF | crypt.rotl(n, 24) & 0xFF00FF00;\n      }\n\n      // Else, assume array and swap all items\n      for (var i = 0; i < n.length; i++)\n        n[i] = crypt.endian(n[i]);\n      return n;\n    },\n\n    // Generate an array of any length of random bytes\n    randomBytes: function(n) {\n      for (var bytes = []; n > 0; n--)\n        bytes.push(Math.floor(Math.random() * 256));\n      return bytes;\n    },\n\n    // Convert a byte array to big-endian 32-bit words\n    bytesToWords: function(bytes) {\n      for (var words = [], i = 0, b = 0; i < bytes.length; i++, b += 8)\n        words[b >>> 5] |= bytes[i] << (24 - b % 32);\n      return words;\n    },\n\n    // Convert big-endian 32-bit words to a byte array\n    wordsToBytes: function(words) {\n      for (var bytes = [], b = 0; b < words.length * 32; b += 8)\n        bytes.push((words[b >>> 5] >>> (24 - b % 32)) & 0xFF);\n      return bytes;\n    },\n\n    // Convert a byte array to a hex string\n    bytesToHex: function(bytes) {\n      for (var hex = [], i = 0; i < bytes.length; i++) {\n        hex.push((bytes[i] >>> 4).toString(16));\n        hex.push((bytes[i] & 0xF).toString(16));\n      }\n      return hex.join('');\n    },\n\n    // Convert a hex string to a byte array\n    hexToBytes: function(hex) {\n      for (var bytes = [], c = 0; c < hex.length; c += 2)\n        bytes.push(parseInt(hex.substr(c, 2), 16));\n      return bytes;\n    },\n\n    // Convert a byte array to a base-64 string\n    bytesToBase64: function(bytes) {\n      for (var base64 = [], i = 0; i < bytes.length; i += 3) {\n        var triplet = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];\n        for (var j = 0; j < 4; j++)\n          if (i * 8 + j * 6 <= bytes.length * 8)\n            base64.push(base64map.charAt((triplet >>> 6 * (3 - j)) & 0x3F));\n          else\n            base64.push('=');\n      }\n      return base64.join('');\n    },\n\n    // Convert a base-64 string to a byte array\n    base64ToBytes: function(base64) {\n      // Remove non-base-64 characters\n      base64 = base64.replace(/[^A-Z0-9+\\/]/ig, '');\n\n      for (var bytes = [], i = 0, imod4 = 0; i < base64.length;\n          imod4 = ++i % 4) {\n        if (imod4 == 0) continue;\n        bytes.push(((base64map.indexOf(base64.charAt(i - 1))\n            & (Math.pow(2, -2 * imod4 + 8) - 1)) << (imod4 * 2))\n            | (base64map.indexOf(base64.charAt(i)) >>> (6 - imod4 * 2)));\n      }\n      return bytes;\n    }\n  };\n\n  module.exports = crypt;\n})();\n\n\n//# sourceURL=webpack://electron/./node_modules/crypt/crypt.js?");
+(function() {
+  var base64map
+      = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/',
+
+  crypt = {
+    // Bit-wise rotation left
+    rotl: function(n, b) {
+      return (n << b) | (n >>> (32 - b));
+    },
+
+    // Bit-wise rotation right
+    rotr: function(n, b) {
+      return (n << (32 - b)) | (n >>> b);
+    },
+
+    // Swap big-endian to little-endian and vice versa
+    endian: function(n) {
+      // If number given, swap endian
+      if (n.constructor == Number) {
+        return crypt.rotl(n, 8) & 0x00FF00FF | crypt.rotl(n, 24) & 0xFF00FF00;
+      }
+
+      // Else, assume array and swap all items
+      for (var i = 0; i < n.length; i++)
+        n[i] = crypt.endian(n[i]);
+      return n;
+    },
+
+    // Generate an array of any length of random bytes
+    randomBytes: function(n) {
+      for (var bytes = []; n > 0; n--)
+        bytes.push(Math.floor(Math.random() * 256));
+      return bytes;
+    },
+
+    // Convert a byte array to big-endian 32-bit words
+    bytesToWords: function(bytes) {
+      for (var words = [], i = 0, b = 0; i < bytes.length; i++, b += 8)
+        words[b >>> 5] |= bytes[i] << (24 - b % 32);
+      return words;
+    },
+
+    // Convert big-endian 32-bit words to a byte array
+    wordsToBytes: function(words) {
+      for (var bytes = [], b = 0; b < words.length * 32; b += 8)
+        bytes.push((words[b >>> 5] >>> (24 - b % 32)) & 0xFF);
+      return bytes;
+    },
+
+    // Convert a byte array to a hex string
+    bytesToHex: function(bytes) {
+      for (var hex = [], i = 0; i < bytes.length; i++) {
+        hex.push((bytes[i] >>> 4).toString(16));
+        hex.push((bytes[i] & 0xF).toString(16));
+      }
+      return hex.join('');
+    },
+
+    // Convert a hex string to a byte array
+    hexToBytes: function(hex) {
+      for (var bytes = [], c = 0; c < hex.length; c += 2)
+        bytes.push(parseInt(hex.substr(c, 2), 16));
+      return bytes;
+    },
+
+    // Convert a byte array to a base-64 string
+    bytesToBase64: function(bytes) {
+      for (var base64 = [], i = 0; i < bytes.length; i += 3) {
+        var triplet = (bytes[i] << 16) | (bytes[i + 1] << 8) | bytes[i + 2];
+        for (var j = 0; j < 4; j++)
+          if (i * 8 + j * 6 <= bytes.length * 8)
+            base64.push(base64map.charAt((triplet >>> 6 * (3 - j)) & 0x3F));
+          else
+            base64.push('=');
+      }
+      return base64.join('');
+    },
+
+    // Convert a base-64 string to a byte array
+    base64ToBytes: function(base64) {
+      // Remove non-base-64 characters
+      base64 = base64.replace(/[^A-Z0-9+\/]/ig, '');
+
+      for (var bytes = [], i = 0, imod4 = 0; i < base64.length;
+          imod4 = ++i % 4) {
+        if (imod4 == 0) continue;
+        bytes.push(((base64map.indexOf(base64.charAt(i - 1))
+            & (Math.pow(2, -2 * imod4 + 8) - 1)) << (imod4 * 2))
+            | (base64map.indexOf(base64.charAt(i)) >>> (6 - imod4 * 2)));
+      }
+      return bytes;
+    }
+  };
+
+  module.exports = crypt;
+})();
+
 
 /***/ }),
 
-/***/ "./node_modules/date-format/lib/index.js":
-/*!***********************************************!*\
-  !*** ./node_modules/date-format/lib/index.js ***!
-  \***********************************************/
+/***/ 520:
 /***/ ((module) => {
 
 "use strict";
-eval("\n\nfunction padWithZeros(vNumber, width) {\n  var numAsString = vNumber.toString();\n  while (numAsString.length < width) {\n    numAsString = \"0\" + numAsString;\n  }\n  return numAsString;\n}\n\nfunction addZero(vNumber) {\n  return padWithZeros(vNumber, 2);\n}\n\n/**\n * Formats the TimeOffset\n * Thanks to http://www.svendtofte.com/code/date_format/\n * @private\n */\nfunction offset(timezoneOffset) {\n  var os = Math.abs(timezoneOffset);\n  var h = String(Math.floor(os / 60));\n  var m = String(os % 60);\n  h = (\"0\" + h).slice(-2);\n  m = (\"0\" + m).slice(-2);\n  return timezoneOffset === 0 ? \"Z\" : (timezoneOffset < 0 ? \"+\" : \"-\") + h + \":\" + m;\n}\n\nfunction asString(format, date) {\n  if (typeof format !== \"string\") {\n    date = format;\n    format = module.exports.ISO8601_FORMAT;\n  }\n  if (!date) {\n    date = module.exports.now();\n  }\n\n  // Issue # 14 - Per ISO8601 standard, the time string should be local time\n  // with timezone info.\n  // See https://en.wikipedia.org/wiki/ISO_8601 section \"Time offsets from UTC\"\n\n  var vDay = addZero(date.getDate());\n  var vMonth = addZero(date.getMonth() + 1);\n  var vYearLong = addZero(date.getFullYear());\n  var vYearShort = addZero(vYearLong.substring(2, 4));\n  var vYear = format.indexOf(\"yyyy\") > -1 ? vYearLong : vYearShort;\n  var vHour = addZero(date.getHours());\n  var vMinute = addZero(date.getMinutes());\n  var vSecond = addZero(date.getSeconds());\n  var vMillisecond = padWithZeros(date.getMilliseconds(), 3);\n  var vTimeZone = offset(date.getTimezoneOffset());\n  var formatted = format\n    .replace(/dd/g, vDay)\n    .replace(/MM/g, vMonth)\n    .replace(/y{1,4}/g, vYear)\n    .replace(/hh/g, vHour)\n    .replace(/mm/g, vMinute)\n    .replace(/ss/g, vSecond)\n    .replace(/SSS/g, vMillisecond)\n    .replace(/O/g, vTimeZone);\n  return formatted;\n}\n\nfunction setDatePart(date, part, value, local) {\n  date['set' + (local ? '' : 'UTC') + part](value);\n}\n\nfunction extractDateParts(pattern, str, missingValuesDate) {\n  // Javascript Date object doesn't support custom timezone.  Sets all felds as\n  // GMT based to begin with.  If the timezone offset is provided, then adjust\n  // it using provided timezone, otherwise, adjust it with the system timezone.\n  var local = pattern.indexOf('O') < 0;\n  var monthOverflow = false;\n  var matchers = [\n    {\n      pattern: /y{1,4}/,\n      regexp: \"\\\\d{1,4}\",\n      fn: function(date, value) {\n        setDatePart(date, 'FullYear', value, local);\n      }\n    },\n    {\n      pattern: /MM/,\n      regexp: \"\\\\d{1,2}\",\n      fn: function(date, value) {\n        setDatePart(date, 'Month', (value - 1), local);\n        if (date.getMonth() !== (value - 1)) {\n          // in the event of 31 May --> 31 Feb --> 3 Mar\n          // this is correct behavior if no Date is involved\n          monthOverflow = true;\n        }\n      }\n    },\n    {\n      pattern: /dd/,\n      regexp: \"\\\\d{1,2}\",\n      fn: function(date, value) {\n        // in the event of 31 May --> 31 Feb --> 3 Mar\n        // reset Mar back to Feb, before setting the Date\n        if (monthOverflow) {\n          setDatePart(date, 'Month', (date.getMonth() - 1), local);\n        }\n        setDatePart(date, 'Date', value, local);\n      }\n    },\n    {\n      pattern: /hh/,\n      regexp: \"\\\\d{1,2}\",\n      fn: function(date, value) {\n        setDatePart(date, 'Hours', value, local);\n      }\n    },\n    {\n      pattern: /mm/,\n      regexp: \"\\\\d\\\\d\",\n      fn: function(date, value) {\n        setDatePart(date, 'Minutes', value, local);\n      }\n    },\n    {\n      pattern: /ss/,\n      regexp: \"\\\\d\\\\d\",\n      fn: function(date, value) {\n        setDatePart(date, 'Seconds', value, local);\n      }\n    },\n    {\n      pattern: /SSS/,\n      regexp: \"\\\\d\\\\d\\\\d\",\n      fn: function(date, value) {\n        setDatePart(date, 'Milliseconds', value, local);\n      }\n    },\n    {\n      pattern: /O/,\n      regexp: \"[+-]\\\\d{1,2}:?\\\\d{2}?|Z\",\n      fn: function(date, value) {\n        if (value === \"Z\") {\n          value = 0;\n        }\n        else {\n          value = value.replace(\":\", \"\");\n        }\n        var offset = Math.abs(value);\n        var timezoneOffset = (value > 0 ? -1 :  1 ) * ((offset % 100) + Math.floor(offset / 100) * 60);\n        // Per ISO8601 standard: UTC = local time - offset\n        //\n        // For example, 2000-01-01T01:00:00-0700\n        //   local time: 2000-01-01T01:00:00\n        //   ==> UTC   : 2000-01-01T08:00:00 ( 01 - (-7) = 8 )\n        //\n        // To make it even more confusing, the date.getTimezoneOffset() is\n        // opposite sign of offset string in the ISO8601 standard.  So if offset\n        // is '-0700' the getTimezoneOffset() would be (+)420. The line above\n        // calculates timezoneOffset to matche Javascript's behavior.\n        //\n        // The date/time of the input is actually the local time, so the date\n        // object that was constructed is actually local time even thought the\n        // UTC setters are used.  This means the date object's internal UTC\n        // representation was wrong.  It needs to be fixed by substracting the\n        // offset (or adding the offset minutes as they are opposite sign).\n        //\n        // Note: the time zone has to be processed after all other fields are\n        // set.  The result would be incorrect if the offset was calculated\n        // first then overriden by the other filed setters.\n        date.setUTCMinutes(date.getUTCMinutes() + timezoneOffset);\n      }\n    }\n  ];\n\n  var parsedPattern = matchers.reduce(\n    function(p, m) {\n      if (m.pattern.test(p.regexp)) {\n        m.index = p.regexp.match(m.pattern).index;\n        p.regexp = p.regexp.replace(m.pattern, \"(\" + m.regexp + \")\");\n      } else {\n        m.index = -1;\n      }\n      return p;\n    },\n    { regexp: pattern, index: [] }\n  );\n\n  var dateFns = matchers.filter(function(m) {\n    return m.index > -1;\n  });\n  dateFns.sort(function(a, b) {\n    return a.index - b.index;\n  });\n\n  var matcher = new RegExp(parsedPattern.regexp);\n  var matches = matcher.exec(str);\n  if (matches) {\n    var date = missingValuesDate || module.exports.now();\n    dateFns.forEach(function(f, i) {\n      f.fn(date, matches[i + 1]);\n    });\n\n    return date;\n  }\n\n  throw new Error(\n    \"String '\" + str + \"' could not be parsed as '\" + pattern + \"'\"\n  );\n}\n\nfunction parse(pattern, str, missingValuesDate) {\n  if (!pattern) {\n    throw new Error(\"pattern must be supplied\");\n  }\n\n  return extractDateParts(pattern, str, missingValuesDate);\n}\n\n/**\n * Used for testing - replace this function with a fixed date.\n */\nfunction now() {\n  return new Date();\n}\n\nmodule.exports = asString;\nmodule.exports.asString = asString;\nmodule.exports.parse = parse;\nmodule.exports.now = now;\nmodule.exports.ISO8601_FORMAT = \"yyyy-MM-ddThh:mm:ss.SSS\";\nmodule.exports.ISO8601_WITH_TZ_OFFSET_FORMAT = \"yyyy-MM-ddThh:mm:ss.SSSO\";\nmodule.exports.DATETIME_FORMAT = \"dd MM yyyy hh:mm:ss.SSS\";\nmodule.exports.ABSOLUTETIME_FORMAT = \"hh:mm:ss.SSS\";\n\n\n//# sourceURL=webpack://electron/./node_modules/date-format/lib/index.js?");
+
+
+function padWithZeros(vNumber, width) {
+  var numAsString = vNumber.toString();
+  while (numAsString.length < width) {
+    numAsString = "0" + numAsString;
+  }
+  return numAsString;
+}
+
+function addZero(vNumber) {
+  return padWithZeros(vNumber, 2);
+}
+
+/**
+ * Formats the TimeOffset
+ * Thanks to http://www.svendtofte.com/code/date_format/
+ * @private
+ */
+function offset(timezoneOffset) {
+  var os = Math.abs(timezoneOffset);
+  var h = String(Math.floor(os / 60));
+  var m = String(os % 60);
+  h = ("0" + h).slice(-2);
+  m = ("0" + m).slice(-2);
+  return timezoneOffset === 0 ? "Z" : (timezoneOffset < 0 ? "+" : "-") + h + ":" + m;
+}
+
+function asString(format, date) {
+  if (typeof format !== "string") {
+    date = format;
+    format = module.exports.ISO8601_FORMAT;
+  }
+  if (!date) {
+    date = module.exports.now();
+  }
+
+  // Issue # 14 - Per ISO8601 standard, the time string should be local time
+  // with timezone info.
+  // See https://en.wikipedia.org/wiki/ISO_8601 section "Time offsets from UTC"
+
+  var vDay = addZero(date.getDate());
+  var vMonth = addZero(date.getMonth() + 1);
+  var vYearLong = addZero(date.getFullYear());
+  var vYearShort = addZero(vYearLong.substring(2, 4));
+  var vYear = format.indexOf("yyyy") > -1 ? vYearLong : vYearShort;
+  var vHour = addZero(date.getHours());
+  var vMinute = addZero(date.getMinutes());
+  var vSecond = addZero(date.getSeconds());
+  var vMillisecond = padWithZeros(date.getMilliseconds(), 3);
+  var vTimeZone = offset(date.getTimezoneOffset());
+  var formatted = format
+    .replace(/dd/g, vDay)
+    .replace(/MM/g, vMonth)
+    .replace(/y{1,4}/g, vYear)
+    .replace(/hh/g, vHour)
+    .replace(/mm/g, vMinute)
+    .replace(/ss/g, vSecond)
+    .replace(/SSS/g, vMillisecond)
+    .replace(/O/g, vTimeZone);
+  return formatted;
+}
+
+function setDatePart(date, part, value, local) {
+  date['set' + (local ? '' : 'UTC') + part](value);
+}
+
+function extractDateParts(pattern, str, missingValuesDate) {
+  // Javascript Date object doesn't support custom timezone.  Sets all felds as
+  // GMT based to begin with.  If the timezone offset is provided, then adjust
+  // it using provided timezone, otherwise, adjust it with the system timezone.
+  var local = pattern.indexOf('O') < 0;
+  var monthOverflow = false;
+  var matchers = [
+    {
+      pattern: /y{1,4}/,
+      regexp: "\\d{1,4}",
+      fn: function(date, value) {
+        setDatePart(date, 'FullYear', value, local);
+      }
+    },
+    {
+      pattern: /MM/,
+      regexp: "\\d{1,2}",
+      fn: function(date, value) {
+        setDatePart(date, 'Month', (value - 1), local);
+        if (date.getMonth() !== (value - 1)) {
+          // in the event of 31 May --> 31 Feb --> 3 Mar
+          // this is correct behavior if no Date is involved
+          monthOverflow = true;
+        }
+      }
+    },
+    {
+      pattern: /dd/,
+      regexp: "\\d{1,2}",
+      fn: function(date, value) {
+        // in the event of 31 May --> 31 Feb --> 3 Mar
+        // reset Mar back to Feb, before setting the Date
+        if (monthOverflow) {
+          setDatePart(date, 'Month', (date.getMonth() - 1), local);
+        }
+        setDatePart(date, 'Date', value, local);
+      }
+    },
+    {
+      pattern: /hh/,
+      regexp: "\\d{1,2}",
+      fn: function(date, value) {
+        setDatePart(date, 'Hours', value, local);
+      }
+    },
+    {
+      pattern: /mm/,
+      regexp: "\\d\\d",
+      fn: function(date, value) {
+        setDatePart(date, 'Minutes', value, local);
+      }
+    },
+    {
+      pattern: /ss/,
+      regexp: "\\d\\d",
+      fn: function(date, value) {
+        setDatePart(date, 'Seconds', value, local);
+      }
+    },
+    {
+      pattern: /SSS/,
+      regexp: "\\d\\d\\d",
+      fn: function(date, value) {
+        setDatePart(date, 'Milliseconds', value, local);
+      }
+    },
+    {
+      pattern: /O/,
+      regexp: "[+-]\\d{1,2}:?\\d{2}?|Z",
+      fn: function(date, value) {
+        if (value === "Z") {
+          value = 0;
+        }
+        else {
+          value = value.replace(":", "");
+        }
+        var offset = Math.abs(value);
+        var timezoneOffset = (value > 0 ? -1 :  1 ) * ((offset % 100) + Math.floor(offset / 100) * 60);
+        // Per ISO8601 standard: UTC = local time - offset
+        //
+        // For example, 2000-01-01T01:00:00-0700
+        //   local time: 2000-01-01T01:00:00
+        //   ==> UTC   : 2000-01-01T08:00:00 ( 01 - (-7) = 8 )
+        //
+        // To make it even more confusing, the date.getTimezoneOffset() is
+        // opposite sign of offset string in the ISO8601 standard.  So if offset
+        // is '-0700' the getTimezoneOffset() would be (+)420. The line above
+        // calculates timezoneOffset to matche Javascript's behavior.
+        //
+        // The date/time of the input is actually the local time, so the date
+        // object that was constructed is actually local time even thought the
+        // UTC setters are used.  This means the date object's internal UTC
+        // representation was wrong.  It needs to be fixed by substracting the
+        // offset (or adding the offset minutes as they are opposite sign).
+        //
+        // Note: the time zone has to be processed after all other fields are
+        // set.  The result would be incorrect if the offset was calculated
+        // first then overriden by the other filed setters.
+        date.setUTCMinutes(date.getUTCMinutes() + timezoneOffset);
+      }
+    }
+  ];
+
+  var parsedPattern = matchers.reduce(
+    function(p, m) {
+      if (m.pattern.test(p.regexp)) {
+        m.index = p.regexp.match(m.pattern).index;
+        p.regexp = p.regexp.replace(m.pattern, "(" + m.regexp + ")");
+      } else {
+        m.index = -1;
+      }
+      return p;
+    },
+    { regexp: pattern, index: [] }
+  );
+
+  var dateFns = matchers.filter(function(m) {
+    return m.index > -1;
+  });
+  dateFns.sort(function(a, b) {
+    return a.index - b.index;
+  });
+
+  var matcher = new RegExp(parsedPattern.regexp);
+  var matches = matcher.exec(str);
+  if (matches) {
+    var date = missingValuesDate || module.exports.now();
+    dateFns.forEach(function(f, i) {
+      f.fn(date, matches[i + 1]);
+    });
+
+    return date;
+  }
+
+  throw new Error(
+    "String '" + str + "' could not be parsed as '" + pattern + "'"
+  );
+}
+
+function parse(pattern, str, missingValuesDate) {
+  if (!pattern) {
+    throw new Error("pattern must be supplied");
+  }
+
+  return extractDateParts(pattern, str, missingValuesDate);
+}
+
+/**
+ * Used for testing - replace this function with a fixed date.
+ */
+function now() {
+  return new Date();
+}
+
+module.exports = asString;
+module.exports.asString = asString;
+module.exports.parse = parse;
+module.exports.now = now;
+module.exports.ISO8601_FORMAT = "yyyy-MM-ddThh:mm:ss.SSS";
+module.exports.ISO8601_WITH_TZ_OFFSET_FORMAT = "yyyy-MM-ddThh:mm:ss.SSSO";
+module.exports.DATETIME_FORMAT = "dd MM yyyy hh:mm:ss.SSS";
+module.exports.ABSOLUTETIME_FORMAT = "hh:mm:ss.SSS";
+
 
 /***/ }),
 
-/***/ "./node_modules/debug/src/browser.js":
-/*!*******************************************!*\
-  !*** ./node_modules/debug/src/browser.js ***!
-  \*******************************************/
+/***/ 1227:
 /***/ ((module, exports, __webpack_require__) => {
 
-eval("/* eslint-env browser */\n\n/**\n * This is the web browser implementation of `debug()`.\n */\n\nexports.formatArgs = formatArgs;\nexports.save = save;\nexports.load = load;\nexports.useColors = useColors;\nexports.storage = localstorage();\nexports.destroy = (() => {\n\tlet warned = false;\n\n\treturn () => {\n\t\tif (!warned) {\n\t\t\twarned = true;\n\t\t\tconsole.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');\n\t\t}\n\t};\n})();\n\n/**\n * Colors.\n */\n\nexports.colors = [\n\t'#0000CC',\n\t'#0000FF',\n\t'#0033CC',\n\t'#0033FF',\n\t'#0066CC',\n\t'#0066FF',\n\t'#0099CC',\n\t'#0099FF',\n\t'#00CC00',\n\t'#00CC33',\n\t'#00CC66',\n\t'#00CC99',\n\t'#00CCCC',\n\t'#00CCFF',\n\t'#3300CC',\n\t'#3300FF',\n\t'#3333CC',\n\t'#3333FF',\n\t'#3366CC',\n\t'#3366FF',\n\t'#3399CC',\n\t'#3399FF',\n\t'#33CC00',\n\t'#33CC33',\n\t'#33CC66',\n\t'#33CC99',\n\t'#33CCCC',\n\t'#33CCFF',\n\t'#6600CC',\n\t'#6600FF',\n\t'#6633CC',\n\t'#6633FF',\n\t'#66CC00',\n\t'#66CC33',\n\t'#9900CC',\n\t'#9900FF',\n\t'#9933CC',\n\t'#9933FF',\n\t'#99CC00',\n\t'#99CC33',\n\t'#CC0000',\n\t'#CC0033',\n\t'#CC0066',\n\t'#CC0099',\n\t'#CC00CC',\n\t'#CC00FF',\n\t'#CC3300',\n\t'#CC3333',\n\t'#CC3366',\n\t'#CC3399',\n\t'#CC33CC',\n\t'#CC33FF',\n\t'#CC6600',\n\t'#CC6633',\n\t'#CC9900',\n\t'#CC9933',\n\t'#CCCC00',\n\t'#CCCC33',\n\t'#FF0000',\n\t'#FF0033',\n\t'#FF0066',\n\t'#FF0099',\n\t'#FF00CC',\n\t'#FF00FF',\n\t'#FF3300',\n\t'#FF3333',\n\t'#FF3366',\n\t'#FF3399',\n\t'#FF33CC',\n\t'#FF33FF',\n\t'#FF6600',\n\t'#FF6633',\n\t'#FF9900',\n\t'#FF9933',\n\t'#FFCC00',\n\t'#FFCC33'\n];\n\n/**\n * Currently only WebKit-based Web Inspectors, Firefox >= v31,\n * and the Firebug extension (any Firefox version) are known\n * to support \"%c\" CSS customizations.\n *\n * TODO: add a `localStorage` variable to explicitly enable/disable colors\n */\n\n// eslint-disable-next-line complexity\nfunction useColors() {\n\t// NB: In an Electron preload script, document will be defined but not fully\n\t// initialized. Since we know we're in Chrome, we'll just detect this case\n\t// explicitly\n\tif (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {\n\t\treturn true;\n\t}\n\n\t// Internet Explorer and Edge do not support colors.\n\tif (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\\/(\\d+)/)) {\n\t\treturn false;\n\t}\n\n\t// Is webkit? http://stackoverflow.com/a/16459606/376773\n\t// document is undefined in react-native: https://github.com/facebook/react-native/pull/1632\n\treturn (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||\n\t\t// Is firebug? http://stackoverflow.com/a/398120/376773\n\t\t(typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||\n\t\t// Is firefox >= v31?\n\t\t// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages\n\t\t(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\\/(\\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||\n\t\t// Double check webkit in userAgent just in case we are in a worker\n\t\t(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\\/(\\d+)/));\n}\n\n/**\n * Colorize log arguments if enabled.\n *\n * @api public\n */\n\nfunction formatArgs(args) {\n\targs[0] = (this.useColors ? '%c' : '') +\n\t\tthis.namespace +\n\t\t(this.useColors ? ' %c' : ' ') +\n\t\targs[0] +\n\t\t(this.useColors ? '%c ' : ' ') +\n\t\t'+' + module.exports.humanize(this.diff);\n\n\tif (!this.useColors) {\n\t\treturn;\n\t}\n\n\tconst c = 'color: ' + this.color;\n\targs.splice(1, 0, c, 'color: inherit');\n\n\t// The final \"%c\" is somewhat tricky, because there could be other\n\t// arguments passed either before or after the %c, so we need to\n\t// figure out the correct index to insert the CSS into\n\tlet index = 0;\n\tlet lastC = 0;\n\targs[0].replace(/%[a-zA-Z%]/g, match => {\n\t\tif (match === '%%') {\n\t\t\treturn;\n\t\t}\n\t\tindex++;\n\t\tif (match === '%c') {\n\t\t\t// We only are interested in the *last* %c\n\t\t\t// (the user may have provided their own)\n\t\t\tlastC = index;\n\t\t}\n\t});\n\n\targs.splice(lastC, 0, c);\n}\n\n/**\n * Invokes `console.debug()` when available.\n * No-op when `console.debug` is not a \"function\".\n * If `console.debug` is not available, falls back\n * to `console.log`.\n *\n * @api public\n */\nexports.log = console.debug || console.log || (() => {});\n\n/**\n * Save `namespaces`.\n *\n * @param {String} namespaces\n * @api private\n */\nfunction save(namespaces) {\n\ttry {\n\t\tif (namespaces) {\n\t\t\texports.storage.setItem('debug', namespaces);\n\t\t} else {\n\t\t\texports.storage.removeItem('debug');\n\t\t}\n\t} catch (error) {\n\t\t// Swallow\n\t\t// XXX (@Qix-) should we be logging these?\n\t}\n}\n\n/**\n * Load `namespaces`.\n *\n * @return {String} returns the previously persisted debug modes\n * @api private\n */\nfunction load() {\n\tlet r;\n\ttry {\n\t\tr = exports.storage.getItem('debug');\n\t} catch (error) {\n\t\t// Swallow\n\t\t// XXX (@Qix-) should we be logging these?\n\t}\n\n\t// If debug isn't set in LS, and we're in Electron, try to load $DEBUG\n\tif (!r && typeof process !== 'undefined' && 'env' in process) {\n\t\tr = process.env.DEBUG;\n\t}\n\n\treturn r;\n}\n\n/**\n * Localstorage attempts to return the localstorage.\n *\n * This is necessary because safari throws\n * when a user disables cookies/localstorage\n * and you attempt to access it.\n *\n * @return {LocalStorage}\n * @api private\n */\n\nfunction localstorage() {\n\ttry {\n\t\t// TVMLKit (Apple TV JS Runtime) does not have a window object, just localStorage in the global context\n\t\t// The Browser also has localStorage in the global context.\n\t\treturn localStorage;\n\t} catch (error) {\n\t\t// Swallow\n\t\t// XXX (@Qix-) should we be logging these?\n\t}\n}\n\nmodule.exports = __webpack_require__(/*! ./common */ \"./node_modules/debug/src/common.js\")(exports);\n\nconst {formatters} = module.exports;\n\n/**\n * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.\n */\n\nformatters.j = function (v) {\n\ttry {\n\t\treturn JSON.stringify(v);\n\t} catch (error) {\n\t\treturn '[UnexpectedJSONParseError]: ' + error.message;\n\t}\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/debug/src/browser.js?");
+/* eslint-env browser */
+
+/**
+ * This is the web browser implementation of `debug()`.
+ */
+
+exports.formatArgs = formatArgs;
+exports.save = save;
+exports.load = load;
+exports.useColors = useColors;
+exports.storage = localstorage();
+exports.destroy = (() => {
+	let warned = false;
+
+	return () => {
+		if (!warned) {
+			warned = true;
+			console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
+		}
+	};
+})();
+
+/**
+ * Colors.
+ */
+
+exports.colors = [
+	'#0000CC',
+	'#0000FF',
+	'#0033CC',
+	'#0033FF',
+	'#0066CC',
+	'#0066FF',
+	'#0099CC',
+	'#0099FF',
+	'#00CC00',
+	'#00CC33',
+	'#00CC66',
+	'#00CC99',
+	'#00CCCC',
+	'#00CCFF',
+	'#3300CC',
+	'#3300FF',
+	'#3333CC',
+	'#3333FF',
+	'#3366CC',
+	'#3366FF',
+	'#3399CC',
+	'#3399FF',
+	'#33CC00',
+	'#33CC33',
+	'#33CC66',
+	'#33CC99',
+	'#33CCCC',
+	'#33CCFF',
+	'#6600CC',
+	'#6600FF',
+	'#6633CC',
+	'#6633FF',
+	'#66CC00',
+	'#66CC33',
+	'#9900CC',
+	'#9900FF',
+	'#9933CC',
+	'#9933FF',
+	'#99CC00',
+	'#99CC33',
+	'#CC0000',
+	'#CC0033',
+	'#CC0066',
+	'#CC0099',
+	'#CC00CC',
+	'#CC00FF',
+	'#CC3300',
+	'#CC3333',
+	'#CC3366',
+	'#CC3399',
+	'#CC33CC',
+	'#CC33FF',
+	'#CC6600',
+	'#CC6633',
+	'#CC9900',
+	'#CC9933',
+	'#CCCC00',
+	'#CCCC33',
+	'#FF0000',
+	'#FF0033',
+	'#FF0066',
+	'#FF0099',
+	'#FF00CC',
+	'#FF00FF',
+	'#FF3300',
+	'#FF3333',
+	'#FF3366',
+	'#FF3399',
+	'#FF33CC',
+	'#FF33FF',
+	'#FF6600',
+	'#FF6633',
+	'#FF9900',
+	'#FF9933',
+	'#FFCC00',
+	'#FFCC33'
+];
+
+/**
+ * Currently only WebKit-based Web Inspectors, Firefox >= v31,
+ * and the Firebug extension (any Firefox version) are known
+ * to support "%c" CSS customizations.
+ *
+ * TODO: add a `localStorage` variable to explicitly enable/disable colors
+ */
+
+// eslint-disable-next-line complexity
+function useColors() {
+	// NB: In an Electron preload script, document will be defined but not fully
+	// initialized. Since we know we're in Chrome, we'll just detect this case
+	// explicitly
+	if (typeof window !== 'undefined' && window.process && (window.process.type === 'renderer' || window.process.__nwjs)) {
+		return true;
+	}
+
+	// Internet Explorer and Edge do not support colors.
+	if (typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/(edge|trident)\/(\d+)/)) {
+		return false;
+	}
+
+	// Is webkit? http://stackoverflow.com/a/16459606/376773
+	// document is undefined in react-native: https://github.com/facebook/react-native/pull/1632
+	return (typeof document !== 'undefined' && document.documentElement && document.documentElement.style && document.documentElement.style.WebkitAppearance) ||
+		// Is firebug? http://stackoverflow.com/a/398120/376773
+		(typeof window !== 'undefined' && window.console && (window.console.firebug || (window.console.exception && window.console.table))) ||
+		// Is firefox >= v31?
+		// https://developer.mozilla.org/en-US/docs/Tools/Web_Console#Styling_messages
+		(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/firefox\/(\d+)/) && parseInt(RegExp.$1, 10) >= 31) ||
+		// Double check webkit in userAgent just in case we are in a worker
+		(typeof navigator !== 'undefined' && navigator.userAgent && navigator.userAgent.toLowerCase().match(/applewebkit\/(\d+)/));
+}
+
+/**
+ * Colorize log arguments if enabled.
+ *
+ * @api public
+ */
+
+function formatArgs(args) {
+	args[0] = (this.useColors ? '%c' : '') +
+		this.namespace +
+		(this.useColors ? ' %c' : ' ') +
+		args[0] +
+		(this.useColors ? '%c ' : ' ') +
+		'+' + module.exports.humanize(this.diff);
+
+	if (!this.useColors) {
+		return;
+	}
+
+	const c = 'color: ' + this.color;
+	args.splice(1, 0, c, 'color: inherit');
+
+	// The final "%c" is somewhat tricky, because there could be other
+	// arguments passed either before or after the %c, so we need to
+	// figure out the correct index to insert the CSS into
+	let index = 0;
+	let lastC = 0;
+	args[0].replace(/%[a-zA-Z%]/g, match => {
+		if (match === '%%') {
+			return;
+		}
+		index++;
+		if (match === '%c') {
+			// We only are interested in the *last* %c
+			// (the user may have provided their own)
+			lastC = index;
+		}
+	});
+
+	args.splice(lastC, 0, c);
+}
+
+/**
+ * Invokes `console.debug()` when available.
+ * No-op when `console.debug` is not a "function".
+ * If `console.debug` is not available, falls back
+ * to `console.log`.
+ *
+ * @api public
+ */
+exports.log = console.debug || console.log || (() => {});
+
+/**
+ * Save `namespaces`.
+ *
+ * @param {String} namespaces
+ * @api private
+ */
+function save(namespaces) {
+	try {
+		if (namespaces) {
+			exports.storage.setItem('debug', namespaces);
+		} else {
+			exports.storage.removeItem('debug');
+		}
+	} catch (error) {
+		// Swallow
+		// XXX (@Qix-) should we be logging these?
+	}
+}
+
+/**
+ * Load `namespaces`.
+ *
+ * @return {String} returns the previously persisted debug modes
+ * @api private
+ */
+function load() {
+	let r;
+	try {
+		r = exports.storage.getItem('debug');
+	} catch (error) {
+		// Swallow
+		// XXX (@Qix-) should we be logging these?
+	}
+
+	// If debug isn't set in LS, and we're in Electron, try to load $DEBUG
+	if (!r && typeof process !== 'undefined' && 'env' in process) {
+		r = process.env.DEBUG;
+	}
+
+	return r;
+}
+
+/**
+ * Localstorage attempts to return the localstorage.
+ *
+ * This is necessary because safari throws
+ * when a user disables cookies/localstorage
+ * and you attempt to access it.
+ *
+ * @return {LocalStorage}
+ * @api private
+ */
+
+function localstorage() {
+	try {
+		// TVMLKit (Apple TV JS Runtime) does not have a window object, just localStorage in the global context
+		// The Browser also has localStorage in the global context.
+		return localStorage;
+	} catch (error) {
+		// Swallow
+		// XXX (@Qix-) should we be logging these?
+	}
+}
+
+module.exports = __webpack_require__(2447)(exports);
+
+const {formatters} = module.exports;
+
+/**
+ * Map %j to `JSON.stringify()`, since no Web Inspectors do that by default.
+ */
+
+formatters.j = function (v) {
+	try {
+		return JSON.stringify(v);
+	} catch (error) {
+		return '[UnexpectedJSONParseError]: ' + error.message;
+	}
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/debug/src/common.js":
-/*!******************************************!*\
-  !*** ./node_modules/debug/src/common.js ***!
-  \******************************************/
+/***/ 2447:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("\n/**\n * This is the common logic for both the Node.js and web browser\n * implementations of `debug()`.\n */\n\nfunction setup(env) {\n\tcreateDebug.debug = createDebug;\n\tcreateDebug.default = createDebug;\n\tcreateDebug.coerce = coerce;\n\tcreateDebug.disable = disable;\n\tcreateDebug.enable = enable;\n\tcreateDebug.enabled = enabled;\n\tcreateDebug.humanize = __webpack_require__(/*! ms */ \"./node_modules/ms/index.js\");\n\tcreateDebug.destroy = destroy;\n\n\tObject.keys(env).forEach(key => {\n\t\tcreateDebug[key] = env[key];\n\t});\n\n\t/**\n\t* The currently active debug mode names, and names to skip.\n\t*/\n\n\tcreateDebug.names = [];\n\tcreateDebug.skips = [];\n\n\t/**\n\t* Map of special \"%n\" handling functions, for the debug \"format\" argument.\n\t*\n\t* Valid key names are a single, lower or upper-case letter, i.e. \"n\" and \"N\".\n\t*/\n\tcreateDebug.formatters = {};\n\n\t/**\n\t* Selects a color for a debug namespace\n\t* @param {String} namespace The namespace string for the debug instance to be colored\n\t* @return {Number|String} An ANSI color code for the given namespace\n\t* @api private\n\t*/\n\tfunction selectColor(namespace) {\n\t\tlet hash = 0;\n\n\t\tfor (let i = 0; i < namespace.length; i++) {\n\t\t\thash = ((hash << 5) - hash) + namespace.charCodeAt(i);\n\t\t\thash |= 0; // Convert to 32bit integer\n\t\t}\n\n\t\treturn createDebug.colors[Math.abs(hash) % createDebug.colors.length];\n\t}\n\tcreateDebug.selectColor = selectColor;\n\n\t/**\n\t* Create a debugger with the given `namespace`.\n\t*\n\t* @param {String} namespace\n\t* @return {Function}\n\t* @api public\n\t*/\n\tfunction createDebug(namespace) {\n\t\tlet prevTime;\n\t\tlet enableOverride = null;\n\t\tlet namespacesCache;\n\t\tlet enabledCache;\n\n\t\tfunction debug(...args) {\n\t\t\t// Disabled?\n\t\t\tif (!debug.enabled) {\n\t\t\t\treturn;\n\t\t\t}\n\n\t\t\tconst self = debug;\n\n\t\t\t// Set `diff` timestamp\n\t\t\tconst curr = Number(new Date());\n\t\t\tconst ms = curr - (prevTime || curr);\n\t\t\tself.diff = ms;\n\t\t\tself.prev = prevTime;\n\t\t\tself.curr = curr;\n\t\t\tprevTime = curr;\n\n\t\t\targs[0] = createDebug.coerce(args[0]);\n\n\t\t\tif (typeof args[0] !== 'string') {\n\t\t\t\t// Anything else let's inspect with %O\n\t\t\t\targs.unshift('%O');\n\t\t\t}\n\n\t\t\t// Apply any `formatters` transformations\n\t\t\tlet index = 0;\n\t\t\targs[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format) => {\n\t\t\t\t// If we encounter an escaped % then don't increase the array index\n\t\t\t\tif (match === '%%') {\n\t\t\t\t\treturn '%';\n\t\t\t\t}\n\t\t\t\tindex++;\n\t\t\t\tconst formatter = createDebug.formatters[format];\n\t\t\t\tif (typeof formatter === 'function') {\n\t\t\t\t\tconst val = args[index];\n\t\t\t\t\tmatch = formatter.call(self, val);\n\n\t\t\t\t\t// Now we need to remove `args[index]` since it's inlined in the `format`\n\t\t\t\t\targs.splice(index, 1);\n\t\t\t\t\tindex--;\n\t\t\t\t}\n\t\t\t\treturn match;\n\t\t\t});\n\n\t\t\t// Apply env-specific formatting (colors, etc.)\n\t\t\tcreateDebug.formatArgs.call(self, args);\n\n\t\t\tconst logFn = self.log || createDebug.log;\n\t\t\tlogFn.apply(self, args);\n\t\t}\n\n\t\tdebug.namespace = namespace;\n\t\tdebug.useColors = createDebug.useColors();\n\t\tdebug.color = createDebug.selectColor(namespace);\n\t\tdebug.extend = extend;\n\t\tdebug.destroy = createDebug.destroy; // XXX Temporary. Will be removed in the next major release.\n\n\t\tObject.defineProperty(debug, 'enabled', {\n\t\t\tenumerable: true,\n\t\t\tconfigurable: false,\n\t\t\tget: () => {\n\t\t\t\tif (enableOverride !== null) {\n\t\t\t\t\treturn enableOverride;\n\t\t\t\t}\n\t\t\t\tif (namespacesCache !== createDebug.namespaces) {\n\t\t\t\t\tnamespacesCache = createDebug.namespaces;\n\t\t\t\t\tenabledCache = createDebug.enabled(namespace);\n\t\t\t\t}\n\n\t\t\t\treturn enabledCache;\n\t\t\t},\n\t\t\tset: v => {\n\t\t\t\tenableOverride = v;\n\t\t\t}\n\t\t});\n\n\t\t// Env-specific initialization logic for debug instances\n\t\tif (typeof createDebug.init === 'function') {\n\t\t\tcreateDebug.init(debug);\n\t\t}\n\n\t\treturn debug;\n\t}\n\n\tfunction extend(namespace, delimiter) {\n\t\tconst newDebug = createDebug(this.namespace + (typeof delimiter === 'undefined' ? ':' : delimiter) + namespace);\n\t\tnewDebug.log = this.log;\n\t\treturn newDebug;\n\t}\n\n\t/**\n\t* Enables a debug mode by namespaces. This can include modes\n\t* separated by a colon and wildcards.\n\t*\n\t* @param {String} namespaces\n\t* @api public\n\t*/\n\tfunction enable(namespaces) {\n\t\tcreateDebug.save(namespaces);\n\t\tcreateDebug.namespaces = namespaces;\n\n\t\tcreateDebug.names = [];\n\t\tcreateDebug.skips = [];\n\n\t\tlet i;\n\t\tconst split = (typeof namespaces === 'string' ? namespaces : '').split(/[\\s,]+/);\n\t\tconst len = split.length;\n\n\t\tfor (i = 0; i < len; i++) {\n\t\t\tif (!split[i]) {\n\t\t\t\t// ignore empty strings\n\t\t\t\tcontinue;\n\t\t\t}\n\n\t\t\tnamespaces = split[i].replace(/\\*/g, '.*?');\n\n\t\t\tif (namespaces[0] === '-') {\n\t\t\t\tcreateDebug.skips.push(new RegExp('^' + namespaces.slice(1) + '$'));\n\t\t\t} else {\n\t\t\t\tcreateDebug.names.push(new RegExp('^' + namespaces + '$'));\n\t\t\t}\n\t\t}\n\t}\n\n\t/**\n\t* Disable debug output.\n\t*\n\t* @return {String} namespaces\n\t* @api public\n\t*/\n\tfunction disable() {\n\t\tconst namespaces = [\n\t\t\t...createDebug.names.map(toNamespace),\n\t\t\t...createDebug.skips.map(toNamespace).map(namespace => '-' + namespace)\n\t\t].join(',');\n\t\tcreateDebug.enable('');\n\t\treturn namespaces;\n\t}\n\n\t/**\n\t* Returns true if the given mode name is enabled, false otherwise.\n\t*\n\t* @param {String} name\n\t* @return {Boolean}\n\t* @api public\n\t*/\n\tfunction enabled(name) {\n\t\tif (name[name.length - 1] === '*') {\n\t\t\treturn true;\n\t\t}\n\n\t\tlet i;\n\t\tlet len;\n\n\t\tfor (i = 0, len = createDebug.skips.length; i < len; i++) {\n\t\t\tif (createDebug.skips[i].test(name)) {\n\t\t\t\treturn false;\n\t\t\t}\n\t\t}\n\n\t\tfor (i = 0, len = createDebug.names.length; i < len; i++) {\n\t\t\tif (createDebug.names[i].test(name)) {\n\t\t\t\treturn true;\n\t\t\t}\n\t\t}\n\n\t\treturn false;\n\t}\n\n\t/**\n\t* Convert regexp to namespace\n\t*\n\t* @param {RegExp} regxep\n\t* @return {String} namespace\n\t* @api private\n\t*/\n\tfunction toNamespace(regexp) {\n\t\treturn regexp.toString()\n\t\t\t.substring(2, regexp.toString().length - 2)\n\t\t\t.replace(/\\.\\*\\?$/, '*');\n\t}\n\n\t/**\n\t* Coerce `val`.\n\t*\n\t* @param {Mixed} val\n\t* @return {Mixed}\n\t* @api private\n\t*/\n\tfunction coerce(val) {\n\t\tif (val instanceof Error) {\n\t\t\treturn val.stack || val.message;\n\t\t}\n\t\treturn val;\n\t}\n\n\t/**\n\t* XXX DO NOT USE. This is a temporary stub function.\n\t* XXX It WILL be removed in the next major release.\n\t*/\n\tfunction destroy() {\n\t\tconsole.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');\n\t}\n\n\tcreateDebug.enable(createDebug.load());\n\n\treturn createDebug;\n}\n\nmodule.exports = setup;\n\n\n//# sourceURL=webpack://electron/./node_modules/debug/src/common.js?");
+
+/**
+ * This is the common logic for both the Node.js and web browser
+ * implementations of `debug()`.
+ */
+
+function setup(env) {
+	createDebug.debug = createDebug;
+	createDebug.default = createDebug;
+	createDebug.coerce = coerce;
+	createDebug.disable = disable;
+	createDebug.enable = enable;
+	createDebug.enabled = enabled;
+	createDebug.humanize = __webpack_require__(7824);
+	createDebug.destroy = destroy;
+
+	Object.keys(env).forEach(key => {
+		createDebug[key] = env[key];
+	});
+
+	/**
+	* The currently active debug mode names, and names to skip.
+	*/
+
+	createDebug.names = [];
+	createDebug.skips = [];
+
+	/**
+	* Map of special "%n" handling functions, for the debug "format" argument.
+	*
+	* Valid key names are a single, lower or upper-case letter, i.e. "n" and "N".
+	*/
+	createDebug.formatters = {};
+
+	/**
+	* Selects a color for a debug namespace
+	* @param {String} namespace The namespace string for the debug instance to be colored
+	* @return {Number|String} An ANSI color code for the given namespace
+	* @api private
+	*/
+	function selectColor(namespace) {
+		let hash = 0;
+
+		for (let i = 0; i < namespace.length; i++) {
+			hash = ((hash << 5) - hash) + namespace.charCodeAt(i);
+			hash |= 0; // Convert to 32bit integer
+		}
+
+		return createDebug.colors[Math.abs(hash) % createDebug.colors.length];
+	}
+	createDebug.selectColor = selectColor;
+
+	/**
+	* Create a debugger with the given `namespace`.
+	*
+	* @param {String} namespace
+	* @return {Function}
+	* @api public
+	*/
+	function createDebug(namespace) {
+		let prevTime;
+		let enableOverride = null;
+		let namespacesCache;
+		let enabledCache;
+
+		function debug(...args) {
+			// Disabled?
+			if (!debug.enabled) {
+				return;
+			}
+
+			const self = debug;
+
+			// Set `diff` timestamp
+			const curr = Number(new Date());
+			const ms = curr - (prevTime || curr);
+			self.diff = ms;
+			self.prev = prevTime;
+			self.curr = curr;
+			prevTime = curr;
+
+			args[0] = createDebug.coerce(args[0]);
+
+			if (typeof args[0] !== 'string') {
+				// Anything else let's inspect with %O
+				args.unshift('%O');
+			}
+
+			// Apply any `formatters` transformations
+			let index = 0;
+			args[0] = args[0].replace(/%([a-zA-Z%])/g, (match, format) => {
+				// If we encounter an escaped % then don't increase the array index
+				if (match === '%%') {
+					return '%';
+				}
+				index++;
+				const formatter = createDebug.formatters[format];
+				if (typeof formatter === 'function') {
+					const val = args[index];
+					match = formatter.call(self, val);
+
+					// Now we need to remove `args[index]` since it's inlined in the `format`
+					args.splice(index, 1);
+					index--;
+				}
+				return match;
+			});
+
+			// Apply env-specific formatting (colors, etc.)
+			createDebug.formatArgs.call(self, args);
+
+			const logFn = self.log || createDebug.log;
+			logFn.apply(self, args);
+		}
+
+		debug.namespace = namespace;
+		debug.useColors = createDebug.useColors();
+		debug.color = createDebug.selectColor(namespace);
+		debug.extend = extend;
+		debug.destroy = createDebug.destroy; // XXX Temporary. Will be removed in the next major release.
+
+		Object.defineProperty(debug, 'enabled', {
+			enumerable: true,
+			configurable: false,
+			get: () => {
+				if (enableOverride !== null) {
+					return enableOverride;
+				}
+				if (namespacesCache !== createDebug.namespaces) {
+					namespacesCache = createDebug.namespaces;
+					enabledCache = createDebug.enabled(namespace);
+				}
+
+				return enabledCache;
+			},
+			set: v => {
+				enableOverride = v;
+			}
+		});
+
+		// Env-specific initialization logic for debug instances
+		if (typeof createDebug.init === 'function') {
+			createDebug.init(debug);
+		}
+
+		return debug;
+	}
+
+	function extend(namespace, delimiter) {
+		const newDebug = createDebug(this.namespace + (typeof delimiter === 'undefined' ? ':' : delimiter) + namespace);
+		newDebug.log = this.log;
+		return newDebug;
+	}
+
+	/**
+	* Enables a debug mode by namespaces. This can include modes
+	* separated by a colon and wildcards.
+	*
+	* @param {String} namespaces
+	* @api public
+	*/
+	function enable(namespaces) {
+		createDebug.save(namespaces);
+		createDebug.namespaces = namespaces;
+
+		createDebug.names = [];
+		createDebug.skips = [];
+
+		let i;
+		const split = (typeof namespaces === 'string' ? namespaces : '').split(/[\s,]+/);
+		const len = split.length;
+
+		for (i = 0; i < len; i++) {
+			if (!split[i]) {
+				// ignore empty strings
+				continue;
+			}
+
+			namespaces = split[i].replace(/\*/g, '.*?');
+
+			if (namespaces[0] === '-') {
+				createDebug.skips.push(new RegExp('^' + namespaces.slice(1) + '$'));
+			} else {
+				createDebug.names.push(new RegExp('^' + namespaces + '$'));
+			}
+		}
+	}
+
+	/**
+	* Disable debug output.
+	*
+	* @return {String} namespaces
+	* @api public
+	*/
+	function disable() {
+		const namespaces = [
+			...createDebug.names.map(toNamespace),
+			...createDebug.skips.map(toNamespace).map(namespace => '-' + namespace)
+		].join(',');
+		createDebug.enable('');
+		return namespaces;
+	}
+
+	/**
+	* Returns true if the given mode name is enabled, false otherwise.
+	*
+	* @param {String} name
+	* @return {Boolean}
+	* @api public
+	*/
+	function enabled(name) {
+		if (name[name.length - 1] === '*') {
+			return true;
+		}
+
+		let i;
+		let len;
+
+		for (i = 0, len = createDebug.skips.length; i < len; i++) {
+			if (createDebug.skips[i].test(name)) {
+				return false;
+			}
+		}
+
+		for (i = 0, len = createDebug.names.length; i < len; i++) {
+			if (createDebug.names[i].test(name)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	* Convert regexp to namespace
+	*
+	* @param {RegExp} regxep
+	* @return {String} namespace
+	* @api private
+	*/
+	function toNamespace(regexp) {
+		return regexp.toString()
+			.substring(2, regexp.toString().length - 2)
+			.replace(/\.\*\?$/, '*');
+	}
+
+	/**
+	* Coerce `val`.
+	*
+	* @param {Mixed} val
+	* @return {Mixed}
+	* @api private
+	*/
+	function coerce(val) {
+		if (val instanceof Error) {
+			return val.stack || val.message;
+		}
+		return val;
+	}
+
+	/**
+	* XXX DO NOT USE. This is a temporary stub function.
+	* XXX It WILL be removed in the next major release.
+	*/
+	function destroy() {
+		console.warn('Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.');
+	}
+
+	createDebug.enable(createDebug.load());
+
+	return createDebug;
+}
+
+module.exports = setup;
+
 
 /***/ }),
 
-/***/ "./node_modules/debug/src/index.js":
-/*!*****************************************!*\
-  !*** ./node_modules/debug/src/index.js ***!
-  \*****************************************/
+/***/ 5158:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("/**\n * Detect Electron renderer / nwjs process, which is node, but we should\n * treat as a browser.\n */\n\nif (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {\n\tmodule.exports = __webpack_require__(/*! ./browser.js */ \"./node_modules/debug/src/browser.js\");\n} else {\n\tmodule.exports = __webpack_require__(/*! ./node.js */ \"./node_modules/debug/src/node.js\");\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/debug/src/index.js?");
+/**
+ * Detect Electron renderer / nwjs process, which is node, but we should
+ * treat as a browser.
+ */
+
+if (typeof process === 'undefined' || process.type === 'renderer' || process.browser === true || process.__nwjs) {
+	module.exports = __webpack_require__(1227);
+} else {
+	module.exports = __webpack_require__(39);
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/debug/src/node.js":
-/*!****************************************!*\
-  !*** ./node_modules/debug/src/node.js ***!
-  \****************************************/
+/***/ 39:
 /***/ ((module, exports, __webpack_require__) => {
 
-eval("/**\n * Module dependencies.\n */\n\nconst tty = __webpack_require__(/*! tty */ \"tty\");\nconst util = __webpack_require__(/*! util */ \"util\");\n\n/**\n * This is the Node.js implementation of `debug()`.\n */\n\nexports.init = init;\nexports.log = log;\nexports.formatArgs = formatArgs;\nexports.save = save;\nexports.load = load;\nexports.useColors = useColors;\nexports.destroy = util.deprecate(\n\t() => {},\n\t'Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.'\n);\n\n/**\n * Colors.\n */\n\nexports.colors = [6, 2, 3, 4, 5, 1];\n\ntry {\n\t// Optional dependency (as in, doesn't need to be installed, NOT like optionalDependencies in package.json)\n\t// eslint-disable-next-line import/no-extraneous-dependencies\n\tconst supportsColor = __webpack_require__(/*! supports-color */ \"./node_modules/supports-color/index.js\");\n\n\tif (supportsColor && (supportsColor.stderr || supportsColor).level >= 2) {\n\t\texports.colors = [\n\t\t\t20,\n\t\t\t21,\n\t\t\t26,\n\t\t\t27,\n\t\t\t32,\n\t\t\t33,\n\t\t\t38,\n\t\t\t39,\n\t\t\t40,\n\t\t\t41,\n\t\t\t42,\n\t\t\t43,\n\t\t\t44,\n\t\t\t45,\n\t\t\t56,\n\t\t\t57,\n\t\t\t62,\n\t\t\t63,\n\t\t\t68,\n\t\t\t69,\n\t\t\t74,\n\t\t\t75,\n\t\t\t76,\n\t\t\t77,\n\t\t\t78,\n\t\t\t79,\n\t\t\t80,\n\t\t\t81,\n\t\t\t92,\n\t\t\t93,\n\t\t\t98,\n\t\t\t99,\n\t\t\t112,\n\t\t\t113,\n\t\t\t128,\n\t\t\t129,\n\t\t\t134,\n\t\t\t135,\n\t\t\t148,\n\t\t\t149,\n\t\t\t160,\n\t\t\t161,\n\t\t\t162,\n\t\t\t163,\n\t\t\t164,\n\t\t\t165,\n\t\t\t166,\n\t\t\t167,\n\t\t\t168,\n\t\t\t169,\n\t\t\t170,\n\t\t\t171,\n\t\t\t172,\n\t\t\t173,\n\t\t\t178,\n\t\t\t179,\n\t\t\t184,\n\t\t\t185,\n\t\t\t196,\n\t\t\t197,\n\t\t\t198,\n\t\t\t199,\n\t\t\t200,\n\t\t\t201,\n\t\t\t202,\n\t\t\t203,\n\t\t\t204,\n\t\t\t205,\n\t\t\t206,\n\t\t\t207,\n\t\t\t208,\n\t\t\t209,\n\t\t\t214,\n\t\t\t215,\n\t\t\t220,\n\t\t\t221\n\t\t];\n\t}\n} catch (error) {\n\t// Swallow - we only care if `supports-color` is available; it doesn't have to be.\n}\n\n/**\n * Build up the default `inspectOpts` object from the environment variables.\n *\n *   $ DEBUG_COLORS=no DEBUG_DEPTH=10 DEBUG_SHOW_HIDDEN=enabled node script.js\n */\n\nexports.inspectOpts = Object.keys(process.env).filter(key => {\n\treturn /^debug_/i.test(key);\n}).reduce((obj, key) => {\n\t// Camel-case\n\tconst prop = key\n\t\t.substring(6)\n\t\t.toLowerCase()\n\t\t.replace(/_([a-z])/g, (_, k) => {\n\t\t\treturn k.toUpperCase();\n\t\t});\n\n\t// Coerce string value into JS value\n\tlet val = process.env[key];\n\tif (/^(yes|on|true|enabled)$/i.test(val)) {\n\t\tval = true;\n\t} else if (/^(no|off|false|disabled)$/i.test(val)) {\n\t\tval = false;\n\t} else if (val === 'null') {\n\t\tval = null;\n\t} else {\n\t\tval = Number(val);\n\t}\n\n\tobj[prop] = val;\n\treturn obj;\n}, {});\n\n/**\n * Is stdout a TTY? Colored output is enabled when `true`.\n */\n\nfunction useColors() {\n\treturn 'colors' in exports.inspectOpts ?\n\t\tBoolean(exports.inspectOpts.colors) :\n\t\ttty.isatty(process.stderr.fd);\n}\n\n/**\n * Adds ANSI color escape codes if enabled.\n *\n * @api public\n */\n\nfunction formatArgs(args) {\n\tconst {namespace: name, useColors} = this;\n\n\tif (useColors) {\n\t\tconst c = this.color;\n\t\tconst colorCode = '\\u001B[3' + (c < 8 ? c : '8;5;' + c);\n\t\tconst prefix = `  ${colorCode};1m${name} \\u001B[0m`;\n\n\t\targs[0] = prefix + args[0].split('\\n').join('\\n' + prefix);\n\t\targs.push(colorCode + 'm+' + module.exports.humanize(this.diff) + '\\u001B[0m');\n\t} else {\n\t\targs[0] = getDate() + name + ' ' + args[0];\n\t}\n}\n\nfunction getDate() {\n\tif (exports.inspectOpts.hideDate) {\n\t\treturn '';\n\t}\n\treturn new Date().toISOString() + ' ';\n}\n\n/**\n * Invokes `util.format()` with the specified arguments and writes to stderr.\n */\n\nfunction log(...args) {\n\treturn process.stderr.write(util.format(...args) + '\\n');\n}\n\n/**\n * Save `namespaces`.\n *\n * @param {String} namespaces\n * @api private\n */\nfunction save(namespaces) {\n\tif (namespaces) {\n\t\tprocess.env.DEBUG = namespaces;\n\t} else {\n\t\t// If you set a process.env field to null or undefined, it gets cast to the\n\t\t// string 'null' or 'undefined'. Just delete instead.\n\t\tdelete process.env.DEBUG;\n\t}\n}\n\n/**\n * Load `namespaces`.\n *\n * @return {String} returns the previously persisted debug modes\n * @api private\n */\n\nfunction load() {\n\treturn process.env.DEBUG;\n}\n\n/**\n * Init logic for `debug` instances.\n *\n * Create a new `inspectOpts` object in case `useColors` is set\n * differently for a particular `debug` instance.\n */\n\nfunction init(debug) {\n\tdebug.inspectOpts = {};\n\n\tconst keys = Object.keys(exports.inspectOpts);\n\tfor (let i = 0; i < keys.length; i++) {\n\t\tdebug.inspectOpts[keys[i]] = exports.inspectOpts[keys[i]];\n\t}\n}\n\nmodule.exports = __webpack_require__(/*! ./common */ \"./node_modules/debug/src/common.js\")(exports);\n\nconst {formatters} = module.exports;\n\n/**\n * Map %o to `util.inspect()`, all on a single line.\n */\n\nformatters.o = function (v) {\n\tthis.inspectOpts.colors = this.useColors;\n\treturn util.inspect(v, this.inspectOpts)\n\t\t.split('\\n')\n\t\t.map(str => str.trim())\n\t\t.join(' ');\n};\n\n/**\n * Map %O to `util.inspect()`, allowing multiple lines if needed.\n */\n\nformatters.O = function (v) {\n\tthis.inspectOpts.colors = this.useColors;\n\treturn util.inspect(v, this.inspectOpts);\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/debug/src/node.js?");
+/**
+ * Module dependencies.
+ */
+
+const tty = __webpack_require__(6224);
+const util = __webpack_require__(3837);
+
+/**
+ * This is the Node.js implementation of `debug()`.
+ */
+
+exports.init = init;
+exports.log = log;
+exports.formatArgs = formatArgs;
+exports.save = save;
+exports.load = load;
+exports.useColors = useColors;
+exports.destroy = util.deprecate(
+	() => {},
+	'Instance method `debug.destroy()` is deprecated and no longer does anything. It will be removed in the next major version of `debug`.'
+);
+
+/**
+ * Colors.
+ */
+
+exports.colors = [6, 2, 3, 4, 5, 1];
+
+try {
+	// Optional dependency (as in, doesn't need to be installed, NOT like optionalDependencies in package.json)
+	// eslint-disable-next-line import/no-extraneous-dependencies
+	const supportsColor = __webpack_require__(2130);
+
+	if (supportsColor && (supportsColor.stderr || supportsColor).level >= 2) {
+		exports.colors = [
+			20,
+			21,
+			26,
+			27,
+			32,
+			33,
+			38,
+			39,
+			40,
+			41,
+			42,
+			43,
+			44,
+			45,
+			56,
+			57,
+			62,
+			63,
+			68,
+			69,
+			74,
+			75,
+			76,
+			77,
+			78,
+			79,
+			80,
+			81,
+			92,
+			93,
+			98,
+			99,
+			112,
+			113,
+			128,
+			129,
+			134,
+			135,
+			148,
+			149,
+			160,
+			161,
+			162,
+			163,
+			164,
+			165,
+			166,
+			167,
+			168,
+			169,
+			170,
+			171,
+			172,
+			173,
+			178,
+			179,
+			184,
+			185,
+			196,
+			197,
+			198,
+			199,
+			200,
+			201,
+			202,
+			203,
+			204,
+			205,
+			206,
+			207,
+			208,
+			209,
+			214,
+			215,
+			220,
+			221
+		];
+	}
+} catch (error) {
+	// Swallow - we only care if `supports-color` is available; it doesn't have to be.
+}
+
+/**
+ * Build up the default `inspectOpts` object from the environment variables.
+ *
+ *   $ DEBUG_COLORS=no DEBUG_DEPTH=10 DEBUG_SHOW_HIDDEN=enabled node script.js
+ */
+
+exports.inspectOpts = Object.keys(process.env).filter(key => {
+	return /^debug_/i.test(key);
+}).reduce((obj, key) => {
+	// Camel-case
+	const prop = key
+		.substring(6)
+		.toLowerCase()
+		.replace(/_([a-z])/g, (_, k) => {
+			return k.toUpperCase();
+		});
+
+	// Coerce string value into JS value
+	let val = process.env[key];
+	if (/^(yes|on|true|enabled)$/i.test(val)) {
+		val = true;
+	} else if (/^(no|off|false|disabled)$/i.test(val)) {
+		val = false;
+	} else if (val === 'null') {
+		val = null;
+	} else {
+		val = Number(val);
+	}
+
+	obj[prop] = val;
+	return obj;
+}, {});
+
+/**
+ * Is stdout a TTY? Colored output is enabled when `true`.
+ */
+
+function useColors() {
+	return 'colors' in exports.inspectOpts ?
+		Boolean(exports.inspectOpts.colors) :
+		tty.isatty(process.stderr.fd);
+}
+
+/**
+ * Adds ANSI color escape codes if enabled.
+ *
+ * @api public
+ */
+
+function formatArgs(args) {
+	const {namespace: name, useColors} = this;
+
+	if (useColors) {
+		const c = this.color;
+		const colorCode = '\u001B[3' + (c < 8 ? c : '8;5;' + c);
+		const prefix = `  ${colorCode};1m${name} \u001B[0m`;
+
+		args[0] = prefix + args[0].split('\n').join('\n' + prefix);
+		args.push(colorCode + 'm+' + module.exports.humanize(this.diff) + '\u001B[0m');
+	} else {
+		args[0] = getDate() + name + ' ' + args[0];
+	}
+}
+
+function getDate() {
+	if (exports.inspectOpts.hideDate) {
+		return '';
+	}
+	return new Date().toISOString() + ' ';
+}
+
+/**
+ * Invokes `util.format()` with the specified arguments and writes to stderr.
+ */
+
+function log(...args) {
+	return process.stderr.write(util.format(...args) + '\n');
+}
+
+/**
+ * Save `namespaces`.
+ *
+ * @param {String} namespaces
+ * @api private
+ */
+function save(namespaces) {
+	if (namespaces) {
+		process.env.DEBUG = namespaces;
+	} else {
+		// If you set a process.env field to null or undefined, it gets cast to the
+		// string 'null' or 'undefined'. Just delete instead.
+		delete process.env.DEBUG;
+	}
+}
+
+/**
+ * Load `namespaces`.
+ *
+ * @return {String} returns the previously persisted debug modes
+ * @api private
+ */
+
+function load() {
+	return process.env.DEBUG;
+}
+
+/**
+ * Init logic for `debug` instances.
+ *
+ * Create a new `inspectOpts` object in case `useColors` is set
+ * differently for a particular `debug` instance.
+ */
+
+function init(debug) {
+	debug.inspectOpts = {};
+
+	const keys = Object.keys(exports.inspectOpts);
+	for (let i = 0; i < keys.length; i++) {
+		debug.inspectOpts[keys[i]] = exports.inspectOpts[keys[i]];
+	}
+}
+
+module.exports = __webpack_require__(2447)(exports);
+
+const {formatters} = module.exports;
+
+/**
+ * Map %o to `util.inspect()`, all on a single line.
+ */
+
+formatters.o = function (v) {
+	this.inspectOpts.colors = this.useColors;
+	return util.inspect(v, this.inspectOpts)
+		.split('\n')
+		.map(str => str.trim())
+		.join(' ');
+};
+
+/**
+ * Map %O to `util.inspect()`, allowing multiple lines if needed.
+ */
+
+formatters.O = function (v) {
+	this.inspectOpts.colors = this.useColors;
+	return util.inspect(v, this.inspectOpts);
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/graceful-fs/clone.js":
-/*!*******************************************!*\
-  !*** ./node_modules/graceful-fs/clone.js ***!
-  \*******************************************/
+/***/ 6458:
 /***/ ((module) => {
 
 "use strict";
-eval("\n\nmodule.exports = clone\n\nvar getPrototypeOf = Object.getPrototypeOf || function (obj) {\n  return obj.__proto__\n}\n\nfunction clone (obj) {\n  if (obj === null || typeof obj !== 'object')\n    return obj\n\n  if (obj instanceof Object)\n    var copy = { __proto__: getPrototypeOf(obj) }\n  else\n    var copy = Object.create(null)\n\n  Object.getOwnPropertyNames(obj).forEach(function (key) {\n    Object.defineProperty(copy, key, Object.getOwnPropertyDescriptor(obj, key))\n  })\n\n  return copy\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/graceful-fs/clone.js?");
+
+
+module.exports = clone
+
+var getPrototypeOf = Object.getPrototypeOf || function (obj) {
+  return obj.__proto__
+}
+
+function clone (obj) {
+  if (obj === null || typeof obj !== 'object')
+    return obj
+
+  if (obj instanceof Object)
+    var copy = { __proto__: getPrototypeOf(obj) }
+  else
+    var copy = Object.create(null)
+
+  Object.getOwnPropertyNames(obj).forEach(function (key) {
+    Object.defineProperty(copy, key, Object.getOwnPropertyDescriptor(obj, key))
+  })
+
+  return copy
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/graceful-fs/graceful-fs.js":
-/*!*************************************************!*\
-  !*** ./node_modules/graceful-fs/graceful-fs.js ***!
-  \*************************************************/
+/***/ 77:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("var fs = __webpack_require__(/*! fs */ \"fs\")\nvar polyfills = __webpack_require__(/*! ./polyfills.js */ \"./node_modules/graceful-fs/polyfills.js\")\nvar legacy = __webpack_require__(/*! ./legacy-streams.js */ \"./node_modules/graceful-fs/legacy-streams.js\")\nvar clone = __webpack_require__(/*! ./clone.js */ \"./node_modules/graceful-fs/clone.js\")\n\nvar util = __webpack_require__(/*! util */ \"util\")\n\n/* istanbul ignore next - node 0.x polyfill */\nvar gracefulQueue\nvar previousSymbol\n\n/* istanbul ignore else - node 0.x polyfill */\nif (typeof Symbol === 'function' && typeof Symbol.for === 'function') {\n  gracefulQueue = Symbol.for('graceful-fs.queue')\n  // This is used in testing by future versions\n  previousSymbol = Symbol.for('graceful-fs.previous')\n} else {\n  gracefulQueue = '___graceful-fs.queue'\n  previousSymbol = '___graceful-fs.previous'\n}\n\nfunction noop () {}\n\nfunction publishQueue(context, queue) {\n  Object.defineProperty(context, gracefulQueue, {\n    get: function() {\n      return queue\n    }\n  })\n}\n\nvar debug = noop\nif (util.debuglog)\n  debug = util.debuglog('gfs4')\nelse if (/\\bgfs4\\b/i.test(process.env.NODE_DEBUG || ''))\n  debug = function() {\n    var m = util.format.apply(util, arguments)\n    m = 'GFS4: ' + m.split(/\\n/).join('\\nGFS4: ')\n    console.error(m)\n  }\n\n// Once time initialization\nif (!fs[gracefulQueue]) {\n  // This queue can be shared by multiple loaded instances\n  var queue = global[gracefulQueue] || []\n  publishQueue(fs, queue)\n\n  // Patch fs.close/closeSync to shared queue version, because we need\n  // to retry() whenever a close happens *anywhere* in the program.\n  // This is essential when multiple graceful-fs instances are\n  // in play at the same time.\n  fs.close = (function (fs$close) {\n    function close (fd, cb) {\n      return fs$close.call(fs, fd, function (err) {\n        // This function uses the graceful-fs shared queue\n        if (!err) {\n          resetQueue()\n        }\n\n        if (typeof cb === 'function')\n          cb.apply(this, arguments)\n      })\n    }\n\n    Object.defineProperty(close, previousSymbol, {\n      value: fs$close\n    })\n    return close\n  })(fs.close)\n\n  fs.closeSync = (function (fs$closeSync) {\n    function closeSync (fd) {\n      // This function uses the graceful-fs shared queue\n      fs$closeSync.apply(fs, arguments)\n      resetQueue()\n    }\n\n    Object.defineProperty(closeSync, previousSymbol, {\n      value: fs$closeSync\n    })\n    return closeSync\n  })(fs.closeSync)\n\n  if (/\\bgfs4\\b/i.test(process.env.NODE_DEBUG || '')) {\n    process.on('exit', function() {\n      debug(fs[gracefulQueue])\n      __webpack_require__(/*! assert */ \"assert\").equal(fs[gracefulQueue].length, 0)\n    })\n  }\n}\n\nif (!global[gracefulQueue]) {\n  publishQueue(global, fs[gracefulQueue]);\n}\n\nmodule.exports = patch(clone(fs))\nif (process.env.TEST_GRACEFUL_FS_GLOBAL_PATCH && !fs.__patched) {\n    module.exports = patch(fs)\n    fs.__patched = true;\n}\n\nfunction patch (fs) {\n  // Everything that references the open() function needs to be in here\n  polyfills(fs)\n  fs.gracefulify = patch\n\n  fs.createReadStream = createReadStream\n  fs.createWriteStream = createWriteStream\n  var fs$readFile = fs.readFile\n  fs.readFile = readFile\n  function readFile (path, options, cb) {\n    if (typeof options === 'function')\n      cb = options, options = null\n\n    return go$readFile(path, options, cb)\n\n    function go$readFile (path, options, cb, startTime) {\n      return fs$readFile(path, options, function (err) {\n        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))\n          enqueue([go$readFile, [path, options, cb], err, startTime || Date.now(), Date.now()])\n        else {\n          if (typeof cb === 'function')\n            cb.apply(this, arguments)\n        }\n      })\n    }\n  }\n\n  var fs$writeFile = fs.writeFile\n  fs.writeFile = writeFile\n  function writeFile (path, data, options, cb) {\n    if (typeof options === 'function')\n      cb = options, options = null\n\n    return go$writeFile(path, data, options, cb)\n\n    function go$writeFile (path, data, options, cb, startTime) {\n      return fs$writeFile(path, data, options, function (err) {\n        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))\n          enqueue([go$writeFile, [path, data, options, cb], err, startTime || Date.now(), Date.now()])\n        else {\n          if (typeof cb === 'function')\n            cb.apply(this, arguments)\n        }\n      })\n    }\n  }\n\n  var fs$appendFile = fs.appendFile\n  if (fs$appendFile)\n    fs.appendFile = appendFile\n  function appendFile (path, data, options, cb) {\n    if (typeof options === 'function')\n      cb = options, options = null\n\n    return go$appendFile(path, data, options, cb)\n\n    function go$appendFile (path, data, options, cb, startTime) {\n      return fs$appendFile(path, data, options, function (err) {\n        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))\n          enqueue([go$appendFile, [path, data, options, cb], err, startTime || Date.now(), Date.now()])\n        else {\n          if (typeof cb === 'function')\n            cb.apply(this, arguments)\n        }\n      })\n    }\n  }\n\n  var fs$copyFile = fs.copyFile\n  if (fs$copyFile)\n    fs.copyFile = copyFile\n  function copyFile (src, dest, flags, cb) {\n    if (typeof flags === 'function') {\n      cb = flags\n      flags = 0\n    }\n    return go$copyFile(src, dest, flags, cb)\n\n    function go$copyFile (src, dest, flags, cb, startTime) {\n      return fs$copyFile(src, dest, flags, function (err) {\n        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))\n          enqueue([go$copyFile, [src, dest, flags, cb], err, startTime || Date.now(), Date.now()])\n        else {\n          if (typeof cb === 'function')\n            cb.apply(this, arguments)\n        }\n      })\n    }\n  }\n\n  var fs$readdir = fs.readdir\n  fs.readdir = readdir\n  var noReaddirOptionVersions = /^v[0-5]\\./\n  function readdir (path, options, cb) {\n    if (typeof options === 'function')\n      cb = options, options = null\n\n    var go$readdir = noReaddirOptionVersions.test(process.version)\n      ? function go$readdir (path, options, cb, startTime) {\n        return fs$readdir(path, fs$readdirCallback(\n          path, options, cb, startTime\n        ))\n      }\n      : function go$readdir (path, options, cb, startTime) {\n        return fs$readdir(path, options, fs$readdirCallback(\n          path, options, cb, startTime\n        ))\n      }\n\n    return go$readdir(path, options, cb)\n\n    function fs$readdirCallback (path, options, cb, startTime) {\n      return function (err, files) {\n        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))\n          enqueue([\n            go$readdir,\n            [path, options, cb],\n            err,\n            startTime || Date.now(),\n            Date.now()\n          ])\n        else {\n          if (files && files.sort)\n            files.sort()\n\n          if (typeof cb === 'function')\n            cb.call(this, err, files)\n        }\n      }\n    }\n  }\n\n  if (process.version.substr(0, 4) === 'v0.8') {\n    var legStreams = legacy(fs)\n    ReadStream = legStreams.ReadStream\n    WriteStream = legStreams.WriteStream\n  }\n\n  var fs$ReadStream = fs.ReadStream\n  if (fs$ReadStream) {\n    ReadStream.prototype = Object.create(fs$ReadStream.prototype)\n    ReadStream.prototype.open = ReadStream$open\n  }\n\n  var fs$WriteStream = fs.WriteStream\n  if (fs$WriteStream) {\n    WriteStream.prototype = Object.create(fs$WriteStream.prototype)\n    WriteStream.prototype.open = WriteStream$open\n  }\n\n  Object.defineProperty(fs, 'ReadStream', {\n    get: function () {\n      return ReadStream\n    },\n    set: function (val) {\n      ReadStream = val\n    },\n    enumerable: true,\n    configurable: true\n  })\n  Object.defineProperty(fs, 'WriteStream', {\n    get: function () {\n      return WriteStream\n    },\n    set: function (val) {\n      WriteStream = val\n    },\n    enumerable: true,\n    configurable: true\n  })\n\n  // legacy names\n  var FileReadStream = ReadStream\n  Object.defineProperty(fs, 'FileReadStream', {\n    get: function () {\n      return FileReadStream\n    },\n    set: function (val) {\n      FileReadStream = val\n    },\n    enumerable: true,\n    configurable: true\n  })\n  var FileWriteStream = WriteStream\n  Object.defineProperty(fs, 'FileWriteStream', {\n    get: function () {\n      return FileWriteStream\n    },\n    set: function (val) {\n      FileWriteStream = val\n    },\n    enumerable: true,\n    configurable: true\n  })\n\n  function ReadStream (path, options) {\n    if (this instanceof ReadStream)\n      return fs$ReadStream.apply(this, arguments), this\n    else\n      return ReadStream.apply(Object.create(ReadStream.prototype), arguments)\n  }\n\n  function ReadStream$open () {\n    var that = this\n    open(that.path, that.flags, that.mode, function (err, fd) {\n      if (err) {\n        if (that.autoClose)\n          that.destroy()\n\n        that.emit('error', err)\n      } else {\n        that.fd = fd\n        that.emit('open', fd)\n        that.read()\n      }\n    })\n  }\n\n  function WriteStream (path, options) {\n    if (this instanceof WriteStream)\n      return fs$WriteStream.apply(this, arguments), this\n    else\n      return WriteStream.apply(Object.create(WriteStream.prototype), arguments)\n  }\n\n  function WriteStream$open () {\n    var that = this\n    open(that.path, that.flags, that.mode, function (err, fd) {\n      if (err) {\n        that.destroy()\n        that.emit('error', err)\n      } else {\n        that.fd = fd\n        that.emit('open', fd)\n      }\n    })\n  }\n\n  function createReadStream (path, options) {\n    return new fs.ReadStream(path, options)\n  }\n\n  function createWriteStream (path, options) {\n    return new fs.WriteStream(path, options)\n  }\n\n  var fs$open = fs.open\n  fs.open = open\n  function open (path, flags, mode, cb) {\n    if (typeof mode === 'function')\n      cb = mode, mode = null\n\n    return go$open(path, flags, mode, cb)\n\n    function go$open (path, flags, mode, cb, startTime) {\n      return fs$open(path, flags, mode, function (err, fd) {\n        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))\n          enqueue([go$open, [path, flags, mode, cb], err, startTime || Date.now(), Date.now()])\n        else {\n          if (typeof cb === 'function')\n            cb.apply(this, arguments)\n        }\n      })\n    }\n  }\n\n  return fs\n}\n\nfunction enqueue (elem) {\n  debug('ENQUEUE', elem[0].name, elem[1])\n  fs[gracefulQueue].push(elem)\n  retry()\n}\n\n// keep track of the timeout between retry() calls\nvar retryTimer\n\n// reset the startTime and lastTime to now\n// this resets the start of the 60 second overall timeout as well as the\n// delay between attempts so that we'll retry these jobs sooner\nfunction resetQueue () {\n  var now = Date.now()\n  for (var i = 0; i < fs[gracefulQueue].length; ++i) {\n    // entries that are only a length of 2 are from an older version, don't\n    // bother modifying those since they'll be retried anyway.\n    if (fs[gracefulQueue][i].length > 2) {\n      fs[gracefulQueue][i][3] = now // startTime\n      fs[gracefulQueue][i][4] = now // lastTime\n    }\n  }\n  // call retry to make sure we're actively processing the queue\n  retry()\n}\n\nfunction retry () {\n  // clear the timer and remove it to help prevent unintended concurrency\n  clearTimeout(retryTimer)\n  retryTimer = undefined\n\n  if (fs[gracefulQueue].length === 0)\n    return\n\n  var elem = fs[gracefulQueue].shift()\n  var fn = elem[0]\n  var args = elem[1]\n  // these items may be unset if they were added by an older graceful-fs\n  var err = elem[2]\n  var startTime = elem[3]\n  var lastTime = elem[4]\n\n  // if we don't have a startTime we have no way of knowing if we've waited\n  // long enough, so go ahead and retry this item now\n  if (startTime === undefined) {\n    debug('RETRY', fn.name, args)\n    fn.apply(null, args)\n  } else if (Date.now() - startTime >= 60000) {\n    // it's been more than 60 seconds total, bail now\n    debug('TIMEOUT', fn.name, args)\n    var cb = args.pop()\n    if (typeof cb === 'function')\n      cb.call(null, err)\n  } else {\n    // the amount of time between the last attempt and right now\n    var sinceAttempt = Date.now() - lastTime\n    // the amount of time between when we first tried, and when we last tried\n    // rounded up to at least 1\n    var sinceStart = Math.max(lastTime - startTime, 1)\n    // backoff. wait longer than the total time we've been retrying, but only\n    // up to a maximum of 100ms\n    var desiredDelay = Math.min(sinceStart * 1.2, 100)\n    // it's been long enough since the last retry, do it again\n    if (sinceAttempt >= desiredDelay) {\n      debug('RETRY', fn.name, args)\n      fn.apply(null, args.concat([startTime]))\n    } else {\n      // if we can't do this job yet, push it to the end of the queue\n      // and let the next iteration check again\n      fs[gracefulQueue].push(elem)\n    }\n  }\n\n  // schedule our next run if one isn't already scheduled\n  if (retryTimer === undefined) {\n    retryTimer = setTimeout(retry, 0)\n  }\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/graceful-fs/graceful-fs.js?");
+var fs = __webpack_require__(7147)
+var polyfills = __webpack_require__(2161)
+var legacy = __webpack_require__(8520)
+var clone = __webpack_require__(6458)
+
+var util = __webpack_require__(3837)
+
+/* istanbul ignore next - node 0.x polyfill */
+var gracefulQueue
+var previousSymbol
+
+/* istanbul ignore else - node 0.x polyfill */
+if (typeof Symbol === 'function' && typeof Symbol.for === 'function') {
+  gracefulQueue = Symbol.for('graceful-fs.queue')
+  // This is used in testing by future versions
+  previousSymbol = Symbol.for('graceful-fs.previous')
+} else {
+  gracefulQueue = '___graceful-fs.queue'
+  previousSymbol = '___graceful-fs.previous'
+}
+
+function noop () {}
+
+function publishQueue(context, queue) {
+  Object.defineProperty(context, gracefulQueue, {
+    get: function() {
+      return queue
+    }
+  })
+}
+
+var debug = noop
+if (util.debuglog)
+  debug = util.debuglog('gfs4')
+else if (/\bgfs4\b/i.test(process.env.NODE_DEBUG || ''))
+  debug = function() {
+    var m = util.format.apply(util, arguments)
+    m = 'GFS4: ' + m.split(/\n/).join('\nGFS4: ')
+    console.error(m)
+  }
+
+// Once time initialization
+if (!fs[gracefulQueue]) {
+  // This queue can be shared by multiple loaded instances
+  var queue = global[gracefulQueue] || []
+  publishQueue(fs, queue)
+
+  // Patch fs.close/closeSync to shared queue version, because we need
+  // to retry() whenever a close happens *anywhere* in the program.
+  // This is essential when multiple graceful-fs instances are
+  // in play at the same time.
+  fs.close = (function (fs$close) {
+    function close (fd, cb) {
+      return fs$close.call(fs, fd, function (err) {
+        // This function uses the graceful-fs shared queue
+        if (!err) {
+          resetQueue()
+        }
+
+        if (typeof cb === 'function')
+          cb.apply(this, arguments)
+      })
+    }
+
+    Object.defineProperty(close, previousSymbol, {
+      value: fs$close
+    })
+    return close
+  })(fs.close)
+
+  fs.closeSync = (function (fs$closeSync) {
+    function closeSync (fd) {
+      // This function uses the graceful-fs shared queue
+      fs$closeSync.apply(fs, arguments)
+      resetQueue()
+    }
+
+    Object.defineProperty(closeSync, previousSymbol, {
+      value: fs$closeSync
+    })
+    return closeSync
+  })(fs.closeSync)
+
+  if (/\bgfs4\b/i.test(process.env.NODE_DEBUG || '')) {
+    process.on('exit', function() {
+      debug(fs[gracefulQueue])
+      __webpack_require__(9491).equal(fs[gracefulQueue].length, 0)
+    })
+  }
+}
+
+if (!global[gracefulQueue]) {
+  publishQueue(global, fs[gracefulQueue]);
+}
+
+module.exports = patch(clone(fs))
+if (process.env.TEST_GRACEFUL_FS_GLOBAL_PATCH && !fs.__patched) {
+    module.exports = patch(fs)
+    fs.__patched = true;
+}
+
+function patch (fs) {
+  // Everything that references the open() function needs to be in here
+  polyfills(fs)
+  fs.gracefulify = patch
+
+  fs.createReadStream = createReadStream
+  fs.createWriteStream = createWriteStream
+  var fs$readFile = fs.readFile
+  fs.readFile = readFile
+  function readFile (path, options, cb) {
+    if (typeof options === 'function')
+      cb = options, options = null
+
+    return go$readFile(path, options, cb)
+
+    function go$readFile (path, options, cb, startTime) {
+      return fs$readFile(path, options, function (err) {
+        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
+          enqueue([go$readFile, [path, options, cb], err, startTime || Date.now(), Date.now()])
+        else {
+          if (typeof cb === 'function')
+            cb.apply(this, arguments)
+        }
+      })
+    }
+  }
+
+  var fs$writeFile = fs.writeFile
+  fs.writeFile = writeFile
+  function writeFile (path, data, options, cb) {
+    if (typeof options === 'function')
+      cb = options, options = null
+
+    return go$writeFile(path, data, options, cb)
+
+    function go$writeFile (path, data, options, cb, startTime) {
+      return fs$writeFile(path, data, options, function (err) {
+        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
+          enqueue([go$writeFile, [path, data, options, cb], err, startTime || Date.now(), Date.now()])
+        else {
+          if (typeof cb === 'function')
+            cb.apply(this, arguments)
+        }
+      })
+    }
+  }
+
+  var fs$appendFile = fs.appendFile
+  if (fs$appendFile)
+    fs.appendFile = appendFile
+  function appendFile (path, data, options, cb) {
+    if (typeof options === 'function')
+      cb = options, options = null
+
+    return go$appendFile(path, data, options, cb)
+
+    function go$appendFile (path, data, options, cb, startTime) {
+      return fs$appendFile(path, data, options, function (err) {
+        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
+          enqueue([go$appendFile, [path, data, options, cb], err, startTime || Date.now(), Date.now()])
+        else {
+          if (typeof cb === 'function')
+            cb.apply(this, arguments)
+        }
+      })
+    }
+  }
+
+  var fs$copyFile = fs.copyFile
+  if (fs$copyFile)
+    fs.copyFile = copyFile
+  function copyFile (src, dest, flags, cb) {
+    if (typeof flags === 'function') {
+      cb = flags
+      flags = 0
+    }
+    return go$copyFile(src, dest, flags, cb)
+
+    function go$copyFile (src, dest, flags, cb, startTime) {
+      return fs$copyFile(src, dest, flags, function (err) {
+        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
+          enqueue([go$copyFile, [src, dest, flags, cb], err, startTime || Date.now(), Date.now()])
+        else {
+          if (typeof cb === 'function')
+            cb.apply(this, arguments)
+        }
+      })
+    }
+  }
+
+  var fs$readdir = fs.readdir
+  fs.readdir = readdir
+  var noReaddirOptionVersions = /^v[0-5]\./
+  function readdir (path, options, cb) {
+    if (typeof options === 'function')
+      cb = options, options = null
+
+    var go$readdir = noReaddirOptionVersions.test(process.version)
+      ? function go$readdir (path, options, cb, startTime) {
+        return fs$readdir(path, fs$readdirCallback(
+          path, options, cb, startTime
+        ))
+      }
+      : function go$readdir (path, options, cb, startTime) {
+        return fs$readdir(path, options, fs$readdirCallback(
+          path, options, cb, startTime
+        ))
+      }
+
+    return go$readdir(path, options, cb)
+
+    function fs$readdirCallback (path, options, cb, startTime) {
+      return function (err, files) {
+        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
+          enqueue([
+            go$readdir,
+            [path, options, cb],
+            err,
+            startTime || Date.now(),
+            Date.now()
+          ])
+        else {
+          if (files && files.sort)
+            files.sort()
+
+          if (typeof cb === 'function')
+            cb.call(this, err, files)
+        }
+      }
+    }
+  }
+
+  if (process.version.substr(0, 4) === 'v0.8') {
+    var legStreams = legacy(fs)
+    ReadStream = legStreams.ReadStream
+    WriteStream = legStreams.WriteStream
+  }
+
+  var fs$ReadStream = fs.ReadStream
+  if (fs$ReadStream) {
+    ReadStream.prototype = Object.create(fs$ReadStream.prototype)
+    ReadStream.prototype.open = ReadStream$open
+  }
+
+  var fs$WriteStream = fs.WriteStream
+  if (fs$WriteStream) {
+    WriteStream.prototype = Object.create(fs$WriteStream.prototype)
+    WriteStream.prototype.open = WriteStream$open
+  }
+
+  Object.defineProperty(fs, 'ReadStream', {
+    get: function () {
+      return ReadStream
+    },
+    set: function (val) {
+      ReadStream = val
+    },
+    enumerable: true,
+    configurable: true
+  })
+  Object.defineProperty(fs, 'WriteStream', {
+    get: function () {
+      return WriteStream
+    },
+    set: function (val) {
+      WriteStream = val
+    },
+    enumerable: true,
+    configurable: true
+  })
+
+  // legacy names
+  var FileReadStream = ReadStream
+  Object.defineProperty(fs, 'FileReadStream', {
+    get: function () {
+      return FileReadStream
+    },
+    set: function (val) {
+      FileReadStream = val
+    },
+    enumerable: true,
+    configurable: true
+  })
+  var FileWriteStream = WriteStream
+  Object.defineProperty(fs, 'FileWriteStream', {
+    get: function () {
+      return FileWriteStream
+    },
+    set: function (val) {
+      FileWriteStream = val
+    },
+    enumerable: true,
+    configurable: true
+  })
+
+  function ReadStream (path, options) {
+    if (this instanceof ReadStream)
+      return fs$ReadStream.apply(this, arguments), this
+    else
+      return ReadStream.apply(Object.create(ReadStream.prototype), arguments)
+  }
+
+  function ReadStream$open () {
+    var that = this
+    open(that.path, that.flags, that.mode, function (err, fd) {
+      if (err) {
+        if (that.autoClose)
+          that.destroy()
+
+        that.emit('error', err)
+      } else {
+        that.fd = fd
+        that.emit('open', fd)
+        that.read()
+      }
+    })
+  }
+
+  function WriteStream (path, options) {
+    if (this instanceof WriteStream)
+      return fs$WriteStream.apply(this, arguments), this
+    else
+      return WriteStream.apply(Object.create(WriteStream.prototype), arguments)
+  }
+
+  function WriteStream$open () {
+    var that = this
+    open(that.path, that.flags, that.mode, function (err, fd) {
+      if (err) {
+        that.destroy()
+        that.emit('error', err)
+      } else {
+        that.fd = fd
+        that.emit('open', fd)
+      }
+    })
+  }
+
+  function createReadStream (path, options) {
+    return new fs.ReadStream(path, options)
+  }
+
+  function createWriteStream (path, options) {
+    return new fs.WriteStream(path, options)
+  }
+
+  var fs$open = fs.open
+  fs.open = open
+  function open (path, flags, mode, cb) {
+    if (typeof mode === 'function')
+      cb = mode, mode = null
+
+    return go$open(path, flags, mode, cb)
+
+    function go$open (path, flags, mode, cb, startTime) {
+      return fs$open(path, flags, mode, function (err, fd) {
+        if (err && (err.code === 'EMFILE' || err.code === 'ENFILE'))
+          enqueue([go$open, [path, flags, mode, cb], err, startTime || Date.now(), Date.now()])
+        else {
+          if (typeof cb === 'function')
+            cb.apply(this, arguments)
+        }
+      })
+    }
+  }
+
+  return fs
+}
+
+function enqueue (elem) {
+  debug('ENQUEUE', elem[0].name, elem[1])
+  fs[gracefulQueue].push(elem)
+  retry()
+}
+
+// keep track of the timeout between retry() calls
+var retryTimer
+
+// reset the startTime and lastTime to now
+// this resets the start of the 60 second overall timeout as well as the
+// delay between attempts so that we'll retry these jobs sooner
+function resetQueue () {
+  var now = Date.now()
+  for (var i = 0; i < fs[gracefulQueue].length; ++i) {
+    // entries that are only a length of 2 are from an older version, don't
+    // bother modifying those since they'll be retried anyway.
+    if (fs[gracefulQueue][i].length > 2) {
+      fs[gracefulQueue][i][3] = now // startTime
+      fs[gracefulQueue][i][4] = now // lastTime
+    }
+  }
+  // call retry to make sure we're actively processing the queue
+  retry()
+}
+
+function retry () {
+  // clear the timer and remove it to help prevent unintended concurrency
+  clearTimeout(retryTimer)
+  retryTimer = undefined
+
+  if (fs[gracefulQueue].length === 0)
+    return
+
+  var elem = fs[gracefulQueue].shift()
+  var fn = elem[0]
+  var args = elem[1]
+  // these items may be unset if they were added by an older graceful-fs
+  var err = elem[2]
+  var startTime = elem[3]
+  var lastTime = elem[4]
+
+  // if we don't have a startTime we have no way of knowing if we've waited
+  // long enough, so go ahead and retry this item now
+  if (startTime === undefined) {
+    debug('RETRY', fn.name, args)
+    fn.apply(null, args)
+  } else if (Date.now() - startTime >= 60000) {
+    // it's been more than 60 seconds total, bail now
+    debug('TIMEOUT', fn.name, args)
+    var cb = args.pop()
+    if (typeof cb === 'function')
+      cb.call(null, err)
+  } else {
+    // the amount of time between the last attempt and right now
+    var sinceAttempt = Date.now() - lastTime
+    // the amount of time between when we first tried, and when we last tried
+    // rounded up to at least 1
+    var sinceStart = Math.max(lastTime - startTime, 1)
+    // backoff. wait longer than the total time we've been retrying, but only
+    // up to a maximum of 100ms
+    var desiredDelay = Math.min(sinceStart * 1.2, 100)
+    // it's been long enough since the last retry, do it again
+    if (sinceAttempt >= desiredDelay) {
+      debug('RETRY', fn.name, args)
+      fn.apply(null, args.concat([startTime]))
+    } else {
+      // if we can't do this job yet, push it to the end of the queue
+      // and let the next iteration check again
+      fs[gracefulQueue].push(elem)
+    }
+  }
+
+  // schedule our next run if one isn't already scheduled
+  if (retryTimer === undefined) {
+    retryTimer = setTimeout(retry, 0)
+  }
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/graceful-fs/legacy-streams.js":
-/*!****************************************************!*\
-  !*** ./node_modules/graceful-fs/legacy-streams.js ***!
-  \****************************************************/
+/***/ 8520:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("var Stream = (__webpack_require__(/*! stream */ \"stream\").Stream)\n\nmodule.exports = legacy\n\nfunction legacy (fs) {\n  return {\n    ReadStream: ReadStream,\n    WriteStream: WriteStream\n  }\n\n  function ReadStream (path, options) {\n    if (!(this instanceof ReadStream)) return new ReadStream(path, options);\n\n    Stream.call(this);\n\n    var self = this;\n\n    this.path = path;\n    this.fd = null;\n    this.readable = true;\n    this.paused = false;\n\n    this.flags = 'r';\n    this.mode = 438; /*=0666*/\n    this.bufferSize = 64 * 1024;\n\n    options = options || {};\n\n    // Mixin options into this\n    var keys = Object.keys(options);\n    for (var index = 0, length = keys.length; index < length; index++) {\n      var key = keys[index];\n      this[key] = options[key];\n    }\n\n    if (this.encoding) this.setEncoding(this.encoding);\n\n    if (this.start !== undefined) {\n      if ('number' !== typeof this.start) {\n        throw TypeError('start must be a Number');\n      }\n      if (this.end === undefined) {\n        this.end = Infinity;\n      } else if ('number' !== typeof this.end) {\n        throw TypeError('end must be a Number');\n      }\n\n      if (this.start > this.end) {\n        throw new Error('start must be <= end');\n      }\n\n      this.pos = this.start;\n    }\n\n    if (this.fd !== null) {\n      process.nextTick(function() {\n        self._read();\n      });\n      return;\n    }\n\n    fs.open(this.path, this.flags, this.mode, function (err, fd) {\n      if (err) {\n        self.emit('error', err);\n        self.readable = false;\n        return;\n      }\n\n      self.fd = fd;\n      self.emit('open', fd);\n      self._read();\n    })\n  }\n\n  function WriteStream (path, options) {\n    if (!(this instanceof WriteStream)) return new WriteStream(path, options);\n\n    Stream.call(this);\n\n    this.path = path;\n    this.fd = null;\n    this.writable = true;\n\n    this.flags = 'w';\n    this.encoding = 'binary';\n    this.mode = 438; /*=0666*/\n    this.bytesWritten = 0;\n\n    options = options || {};\n\n    // Mixin options into this\n    var keys = Object.keys(options);\n    for (var index = 0, length = keys.length; index < length; index++) {\n      var key = keys[index];\n      this[key] = options[key];\n    }\n\n    if (this.start !== undefined) {\n      if ('number' !== typeof this.start) {\n        throw TypeError('start must be a Number');\n      }\n      if (this.start < 0) {\n        throw new Error('start must be >= zero');\n      }\n\n      this.pos = this.start;\n    }\n\n    this.busy = false;\n    this._queue = [];\n\n    if (this.fd === null) {\n      this._open = fs.open;\n      this._queue.push([this._open, this.path, this.flags, this.mode, undefined]);\n      this.flush();\n    }\n  }\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/graceful-fs/legacy-streams.js?");
+var Stream = (__webpack_require__(2781).Stream)
+
+module.exports = legacy
+
+function legacy (fs) {
+  return {
+    ReadStream: ReadStream,
+    WriteStream: WriteStream
+  }
+
+  function ReadStream (path, options) {
+    if (!(this instanceof ReadStream)) return new ReadStream(path, options);
+
+    Stream.call(this);
+
+    var self = this;
+
+    this.path = path;
+    this.fd = null;
+    this.readable = true;
+    this.paused = false;
+
+    this.flags = 'r';
+    this.mode = 438; /*=0666*/
+    this.bufferSize = 64 * 1024;
+
+    options = options || {};
+
+    // Mixin options into this
+    var keys = Object.keys(options);
+    for (var index = 0, length = keys.length; index < length; index++) {
+      var key = keys[index];
+      this[key] = options[key];
+    }
+
+    if (this.encoding) this.setEncoding(this.encoding);
+
+    if (this.start !== undefined) {
+      if ('number' !== typeof this.start) {
+        throw TypeError('start must be a Number');
+      }
+      if (this.end === undefined) {
+        this.end = Infinity;
+      } else if ('number' !== typeof this.end) {
+        throw TypeError('end must be a Number');
+      }
+
+      if (this.start > this.end) {
+        throw new Error('start must be <= end');
+      }
+
+      this.pos = this.start;
+    }
+
+    if (this.fd !== null) {
+      process.nextTick(function() {
+        self._read();
+      });
+      return;
+    }
+
+    fs.open(this.path, this.flags, this.mode, function (err, fd) {
+      if (err) {
+        self.emit('error', err);
+        self.readable = false;
+        return;
+      }
+
+      self.fd = fd;
+      self.emit('open', fd);
+      self._read();
+    })
+  }
+
+  function WriteStream (path, options) {
+    if (!(this instanceof WriteStream)) return new WriteStream(path, options);
+
+    Stream.call(this);
+
+    this.path = path;
+    this.fd = null;
+    this.writable = true;
+
+    this.flags = 'w';
+    this.encoding = 'binary';
+    this.mode = 438; /*=0666*/
+    this.bytesWritten = 0;
+
+    options = options || {};
+
+    // Mixin options into this
+    var keys = Object.keys(options);
+    for (var index = 0, length = keys.length; index < length; index++) {
+      var key = keys[index];
+      this[key] = options[key];
+    }
+
+    if (this.start !== undefined) {
+      if ('number' !== typeof this.start) {
+        throw TypeError('start must be a Number');
+      }
+      if (this.start < 0) {
+        throw new Error('start must be >= zero');
+      }
+
+      this.pos = this.start;
+    }
+
+    this.busy = false;
+    this._queue = [];
+
+    if (this.fd === null) {
+      this._open = fs.open;
+      this._queue.push([this._open, this.path, this.flags, this.mode, undefined]);
+      this.flush();
+    }
+  }
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/graceful-fs/polyfills.js":
-/*!***********************************************!*\
-  !*** ./node_modules/graceful-fs/polyfills.js ***!
-  \***********************************************/
+/***/ 2161:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("var constants = __webpack_require__(/*! constants */ \"constants\")\n\nvar origCwd = process.cwd\nvar cwd = null\n\nvar platform = process.env.GRACEFUL_FS_PLATFORM || process.platform\n\nprocess.cwd = function() {\n  if (!cwd)\n    cwd = origCwd.call(process)\n  return cwd\n}\ntry {\n  process.cwd()\n} catch (er) {}\n\n// This check is needed until node.js 12 is required\nif (typeof process.chdir === 'function') {\n  var chdir = process.chdir\n  process.chdir = function (d) {\n    cwd = null\n    chdir.call(process, d)\n  }\n  if (Object.setPrototypeOf) Object.setPrototypeOf(process.chdir, chdir)\n}\n\nmodule.exports = patch\n\nfunction patch (fs) {\n  // (re-)implement some things that are known busted or missing.\n\n  // lchmod, broken prior to 0.6.2\n  // back-port the fix here.\n  if (constants.hasOwnProperty('O_SYMLINK') &&\n      process.version.match(/^v0\\.6\\.[0-2]|^v0\\.5\\./)) {\n    patchLchmod(fs)\n  }\n\n  // lutimes implementation, or no-op\n  if (!fs.lutimes) {\n    patchLutimes(fs)\n  }\n\n  // https://github.com/isaacs/node-graceful-fs/issues/4\n  // Chown should not fail on einval or eperm if non-root.\n  // It should not fail on enosys ever, as this just indicates\n  // that a fs doesn't support the intended operation.\n\n  fs.chown = chownFix(fs.chown)\n  fs.fchown = chownFix(fs.fchown)\n  fs.lchown = chownFix(fs.lchown)\n\n  fs.chmod = chmodFix(fs.chmod)\n  fs.fchmod = chmodFix(fs.fchmod)\n  fs.lchmod = chmodFix(fs.lchmod)\n\n  fs.chownSync = chownFixSync(fs.chownSync)\n  fs.fchownSync = chownFixSync(fs.fchownSync)\n  fs.lchownSync = chownFixSync(fs.lchownSync)\n\n  fs.chmodSync = chmodFixSync(fs.chmodSync)\n  fs.fchmodSync = chmodFixSync(fs.fchmodSync)\n  fs.lchmodSync = chmodFixSync(fs.lchmodSync)\n\n  fs.stat = statFix(fs.stat)\n  fs.fstat = statFix(fs.fstat)\n  fs.lstat = statFix(fs.lstat)\n\n  fs.statSync = statFixSync(fs.statSync)\n  fs.fstatSync = statFixSync(fs.fstatSync)\n  fs.lstatSync = statFixSync(fs.lstatSync)\n\n  // if lchmod/lchown do not exist, then make them no-ops\n  if (fs.chmod && !fs.lchmod) {\n    fs.lchmod = function (path, mode, cb) {\n      if (cb) process.nextTick(cb)\n    }\n    fs.lchmodSync = function () {}\n  }\n  if (fs.chown && !fs.lchown) {\n    fs.lchown = function (path, uid, gid, cb) {\n      if (cb) process.nextTick(cb)\n    }\n    fs.lchownSync = function () {}\n  }\n\n  // on Windows, A/V software can lock the directory, causing this\n  // to fail with an EACCES or EPERM if the directory contains newly\n  // created files.  Try again on failure, for up to 60 seconds.\n\n  // Set the timeout this long because some Windows Anti-Virus, such as Parity\n  // bit9, may lock files for up to a minute, causing npm package install\n  // failures. Also, take care to yield the scheduler. Windows scheduling gives\n  // CPU to a busy looping process, which can cause the program causing the lock\n  // contention to be starved of CPU by node, so the contention doesn't resolve.\n  if (platform === \"win32\") {\n    fs.rename = typeof fs.rename !== 'function' ? fs.rename\n    : (function (fs$rename) {\n      function rename (from, to, cb) {\n        var start = Date.now()\n        var backoff = 0;\n        fs$rename(from, to, function CB (er) {\n          if (er\n              && (er.code === \"EACCES\" || er.code === \"EPERM\" || er.code === \"EBUSY\")\n              && Date.now() - start < 60000) {\n            setTimeout(function() {\n              fs.stat(to, function (stater, st) {\n                if (stater && stater.code === \"ENOENT\")\n                  fs$rename(from, to, CB);\n                else\n                  cb(er)\n              })\n            }, backoff)\n            if (backoff < 100)\n              backoff += 10;\n            return;\n          }\n          if (cb) cb(er)\n        })\n      }\n      if (Object.setPrototypeOf) Object.setPrototypeOf(rename, fs$rename)\n      return rename\n    })(fs.rename)\n  }\n\n  // if read() returns EAGAIN, then just try it again.\n  fs.read = typeof fs.read !== 'function' ? fs.read\n  : (function (fs$read) {\n    function read (fd, buffer, offset, length, position, callback_) {\n      var callback\n      if (callback_ && typeof callback_ === 'function') {\n        var eagCounter = 0\n        callback = function (er, _, __) {\n          if (er && er.code === 'EAGAIN' && eagCounter < 10) {\n            eagCounter ++\n            return fs$read.call(fs, fd, buffer, offset, length, position, callback)\n          }\n          callback_.apply(this, arguments)\n        }\n      }\n      return fs$read.call(fs, fd, buffer, offset, length, position, callback)\n    }\n\n    // This ensures `util.promisify` works as it does for native `fs.read`.\n    if (Object.setPrototypeOf) Object.setPrototypeOf(read, fs$read)\n    return read\n  })(fs.read)\n\n  fs.readSync = typeof fs.readSync !== 'function' ? fs.readSync\n  : (function (fs$readSync) { return function (fd, buffer, offset, length, position) {\n    var eagCounter = 0\n    while (true) {\n      try {\n        return fs$readSync.call(fs, fd, buffer, offset, length, position)\n      } catch (er) {\n        if (er.code === 'EAGAIN' && eagCounter < 10) {\n          eagCounter ++\n          continue\n        }\n        throw er\n      }\n    }\n  }})(fs.readSync)\n\n  function patchLchmod (fs) {\n    fs.lchmod = function (path, mode, callback) {\n      fs.open( path\n             , constants.O_WRONLY | constants.O_SYMLINK\n             , mode\n             , function (err, fd) {\n        if (err) {\n          if (callback) callback(err)\n          return\n        }\n        // prefer to return the chmod error, if one occurs,\n        // but still try to close, and report closing errors if they occur.\n        fs.fchmod(fd, mode, function (err) {\n          fs.close(fd, function(err2) {\n            if (callback) callback(err || err2)\n          })\n        })\n      })\n    }\n\n    fs.lchmodSync = function (path, mode) {\n      var fd = fs.openSync(path, constants.O_WRONLY | constants.O_SYMLINK, mode)\n\n      // prefer to return the chmod error, if one occurs,\n      // but still try to close, and report closing errors if they occur.\n      var threw = true\n      var ret\n      try {\n        ret = fs.fchmodSync(fd, mode)\n        threw = false\n      } finally {\n        if (threw) {\n          try {\n            fs.closeSync(fd)\n          } catch (er) {}\n        } else {\n          fs.closeSync(fd)\n        }\n      }\n      return ret\n    }\n  }\n\n  function patchLutimes (fs) {\n    if (constants.hasOwnProperty(\"O_SYMLINK\") && fs.futimes) {\n      fs.lutimes = function (path, at, mt, cb) {\n        fs.open(path, constants.O_SYMLINK, function (er, fd) {\n          if (er) {\n            if (cb) cb(er)\n            return\n          }\n          fs.futimes(fd, at, mt, function (er) {\n            fs.close(fd, function (er2) {\n              if (cb) cb(er || er2)\n            })\n          })\n        })\n      }\n\n      fs.lutimesSync = function (path, at, mt) {\n        var fd = fs.openSync(path, constants.O_SYMLINK)\n        var ret\n        var threw = true\n        try {\n          ret = fs.futimesSync(fd, at, mt)\n          threw = false\n        } finally {\n          if (threw) {\n            try {\n              fs.closeSync(fd)\n            } catch (er) {}\n          } else {\n            fs.closeSync(fd)\n          }\n        }\n        return ret\n      }\n\n    } else if (fs.futimes) {\n      fs.lutimes = function (_a, _b, _c, cb) { if (cb) process.nextTick(cb) }\n      fs.lutimesSync = function () {}\n    }\n  }\n\n  function chmodFix (orig) {\n    if (!orig) return orig\n    return function (target, mode, cb) {\n      return orig.call(fs, target, mode, function (er) {\n        if (chownErOk(er)) er = null\n        if (cb) cb.apply(this, arguments)\n      })\n    }\n  }\n\n  function chmodFixSync (orig) {\n    if (!orig) return orig\n    return function (target, mode) {\n      try {\n        return orig.call(fs, target, mode)\n      } catch (er) {\n        if (!chownErOk(er)) throw er\n      }\n    }\n  }\n\n\n  function chownFix (orig) {\n    if (!orig) return orig\n    return function (target, uid, gid, cb) {\n      return orig.call(fs, target, uid, gid, function (er) {\n        if (chownErOk(er)) er = null\n        if (cb) cb.apply(this, arguments)\n      })\n    }\n  }\n\n  function chownFixSync (orig) {\n    if (!orig) return orig\n    return function (target, uid, gid) {\n      try {\n        return orig.call(fs, target, uid, gid)\n      } catch (er) {\n        if (!chownErOk(er)) throw er\n      }\n    }\n  }\n\n  function statFix (orig) {\n    if (!orig) return orig\n    // Older versions of Node erroneously returned signed integers for\n    // uid + gid.\n    return function (target, options, cb) {\n      if (typeof options === 'function') {\n        cb = options\n        options = null\n      }\n      function callback (er, stats) {\n        if (stats) {\n          if (stats.uid < 0) stats.uid += 0x100000000\n          if (stats.gid < 0) stats.gid += 0x100000000\n        }\n        if (cb) cb.apply(this, arguments)\n      }\n      return options ? orig.call(fs, target, options, callback)\n        : orig.call(fs, target, callback)\n    }\n  }\n\n  function statFixSync (orig) {\n    if (!orig) return orig\n    // Older versions of Node erroneously returned signed integers for\n    // uid + gid.\n    return function (target, options) {\n      var stats = options ? orig.call(fs, target, options)\n        : orig.call(fs, target)\n      if (stats) {\n        if (stats.uid < 0) stats.uid += 0x100000000\n        if (stats.gid < 0) stats.gid += 0x100000000\n      }\n      return stats;\n    }\n  }\n\n  // ENOSYS means that the fs doesn't support the op. Just ignore\n  // that, because it doesn't matter.\n  //\n  // if there's no getuid, or if getuid() is something other\n  // than 0, and the error is EINVAL or EPERM, then just ignore\n  // it.\n  //\n  // This specific case is a silent failure in cp, install, tar,\n  // and most other unix tools that manage permissions.\n  //\n  // When running as root, or if other types of errors are\n  // encountered, then it's strict.\n  function chownErOk (er) {\n    if (!er)\n      return true\n\n    if (er.code === \"ENOSYS\")\n      return true\n\n    var nonroot = !process.getuid || process.getuid() !== 0\n    if (nonroot) {\n      if (er.code === \"EINVAL\" || er.code === \"EPERM\")\n        return true\n    }\n\n    return false\n  }\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/graceful-fs/polyfills.js?");
+var constants = __webpack_require__(2057)
+
+var origCwd = process.cwd
+var cwd = null
+
+var platform = process.env.GRACEFUL_FS_PLATFORM || process.platform
+
+process.cwd = function() {
+  if (!cwd)
+    cwd = origCwd.call(process)
+  return cwd
+}
+try {
+  process.cwd()
+} catch (er) {}
+
+// This check is needed until node.js 12 is required
+if (typeof process.chdir === 'function') {
+  var chdir = process.chdir
+  process.chdir = function (d) {
+    cwd = null
+    chdir.call(process, d)
+  }
+  if (Object.setPrototypeOf) Object.setPrototypeOf(process.chdir, chdir)
+}
+
+module.exports = patch
+
+function patch (fs) {
+  // (re-)implement some things that are known busted or missing.
+
+  // lchmod, broken prior to 0.6.2
+  // back-port the fix here.
+  if (constants.hasOwnProperty('O_SYMLINK') &&
+      process.version.match(/^v0\.6\.[0-2]|^v0\.5\./)) {
+    patchLchmod(fs)
+  }
+
+  // lutimes implementation, or no-op
+  if (!fs.lutimes) {
+    patchLutimes(fs)
+  }
+
+  // https://github.com/isaacs/node-graceful-fs/issues/4
+  // Chown should not fail on einval or eperm if non-root.
+  // It should not fail on enosys ever, as this just indicates
+  // that a fs doesn't support the intended operation.
+
+  fs.chown = chownFix(fs.chown)
+  fs.fchown = chownFix(fs.fchown)
+  fs.lchown = chownFix(fs.lchown)
+
+  fs.chmod = chmodFix(fs.chmod)
+  fs.fchmod = chmodFix(fs.fchmod)
+  fs.lchmod = chmodFix(fs.lchmod)
+
+  fs.chownSync = chownFixSync(fs.chownSync)
+  fs.fchownSync = chownFixSync(fs.fchownSync)
+  fs.lchownSync = chownFixSync(fs.lchownSync)
+
+  fs.chmodSync = chmodFixSync(fs.chmodSync)
+  fs.fchmodSync = chmodFixSync(fs.fchmodSync)
+  fs.lchmodSync = chmodFixSync(fs.lchmodSync)
+
+  fs.stat = statFix(fs.stat)
+  fs.fstat = statFix(fs.fstat)
+  fs.lstat = statFix(fs.lstat)
+
+  fs.statSync = statFixSync(fs.statSync)
+  fs.fstatSync = statFixSync(fs.fstatSync)
+  fs.lstatSync = statFixSync(fs.lstatSync)
+
+  // if lchmod/lchown do not exist, then make them no-ops
+  if (fs.chmod && !fs.lchmod) {
+    fs.lchmod = function (path, mode, cb) {
+      if (cb) process.nextTick(cb)
+    }
+    fs.lchmodSync = function () {}
+  }
+  if (fs.chown && !fs.lchown) {
+    fs.lchown = function (path, uid, gid, cb) {
+      if (cb) process.nextTick(cb)
+    }
+    fs.lchownSync = function () {}
+  }
+
+  // on Windows, A/V software can lock the directory, causing this
+  // to fail with an EACCES or EPERM if the directory contains newly
+  // created files.  Try again on failure, for up to 60 seconds.
+
+  // Set the timeout this long because some Windows Anti-Virus, such as Parity
+  // bit9, may lock files for up to a minute, causing npm package install
+  // failures. Also, take care to yield the scheduler. Windows scheduling gives
+  // CPU to a busy looping process, which can cause the program causing the lock
+  // contention to be starved of CPU by node, so the contention doesn't resolve.
+  if (platform === "win32") {
+    fs.rename = typeof fs.rename !== 'function' ? fs.rename
+    : (function (fs$rename) {
+      function rename (from, to, cb) {
+        var start = Date.now()
+        var backoff = 0;
+        fs$rename(from, to, function CB (er) {
+          if (er
+              && (er.code === "EACCES" || er.code === "EPERM" || er.code === "EBUSY")
+              && Date.now() - start < 60000) {
+            setTimeout(function() {
+              fs.stat(to, function (stater, st) {
+                if (stater && stater.code === "ENOENT")
+                  fs$rename(from, to, CB);
+                else
+                  cb(er)
+              })
+            }, backoff)
+            if (backoff < 100)
+              backoff += 10;
+            return;
+          }
+          if (cb) cb(er)
+        })
+      }
+      if (Object.setPrototypeOf) Object.setPrototypeOf(rename, fs$rename)
+      return rename
+    })(fs.rename)
+  }
+
+  // if read() returns EAGAIN, then just try it again.
+  fs.read = typeof fs.read !== 'function' ? fs.read
+  : (function (fs$read) {
+    function read (fd, buffer, offset, length, position, callback_) {
+      var callback
+      if (callback_ && typeof callback_ === 'function') {
+        var eagCounter = 0
+        callback = function (er, _, __) {
+          if (er && er.code === 'EAGAIN' && eagCounter < 10) {
+            eagCounter ++
+            return fs$read.call(fs, fd, buffer, offset, length, position, callback)
+          }
+          callback_.apply(this, arguments)
+        }
+      }
+      return fs$read.call(fs, fd, buffer, offset, length, position, callback)
+    }
+
+    // This ensures `util.promisify` works as it does for native `fs.read`.
+    if (Object.setPrototypeOf) Object.setPrototypeOf(read, fs$read)
+    return read
+  })(fs.read)
+
+  fs.readSync = typeof fs.readSync !== 'function' ? fs.readSync
+  : (function (fs$readSync) { return function (fd, buffer, offset, length, position) {
+    var eagCounter = 0
+    while (true) {
+      try {
+        return fs$readSync.call(fs, fd, buffer, offset, length, position)
+      } catch (er) {
+        if (er.code === 'EAGAIN' && eagCounter < 10) {
+          eagCounter ++
+          continue
+        }
+        throw er
+      }
+    }
+  }})(fs.readSync)
+
+  function patchLchmod (fs) {
+    fs.lchmod = function (path, mode, callback) {
+      fs.open( path
+             , constants.O_WRONLY | constants.O_SYMLINK
+             , mode
+             , function (err, fd) {
+        if (err) {
+          if (callback) callback(err)
+          return
+        }
+        // prefer to return the chmod error, if one occurs,
+        // but still try to close, and report closing errors if they occur.
+        fs.fchmod(fd, mode, function (err) {
+          fs.close(fd, function(err2) {
+            if (callback) callback(err || err2)
+          })
+        })
+      })
+    }
+
+    fs.lchmodSync = function (path, mode) {
+      var fd = fs.openSync(path, constants.O_WRONLY | constants.O_SYMLINK, mode)
+
+      // prefer to return the chmod error, if one occurs,
+      // but still try to close, and report closing errors if they occur.
+      var threw = true
+      var ret
+      try {
+        ret = fs.fchmodSync(fd, mode)
+        threw = false
+      } finally {
+        if (threw) {
+          try {
+            fs.closeSync(fd)
+          } catch (er) {}
+        } else {
+          fs.closeSync(fd)
+        }
+      }
+      return ret
+    }
+  }
+
+  function patchLutimes (fs) {
+    if (constants.hasOwnProperty("O_SYMLINK") && fs.futimes) {
+      fs.lutimes = function (path, at, mt, cb) {
+        fs.open(path, constants.O_SYMLINK, function (er, fd) {
+          if (er) {
+            if (cb) cb(er)
+            return
+          }
+          fs.futimes(fd, at, mt, function (er) {
+            fs.close(fd, function (er2) {
+              if (cb) cb(er || er2)
+            })
+          })
+        })
+      }
+
+      fs.lutimesSync = function (path, at, mt) {
+        var fd = fs.openSync(path, constants.O_SYMLINK)
+        var ret
+        var threw = true
+        try {
+          ret = fs.futimesSync(fd, at, mt)
+          threw = false
+        } finally {
+          if (threw) {
+            try {
+              fs.closeSync(fd)
+            } catch (er) {}
+          } else {
+            fs.closeSync(fd)
+          }
+        }
+        return ret
+      }
+
+    } else if (fs.futimes) {
+      fs.lutimes = function (_a, _b, _c, cb) { if (cb) process.nextTick(cb) }
+      fs.lutimesSync = function () {}
+    }
+  }
+
+  function chmodFix (orig) {
+    if (!orig) return orig
+    return function (target, mode, cb) {
+      return orig.call(fs, target, mode, function (er) {
+        if (chownErOk(er)) er = null
+        if (cb) cb.apply(this, arguments)
+      })
+    }
+  }
+
+  function chmodFixSync (orig) {
+    if (!orig) return orig
+    return function (target, mode) {
+      try {
+        return orig.call(fs, target, mode)
+      } catch (er) {
+        if (!chownErOk(er)) throw er
+      }
+    }
+  }
+
+
+  function chownFix (orig) {
+    if (!orig) return orig
+    return function (target, uid, gid, cb) {
+      return orig.call(fs, target, uid, gid, function (er) {
+        if (chownErOk(er)) er = null
+        if (cb) cb.apply(this, arguments)
+      })
+    }
+  }
+
+  function chownFixSync (orig) {
+    if (!orig) return orig
+    return function (target, uid, gid) {
+      try {
+        return orig.call(fs, target, uid, gid)
+      } catch (er) {
+        if (!chownErOk(er)) throw er
+      }
+    }
+  }
+
+  function statFix (orig) {
+    if (!orig) return orig
+    // Older versions of Node erroneously returned signed integers for
+    // uid + gid.
+    return function (target, options, cb) {
+      if (typeof options === 'function') {
+        cb = options
+        options = null
+      }
+      function callback (er, stats) {
+        if (stats) {
+          if (stats.uid < 0) stats.uid += 0x100000000
+          if (stats.gid < 0) stats.gid += 0x100000000
+        }
+        if (cb) cb.apply(this, arguments)
+      }
+      return options ? orig.call(fs, target, options, callback)
+        : orig.call(fs, target, callback)
+    }
+  }
+
+  function statFixSync (orig) {
+    if (!orig) return orig
+    // Older versions of Node erroneously returned signed integers for
+    // uid + gid.
+    return function (target, options) {
+      var stats = options ? orig.call(fs, target, options)
+        : orig.call(fs, target)
+      if (stats) {
+        if (stats.uid < 0) stats.uid += 0x100000000
+        if (stats.gid < 0) stats.gid += 0x100000000
+      }
+      return stats;
+    }
+  }
+
+  // ENOSYS means that the fs doesn't support the op. Just ignore
+  // that, because it doesn't matter.
+  //
+  // if there's no getuid, or if getuid() is something other
+  // than 0, and the error is EINVAL or EPERM, then just ignore
+  // it.
+  //
+  // This specific case is a silent failure in cp, install, tar,
+  // and most other unix tools that manage permissions.
+  //
+  // When running as root, or if other types of errors are
+  // encountered, then it's strict.
+  function chownErOk (er) {
+    if (!er)
+      return true
+
+    if (er.code === "ENOSYS")
+      return true
+
+    var nonroot = !process.getuid || process.getuid() !== 0
+    if (nonroot) {
+      if (er.code === "EINVAL" || er.code === "EPERM")
+        return true
+    }
+
+    return false
+  }
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/has-flag/index.js":
-/*!****************************************!*\
-  !*** ./node_modules/has-flag/index.js ***!
-  \****************************************/
+/***/ 6560:
 /***/ ((module) => {
 
 "use strict";
-eval("\n\nmodule.exports = (flag, argv = process.argv) => {\n\tconst prefix = flag.startsWith('-') ? '' : (flag.length === 1 ? '-' : '--');\n\tconst position = argv.indexOf(prefix + flag);\n\tconst terminatorPosition = argv.indexOf('--');\n\treturn position !== -1 && (terminatorPosition === -1 || position < terminatorPosition);\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/has-flag/index.js?");
+
+
+module.exports = (flag, argv = process.argv) => {
+	const prefix = flag.startsWith('-') ? '' : (flag.length === 1 ? '-' : '--');
+	const position = argv.indexOf(prefix + flag);
+	const terminatorPosition = argv.indexOf('--');
+	return position !== -1 && (terminatorPosition === -1 || position < terminatorPosition);
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/is-buffer/index.js":
-/*!*****************************************!*\
-  !*** ./node_modules/is-buffer/index.js ***!
-  \*****************************************/
+/***/ 8738:
 /***/ ((module) => {
 
-eval("/*!\n * Determine if an object is a Buffer\n *\n * @author   Feross Aboukhadijeh <https://feross.org>\n * @license  MIT\n */\n\n// The _isBuffer check is for Safari 5-7 support, because it's missing\n// Object.prototype.constructor. Remove this eventually\nmodule.exports = function (obj) {\n  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)\n}\n\nfunction isBuffer (obj) {\n  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)\n}\n\n// For Node v0.10 support. Remove this eventually.\nfunction isSlowBuffer (obj) {\n  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/is-buffer/index.js?");
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <https://feross.org>
+ * @license  MIT
+ */
+
+// The _isBuffer check is for Safari 5-7 support, because it's missing
+// Object.prototype.constructor. Remove this eventually
+module.exports = function (obj) {
+  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
+}
+
+function isBuffer (obj) {
+  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+// For Node v0.10 support. Remove this eventually.
+function isSlowBuffer (obj) {
+  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/LoggingEvent.js":
-/*!*************************************************!*\
-  !*** ./node_modules/log4js/lib/LoggingEvent.js ***!
-  \*************************************************/
+/***/ 4421:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("/* eslint max-classes-per-file: [\"error\", 2] */\n/* eslint no-underscore-dangle: [\"error\", { \"allow\": [\"_getLocationKeys\"] }] */\n\nconst flatted = __webpack_require__(/*! flatted */ \"./node_modules/flatted/cjs/index.js\");\nconst levels = __webpack_require__(/*! ./levels */ \"./node_modules/log4js/lib/levels.js\");\n\nclass SerDe {\n  constructor() {\n    const deserialise = {\n      __LOG4JS_undefined__: undefined,\n      __LOG4JS_NaN__: Number('abc'),\n      __LOG4JS_Infinity__: 1 / 0,\n      '__LOG4JS_-Infinity__': -1 / 0,\n    };\n    this.deMap = deserialise;\n    this.serMap = {};\n    Object.keys(this.deMap).forEach((key) => {\n      const value = this.deMap[key];\n      this.serMap[value] = key;\n    });\n  }\n\n  canSerialise(key) {\n    if (typeof key === 'string') return false;\n    return key in this.serMap;\n  }\n\n  serialise(key) {\n    if (this.canSerialise(key)) return this.serMap[key];\n    return key;\n  }\n\n  canDeserialise(key) {\n    return key in this.deMap;\n  }\n\n  deserialise(key) {\n    if (this.canDeserialise(key)) return this.deMap[key];\n    return key;\n  }\n}\nconst serde = new SerDe();\n\n/**\n * @name LoggingEvent\n * @namespace Log4js\n */\nclass LoggingEvent {\n  /**\n   * Models a logging event.\n   * @constructor\n   * @param {string} categoryName name of category\n   * @param {Log4js.Level} level level of message\n   * @param {Array} data objects to log\n   * @param {Error} [error]\n   * @author Seth Chisamore\n   */\n  constructor(categoryName, level, data, context, location, error) {\n    this.startTime = new Date();\n    this.categoryName = categoryName;\n    this.data = data;\n    this.level = level;\n    this.context = Object.assign({}, context); // eslint-disable-line prefer-object-spread\n    this.pid = process.pid;\n    this.error = error;\n\n    if (typeof location !== 'undefined') {\n      if (!location || typeof location !== 'object' || Array.isArray(location))\n        throw new TypeError(\n          'Invalid location type passed to LoggingEvent constructor'\n        );\n\n      this.constructor._getLocationKeys().forEach((key) => {\n        if (typeof location[key] !== 'undefined') this[key] = location[key];\n      });\n    }\n  }\n\n  /** @private */\n  static _getLocationKeys() {\n    return [\n      'fileName',\n      'lineNumber',\n      'columnNumber',\n      'callStack',\n      'className',\n      'functionName',\n      'functionAlias',\n      'callerName',\n    ];\n  }\n\n  serialise() {\n    return flatted.stringify(this, (key, value) => {\n      // JSON.stringify(new Error('test')) returns {}, which is not really useful for us.\n      // The following allows us to serialize errors (semi) correctly.\n      if (value instanceof Error) {\n        // eslint-disable-next-line prefer-object-spread\n        value = Object.assign(\n          { message: value.message, stack: value.stack },\n          value\n        );\n      }\n      // JSON.stringify({a: Number('abc'), b: 1/0, c: -1/0}) returns {a: null, b: null, c: null}.\n      // The following allows us to serialize to NaN, Infinity and -Infinity correctly.\n      // JSON.stringify([undefined]) returns [null].\n      // The following allows us to serialize to undefined correctly.\n      return serde.serialise(value);\n    });\n  }\n\n  static deserialise(serialised) {\n    let event;\n    try {\n      const rehydratedEvent = flatted.parse(serialised, (key, value) => {\n        if (value && value.message && value.stack) {\n          const fakeError = new Error(value);\n          Object.keys(value).forEach((k) => {\n            fakeError[k] = value[k];\n          });\n          value = fakeError;\n        }\n        return serde.deserialise(value);\n      });\n      this._getLocationKeys().forEach((key) => {\n        if (typeof rehydratedEvent[key] !== 'undefined') {\n          if (!rehydratedEvent.location) rehydratedEvent.location = {};\n          rehydratedEvent.location[key] = rehydratedEvent[key];\n        }\n      });\n      event = new LoggingEvent(\n        rehydratedEvent.categoryName,\n        levels.getLevel(rehydratedEvent.level.levelStr),\n        rehydratedEvent.data,\n        rehydratedEvent.context,\n        rehydratedEvent.location,\n        rehydratedEvent.error\n      );\n      event.startTime = new Date(rehydratedEvent.startTime);\n      event.pid = rehydratedEvent.pid;\n      if (rehydratedEvent.cluster) {\n        event.cluster = rehydratedEvent.cluster;\n      }\n    } catch (e) {\n      event = new LoggingEvent('log4js', levels.ERROR, [\n        'Unable to parse log:',\n        serialised,\n        'because: ',\n        e,\n      ]);\n    }\n\n    return event;\n  }\n}\n\nmodule.exports = LoggingEvent;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/LoggingEvent.js?");
+/* eslint max-classes-per-file: ["error", 2] */
+/* eslint no-underscore-dangle: ["error", { "allow": ["_getLocationKeys"] }] */
+
+const flatted = __webpack_require__(939);
+const levels = __webpack_require__(1935);
+
+class SerDe {
+  constructor() {
+    const deserialise = {
+      __LOG4JS_undefined__: undefined,
+      __LOG4JS_NaN__: Number('abc'),
+      __LOG4JS_Infinity__: 1 / 0,
+      '__LOG4JS_-Infinity__': -1 / 0,
+    };
+    this.deMap = deserialise;
+    this.serMap = {};
+    Object.keys(this.deMap).forEach((key) => {
+      const value = this.deMap[key];
+      this.serMap[value] = key;
+    });
+  }
+
+  canSerialise(key) {
+    if (typeof key === 'string') return false;
+    return key in this.serMap;
+  }
+
+  serialise(key) {
+    if (this.canSerialise(key)) return this.serMap[key];
+    return key;
+  }
+
+  canDeserialise(key) {
+    return key in this.deMap;
+  }
+
+  deserialise(key) {
+    if (this.canDeserialise(key)) return this.deMap[key];
+    return key;
+  }
+}
+const serde = new SerDe();
+
+/**
+ * @name LoggingEvent
+ * @namespace Log4js
+ */
+class LoggingEvent {
+  /**
+   * Models a logging event.
+   * @constructor
+   * @param {string} categoryName name of category
+   * @param {Log4js.Level} level level of message
+   * @param {Array} data objects to log
+   * @param {Error} [error]
+   * @author Seth Chisamore
+   */
+  constructor(categoryName, level, data, context, location, error) {
+    this.startTime = new Date();
+    this.categoryName = categoryName;
+    this.data = data;
+    this.level = level;
+    this.context = Object.assign({}, context); // eslint-disable-line prefer-object-spread
+    this.pid = process.pid;
+    this.error = error;
+
+    if (typeof location !== 'undefined') {
+      if (!location || typeof location !== 'object' || Array.isArray(location))
+        throw new TypeError(
+          'Invalid location type passed to LoggingEvent constructor'
+        );
+
+      this.constructor._getLocationKeys().forEach((key) => {
+        if (typeof location[key] !== 'undefined') this[key] = location[key];
+      });
+    }
+  }
+
+  /** @private */
+  static _getLocationKeys() {
+    return [
+      'fileName',
+      'lineNumber',
+      'columnNumber',
+      'callStack',
+      'className',
+      'functionName',
+      'functionAlias',
+      'callerName',
+    ];
+  }
+
+  serialise() {
+    return flatted.stringify(this, (key, value) => {
+      // JSON.stringify(new Error('test')) returns {}, which is not really useful for us.
+      // The following allows us to serialize errors (semi) correctly.
+      if (value instanceof Error) {
+        // eslint-disable-next-line prefer-object-spread
+        value = Object.assign(
+          { message: value.message, stack: value.stack },
+          value
+        );
+      }
+      // JSON.stringify({a: Number('abc'), b: 1/0, c: -1/0}) returns {a: null, b: null, c: null}.
+      // The following allows us to serialize to NaN, Infinity and -Infinity correctly.
+      // JSON.stringify([undefined]) returns [null].
+      // The following allows us to serialize to undefined correctly.
+      return serde.serialise(value);
+    });
+  }
+
+  static deserialise(serialised) {
+    let event;
+    try {
+      const rehydratedEvent = flatted.parse(serialised, (key, value) => {
+        if (value && value.message && value.stack) {
+          const fakeError = new Error(value);
+          Object.keys(value).forEach((k) => {
+            fakeError[k] = value[k];
+          });
+          value = fakeError;
+        }
+        return serde.deserialise(value);
+      });
+      this._getLocationKeys().forEach((key) => {
+        if (typeof rehydratedEvent[key] !== 'undefined') {
+          if (!rehydratedEvent.location) rehydratedEvent.location = {};
+          rehydratedEvent.location[key] = rehydratedEvent[key];
+        }
+      });
+      event = new LoggingEvent(
+        rehydratedEvent.categoryName,
+        levels.getLevel(rehydratedEvent.level.levelStr),
+        rehydratedEvent.data,
+        rehydratedEvent.context,
+        rehydratedEvent.location,
+        rehydratedEvent.error
+      );
+      event.startTime = new Date(rehydratedEvent.startTime);
+      event.pid = rehydratedEvent.pid;
+      if (rehydratedEvent.cluster) {
+        event.cluster = rehydratedEvent.cluster;
+      }
+    } catch (e) {
+      event = new LoggingEvent('log4js', levels.ERROR, [
+        'Unable to parse log:',
+        serialised,
+        'because: ',
+        e,
+      ]);
+    }
+
+    return event;
+  }
+}
+
+module.exports = LoggingEvent;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/adapters.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/adapters.js ***!
-  \*******************************************************/
+/***/ 6889:
 /***/ ((module) => {
 
-eval("function maxFileSizeUnitTransform(maxLogSize) {\n  if (typeof maxLogSize === 'number' && Number.isInteger(maxLogSize)) {\n    return maxLogSize;\n  }\n\n  const units = {\n    K: 1024,\n    M: 1024 * 1024,\n    G: 1024 * 1024 * 1024,\n  };\n  const validUnit = Object.keys(units);\n  const unit = maxLogSize.slice(-1).toLocaleUpperCase();\n  const value = maxLogSize.slice(0, -1).trim();\n\n  if (validUnit.indexOf(unit) < 0 || !Number.isInteger(Number(value))) {\n    throw Error(`maxLogSize: \"${maxLogSize}\" is invalid`);\n  } else {\n    return value * units[unit];\n  }\n}\n\nfunction adapter(configAdapter, config) {\n  const newConfig = Object.assign({}, config); // eslint-disable-line prefer-object-spread\n  Object.keys(configAdapter).forEach((key) => {\n    if (newConfig[key]) {\n      newConfig[key] = configAdapter[key](config[key]);\n    }\n  });\n  return newConfig;\n}\n\nfunction fileAppenderAdapter(config) {\n  const configAdapter = {\n    maxLogSize: maxFileSizeUnitTransform,\n  };\n  return adapter(configAdapter, config);\n}\n\nconst adapters = {\n  dateFile: fileAppenderAdapter,\n  file: fileAppenderAdapter,\n  fileSync: fileAppenderAdapter,\n};\n\nmodule.exports.modifyConfig = (config) =>\n  adapters[config.type] ? adapters[config.type](config) : config;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/adapters.js?");
+function maxFileSizeUnitTransform(maxLogSize) {
+  if (typeof maxLogSize === 'number' && Number.isInteger(maxLogSize)) {
+    return maxLogSize;
+  }
+
+  const units = {
+    K: 1024,
+    M: 1024 * 1024,
+    G: 1024 * 1024 * 1024,
+  };
+  const validUnit = Object.keys(units);
+  const unit = maxLogSize.slice(-1).toLocaleUpperCase();
+  const value = maxLogSize.slice(0, -1).trim();
+
+  if (validUnit.indexOf(unit) < 0 || !Number.isInteger(Number(value))) {
+    throw Error(`maxLogSize: "${maxLogSize}" is invalid`);
+  } else {
+    return value * units[unit];
+  }
+}
+
+function adapter(configAdapter, config) {
+  const newConfig = Object.assign({}, config); // eslint-disable-line prefer-object-spread
+  Object.keys(configAdapter).forEach((key) => {
+    if (newConfig[key]) {
+      newConfig[key] = configAdapter[key](config[key]);
+    }
+  });
+  return newConfig;
+}
+
+function fileAppenderAdapter(config) {
+  const configAdapter = {
+    maxLogSize: maxFileSizeUnitTransform,
+  };
+  return adapter(configAdapter, config);
+}
+
+const adapters = {
+  dateFile: fileAppenderAdapter,
+  file: fileAppenderAdapter,
+  fileSync: fileAppenderAdapter,
+};
+
+module.exports.modifyConfig = (config) =>
+  adapters[config.type] ? adapters[config.type](config) : config;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/categoryFilter.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/categoryFilter.js ***!
-  \*************************************************************/
+/***/ 6028:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:categoryFilter');\n\nfunction categoryFilter(excludes, appender) {\n  if (typeof excludes === 'string') excludes = [excludes];\n  return (logEvent) => {\n    debug(`Checking ${logEvent.categoryName} against ${excludes}`);\n    if (excludes.indexOf(logEvent.categoryName) === -1) {\n      debug('Not excluded, sending to appender');\n      appender(logEvent);\n    }\n  };\n}\n\nfunction configure(config, layouts, findAppender) {\n  const appender = findAppender(config.appender);\n  return categoryFilter(config.exclude, appender);\n}\n\nmodule.exports.configure = configure;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/categoryFilter.js?");
+const debug = __webpack_require__(5158)('log4js:categoryFilter');
+
+function categoryFilter(excludes, appender) {
+  if (typeof excludes === 'string') excludes = [excludes];
+  return (logEvent) => {
+    debug(`Checking ${logEvent.categoryName} against ${excludes}`);
+    if (excludes.indexOf(logEvent.categoryName) === -1) {
+      debug('Not excluded, sending to appender');
+      appender(logEvent);
+    }
+  };
+}
+
+function configure(config, layouts, findAppender) {
+  const appender = findAppender(config.appender);
+  return categoryFilter(config.exclude, appender);
+}
+
+module.exports.configure = configure;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/console.js":
-/*!******************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/console.js ***!
-  \******************************************************/
+/***/ 6713:
 /***/ ((module) => {
 
-eval("// eslint-disable-next-line no-console\nconst consoleLog = console.log.bind(console);\n\nfunction consoleAppender(layout, timezoneOffset) {\n  return (loggingEvent) => {\n    consoleLog(layout(loggingEvent, timezoneOffset));\n  };\n}\n\nfunction configure(config, layouts) {\n  let layout = layouts.colouredLayout;\n  if (config.layout) {\n    layout = layouts.layout(config.layout.type, config.layout);\n  }\n  return consoleAppender(layout, config.timezoneOffset);\n}\n\nmodule.exports.configure = configure;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/console.js?");
+// eslint-disable-next-line no-console
+const consoleLog = console.log.bind(console);
+
+function consoleAppender(layout, timezoneOffset) {
+  return (loggingEvent) => {
+    consoleLog(layout(loggingEvent, timezoneOffset));
+  };
+}
+
+function configure(config, layouts) {
+  let layout = layouts.colouredLayout;
+  if (config.layout) {
+    layout = layouts.layout(config.layout.type, config.layout);
+  }
+  return consoleAppender(layout, config.timezoneOffset);
+}
+
+module.exports.configure = configure;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/dateFile.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/dateFile.js ***!
-  \*******************************************************/
+/***/ 8501:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const streams = __webpack_require__(/*! streamroller */ \"./node_modules/streamroller/lib/index.js\");\nconst os = __webpack_require__(/*! os */ \"os\");\n\nconst eol = os.EOL;\n\nfunction openTheStream(filename, pattern, options) {\n  const stream = new streams.DateRollingFileStream(filename, pattern, options);\n  stream.on('error', (err) => {\n    // eslint-disable-next-line no-console\n    console.error(\n      'log4js.dateFileAppender - Writing to file %s, error happened ',\n      filename,\n      err\n    );\n  });\n  stream.on('drain', () => {\n    process.emit('log4js:pause', false);\n  });\n  return stream;\n}\n\n/**\n * File appender that rolls files according to a date pattern.\n * @param filename base filename.\n * @param pattern the format that will be added to the end of filename when rolling,\n *          also used to check when to roll files - defaults to '.yyyy-MM-dd'\n * @param layout layout function for log messages - defaults to basicLayout\n * @param options - options to be passed to the underlying stream\n * @param timezoneOffset - optional timezone offset in minutes (default system local)\n */\nfunction appender(filename, pattern, layout, options, timezoneOffset) {\n  // the options for file appender use maxLogSize, but the docs say any file appender\n  // options should work for dateFile as well.\n  options.maxSize = options.maxLogSize;\n\n  const writer = openTheStream(filename, pattern, options);\n\n  const app = function (logEvent) {\n    if (!writer.writable) {\n      return;\n    }\n    if (!writer.write(layout(logEvent, timezoneOffset) + eol, 'utf8')) {\n      process.emit('log4js:pause', true);\n    }\n  };\n\n  app.shutdown = function (complete) {\n    writer.end('', 'utf-8', complete);\n  };\n\n  return app;\n}\n\nfunction configure(config, layouts) {\n  let layout = layouts.basicLayout;\n  if (config.layout) {\n    layout = layouts.layout(config.layout.type, config.layout);\n  }\n\n  if (!config.alwaysIncludePattern) {\n    config.alwaysIncludePattern = false;\n  }\n\n  // security default (instead of relying on streamroller default)\n  config.mode = config.mode || 0o600;\n\n  return appender(\n    config.filename,\n    config.pattern,\n    layout,\n    config,\n    config.timezoneOffset\n  );\n}\n\nmodule.exports.configure = configure;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/dateFile.js?");
+const streams = __webpack_require__(6929);
+const os = __webpack_require__(2037);
+
+const eol = os.EOL;
+
+function openTheStream(filename, pattern, options) {
+  const stream = new streams.DateRollingFileStream(filename, pattern, options);
+  stream.on('error', (err) => {
+    // eslint-disable-next-line no-console
+    console.error(
+      'log4js.dateFileAppender - Writing to file %s, error happened ',
+      filename,
+      err
+    );
+  });
+  stream.on('drain', () => {
+    process.emit('log4js:pause', false);
+  });
+  return stream;
+}
+
+/**
+ * File appender that rolls files according to a date pattern.
+ * @param filename base filename.
+ * @param pattern the format that will be added to the end of filename when rolling,
+ *          also used to check when to roll files - defaults to '.yyyy-MM-dd'
+ * @param layout layout function for log messages - defaults to basicLayout
+ * @param options - options to be passed to the underlying stream
+ * @param timezoneOffset - optional timezone offset in minutes (default system local)
+ */
+function appender(filename, pattern, layout, options, timezoneOffset) {
+  // the options for file appender use maxLogSize, but the docs say any file appender
+  // options should work for dateFile as well.
+  options.maxSize = options.maxLogSize;
+
+  const writer = openTheStream(filename, pattern, options);
+
+  const app = function (logEvent) {
+    if (!writer.writable) {
+      return;
+    }
+    if (!writer.write(layout(logEvent, timezoneOffset) + eol, 'utf8')) {
+      process.emit('log4js:pause', true);
+    }
+  };
+
+  app.shutdown = function (complete) {
+    writer.end('', 'utf-8', complete);
+  };
+
+  return app;
+}
+
+function configure(config, layouts) {
+  let layout = layouts.basicLayout;
+  if (config.layout) {
+    layout = layouts.layout(config.layout.type, config.layout);
+  }
+
+  if (!config.alwaysIncludePattern) {
+    config.alwaysIncludePattern = false;
+  }
+
+  // security default (instead of relying on streamroller default)
+  config.mode = config.mode || 0o600;
+
+  return appender(
+    config.filename,
+    config.pattern,
+    layout,
+    config,
+    config.timezoneOffset
+  );
+}
+
+module.exports.configure = configure;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/file.js":
-/*!***************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/file.js ***!
-  \***************************************************/
+/***/ 5992:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:file');\nconst path = __webpack_require__(/*! path */ \"path\");\nconst streams = __webpack_require__(/*! streamroller */ \"./node_modules/streamroller/lib/index.js\");\nconst os = __webpack_require__(/*! os */ \"os\");\n\nconst eol = os.EOL;\n\nlet mainSighupListenerStarted = false;\nconst sighupListeners = new Set();\nfunction mainSighupHandler() {\n  sighupListeners.forEach((app) => {\n    app.sighupHandler();\n  });\n}\n\n/**\n * File Appender writing the logs to a text file. Supports rolling of logs by size.\n *\n * @param file the file log messages will be written to\n * @param layout a function that takes a logEvent and returns a string\n *   (defaults to basicLayout).\n * @param logSize - the maximum size (in bytes) for a log file,\n *   if not provided then logs won't be rotated.\n * @param numBackups - the number of log files to keep after logSize\n *   has been reached (default 5)\n * @param options - options to be passed to the underlying stream\n * @param timezoneOffset - optional timezone offset in minutes (default system local)\n */\nfunction fileAppender(\n  file,\n  layout,\n  logSize,\n  numBackups,\n  options,\n  timezoneOffset\n) {\n  if (typeof file !== 'string' || file.length === 0) {\n    throw new Error(`Invalid filename: ${file}`);\n  } else if (file.endsWith(path.sep)) {\n    throw new Error(`Filename is a directory: ${file}`);\n  } else if (file.indexOf(`~${path.sep}`) === 0) {\n    // handle ~ expansion: https://github.com/nodejs/node/issues/684\n    // exclude ~ and ~filename as these can be valid files\n    file = file.replace('~', os.homedir());\n  }\n  file = path.normalize(file);\n  numBackups = !numBackups && numBackups !== 0 ? 5 : numBackups;\n\n  debug(\n    'Creating file appender (',\n    file,\n    ', ',\n    logSize,\n    ', ',\n    numBackups,\n    ', ',\n    options,\n    ', ',\n    timezoneOffset,\n    ')'\n  );\n\n  function openTheStream(filePath, fileSize, numFiles, opt) {\n    const stream = new streams.RollingFileStream(\n      filePath,\n      fileSize,\n      numFiles,\n      opt\n    );\n    stream.on('error', (err) => {\n      // eslint-disable-next-line no-console\n      console.error(\n        'log4js.fileAppender - Writing to file %s, error happened ',\n        filePath,\n        err\n      );\n    });\n    stream.on('drain', () => {\n      process.emit('log4js:pause', false);\n    });\n    return stream;\n  }\n\n  let writer = openTheStream(file, logSize, numBackups, options);\n\n  const app = function (loggingEvent) {\n    if (!writer.writable) {\n      return;\n    }\n    if (options.removeColor === true) {\n      // eslint-disable-next-line no-control-regex\n      const regex = /\\x1b[[0-9;]*m/g;\n      loggingEvent.data = loggingEvent.data.map((d) => {\n        if (typeof d === 'string') return d.replace(regex, '');\n        return d;\n      });\n    }\n    if (!writer.write(layout(loggingEvent, timezoneOffset) + eol, 'utf8')) {\n      process.emit('log4js:pause', true);\n    }\n  };\n\n  app.reopen = function () {\n    writer.end(() => {\n      writer = openTheStream(file, logSize, numBackups, options);\n    });\n  };\n\n  app.sighupHandler = function () {\n    debug('SIGHUP handler called.');\n    app.reopen();\n  };\n\n  app.shutdown = function (complete) {\n    sighupListeners.delete(app);\n    if (sighupListeners.size === 0 && mainSighupListenerStarted) {\n      process.removeListener('SIGHUP', mainSighupHandler);\n      mainSighupListenerStarted = false;\n    }\n    writer.end('', 'utf-8', complete);\n  };\n\n  // On SIGHUP, close and reopen all files. This allows this appender to work with\n  // logrotate. Note that if you are using logrotate, you should not set\n  // `logSize`.\n  sighupListeners.add(app);\n  if (!mainSighupListenerStarted) {\n    process.on('SIGHUP', mainSighupHandler);\n    mainSighupListenerStarted = true;\n  }\n\n  return app;\n}\n\nfunction configure(config, layouts) {\n  let layout = layouts.basicLayout;\n  if (config.layout) {\n    layout = layouts.layout(config.layout.type, config.layout);\n  }\n\n  // security default (instead of relying on streamroller default)\n  config.mode = config.mode || 0o600;\n\n  return fileAppender(\n    config.filename,\n    layout,\n    config.maxLogSize,\n    config.backups,\n    config,\n    config.timezoneOffset\n  );\n}\n\nmodule.exports.configure = configure;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/file.js?");
+const debug = __webpack_require__(5158)('log4js:file');
+const path = __webpack_require__(1017);
+const streams = __webpack_require__(6929);
+const os = __webpack_require__(2037);
+
+const eol = os.EOL;
+
+let mainSighupListenerStarted = false;
+const sighupListeners = new Set();
+function mainSighupHandler() {
+  sighupListeners.forEach((app) => {
+    app.sighupHandler();
+  });
+}
+
+/**
+ * File Appender writing the logs to a text file. Supports rolling of logs by size.
+ *
+ * @param file the file log messages will be written to
+ * @param layout a function that takes a logEvent and returns a string
+ *   (defaults to basicLayout).
+ * @param logSize - the maximum size (in bytes) for a log file,
+ *   if not provided then logs won't be rotated.
+ * @param numBackups - the number of log files to keep after logSize
+ *   has been reached (default 5)
+ * @param options - options to be passed to the underlying stream
+ * @param timezoneOffset - optional timezone offset in minutes (default system local)
+ */
+function fileAppender(
+  file,
+  layout,
+  logSize,
+  numBackups,
+  options,
+  timezoneOffset
+) {
+  if (typeof file !== 'string' || file.length === 0) {
+    throw new Error(`Invalid filename: ${file}`);
+  } else if (file.endsWith(path.sep)) {
+    throw new Error(`Filename is a directory: ${file}`);
+  } else if (file.indexOf(`~${path.sep}`) === 0) {
+    // handle ~ expansion: https://github.com/nodejs/node/issues/684
+    // exclude ~ and ~filename as these can be valid files
+    file = file.replace('~', os.homedir());
+  }
+  file = path.normalize(file);
+  numBackups = !numBackups && numBackups !== 0 ? 5 : numBackups;
+
+  debug(
+    'Creating file appender (',
+    file,
+    ', ',
+    logSize,
+    ', ',
+    numBackups,
+    ', ',
+    options,
+    ', ',
+    timezoneOffset,
+    ')'
+  );
+
+  function openTheStream(filePath, fileSize, numFiles, opt) {
+    const stream = new streams.RollingFileStream(
+      filePath,
+      fileSize,
+      numFiles,
+      opt
+    );
+    stream.on('error', (err) => {
+      // eslint-disable-next-line no-console
+      console.error(
+        'log4js.fileAppender - Writing to file %s, error happened ',
+        filePath,
+        err
+      );
+    });
+    stream.on('drain', () => {
+      process.emit('log4js:pause', false);
+    });
+    return stream;
+  }
+
+  let writer = openTheStream(file, logSize, numBackups, options);
+
+  const app = function (loggingEvent) {
+    if (!writer.writable) {
+      return;
+    }
+    if (options.removeColor === true) {
+      // eslint-disable-next-line no-control-regex
+      const regex = /\x1b[[0-9;]*m/g;
+      loggingEvent.data = loggingEvent.data.map((d) => {
+        if (typeof d === 'string') return d.replace(regex, '');
+        return d;
+      });
+    }
+    if (!writer.write(layout(loggingEvent, timezoneOffset) + eol, 'utf8')) {
+      process.emit('log4js:pause', true);
+    }
+  };
+
+  app.reopen = function () {
+    writer.end(() => {
+      writer = openTheStream(file, logSize, numBackups, options);
+    });
+  };
+
+  app.sighupHandler = function () {
+    debug('SIGHUP handler called.');
+    app.reopen();
+  };
+
+  app.shutdown = function (complete) {
+    sighupListeners.delete(app);
+    if (sighupListeners.size === 0 && mainSighupListenerStarted) {
+      process.removeListener('SIGHUP', mainSighupHandler);
+      mainSighupListenerStarted = false;
+    }
+    writer.end('', 'utf-8', complete);
+  };
+
+  // On SIGHUP, close and reopen all files. This allows this appender to work with
+  // logrotate. Note that if you are using logrotate, you should not set
+  // `logSize`.
+  sighupListeners.add(app);
+  if (!mainSighupListenerStarted) {
+    process.on('SIGHUP', mainSighupHandler);
+    mainSighupListenerStarted = true;
+  }
+
+  return app;
+}
+
+function configure(config, layouts) {
+  let layout = layouts.basicLayout;
+  if (config.layout) {
+    layout = layouts.layout(config.layout.type, config.layout);
+  }
+
+  // security default (instead of relying on streamroller default)
+  config.mode = config.mode || 0o600;
+
+  return fileAppender(
+    config.filename,
+    layout,
+    config.maxLogSize,
+    config.backups,
+    config,
+    config.timezoneOffset
+  );
+}
+
+module.exports.configure = configure;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/fileSync.js":
-/*!*******************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/fileSync.js ***!
-  \*******************************************************/
+/***/ 6566:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:fileSync');\nconst path = __webpack_require__(/*! path */ \"path\");\nconst fs = __webpack_require__(/*! fs */ \"fs\");\nconst os = __webpack_require__(/*! os */ \"os\");\n\nconst eol = os.EOL;\n\nfunction touchFile(file, options) {\n  // attempt to create the directory\n  const mkdir = (dir) => {\n    try {\n      return fs.mkdirSync(dir, { recursive: true });\n    } catch (e) {\n      // backward-compatible fs.mkdirSync for nodejs pre-10.12.0 (without recursive option)\n      // recursive creation of parent first\n      if (e.code === 'ENOENT') {\n        mkdir(path.dirname(dir));\n        return mkdir(dir);\n      }\n\n      // throw error for all except EEXIST and EROFS (read-only filesystem)\n      if (e.code !== 'EEXIST' && e.code !== 'EROFS') {\n        throw e;\n      }\n\n      // EEXIST: throw if file and not directory\n      // EROFS : throw if directory not found\n      else {\n        try {\n          if (fs.statSync(dir).isDirectory()) {\n            return dir;\n          }\n          throw e;\n        } catch (err) {\n          throw e;\n        }\n      }\n    }\n  };\n  mkdir(path.dirname(file));\n\n  // try to throw EISDIR, EROFS, EACCES\n  fs.appendFileSync(file, '', { mode: options.mode, flag: options.flags });\n}\n\nclass RollingFileSync {\n  constructor(filename, maxLogSize, backups, options) {\n    debug('In RollingFileStream');\n\n    if (maxLogSize < 0) {\n      throw new Error(`maxLogSize (${maxLogSize}) should be > 0`);\n    }\n\n    this.filename = filename;\n    this.size = maxLogSize;\n    this.backups = backups;\n    this.options = options;\n    this.currentSize = 0;\n\n    function currentFileSize(file) {\n      let fileSize = 0;\n\n      try {\n        fileSize = fs.statSync(file).size;\n      } catch (e) {\n        // file does not exist\n        touchFile(file, options);\n      }\n      return fileSize;\n    }\n\n    this.currentSize = currentFileSize(this.filename);\n  }\n\n  shouldRoll() {\n    debug(\n      'should roll with current size %d, and max size %d',\n      this.currentSize,\n      this.size\n    );\n    return this.currentSize >= this.size;\n  }\n\n  roll(filename) {\n    const that = this;\n    const nameMatcher = new RegExp(`^${path.basename(filename)}`);\n\n    function justTheseFiles(item) {\n      return nameMatcher.test(item);\n    }\n\n    function index(filename_) {\n      return (\n        parseInt(filename_.slice(`${path.basename(filename)}.`.length), 10) || 0\n      );\n    }\n\n    function byIndex(a, b) {\n      return index(a) - index(b);\n    }\n\n    function increaseFileIndex(fileToRename) {\n      const idx = index(fileToRename);\n      debug(`Index of ${fileToRename} is ${idx}`);\n      if (that.backups === 0) {\n        fs.truncateSync(filename, 0);\n      } else if (idx < that.backups) {\n        // on windows, you can get a EEXIST error if you rename a file to an existing file\n        // so, we'll try to delete the file we're renaming to first\n        try {\n          fs.unlinkSync(`${filename}.${idx + 1}`);\n        } catch (e) {\n          // ignore err: if we could not delete, it's most likely that it doesn't exist\n        }\n\n        debug(`Renaming ${fileToRename} -> ${filename}.${idx + 1}`);\n        fs.renameSync(\n          path.join(path.dirname(filename), fileToRename),\n          `${filename}.${idx + 1}`\n        );\n      }\n    }\n\n    function renameTheFiles() {\n      // roll the backups (rename file.n to file.n+1, where n <= numBackups)\n      debug('Renaming the old files');\n\n      const files = fs.readdirSync(path.dirname(filename));\n      files\n        .filter(justTheseFiles)\n        .sort(byIndex)\n        .reverse()\n        .forEach(increaseFileIndex);\n    }\n\n    debug('Rolling, rolling, rolling');\n    renameTheFiles();\n  }\n\n  // eslint-disable-next-line no-unused-vars\n  write(chunk, encoding) {\n    const that = this;\n\n    function writeTheChunk() {\n      debug('writing the chunk to the file');\n      that.currentSize += chunk.length;\n      fs.appendFileSync(that.filename, chunk);\n    }\n\n    debug('in write');\n\n    if (this.shouldRoll()) {\n      this.currentSize = 0;\n      this.roll(this.filename);\n    }\n\n    writeTheChunk();\n  }\n}\n\n/**\n * File Appender writing the logs to a text file. Supports rolling of logs by size.\n *\n * @param file the file log messages will be written to\n * @param layout a function that takes a logevent and returns a string\n *   (defaults to basicLayout).\n * @param logSize - the maximum size (in bytes) for a log file,\n *   if not provided then logs won't be rotated.\n * @param numBackups - the number of log files to keep after logSize\n *   has been reached (default 5)\n * @param options - options to be passed to the underlying stream\n * @param timezoneOffset - optional timezone offset in minutes (default system local)\n */\nfunction fileAppender(\n  file,\n  layout,\n  logSize,\n  numBackups,\n  options,\n  timezoneOffset\n) {\n  if (typeof file !== 'string' || file.length === 0) {\n    throw new Error(`Invalid filename: ${file}`);\n  } else if (file.endsWith(path.sep)) {\n    throw new Error(`Filename is a directory: ${file}`);\n  } else if (file.indexOf(`~${path.sep}`) === 0) {\n    // handle ~ expansion: https://github.com/nodejs/node/issues/684\n    // exclude ~ and ~filename as these can be valid files\n    file = file.replace('~', os.homedir());\n  }\n  file = path.normalize(file);\n  numBackups = !numBackups && numBackups !== 0 ? 5 : numBackups;\n\n  debug(\n    'Creating fileSync appender (',\n    file,\n    ', ',\n    logSize,\n    ', ',\n    numBackups,\n    ', ',\n    options,\n    ', ',\n    timezoneOffset,\n    ')'\n  );\n\n  function openTheStream(filePath, fileSize, numFiles) {\n    let stream;\n\n    if (fileSize) {\n      stream = new RollingFileSync(filePath, fileSize, numFiles, options);\n    } else {\n      stream = ((f) => {\n        // touch the file to apply flags (like w to truncate the file)\n        touchFile(f, options);\n\n        return {\n          write(data) {\n            fs.appendFileSync(f, data);\n          },\n        };\n      })(filePath);\n    }\n\n    return stream;\n  }\n\n  const logFile = openTheStream(file, logSize, numBackups);\n\n  return (loggingEvent) => {\n    logFile.write(layout(loggingEvent, timezoneOffset) + eol);\n  };\n}\n\nfunction configure(config, layouts) {\n  let layout = layouts.basicLayout;\n  if (config.layout) {\n    layout = layouts.layout(config.layout.type, config.layout);\n  }\n\n  const options = {\n    flags: config.flags || 'a',\n    encoding: config.encoding || 'utf8',\n    mode: config.mode || 0o600,\n  };\n\n  return fileAppender(\n    config.filename,\n    layout,\n    config.maxLogSize,\n    config.backups,\n    options,\n    config.timezoneOffset\n  );\n}\n\nmodule.exports.configure = configure;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/fileSync.js?");
+const debug = __webpack_require__(5158)('log4js:fileSync');
+const path = __webpack_require__(1017);
+const fs = __webpack_require__(7147);
+const os = __webpack_require__(2037);
+
+const eol = os.EOL;
+
+function touchFile(file, options) {
+  // attempt to create the directory
+  const mkdir = (dir) => {
+    try {
+      return fs.mkdirSync(dir, { recursive: true });
+    } catch (e) {
+      // backward-compatible fs.mkdirSync for nodejs pre-10.12.0 (without recursive option)
+      // recursive creation of parent first
+      if (e.code === 'ENOENT') {
+        mkdir(path.dirname(dir));
+        return mkdir(dir);
+      }
+
+      // throw error for all except EEXIST and EROFS (read-only filesystem)
+      if (e.code !== 'EEXIST' && e.code !== 'EROFS') {
+        throw e;
+      }
+
+      // EEXIST: throw if file and not directory
+      // EROFS : throw if directory not found
+      else {
+        try {
+          if (fs.statSync(dir).isDirectory()) {
+            return dir;
+          }
+          throw e;
+        } catch (err) {
+          throw e;
+        }
+      }
+    }
+  };
+  mkdir(path.dirname(file));
+
+  // try to throw EISDIR, EROFS, EACCES
+  fs.appendFileSync(file, '', { mode: options.mode, flag: options.flags });
+}
+
+class RollingFileSync {
+  constructor(filename, maxLogSize, backups, options) {
+    debug('In RollingFileStream');
+
+    if (maxLogSize < 0) {
+      throw new Error(`maxLogSize (${maxLogSize}) should be > 0`);
+    }
+
+    this.filename = filename;
+    this.size = maxLogSize;
+    this.backups = backups;
+    this.options = options;
+    this.currentSize = 0;
+
+    function currentFileSize(file) {
+      let fileSize = 0;
+
+      try {
+        fileSize = fs.statSync(file).size;
+      } catch (e) {
+        // file does not exist
+        touchFile(file, options);
+      }
+      return fileSize;
+    }
+
+    this.currentSize = currentFileSize(this.filename);
+  }
+
+  shouldRoll() {
+    debug(
+      'should roll with current size %d, and max size %d',
+      this.currentSize,
+      this.size
+    );
+    return this.currentSize >= this.size;
+  }
+
+  roll(filename) {
+    const that = this;
+    const nameMatcher = new RegExp(`^${path.basename(filename)}`);
+
+    function justTheseFiles(item) {
+      return nameMatcher.test(item);
+    }
+
+    function index(filename_) {
+      return (
+        parseInt(filename_.slice(`${path.basename(filename)}.`.length), 10) || 0
+      );
+    }
+
+    function byIndex(a, b) {
+      return index(a) - index(b);
+    }
+
+    function increaseFileIndex(fileToRename) {
+      const idx = index(fileToRename);
+      debug(`Index of ${fileToRename} is ${idx}`);
+      if (that.backups === 0) {
+        fs.truncateSync(filename, 0);
+      } else if (idx < that.backups) {
+        // on windows, you can get a EEXIST error if you rename a file to an existing file
+        // so, we'll try to delete the file we're renaming to first
+        try {
+          fs.unlinkSync(`${filename}.${idx + 1}`);
+        } catch (e) {
+          // ignore err: if we could not delete, it's most likely that it doesn't exist
+        }
+
+        debug(`Renaming ${fileToRename} -> ${filename}.${idx + 1}`);
+        fs.renameSync(
+          path.join(path.dirname(filename), fileToRename),
+          `${filename}.${idx + 1}`
+        );
+      }
+    }
+
+    function renameTheFiles() {
+      // roll the backups (rename file.n to file.n+1, where n <= numBackups)
+      debug('Renaming the old files');
+
+      const files = fs.readdirSync(path.dirname(filename));
+      files
+        .filter(justTheseFiles)
+        .sort(byIndex)
+        .reverse()
+        .forEach(increaseFileIndex);
+    }
+
+    debug('Rolling, rolling, rolling');
+    renameTheFiles();
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  write(chunk, encoding) {
+    const that = this;
+
+    function writeTheChunk() {
+      debug('writing the chunk to the file');
+      that.currentSize += chunk.length;
+      fs.appendFileSync(that.filename, chunk);
+    }
+
+    debug('in write');
+
+    if (this.shouldRoll()) {
+      this.currentSize = 0;
+      this.roll(this.filename);
+    }
+
+    writeTheChunk();
+  }
+}
+
+/**
+ * File Appender writing the logs to a text file. Supports rolling of logs by size.
+ *
+ * @param file the file log messages will be written to
+ * @param layout a function that takes a logevent and returns a string
+ *   (defaults to basicLayout).
+ * @param logSize - the maximum size (in bytes) for a log file,
+ *   if not provided then logs won't be rotated.
+ * @param numBackups - the number of log files to keep after logSize
+ *   has been reached (default 5)
+ * @param options - options to be passed to the underlying stream
+ * @param timezoneOffset - optional timezone offset in minutes (default system local)
+ */
+function fileAppender(
+  file,
+  layout,
+  logSize,
+  numBackups,
+  options,
+  timezoneOffset
+) {
+  if (typeof file !== 'string' || file.length === 0) {
+    throw new Error(`Invalid filename: ${file}`);
+  } else if (file.endsWith(path.sep)) {
+    throw new Error(`Filename is a directory: ${file}`);
+  } else if (file.indexOf(`~${path.sep}`) === 0) {
+    // handle ~ expansion: https://github.com/nodejs/node/issues/684
+    // exclude ~ and ~filename as these can be valid files
+    file = file.replace('~', os.homedir());
+  }
+  file = path.normalize(file);
+  numBackups = !numBackups && numBackups !== 0 ? 5 : numBackups;
+
+  debug(
+    'Creating fileSync appender (',
+    file,
+    ', ',
+    logSize,
+    ', ',
+    numBackups,
+    ', ',
+    options,
+    ', ',
+    timezoneOffset,
+    ')'
+  );
+
+  function openTheStream(filePath, fileSize, numFiles) {
+    let stream;
+
+    if (fileSize) {
+      stream = new RollingFileSync(filePath, fileSize, numFiles, options);
+    } else {
+      stream = ((f) => {
+        // touch the file to apply flags (like w to truncate the file)
+        touchFile(f, options);
+
+        return {
+          write(data) {
+            fs.appendFileSync(f, data);
+          },
+        };
+      })(filePath);
+    }
+
+    return stream;
+  }
+
+  const logFile = openTheStream(file, logSize, numBackups);
+
+  return (loggingEvent) => {
+    logFile.write(layout(loggingEvent, timezoneOffset) + eol);
+  };
+}
+
+function configure(config, layouts) {
+  let layout = layouts.basicLayout;
+  if (config.layout) {
+    layout = layouts.layout(config.layout.type, config.layout);
+  }
+
+  const options = {
+    flags: config.flags || 'a',
+    encoding: config.encoding || 'utf8',
+    mode: config.mode || 0o600,
+  };
+
+  return fileAppender(
+    config.filename,
+    layout,
+    config.maxLogSize,
+    config.backups,
+    options,
+    config.timezoneOffset
+  );
+}
+
+module.exports.configure = configure;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/index.js":
-/*!****************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/index.js ***!
-  \****************************************************/
+/***/ 3530:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const path = __webpack_require__(/*! path */ \"path\");\nconst debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:appenders');\nconst configuration = __webpack_require__(/*! ../configuration */ \"./node_modules/log4js/lib/configuration.js\");\nconst clustering = __webpack_require__(/*! ../clustering */ \"./node_modules/log4js/lib/clustering.js\");\nconst levels = __webpack_require__(/*! ../levels */ \"./node_modules/log4js/lib/levels.js\");\nconst layouts = __webpack_require__(/*! ../layouts */ \"./node_modules/log4js/lib/layouts.js\");\nconst adapters = __webpack_require__(/*! ./adapters */ \"./node_modules/log4js/lib/appenders/adapters.js\");\n\n// pre-load the core appenders so that webpack can find them\nconst coreAppenders = new Map();\ncoreAppenders.set('console', __webpack_require__(/*! ./console */ \"./node_modules/log4js/lib/appenders/console.js\"));\ncoreAppenders.set('stdout', __webpack_require__(/*! ./stdout */ \"./node_modules/log4js/lib/appenders/stdout.js\"));\ncoreAppenders.set('stderr', __webpack_require__(/*! ./stderr */ \"./node_modules/log4js/lib/appenders/stderr.js\"));\ncoreAppenders.set('logLevelFilter', __webpack_require__(/*! ./logLevelFilter */ \"./node_modules/log4js/lib/appenders/logLevelFilter.js\"));\ncoreAppenders.set('categoryFilter', __webpack_require__(/*! ./categoryFilter */ \"./node_modules/log4js/lib/appenders/categoryFilter.js\"));\ncoreAppenders.set('noLogFilter', __webpack_require__(/*! ./noLogFilter */ \"./node_modules/log4js/lib/appenders/noLogFilter.js\"));\ncoreAppenders.set('file', __webpack_require__(/*! ./file */ \"./node_modules/log4js/lib/appenders/file.js\"));\ncoreAppenders.set('dateFile', __webpack_require__(/*! ./dateFile */ \"./node_modules/log4js/lib/appenders/dateFile.js\"));\ncoreAppenders.set('fileSync', __webpack_require__(/*! ./fileSync */ \"./node_modules/log4js/lib/appenders/fileSync.js\"));\ncoreAppenders.set('tcp', __webpack_require__(/*! ./tcp */ \"./node_modules/log4js/lib/appenders/tcp.js\"));\n\nconst appenders = new Map();\n\nconst tryLoading = (modulePath, config) => {\n  let resolvedPath;\n  try {\n    const modulePathCJS = `${modulePath}.cjs`;\n    resolvedPath = /*require.resolve*/(__webpack_require__(\"./node_modules/log4js/lib/appenders sync recursive\").resolve(modulePathCJS));\n    debug('Loading module from ', modulePathCJS);\n  } catch (e) {\n    resolvedPath = modulePath;\n    debug('Loading module from ', modulePath);\n  }\n  try {\n    // eslint-disable-next-line global-require, import/no-dynamic-require\n    return __webpack_require__(\"./node_modules/log4js/lib/appenders sync recursive\")(resolvedPath);\n  } catch (e) {\n    // if the module was found, and we still got an error, then raise it\n    configuration.throwExceptionIf(\n      config,\n      e.code !== 'MODULE_NOT_FOUND',\n      `appender \"${modulePath}\" could not be loaded (error was: ${e})`\n    );\n    return undefined;\n  }\n};\n\nconst loadAppenderModule = (type, config) =>\n  coreAppenders.get(type) ||\n  tryLoading(`./${type}`, config) ||\n  tryLoading(type, config) ||\n  (__webpack_require__.c[__webpack_require__.s] &&\n    __webpack_require__.c[__webpack_require__.s].filename &&\n    tryLoading(path.join(path.dirname(__webpack_require__.c[__webpack_require__.s].filename), type), config)) ||\n  tryLoading(path.join(process.cwd(), type), config);\n\nconst appendersLoading = new Set();\n\nconst getAppender = (name, config) => {\n  if (appenders.has(name)) return appenders.get(name);\n  if (!config.appenders[name]) return false;\n  if (appendersLoading.has(name))\n    throw new Error(`Dependency loop detected for appender ${name}.`);\n  appendersLoading.add(name);\n\n  debug(`Creating appender ${name}`);\n  // eslint-disable-next-line no-use-before-define\n  const appender = createAppender(name, config);\n  appendersLoading.delete(name);\n  appenders.set(name, appender);\n  return appender;\n};\n\nconst createAppender = (name, config) => {\n  const appenderConfig = config.appenders[name];\n  const appenderModule = appenderConfig.type.configure\n    ? appenderConfig.type\n    : loadAppenderModule(appenderConfig.type, config);\n  configuration.throwExceptionIf(\n    config,\n    configuration.not(appenderModule),\n    `appender \"${name}\" is not valid (type \"${appenderConfig.type}\" could not be found)`\n  );\n  if (appenderModule.appender) {\n    process.emitWarning(\n      `Appender ${appenderConfig.type} exports an appender function.`,\n      'DeprecationWarning',\n      'log4js-node-DEP0001'\n    );\n    debug(\n      '[log4js-node-DEP0001]',\n      `DEPRECATION: Appender ${appenderConfig.type} exports an appender function.`\n    );\n  }\n  if (appenderModule.shutdown) {\n    process.emitWarning(\n      `Appender ${appenderConfig.type} exports a shutdown function.`,\n      'DeprecationWarning',\n      'log4js-node-DEP0002'\n    );\n    debug(\n      '[log4js-node-DEP0002]',\n      `DEPRECATION: Appender ${appenderConfig.type} exports a shutdown function.`\n    );\n  }\n\n  debug(`${name}: clustering.isMaster ? ${clustering.isMaster()}`);\n  debug(\n    // eslint-disable-next-line global-require\n    `${name}: appenderModule is ${(__webpack_require__(/*! util */ \"util\").inspect)(appenderModule)}`\n  );\n  return clustering.onlyOnMaster(\n    () => {\n      debug(\n        `calling appenderModule.configure for ${name} / ${appenderConfig.type}`\n      );\n      return appenderModule.configure(\n        adapters.modifyConfig(appenderConfig),\n        layouts,\n        (appender) => getAppender(appender, config),\n        levels\n      );\n    },\n    /* istanbul ignore next: fn never gets called by non-master yet needed to pass config validation */ () => {}\n  );\n};\n\nconst setup = (config) => {\n  appenders.clear();\n  appendersLoading.clear();\n  if (!config) {\n    return;\n  }\n\n  const usedAppenders = [];\n  Object.values(config.categories).forEach((category) => {\n    usedAppenders.push(...category.appenders);\n  });\n  Object.keys(config.appenders).forEach((name) => {\n    // dodgy hard-coding of special case for tcp-server and multiprocess which may not have\n    // any categories associated with it, but needs to be started up anyway\n    if (\n      usedAppenders.includes(name) ||\n      config.appenders[name].type === 'tcp-server' ||\n      config.appenders[name].type === 'multiprocess'\n    ) {\n      getAppender(name, config);\n    }\n  });\n};\n\nconst init = () => {\n  setup();\n};\ninit();\n\nconfiguration.addListener((config) => {\n  configuration.throwExceptionIf(\n    config,\n    configuration.not(configuration.anObject(config.appenders)),\n    'must have a property \"appenders\" of type object.'\n  );\n  const appenderNames = Object.keys(config.appenders);\n  configuration.throwExceptionIf(\n    config,\n    configuration.not(appenderNames.length),\n    'must define at least one appender.'\n  );\n\n  appenderNames.forEach((name) => {\n    configuration.throwExceptionIf(\n      config,\n      configuration.not(config.appenders[name].type),\n      `appender \"${name}\" is not valid (must be an object with property \"type\")`\n    );\n  });\n});\n\nconfiguration.addListener(setup);\n\nmodule.exports = appenders;\nmodule.exports.init = init;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/index.js?");
+const path = __webpack_require__(1017);
+const debug = __webpack_require__(5158)('log4js:appenders');
+const configuration = __webpack_require__(3338);
+const clustering = __webpack_require__(5885);
+const levels = __webpack_require__(1935);
+const layouts = __webpack_require__(1219);
+const adapters = __webpack_require__(6889);
+
+// pre-load the core appenders so that webpack can find them
+const coreAppenders = new Map();
+coreAppenders.set('console', __webpack_require__(6713));
+coreAppenders.set('stdout', __webpack_require__(2489));
+coreAppenders.set('stderr', __webpack_require__(9545));
+coreAppenders.set('logLevelFilter', __webpack_require__(2861));
+coreAppenders.set('categoryFilter', __webpack_require__(6028));
+coreAppenders.set('noLogFilter', __webpack_require__(4029));
+coreAppenders.set('file', __webpack_require__(5992));
+coreAppenders.set('dateFile', __webpack_require__(8501));
+coreAppenders.set('fileSync', __webpack_require__(6566));
+coreAppenders.set('tcp', __webpack_require__(2383));
+
+const appenders = new Map();
+
+const tryLoading = (modulePath, config) => {
+  let resolvedPath;
+  try {
+    const modulePathCJS = `${modulePath}.cjs`;
+    resolvedPath = /*require.resolve*/(__webpack_require__(2213).resolve(modulePathCJS));
+    debug('Loading module from ', modulePathCJS);
+  } catch (e) {
+    resolvedPath = modulePath;
+    debug('Loading module from ', modulePath);
+  }
+  try {
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    return __webpack_require__(2213)(resolvedPath);
+  } catch (e) {
+    // if the module was found, and we still got an error, then raise it
+    configuration.throwExceptionIf(
+      config,
+      e.code !== 'MODULE_NOT_FOUND',
+      `appender "${modulePath}" could not be loaded (error was: ${e})`
+    );
+    return undefined;
+  }
+};
+
+const loadAppenderModule = (type, config) =>
+  coreAppenders.get(type) ||
+  tryLoading(`./${type}`, config) ||
+  tryLoading(type, config) ||
+  (__webpack_require__.c[__webpack_require__.s] &&
+    __webpack_require__.c[__webpack_require__.s].filename &&
+    tryLoading(path.join(path.dirname(__webpack_require__.c[__webpack_require__.s].filename), type), config)) ||
+  tryLoading(path.join(process.cwd(), type), config);
+
+const appendersLoading = new Set();
+
+const getAppender = (name, config) => {
+  if (appenders.has(name)) return appenders.get(name);
+  if (!config.appenders[name]) return false;
+  if (appendersLoading.has(name))
+    throw new Error(`Dependency loop detected for appender ${name}.`);
+  appendersLoading.add(name);
+
+  debug(`Creating appender ${name}`);
+  // eslint-disable-next-line no-use-before-define
+  const appender = createAppender(name, config);
+  appendersLoading.delete(name);
+  appenders.set(name, appender);
+  return appender;
+};
+
+const createAppender = (name, config) => {
+  const appenderConfig = config.appenders[name];
+  const appenderModule = appenderConfig.type.configure
+    ? appenderConfig.type
+    : loadAppenderModule(appenderConfig.type, config);
+  configuration.throwExceptionIf(
+    config,
+    configuration.not(appenderModule),
+    `appender "${name}" is not valid (type "${appenderConfig.type}" could not be found)`
+  );
+  if (appenderModule.appender) {
+    process.emitWarning(
+      `Appender ${appenderConfig.type} exports an appender function.`,
+      'DeprecationWarning',
+      'log4js-node-DEP0001'
+    );
+    debug(
+      '[log4js-node-DEP0001]',
+      `DEPRECATION: Appender ${appenderConfig.type} exports an appender function.`
+    );
+  }
+  if (appenderModule.shutdown) {
+    process.emitWarning(
+      `Appender ${appenderConfig.type} exports a shutdown function.`,
+      'DeprecationWarning',
+      'log4js-node-DEP0002'
+    );
+    debug(
+      '[log4js-node-DEP0002]',
+      `DEPRECATION: Appender ${appenderConfig.type} exports a shutdown function.`
+    );
+  }
+
+  debug(`${name}: clustering.isMaster ? ${clustering.isMaster()}`);
+  debug(
+    // eslint-disable-next-line global-require
+    `${name}: appenderModule is ${(__webpack_require__(3837).inspect)(appenderModule)}`
+  );
+  return clustering.onlyOnMaster(
+    () => {
+      debug(
+        `calling appenderModule.configure for ${name} / ${appenderConfig.type}`
+      );
+      return appenderModule.configure(
+        adapters.modifyConfig(appenderConfig),
+        layouts,
+        (appender) => getAppender(appender, config),
+        levels
+      );
+    },
+    /* istanbul ignore next: fn never gets called by non-master yet needed to pass config validation */ () => {}
+  );
+};
+
+const setup = (config) => {
+  appenders.clear();
+  appendersLoading.clear();
+  if (!config) {
+    return;
+  }
+
+  const usedAppenders = [];
+  Object.values(config.categories).forEach((category) => {
+    usedAppenders.push(...category.appenders);
+  });
+  Object.keys(config.appenders).forEach((name) => {
+    // dodgy hard-coding of special case for tcp-server and multiprocess which may not have
+    // any categories associated with it, but needs to be started up anyway
+    if (
+      usedAppenders.includes(name) ||
+      config.appenders[name].type === 'tcp-server' ||
+      config.appenders[name].type === 'multiprocess'
+    ) {
+      getAppender(name, config);
+    }
+  });
+};
+
+const init = () => {
+  setup();
+};
+init();
+
+configuration.addListener((config) => {
+  configuration.throwExceptionIf(
+    config,
+    configuration.not(configuration.anObject(config.appenders)),
+    'must have a property "appenders" of type object.'
+  );
+  const appenderNames = Object.keys(config.appenders);
+  configuration.throwExceptionIf(
+    config,
+    configuration.not(appenderNames.length),
+    'must define at least one appender.'
+  );
+
+  appenderNames.forEach((name) => {
+    configuration.throwExceptionIf(
+      config,
+      configuration.not(config.appenders[name].type),
+      `appender "${name}" is not valid (must be an object with property "type")`
+    );
+  });
+});
+
+configuration.addListener(setup);
+
+module.exports = appenders;
+module.exports.init = init;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/logLevelFilter.js":
-/*!*************************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/logLevelFilter.js ***!
-  \*************************************************************/
+/***/ 2861:
 /***/ ((module) => {
 
-eval("function logLevelFilter(minLevelString, maxLevelString, appender, levels) {\n  const minLevel = levels.getLevel(minLevelString);\n  const maxLevel = levels.getLevel(maxLevelString, levels.FATAL);\n  return (logEvent) => {\n    const eventLevel = logEvent.level;\n    if (\n      minLevel.isLessThanOrEqualTo(eventLevel) &&\n      maxLevel.isGreaterThanOrEqualTo(eventLevel)\n    ) {\n      appender(logEvent);\n    }\n  };\n}\n\nfunction configure(config, layouts, findAppender, levels) {\n  const appender = findAppender(config.appender);\n  return logLevelFilter(config.level, config.maxLevel, appender, levels);\n}\n\nmodule.exports.configure = configure;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/logLevelFilter.js?");
+function logLevelFilter(minLevelString, maxLevelString, appender, levels) {
+  const minLevel = levels.getLevel(minLevelString);
+  const maxLevel = levels.getLevel(maxLevelString, levels.FATAL);
+  return (logEvent) => {
+    const eventLevel = logEvent.level;
+    if (
+      minLevel.isLessThanOrEqualTo(eventLevel) &&
+      maxLevel.isGreaterThanOrEqualTo(eventLevel)
+    ) {
+      appender(logEvent);
+    }
+  };
+}
+
+function configure(config, layouts, findAppender, levels) {
+  const appender = findAppender(config.appender);
+  return logLevelFilter(config.level, config.maxLevel, appender, levels);
+}
+
+module.exports.configure = configure;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/noLogFilter.js":
-/*!**********************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/noLogFilter.js ***!
-  \**********************************************************/
+/***/ 4029:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:noLogFilter');\n\n/**\n * The function removes empty or null regexp from the array\n * @param {string[]} regexp\n * @returns {string[]} a filtered string array with not empty or null regexp\n */\nfunction removeNullOrEmptyRegexp(regexp) {\n  const filtered = regexp.filter((el) => el != null && el !== '');\n  return filtered;\n}\n\n/**\n * Returns a function that will exclude the events in case they match\n * with the regular expressions provided\n * @param {(string|string[])} filters contains the regexp that will be used for the evaluation\n * @param {*} appender\n * @returns {function}\n */\nfunction noLogFilter(filters, appender) {\n  return (logEvent) => {\n    debug(`Checking data: ${logEvent.data} against filters: ${filters}`);\n    if (typeof filters === 'string') {\n      filters = [filters];\n    }\n    filters = removeNullOrEmptyRegexp(filters);\n    const regex = new RegExp(filters.join('|'), 'i');\n    if (\n      filters.length === 0 ||\n      logEvent.data.findIndex((value) => regex.test(value)) < 0\n    ) {\n      debug('Not excluded, sending to appender');\n      appender(logEvent);\n    }\n  };\n}\n\nfunction configure(config, layouts, findAppender) {\n  const appender = findAppender(config.appender);\n  return noLogFilter(config.exclude, appender);\n}\n\nmodule.exports.configure = configure;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/noLogFilter.js?");
+const debug = __webpack_require__(5158)('log4js:noLogFilter');
+
+/**
+ * The function removes empty or null regexp from the array
+ * @param {string[]} regexp
+ * @returns {string[]} a filtered string array with not empty or null regexp
+ */
+function removeNullOrEmptyRegexp(regexp) {
+  const filtered = regexp.filter((el) => el != null && el !== '');
+  return filtered;
+}
+
+/**
+ * Returns a function that will exclude the events in case they match
+ * with the regular expressions provided
+ * @param {(string|string[])} filters contains the regexp that will be used for the evaluation
+ * @param {*} appender
+ * @returns {function}
+ */
+function noLogFilter(filters, appender) {
+  return (logEvent) => {
+    debug(`Checking data: ${logEvent.data} against filters: ${filters}`);
+    if (typeof filters === 'string') {
+      filters = [filters];
+    }
+    filters = removeNullOrEmptyRegexp(filters);
+    const regex = new RegExp(filters.join('|'), 'i');
+    if (
+      filters.length === 0 ||
+      logEvent.data.findIndex((value) => regex.test(value)) < 0
+    ) {
+      debug('Not excluded, sending to appender');
+      appender(logEvent);
+    }
+  };
+}
+
+function configure(config, layouts, findAppender) {
+  const appender = findAppender(config.appender);
+  return noLogFilter(config.exclude, appender);
+}
+
+module.exports.configure = configure;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/recording.js":
-/*!********************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/recording.js ***!
-  \********************************************************/
+/***/ 2344:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:recording');\n\nconst recordedEvents = [];\n\nfunction configure() {\n  return function (logEvent) {\n    debug(\n      `received logEvent, number of events now ${recordedEvents.length + 1}`\n    );\n    debug('log event was ', logEvent);\n    recordedEvents.push(logEvent);\n  };\n}\n\nfunction replay() {\n  return recordedEvents.slice();\n}\n\nfunction reset() {\n  recordedEvents.length = 0;\n}\n\nmodule.exports = {\n  configure,\n  replay,\n  playback: replay,\n  reset,\n  erase: reset,\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/recording.js?");
+const debug = __webpack_require__(5158)('log4js:recording');
+
+const recordedEvents = [];
+
+function configure() {
+  return function (logEvent) {
+    debug(
+      `received logEvent, number of events now ${recordedEvents.length + 1}`
+    );
+    debug('log event was ', logEvent);
+    recordedEvents.push(logEvent);
+  };
+}
+
+function replay() {
+  return recordedEvents.slice();
+}
+
+function reset() {
+  recordedEvents.length = 0;
+}
+
+module.exports = {
+  configure,
+  replay,
+  playback: replay,
+  reset,
+  erase: reset,
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/stderr.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/stderr.js ***!
-  \*****************************************************/
+/***/ 9545:
 /***/ ((module) => {
 
-eval("function stderrAppender(layout, timezoneOffset) {\n  return (loggingEvent) => {\n    process.stderr.write(`${layout(loggingEvent, timezoneOffset)}\\n`);\n  };\n}\n\nfunction configure(config, layouts) {\n  let layout = layouts.colouredLayout;\n  if (config.layout) {\n    layout = layouts.layout(config.layout.type, config.layout);\n  }\n  return stderrAppender(layout, config.timezoneOffset);\n}\n\nmodule.exports.configure = configure;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/stderr.js?");
+function stderrAppender(layout, timezoneOffset) {
+  return (loggingEvent) => {
+    process.stderr.write(`${layout(loggingEvent, timezoneOffset)}\n`);
+  };
+}
+
+function configure(config, layouts) {
+  let layout = layouts.colouredLayout;
+  if (config.layout) {
+    layout = layouts.layout(config.layout.type, config.layout);
+  }
+  return stderrAppender(layout, config.timezoneOffset);
+}
+
+module.exports.configure = configure;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/stdout.js":
-/*!*****************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/stdout.js ***!
-  \*****************************************************/
+/***/ 2489:
 /***/ ((__unused_webpack_module, exports) => {
 
-eval("function stdoutAppender(layout, timezoneOffset) {\n  return (loggingEvent) => {\n    process.stdout.write(`${layout(loggingEvent, timezoneOffset)}\\n`);\n  };\n}\n\nfunction configure(config, layouts) {\n  let layout = layouts.colouredLayout;\n  if (config.layout) {\n    layout = layouts.layout(config.layout.type, config.layout);\n  }\n  return stdoutAppender(layout, config.timezoneOffset);\n}\n\nexports.configure = configure;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/stdout.js?");
+function stdoutAppender(layout, timezoneOffset) {
+  return (loggingEvent) => {
+    process.stdout.write(`${layout(loggingEvent, timezoneOffset)}\n`);
+  };
+}
+
+function configure(config, layouts) {
+  let layout = layouts.colouredLayout;
+  if (config.layout) {
+    layout = layouts.layout(config.layout.type, config.layout);
+  }
+  return stdoutAppender(layout, config.timezoneOffset);
+}
+
+exports.configure = configure;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders/tcp.js":
-/*!**************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/tcp.js ***!
-  \**************************************************/
+/***/ 2383:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:tcp');\nconst net = __webpack_require__(/*! net */ \"net\");\n\nfunction appender(config, layout) {\n  let canWrite = false;\n  const buffer = [];\n  let socket;\n  let shutdownAttempts = 3;\n  let endMsg = '__LOG4JS__';\n\n  function write(loggingEvent) {\n    debug('Writing log event to socket');\n    canWrite = socket.write(`${layout(loggingEvent)}${endMsg}`, 'utf8');\n  }\n\n  function emptyBuffer() {\n    let evt;\n    debug('emptying buffer');\n    while ((evt = buffer.shift())) {\n      write(evt);\n    }\n  }\n\n  function createSocket() {\n    debug(\n      `appender creating socket to ${config.host || 'localhost'}:${\n        config.port || 5000\n      }`\n    );\n    endMsg = `${config.endMsg || '__LOG4JS__'}`;\n    socket = net.createConnection(\n      config.port || 5000,\n      config.host || 'localhost'\n    );\n    socket.on('connect', () => {\n      debug('socket connected');\n      emptyBuffer();\n      canWrite = true;\n    });\n    socket.on('drain', () => {\n      debug('drain event received, emptying buffer');\n      canWrite = true;\n      emptyBuffer();\n    });\n    socket.on('timeout', socket.end.bind(socket));\n    socket.on('error', (e) => {\n      debug('connection error', e);\n      canWrite = false;\n      emptyBuffer();\n    });\n    socket.on('close', createSocket);\n  }\n\n  createSocket();\n\n  function log(loggingEvent) {\n    if (canWrite) {\n      write(loggingEvent);\n    } else {\n      debug('buffering log event because it cannot write at the moment');\n      buffer.push(loggingEvent);\n    }\n  }\n\n  log.shutdown = function (cb) {\n    debug('shutdown called');\n    if (buffer.length && shutdownAttempts) {\n      debug('buffer has items, waiting 100ms to empty');\n      shutdownAttempts -= 1;\n      setTimeout(() => {\n        log.shutdown(cb);\n      }, 100);\n    } else {\n      socket.removeAllListeners('close');\n      socket.end(cb);\n    }\n  };\n  return log;\n}\n\nfunction configure(config, layouts) {\n  debug(`configure with config = ${config}`);\n  let layout = function (loggingEvent) {\n    return loggingEvent.serialise();\n  };\n  if (config.layout) {\n    layout = layouts.layout(config.layout.type, config.layout);\n  }\n  return appender(config, layout);\n}\n\nmodule.exports.configure = configure;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/tcp.js?");
+const debug = __webpack_require__(5158)('log4js:tcp');
+const net = __webpack_require__(1808);
+
+function appender(config, layout) {
+  let canWrite = false;
+  const buffer = [];
+  let socket;
+  let shutdownAttempts = 3;
+  let endMsg = '__LOG4JS__';
+
+  function write(loggingEvent) {
+    debug('Writing log event to socket');
+    canWrite = socket.write(`${layout(loggingEvent)}${endMsg}`, 'utf8');
+  }
+
+  function emptyBuffer() {
+    let evt;
+    debug('emptying buffer');
+    while ((evt = buffer.shift())) {
+      write(evt);
+    }
+  }
+
+  function createSocket() {
+    debug(
+      `appender creating socket to ${config.host || 'localhost'}:${
+        config.port || 5000
+      }`
+    );
+    endMsg = `${config.endMsg || '__LOG4JS__'}`;
+    socket = net.createConnection(
+      config.port || 5000,
+      config.host || 'localhost'
+    );
+    socket.on('connect', () => {
+      debug('socket connected');
+      emptyBuffer();
+      canWrite = true;
+    });
+    socket.on('drain', () => {
+      debug('drain event received, emptying buffer');
+      canWrite = true;
+      emptyBuffer();
+    });
+    socket.on('timeout', socket.end.bind(socket));
+    socket.on('error', (e) => {
+      debug('connection error', e);
+      canWrite = false;
+      emptyBuffer();
+    });
+    socket.on('close', createSocket);
+  }
+
+  createSocket();
+
+  function log(loggingEvent) {
+    if (canWrite) {
+      write(loggingEvent);
+    } else {
+      debug('buffering log event because it cannot write at the moment');
+      buffer.push(loggingEvent);
+    }
+  }
+
+  log.shutdown = function (cb) {
+    debug('shutdown called');
+    if (buffer.length && shutdownAttempts) {
+      debug('buffer has items, waiting 100ms to empty');
+      shutdownAttempts -= 1;
+      setTimeout(() => {
+        log.shutdown(cb);
+      }, 100);
+    } else {
+      socket.removeAllListeners('close');
+      socket.end(cb);
+    }
+  };
+  return log;
+}
+
+function configure(config, layouts) {
+  debug(`configure with config = ${config}`);
+  let layout = function (loggingEvent) {
+    return loggingEvent.serialise();
+  };
+  if (config.layout) {
+    layout = layouts.layout(config.layout.type, config.layout);
+  }
+  return appender(config, layout);
+}
+
+module.exports.configure = configure;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/appenders sync recursive":
-/*!*************************************************!*\
-  !*** ./node_modules/log4js/lib/appenders/ sync ***!
-  \*************************************************/
+/***/ 2213:
 /***/ ((module) => {
 
-eval("function webpackEmptyContext(req) {\n\tvar e = new Error(\"Cannot find module '\" + req + \"'\");\n\te.code = 'MODULE_NOT_FOUND';\n\tthrow e;\n}\nwebpackEmptyContext.keys = () => ([]);\nwebpackEmptyContext.resolve = webpackEmptyContext;\nwebpackEmptyContext.id = \"./node_modules/log4js/lib/appenders sync recursive\";\nmodule.exports = webpackEmptyContext;\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/appenders/_sync?");
+function webpackEmptyContext(req) {
+	var e = new Error("Cannot find module '" + req + "'");
+	e.code = 'MODULE_NOT_FOUND';
+	throw e;
+}
+webpackEmptyContext.keys = () => ([]);
+webpackEmptyContext.resolve = webpackEmptyContext;
+webpackEmptyContext.id = 2213;
+module.exports = webpackEmptyContext;
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/categories.js":
-/*!***********************************************!*\
-  !*** ./node_modules/log4js/lib/categories.js ***!
-  \***********************************************/
+/***/ 3785:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:categories');\nconst configuration = __webpack_require__(/*! ./configuration */ \"./node_modules/log4js/lib/configuration.js\");\nconst levels = __webpack_require__(/*! ./levels */ \"./node_modules/log4js/lib/levels.js\");\nconst appenders = __webpack_require__(/*! ./appenders */ \"./node_modules/log4js/lib/appenders/index.js\");\n\nconst categories = new Map();\n\n/**\n * Add inherited config to this category.  That includes extra appenders from parent,\n * and level, if none is set on this category.\n * This is recursive, so each parent also gets loaded with inherited appenders.\n * Inheritance is blocked if a category has inherit=false\n * @param  {*} config\n * @param  {*} category the child category\n * @param  {string} categoryName dotted path to category\n * @return {void}\n */\nfunction inheritFromParent(config, category, categoryName) {\n  if (category.inherit === false) return;\n  const lastDotIndex = categoryName.lastIndexOf('.');\n  if (lastDotIndex < 0) return; // category is not a child\n  const parentCategoryName = categoryName.slice(0, lastDotIndex);\n  let parentCategory = config.categories[parentCategoryName];\n\n  if (!parentCategory) {\n    // parent is missing, so implicitly create it, so that it can inherit from its parents\n    parentCategory = { inherit: true, appenders: [] };\n  }\n\n  // make sure parent has had its inheritance taken care of before pulling its properties to this child\n  inheritFromParent(config, parentCategory, parentCategoryName);\n\n  // if the parent is not in the config (because we just created it above),\n  // and it inherited a valid configuration, add it to config.categories\n  if (\n    !config.categories[parentCategoryName] &&\n    parentCategory.appenders &&\n    parentCategory.appenders.length &&\n    parentCategory.level\n  ) {\n    config.categories[parentCategoryName] = parentCategory;\n  }\n\n  category.appenders = category.appenders || [];\n  category.level = category.level || parentCategory.level;\n\n  // merge in appenders from parent (parent is already holding its inherited appenders)\n  parentCategory.appenders.forEach((ap) => {\n    if (!category.appenders.includes(ap)) {\n      category.appenders.push(ap);\n    }\n  });\n  category.parent = parentCategory;\n}\n\n/**\n * Walk all categories in the config, and pull down any configuration from parent to child.\n * This includes inherited appenders, and level, where level is not set.\n * Inheritance is skipped where a category has inherit=false.\n * @param  {*} config\n */\nfunction addCategoryInheritance(config) {\n  if (!config.categories) return;\n  const categoryNames = Object.keys(config.categories);\n  categoryNames.forEach((name) => {\n    const category = config.categories[name];\n    // add inherited appenders and level to this category\n    inheritFromParent(config, category, name);\n  });\n}\n\nconfiguration.addPreProcessingListener((config) =>\n  addCategoryInheritance(config)\n);\n\nconfiguration.addListener((config) => {\n  configuration.throwExceptionIf(\n    config,\n    configuration.not(configuration.anObject(config.categories)),\n    'must have a property \"categories\" of type object.'\n  );\n\n  const categoryNames = Object.keys(config.categories);\n  configuration.throwExceptionIf(\n    config,\n    configuration.not(categoryNames.length),\n    'must define at least one category.'\n  );\n\n  categoryNames.forEach((name) => {\n    const category = config.categories[name];\n    configuration.throwExceptionIf(\n      config,\n      [\n        configuration.not(category.appenders),\n        configuration.not(category.level),\n      ],\n      `category \"${name}\" is not valid (must be an object with properties \"appenders\" and \"level\")`\n    );\n\n    configuration.throwExceptionIf(\n      config,\n      configuration.not(Array.isArray(category.appenders)),\n      `category \"${name}\" is not valid (appenders must be an array of appender names)`\n    );\n\n    configuration.throwExceptionIf(\n      config,\n      configuration.not(category.appenders.length),\n      `category \"${name}\" is not valid (appenders must contain at least one appender name)`\n    );\n\n    if (Object.prototype.hasOwnProperty.call(category, 'enableCallStack')) {\n      configuration.throwExceptionIf(\n        config,\n        typeof category.enableCallStack !== 'boolean',\n        `category \"${name}\" is not valid (enableCallStack must be boolean type)`\n      );\n    }\n\n    category.appenders.forEach((appender) => {\n      configuration.throwExceptionIf(\n        config,\n        configuration.not(appenders.get(appender)),\n        `category \"${name}\" is not valid (appender \"${appender}\" is not defined)`\n      );\n    });\n\n    configuration.throwExceptionIf(\n      config,\n      configuration.not(levels.getLevel(category.level)),\n      `category \"${name}\" is not valid (level \"${category.level}\" not recognised;` +\n        ` valid levels are ${levels.levels.join(', ')})`\n    );\n  });\n\n  configuration.throwExceptionIf(\n    config,\n    configuration.not(config.categories.default),\n    'must define a \"default\" category.'\n  );\n});\n\nconst setup = (config) => {\n  categories.clear();\n  if (!config) {\n    return;\n  }\n\n  const categoryNames = Object.keys(config.categories);\n  categoryNames.forEach((name) => {\n    const category = config.categories[name];\n    const categoryAppenders = [];\n    category.appenders.forEach((appender) => {\n      categoryAppenders.push(appenders.get(appender));\n      debug(`Creating category ${name}`);\n      categories.set(name, {\n        appenders: categoryAppenders,\n        level: levels.getLevel(category.level),\n        enableCallStack: category.enableCallStack || false,\n      });\n    });\n  });\n};\n\nconst init = () => {\n  setup();\n};\ninit();\n\nconfiguration.addListener(setup);\n\nconst configForCategory = (category) => {\n  debug(`configForCategory: searching for config for ${category}`);\n  if (categories.has(category)) {\n    debug(`configForCategory: ${category} exists in config, returning it`);\n    return categories.get(category);\n  }\n\n  let sourceCategoryConfig;\n  if (category.indexOf('.') > 0) {\n    debug(`configForCategory: ${category} has hierarchy, cloning from parents`);\n    sourceCategoryConfig = {\n      ...configForCategory(category.slice(0, category.lastIndexOf('.'))),\n    };\n  } else {\n    if (!categories.has('default')) {\n      setup({ categories: { default: { appenders: ['out'], level: 'OFF' } } });\n    }\n    debug('configForCategory: cloning default category');\n    sourceCategoryConfig = { ...categories.get('default') };\n  }\n  categories.set(category, sourceCategoryConfig);\n  return sourceCategoryConfig;\n};\n\nconst appendersForCategory = (category) =>\n  configForCategory(category).appenders;\n\nconst getLevelForCategory = (category) => configForCategory(category).level;\nconst setLevelForCategory = (category, level) => {\n  configForCategory(category).level = level;\n};\n\nconst getEnableCallStackForCategory = (category) =>\n  configForCategory(category).enableCallStack === true;\nconst setEnableCallStackForCategory = (category, useCallStack) => {\n  configForCategory(category).enableCallStack = useCallStack;\n};\n\nmodule.exports = categories;\nmodule.exports = Object.assign(module.exports, {\n  appendersForCategory,\n  getLevelForCategory,\n  setLevelForCategory,\n  getEnableCallStackForCategory,\n  setEnableCallStackForCategory,\n  init,\n});\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/categories.js?");
+const debug = __webpack_require__(5158)('log4js:categories');
+const configuration = __webpack_require__(3338);
+const levels = __webpack_require__(1935);
+const appenders = __webpack_require__(3530);
+
+const categories = new Map();
+
+/**
+ * Add inherited config to this category.  That includes extra appenders from parent,
+ * and level, if none is set on this category.
+ * This is recursive, so each parent also gets loaded with inherited appenders.
+ * Inheritance is blocked if a category has inherit=false
+ * @param  {*} config
+ * @param  {*} category the child category
+ * @param  {string} categoryName dotted path to category
+ * @return {void}
+ */
+function inheritFromParent(config, category, categoryName) {
+  if (category.inherit === false) return;
+  const lastDotIndex = categoryName.lastIndexOf('.');
+  if (lastDotIndex < 0) return; // category is not a child
+  const parentCategoryName = categoryName.slice(0, lastDotIndex);
+  let parentCategory = config.categories[parentCategoryName];
+
+  if (!parentCategory) {
+    // parent is missing, so implicitly create it, so that it can inherit from its parents
+    parentCategory = { inherit: true, appenders: [] };
+  }
+
+  // make sure parent has had its inheritance taken care of before pulling its properties to this child
+  inheritFromParent(config, parentCategory, parentCategoryName);
+
+  // if the parent is not in the config (because we just created it above),
+  // and it inherited a valid configuration, add it to config.categories
+  if (
+    !config.categories[parentCategoryName] &&
+    parentCategory.appenders &&
+    parentCategory.appenders.length &&
+    parentCategory.level
+  ) {
+    config.categories[parentCategoryName] = parentCategory;
+  }
+
+  category.appenders = category.appenders || [];
+  category.level = category.level || parentCategory.level;
+
+  // merge in appenders from parent (parent is already holding its inherited appenders)
+  parentCategory.appenders.forEach((ap) => {
+    if (!category.appenders.includes(ap)) {
+      category.appenders.push(ap);
+    }
+  });
+  category.parent = parentCategory;
+}
+
+/**
+ * Walk all categories in the config, and pull down any configuration from parent to child.
+ * This includes inherited appenders, and level, where level is not set.
+ * Inheritance is skipped where a category has inherit=false.
+ * @param  {*} config
+ */
+function addCategoryInheritance(config) {
+  if (!config.categories) return;
+  const categoryNames = Object.keys(config.categories);
+  categoryNames.forEach((name) => {
+    const category = config.categories[name];
+    // add inherited appenders and level to this category
+    inheritFromParent(config, category, name);
+  });
+}
+
+configuration.addPreProcessingListener((config) =>
+  addCategoryInheritance(config)
+);
+
+configuration.addListener((config) => {
+  configuration.throwExceptionIf(
+    config,
+    configuration.not(configuration.anObject(config.categories)),
+    'must have a property "categories" of type object.'
+  );
+
+  const categoryNames = Object.keys(config.categories);
+  configuration.throwExceptionIf(
+    config,
+    configuration.not(categoryNames.length),
+    'must define at least one category.'
+  );
+
+  categoryNames.forEach((name) => {
+    const category = config.categories[name];
+    configuration.throwExceptionIf(
+      config,
+      [
+        configuration.not(category.appenders),
+        configuration.not(category.level),
+      ],
+      `category "${name}" is not valid (must be an object with properties "appenders" and "level")`
+    );
+
+    configuration.throwExceptionIf(
+      config,
+      configuration.not(Array.isArray(category.appenders)),
+      `category "${name}" is not valid (appenders must be an array of appender names)`
+    );
+
+    configuration.throwExceptionIf(
+      config,
+      configuration.not(category.appenders.length),
+      `category "${name}" is not valid (appenders must contain at least one appender name)`
+    );
+
+    if (Object.prototype.hasOwnProperty.call(category, 'enableCallStack')) {
+      configuration.throwExceptionIf(
+        config,
+        typeof category.enableCallStack !== 'boolean',
+        `category "${name}" is not valid (enableCallStack must be boolean type)`
+      );
+    }
+
+    category.appenders.forEach((appender) => {
+      configuration.throwExceptionIf(
+        config,
+        configuration.not(appenders.get(appender)),
+        `category "${name}" is not valid (appender "${appender}" is not defined)`
+      );
+    });
+
+    configuration.throwExceptionIf(
+      config,
+      configuration.not(levels.getLevel(category.level)),
+      `category "${name}" is not valid (level "${category.level}" not recognised;` +
+        ` valid levels are ${levels.levels.join(', ')})`
+    );
+  });
+
+  configuration.throwExceptionIf(
+    config,
+    configuration.not(config.categories.default),
+    'must define a "default" category.'
+  );
+});
+
+const setup = (config) => {
+  categories.clear();
+  if (!config) {
+    return;
+  }
+
+  const categoryNames = Object.keys(config.categories);
+  categoryNames.forEach((name) => {
+    const category = config.categories[name];
+    const categoryAppenders = [];
+    category.appenders.forEach((appender) => {
+      categoryAppenders.push(appenders.get(appender));
+      debug(`Creating category ${name}`);
+      categories.set(name, {
+        appenders: categoryAppenders,
+        level: levels.getLevel(category.level),
+        enableCallStack: category.enableCallStack || false,
+      });
+    });
+  });
+};
+
+const init = () => {
+  setup();
+};
+init();
+
+configuration.addListener(setup);
+
+const configForCategory = (category) => {
+  debug(`configForCategory: searching for config for ${category}`);
+  if (categories.has(category)) {
+    debug(`configForCategory: ${category} exists in config, returning it`);
+    return categories.get(category);
+  }
+
+  let sourceCategoryConfig;
+  if (category.indexOf('.') > 0) {
+    debug(`configForCategory: ${category} has hierarchy, cloning from parents`);
+    sourceCategoryConfig = {
+      ...configForCategory(category.slice(0, category.lastIndexOf('.'))),
+    };
+  } else {
+    if (!categories.has('default')) {
+      setup({ categories: { default: { appenders: ['out'], level: 'OFF' } } });
+    }
+    debug('configForCategory: cloning default category');
+    sourceCategoryConfig = { ...categories.get('default') };
+  }
+  categories.set(category, sourceCategoryConfig);
+  return sourceCategoryConfig;
+};
+
+const appendersForCategory = (category) =>
+  configForCategory(category).appenders;
+
+const getLevelForCategory = (category) => configForCategory(category).level;
+const setLevelForCategory = (category, level) => {
+  configForCategory(category).level = level;
+};
+
+const getEnableCallStackForCategory = (category) =>
+  configForCategory(category).enableCallStack === true;
+const setEnableCallStackForCategory = (category, useCallStack) => {
+  configForCategory(category).enableCallStack = useCallStack;
+};
+
+module.exports = categories;
+module.exports = Object.assign(module.exports, {
+  appendersForCategory,
+  getLevelForCategory,
+  setLevelForCategory,
+  getEnableCallStackForCategory,
+  setEnableCallStackForCategory,
+  init,
+});
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/clustering.js":
-/*!***********************************************!*\
-  !*** ./node_modules/log4js/lib/clustering.js ***!
-  \***********************************************/
+/***/ 5885:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:clustering');\nconst LoggingEvent = __webpack_require__(/*! ./LoggingEvent */ \"./node_modules/log4js/lib/LoggingEvent.js\");\nconst configuration = __webpack_require__(/*! ./configuration */ \"./node_modules/log4js/lib/configuration.js\");\n\nlet disabled = false;\nlet cluster = null;\ntry {\n  // eslint-disable-next-line global-require\n  cluster = __webpack_require__(/*! cluster */ \"cluster\");\n} catch (e) {\n  debug('cluster module not present');\n  disabled = true;\n}\n\nconst listeners = [];\n\nlet pm2 = false;\nlet pm2InstanceVar = 'NODE_APP_INSTANCE';\n\nconst isPM2Master = () => pm2 && process.env[pm2InstanceVar] === '0';\nconst isMaster = () =>\n  disabled || (cluster && cluster.isMaster) || isPM2Master();\n\nconst sendToListeners = (logEvent) => {\n  listeners.forEach((l) => l(logEvent));\n};\n\n// in a multi-process node environment, worker loggers will use\n// process.send\nconst receiver = (worker, message) => {\n  // prior to node v6, the worker parameter was not passed (args were message, handle)\n  debug('cluster message received from worker ', worker, ': ', message);\n  if (worker.topic && worker.data) {\n    message = worker;\n    worker = undefined;\n  }\n  if (message && message.topic && message.topic === 'log4js:message') {\n    debug('received message: ', message.data);\n    const logEvent = LoggingEvent.deserialise(message.data);\n    sendToListeners(logEvent);\n  }\n};\n\nif (!disabled) {\n  configuration.addListener((config) => {\n    // clear out the listeners, because configure has been called.\n    listeners.length = 0;\n\n    ({\n      pm2,\n      disableClustering: disabled,\n      pm2InstanceVar = 'NODE_APP_INSTANCE',\n    } = config);\n\n    debug(`clustering disabled ? ${disabled}`);\n    debug(`cluster.isMaster ? ${cluster && cluster.isMaster}`);\n    debug(`pm2 enabled ? ${pm2}`);\n    debug(`pm2InstanceVar = ${pm2InstanceVar}`);\n    debug(`process.env[${pm2InstanceVar}] = ${process.env[pm2InstanceVar]}`);\n\n    // just in case configure is called after shutdown\n    if (pm2) {\n      process.removeListener('message', receiver);\n    }\n    if (cluster && cluster.removeListener) {\n      cluster.removeListener('message', receiver);\n    }\n\n    if (disabled || config.disableClustering) {\n      debug('Not listening for cluster messages, because clustering disabled.');\n    } else if (isPM2Master()) {\n      // PM2 cluster support\n      // PM2 runs everything as workers - install pm2-intercom for this to work.\n      // we only want one of the app instances to write logs\n      debug('listening for PM2 broadcast messages');\n      process.on('message', receiver);\n    } else if (cluster && cluster.isMaster) {\n      debug('listening for cluster messages');\n      cluster.on('message', receiver);\n    } else {\n      debug('not listening for messages, because we are not a master process');\n    }\n  });\n}\n\nmodule.exports = {\n  onlyOnMaster: (fn, notMaster) => (isMaster() ? fn() : notMaster),\n  isMaster,\n  send: (msg) => {\n    if (isMaster()) {\n      sendToListeners(msg);\n    } else {\n      if (!pm2) {\n        msg.cluster = {\n          workerId: cluster.worker.id,\n          worker: process.pid,\n        };\n      }\n      process.send({ topic: 'log4js:message', data: msg.serialise() });\n    }\n  },\n  onMessage: (listener) => {\n    listeners.push(listener);\n  },\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/clustering.js?");
+const debug = __webpack_require__(5158)('log4js:clustering');
+const LoggingEvent = __webpack_require__(4421);
+const configuration = __webpack_require__(3338);
+
+let disabled = false;
+let cluster = null;
+try {
+  // eslint-disable-next-line global-require
+  cluster = __webpack_require__(5001);
+} catch (e) {
+  debug('cluster module not present');
+  disabled = true;
+}
+
+const listeners = [];
+
+let pm2 = false;
+let pm2InstanceVar = 'NODE_APP_INSTANCE';
+
+const isPM2Master = () => pm2 && process.env[pm2InstanceVar] === '0';
+const isMaster = () =>
+  disabled || (cluster && cluster.isMaster) || isPM2Master();
+
+const sendToListeners = (logEvent) => {
+  listeners.forEach((l) => l(logEvent));
+};
+
+// in a multi-process node environment, worker loggers will use
+// process.send
+const receiver = (worker, message) => {
+  // prior to node v6, the worker parameter was not passed (args were message, handle)
+  debug('cluster message received from worker ', worker, ': ', message);
+  if (worker.topic && worker.data) {
+    message = worker;
+    worker = undefined;
+  }
+  if (message && message.topic && message.topic === 'log4js:message') {
+    debug('received message: ', message.data);
+    const logEvent = LoggingEvent.deserialise(message.data);
+    sendToListeners(logEvent);
+  }
+};
+
+if (!disabled) {
+  configuration.addListener((config) => {
+    // clear out the listeners, because configure has been called.
+    listeners.length = 0;
+
+    ({
+      pm2,
+      disableClustering: disabled,
+      pm2InstanceVar = 'NODE_APP_INSTANCE',
+    } = config);
+
+    debug(`clustering disabled ? ${disabled}`);
+    debug(`cluster.isMaster ? ${cluster && cluster.isMaster}`);
+    debug(`pm2 enabled ? ${pm2}`);
+    debug(`pm2InstanceVar = ${pm2InstanceVar}`);
+    debug(`process.env[${pm2InstanceVar}] = ${process.env[pm2InstanceVar]}`);
+
+    // just in case configure is called after shutdown
+    if (pm2) {
+      process.removeListener('message', receiver);
+    }
+    if (cluster && cluster.removeListener) {
+      cluster.removeListener('message', receiver);
+    }
+
+    if (disabled || config.disableClustering) {
+      debug('Not listening for cluster messages, because clustering disabled.');
+    } else if (isPM2Master()) {
+      // PM2 cluster support
+      // PM2 runs everything as workers - install pm2-intercom for this to work.
+      // we only want one of the app instances to write logs
+      debug('listening for PM2 broadcast messages');
+      process.on('message', receiver);
+    } else if (cluster && cluster.isMaster) {
+      debug('listening for cluster messages');
+      cluster.on('message', receiver);
+    } else {
+      debug('not listening for messages, because we are not a master process');
+    }
+  });
+}
+
+module.exports = {
+  onlyOnMaster: (fn, notMaster) => (isMaster() ? fn() : notMaster),
+  isMaster,
+  send: (msg) => {
+    if (isMaster()) {
+      sendToListeners(msg);
+    } else {
+      if (!pm2) {
+        msg.cluster = {
+          workerId: cluster.worker.id,
+          worker: process.pid,
+        };
+      }
+      process.send({ topic: 'log4js:message', data: msg.serialise() });
+    }
+  },
+  onMessage: (listener) => {
+    listeners.push(listener);
+  },
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/configuration.js":
-/*!**************************************************!*\
-  !*** ./node_modules/log4js/lib/configuration.js ***!
-  \**************************************************/
+/***/ 3338:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const util = __webpack_require__(/*! util */ \"util\");\nconst debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:configuration');\n\nconst preProcessingListeners = [];\nconst listeners = [];\n\nconst not = (thing) => !thing;\n\nconst anObject = (thing) =>\n  thing && typeof thing === 'object' && !Array.isArray(thing);\n\nconst validIdentifier = (thing) => /^[A-Za-z][A-Za-z0-9_]*$/g.test(thing);\n\nconst anInteger = (thing) =>\n  thing && typeof thing === 'number' && Number.isInteger(thing);\n\nconst addListener = (fn) => {\n  listeners.push(fn);\n  debug(`Added listener, now ${listeners.length} listeners`);\n};\n\nconst addPreProcessingListener = (fn) => {\n  preProcessingListeners.push(fn);\n  debug(\n    `Added pre-processing listener, now ${preProcessingListeners.length} listeners`\n  );\n};\n\nconst throwExceptionIf = (config, checks, message) => {\n  const tests = Array.isArray(checks) ? checks : [checks];\n  tests.forEach((test) => {\n    if (test) {\n      throw new Error(\n        `Problem with log4js configuration: (${util.inspect(config, {\n          depth: 5,\n        })}) - ${message}`\n      );\n    }\n  });\n};\n\nconst configure = (candidate) => {\n  debug('New configuration to be validated: ', candidate);\n  throwExceptionIf(candidate, not(anObject(candidate)), 'must be an object.');\n\n  debug(`Calling pre-processing listeners (${preProcessingListeners.length})`);\n  preProcessingListeners.forEach((listener) => listener(candidate));\n  debug('Configuration pre-processing finished.');\n\n  debug(`Calling configuration listeners (${listeners.length})`);\n  listeners.forEach((listener) => listener(candidate));\n  debug('Configuration finished.');\n};\n\nmodule.exports = {\n  configure,\n  addListener,\n  addPreProcessingListener,\n  throwExceptionIf,\n  anObject,\n  anInteger,\n  validIdentifier,\n  not,\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/configuration.js?");
+const util = __webpack_require__(3837);
+const debug = __webpack_require__(5158)('log4js:configuration');
+
+const preProcessingListeners = [];
+const listeners = [];
+
+const not = (thing) => !thing;
+
+const anObject = (thing) =>
+  thing && typeof thing === 'object' && !Array.isArray(thing);
+
+const validIdentifier = (thing) => /^[A-Za-z][A-Za-z0-9_]*$/g.test(thing);
+
+const anInteger = (thing) =>
+  thing && typeof thing === 'number' && Number.isInteger(thing);
+
+const addListener = (fn) => {
+  listeners.push(fn);
+  debug(`Added listener, now ${listeners.length} listeners`);
+};
+
+const addPreProcessingListener = (fn) => {
+  preProcessingListeners.push(fn);
+  debug(
+    `Added pre-processing listener, now ${preProcessingListeners.length} listeners`
+  );
+};
+
+const throwExceptionIf = (config, checks, message) => {
+  const tests = Array.isArray(checks) ? checks : [checks];
+  tests.forEach((test) => {
+    if (test) {
+      throw new Error(
+        `Problem with log4js configuration: (${util.inspect(config, {
+          depth: 5,
+        })}) - ${message}`
+      );
+    }
+  });
+};
+
+const configure = (candidate) => {
+  debug('New configuration to be validated: ', candidate);
+  throwExceptionIf(candidate, not(anObject(candidate)), 'must be an object.');
+
+  debug(`Calling pre-processing listeners (${preProcessingListeners.length})`);
+  preProcessingListeners.forEach((listener) => listener(candidate));
+  debug('Configuration pre-processing finished.');
+
+  debug(`Calling configuration listeners (${listeners.length})`);
+  listeners.forEach((listener) => listener(candidate));
+  debug('Configuration finished.');
+};
+
+module.exports = {
+  configure,
+  addListener,
+  addPreProcessingListener,
+  throwExceptionIf,
+  anObject,
+  anInteger,
+  validIdentifier,
+  not,
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/connect-logger.js":
-/*!***************************************************!*\
-  !*** ./node_modules/log4js/lib/connect-logger.js ***!
-  \***************************************************/
+/***/ 198:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("/* eslint no-underscore-dangle: [\"error\", { \"allow\": [\"__statusCode\", \"_remoteAddress\", \"__headers\", \"_logging\"] }] */\n\nconst levels = __webpack_require__(/*! ./levels */ \"./node_modules/log4js/lib/levels.js\");\n\nconst DEFAULT_FORMAT =\n  ':remote-addr - -' +\n  ' \":method :url HTTP/:http-version\"' +\n  ' :status :content-length \":referrer\"' +\n  ' \":user-agent\"';\n\n/**\n * Return request url path,\n * adding this function prevents the Cyclomatic Complexity,\n * for the assemble_tokens function at low, to pass the tests.\n *\n * @param  {IncomingMessage} req\n * @return {string}\n * @api private\n */\nfunction getUrl(req) {\n  return req.originalUrl || req.url;\n}\n\n/**\n * Adds custom {token, replacement} objects to defaults,\n * overwriting the defaults if any tokens clash\n *\n * @param  {IncomingMessage} req\n * @param  {ServerResponse} res\n * @param  {Array} customTokens\n *    [{ token: string-or-regexp, replacement: string-or-replace-function }]\n * @return {Array}\n */\nfunction assembleTokens(req, res, customTokens) {\n  const arrayUniqueTokens = (array) => {\n    const a = array.concat();\n    for (let i = 0; i < a.length; ++i) {\n      for (let j = i + 1; j < a.length; ++j) {\n        // not === because token can be regexp object\n        // eslint-disable-next-line eqeqeq\n        if (a[i].token == a[j].token) {\n          a.splice(j--, 1); // eslint-disable-line no-plusplus\n        }\n      }\n    }\n    return a;\n  };\n\n  const defaultTokens = [];\n  defaultTokens.push({ token: ':url', replacement: getUrl(req) });\n  defaultTokens.push({ token: ':protocol', replacement: req.protocol });\n  defaultTokens.push({ token: ':hostname', replacement: req.hostname });\n  defaultTokens.push({ token: ':method', replacement: req.method });\n  defaultTokens.push({\n    token: ':status',\n    replacement: res.__statusCode || res.statusCode,\n  });\n  defaultTokens.push({\n    token: ':response-time',\n    replacement: res.responseTime,\n  });\n  defaultTokens.push({ token: ':date', replacement: new Date().toUTCString() });\n  defaultTokens.push({\n    token: ':referrer',\n    replacement: req.headers.referer || req.headers.referrer || '',\n  });\n  defaultTokens.push({\n    token: ':http-version',\n    replacement: `${req.httpVersionMajor}.${req.httpVersionMinor}`,\n  });\n  defaultTokens.push({\n    token: ':remote-addr',\n    replacement:\n      req.headers['x-forwarded-for'] ||\n      req.ip ||\n      req._remoteAddress ||\n      (req.socket &&\n        (req.socket.remoteAddress ||\n          (req.socket.socket && req.socket.socket.remoteAddress))),\n  });\n  defaultTokens.push({\n    token: ':user-agent',\n    replacement: req.headers['user-agent'],\n  });\n  defaultTokens.push({\n    token: ':content-length',\n    replacement:\n      res.getHeader('content-length') ||\n      (res.__headers && res.__headers['Content-Length']) ||\n      '-',\n  });\n  defaultTokens.push({\n    token: /:req\\[([^\\]]+)]/g,\n    replacement(_, field) {\n      return req.headers[field.toLowerCase()];\n    },\n  });\n  defaultTokens.push({\n    token: /:res\\[([^\\]]+)]/g,\n    replacement(_, field) {\n      return (\n        res.getHeader(field.toLowerCase()) ||\n        (res.__headers && res.__headers[field])\n      );\n    },\n  });\n\n  return arrayUniqueTokens(customTokens.concat(defaultTokens));\n}\n\n/**\n * Return formatted log line.\n *\n * @param  {string} str\n * @param {Array} tokens\n * @return {string}\n * @api private\n */\nfunction format(str, tokens) {\n  for (let i = 0; i < tokens.length; i++) {\n    str = str.replace(tokens[i].token, tokens[i].replacement);\n  }\n  return str;\n}\n\n/**\n * Return RegExp Object about nolog\n *\n * @param  {(string|Array)} nolog\n * @return {RegExp}\n * @api private\n *\n * syntax\n *  1. String\n *   1.1 \"\\\\.gif\"\n *         NOT LOGGING http://example.com/hoge.gif and http://example.com/hoge.gif?fuga\n *         LOGGING http://example.com/hoge.agif\n *   1.2 in \"\\\\.gif|\\\\.jpg$\"\n *         NOT LOGGING http://example.com/hoge.gif and\n *           http://example.com/hoge.gif?fuga and http://example.com/hoge.jpg?fuga\n *         LOGGING http://example.com/hoge.agif,\n *           http://example.com/hoge.ajpg and http://example.com/hoge.jpg?hoge\n *   1.3 in \"\\\\.(gif|jpe?g|png)$\"\n *         NOT LOGGING http://example.com/hoge.gif and http://example.com/hoge.jpeg\n *         LOGGING http://example.com/hoge.gif?uid=2 and http://example.com/hoge.jpg?pid=3\n *  2. RegExp\n *   2.1 in /\\.(gif|jpe?g|png)$/\n *         SAME AS 1.3\n *  3. Array\n *   3.1 [\"\\\\.jpg$\", \"\\\\.png\", \"\\\\.gif\"]\n *         SAME AS \"\\\\.jpg|\\\\.png|\\\\.gif\"\n */\nfunction createNoLogCondition(nolog) {\n  let regexp = null;\n\n  if (nolog instanceof RegExp) {\n    regexp = nolog;\n  }\n\n  if (typeof nolog === 'string') {\n    regexp = new RegExp(nolog);\n  }\n\n  if (Array.isArray(nolog)) {\n    // convert to strings\n    const regexpsAsStrings = nolog.map((reg) =>\n      reg.source ? reg.source : reg\n    );\n    regexp = new RegExp(regexpsAsStrings.join('|'));\n  }\n\n  return regexp;\n}\n\n/**\n * Allows users to define rules around status codes to assign them to a specific\n * logging level.\n * There are two types of rules:\n *   - RANGE: matches a code within a certain range\n *     E.g. { 'from': 200, 'to': 299, 'level': 'info' }\n *   - CONTAINS: matches a code to a set of expected codes\n *     E.g. { 'codes': [200, 203], 'level': 'debug' }\n * Note*: Rules are respected only in order of prescendence.\n *\n * @param {Number} statusCode\n * @param {Level} currentLevel\n * @param {Object} ruleSet\n * @return {Level}\n * @api private\n */\nfunction matchRules(statusCode, currentLevel, ruleSet) {\n  let level = currentLevel;\n\n  if (ruleSet) {\n    const matchedRule = ruleSet.find((rule) => {\n      let ruleMatched = false;\n      if (rule.from && rule.to) {\n        ruleMatched = statusCode >= rule.from && statusCode <= rule.to;\n      } else {\n        ruleMatched = rule.codes.indexOf(statusCode) !== -1;\n      }\n      return ruleMatched;\n    });\n    if (matchedRule) {\n      level = levels.getLevel(matchedRule.level, level);\n    }\n  }\n  return level;\n}\n\n/**\n * Log requests with the given `options` or a `format` string.\n *\n * Options:\n *\n *   - `format`        Format string, see below for tokens\n *   - `level`         A log4js levels instance. Supports also 'auto'\n *   - `nolog`         A string or RegExp to exclude target logs or function(req, res): boolean\n *   - `statusRules`   A array of rules for setting specific logging levels base on status codes\n *   - `context`       Whether to add a response of express to the context\n *\n * Tokens:\n *\n *   - `:req[header]` ex: `:req[Accept]`\n *   - `:res[header]` ex: `:res[Content-Length]`\n *   - `:http-version`\n *   - `:response-time`\n *   - `:remote-addr`\n *   - `:date`\n *   - `:method`\n *   - `:url`\n *   - `:referrer`\n *   - `:user-agent`\n *   - `:status`\n *\n * @return {Function}\n * @param logger4js\n * @param options\n * @api public\n */\nmodule.exports = function getLogger(logger4js, options) {\n  if (typeof options === 'string' || typeof options === 'function') {\n    options = { format: options };\n  } else {\n    options = options || {};\n  }\n\n  const thisLogger = logger4js;\n  let level = levels.getLevel(options.level, levels.INFO);\n  const fmt = options.format || DEFAULT_FORMAT;\n\n  return (req, res, next) => {\n    // mount safety\n    if (typeof req._logging !== 'undefined') return next();\n\n    // nologs\n    if (typeof options.nolog !== 'function') {\n      const nolog = createNoLogCondition(options.nolog);\n      if (nolog && nolog.test(req.originalUrl)) return next();\n    }\n\n    if (thisLogger.isLevelEnabled(level) || options.level === 'auto') {\n      const start = new Date();\n      const { writeHead } = res;\n\n      // flag as logging\n      req._logging = true;\n\n      // proxy for statusCode.\n      res.writeHead = (code, headers) => {\n        res.writeHead = writeHead;\n        res.writeHead(code, headers);\n\n        res.__statusCode = code;\n        res.__headers = headers || {};\n      };\n\n      // hook on end request to emit the log entry of the HTTP request.\n      let finished = false;\n      const handler = () => {\n        if (finished) {\n          return;\n        }\n        finished = true;\n\n        // nologs\n        if (typeof options.nolog === 'function') {\n          if (options.nolog(req, res) === true) {\n            req._logging = false;\n            return;\n          }\n        }\n\n        res.responseTime = new Date() - start;\n        // status code response level handling\n        if (res.statusCode && options.level === 'auto') {\n          level = levels.INFO;\n          if (res.statusCode >= 300) level = levels.WARN;\n          if (res.statusCode >= 400) level = levels.ERROR;\n        }\n        level = matchRules(res.statusCode, level, options.statusRules);\n\n        const combinedTokens = assembleTokens(req, res, options.tokens || []);\n\n        if (options.context) thisLogger.addContext('res', res);\n        if (typeof fmt === 'function') {\n          const line = fmt(req, res, (str) => format(str, combinedTokens));\n          if (line) thisLogger.log(level, line);\n        } else {\n          thisLogger.log(level, format(fmt, combinedTokens));\n        }\n        if (options.context) thisLogger.removeContext('res');\n      };\n      res.on('end', handler);\n      res.on('finish', handler);\n      res.on('error', handler);\n      res.on('close', handler);\n    }\n\n    // ensure next gets always called\n    return next();\n  };\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/connect-logger.js?");
+/* eslint no-underscore-dangle: ["error", { "allow": ["__statusCode", "_remoteAddress", "__headers", "_logging"] }] */
+
+const levels = __webpack_require__(1935);
+
+const DEFAULT_FORMAT =
+  ':remote-addr - -' +
+  ' ":method :url HTTP/:http-version"' +
+  ' :status :content-length ":referrer"' +
+  ' ":user-agent"';
+
+/**
+ * Return request url path,
+ * adding this function prevents the Cyclomatic Complexity,
+ * for the assemble_tokens function at low, to pass the tests.
+ *
+ * @param  {IncomingMessage} req
+ * @return {string}
+ * @api private
+ */
+function getUrl(req) {
+  return req.originalUrl || req.url;
+}
+
+/**
+ * Adds custom {token, replacement} objects to defaults,
+ * overwriting the defaults if any tokens clash
+ *
+ * @param  {IncomingMessage} req
+ * @param  {ServerResponse} res
+ * @param  {Array} customTokens
+ *    [{ token: string-or-regexp, replacement: string-or-replace-function }]
+ * @return {Array}
+ */
+function assembleTokens(req, res, customTokens) {
+  const arrayUniqueTokens = (array) => {
+    const a = array.concat();
+    for (let i = 0; i < a.length; ++i) {
+      for (let j = i + 1; j < a.length; ++j) {
+        // not === because token can be regexp object
+        // eslint-disable-next-line eqeqeq
+        if (a[i].token == a[j].token) {
+          a.splice(j--, 1); // eslint-disable-line no-plusplus
+        }
+      }
+    }
+    return a;
+  };
+
+  const defaultTokens = [];
+  defaultTokens.push({ token: ':url', replacement: getUrl(req) });
+  defaultTokens.push({ token: ':protocol', replacement: req.protocol });
+  defaultTokens.push({ token: ':hostname', replacement: req.hostname });
+  defaultTokens.push({ token: ':method', replacement: req.method });
+  defaultTokens.push({
+    token: ':status',
+    replacement: res.__statusCode || res.statusCode,
+  });
+  defaultTokens.push({
+    token: ':response-time',
+    replacement: res.responseTime,
+  });
+  defaultTokens.push({ token: ':date', replacement: new Date().toUTCString() });
+  defaultTokens.push({
+    token: ':referrer',
+    replacement: req.headers.referer || req.headers.referrer || '',
+  });
+  defaultTokens.push({
+    token: ':http-version',
+    replacement: `${req.httpVersionMajor}.${req.httpVersionMinor}`,
+  });
+  defaultTokens.push({
+    token: ':remote-addr',
+    replacement:
+      req.headers['x-forwarded-for'] ||
+      req.ip ||
+      req._remoteAddress ||
+      (req.socket &&
+        (req.socket.remoteAddress ||
+          (req.socket.socket && req.socket.socket.remoteAddress))),
+  });
+  defaultTokens.push({
+    token: ':user-agent',
+    replacement: req.headers['user-agent'],
+  });
+  defaultTokens.push({
+    token: ':content-length',
+    replacement:
+      res.getHeader('content-length') ||
+      (res.__headers && res.__headers['Content-Length']) ||
+      '-',
+  });
+  defaultTokens.push({
+    token: /:req\[([^\]]+)]/g,
+    replacement(_, field) {
+      return req.headers[field.toLowerCase()];
+    },
+  });
+  defaultTokens.push({
+    token: /:res\[([^\]]+)]/g,
+    replacement(_, field) {
+      return (
+        res.getHeader(field.toLowerCase()) ||
+        (res.__headers && res.__headers[field])
+      );
+    },
+  });
+
+  return arrayUniqueTokens(customTokens.concat(defaultTokens));
+}
+
+/**
+ * Return formatted log line.
+ *
+ * @param  {string} str
+ * @param {Array} tokens
+ * @return {string}
+ * @api private
+ */
+function format(str, tokens) {
+  for (let i = 0; i < tokens.length; i++) {
+    str = str.replace(tokens[i].token, tokens[i].replacement);
+  }
+  return str;
+}
+
+/**
+ * Return RegExp Object about nolog
+ *
+ * @param  {(string|Array)} nolog
+ * @return {RegExp}
+ * @api private
+ *
+ * syntax
+ *  1. String
+ *   1.1 "\\.gif"
+ *         NOT LOGGING http://example.com/hoge.gif and http://example.com/hoge.gif?fuga
+ *         LOGGING http://example.com/hoge.agif
+ *   1.2 in "\\.gif|\\.jpg$"
+ *         NOT LOGGING http://example.com/hoge.gif and
+ *           http://example.com/hoge.gif?fuga and http://example.com/hoge.jpg?fuga
+ *         LOGGING http://example.com/hoge.agif,
+ *           http://example.com/hoge.ajpg and http://example.com/hoge.jpg?hoge
+ *   1.3 in "\\.(gif|jpe?g|png)$"
+ *         NOT LOGGING http://example.com/hoge.gif and http://example.com/hoge.jpeg
+ *         LOGGING http://example.com/hoge.gif?uid=2 and http://example.com/hoge.jpg?pid=3
+ *  2. RegExp
+ *   2.1 in /\.(gif|jpe?g|png)$/
+ *         SAME AS 1.3
+ *  3. Array
+ *   3.1 ["\\.jpg$", "\\.png", "\\.gif"]
+ *         SAME AS "\\.jpg|\\.png|\\.gif"
+ */
+function createNoLogCondition(nolog) {
+  let regexp = null;
+
+  if (nolog instanceof RegExp) {
+    regexp = nolog;
+  }
+
+  if (typeof nolog === 'string') {
+    regexp = new RegExp(nolog);
+  }
+
+  if (Array.isArray(nolog)) {
+    // convert to strings
+    const regexpsAsStrings = nolog.map((reg) =>
+      reg.source ? reg.source : reg
+    );
+    regexp = new RegExp(regexpsAsStrings.join('|'));
+  }
+
+  return regexp;
+}
+
+/**
+ * Allows users to define rules around status codes to assign them to a specific
+ * logging level.
+ * There are two types of rules:
+ *   - RANGE: matches a code within a certain range
+ *     E.g. { 'from': 200, 'to': 299, 'level': 'info' }
+ *   - CONTAINS: matches a code to a set of expected codes
+ *     E.g. { 'codes': [200, 203], 'level': 'debug' }
+ * Note*: Rules are respected only in order of prescendence.
+ *
+ * @param {Number} statusCode
+ * @param {Level} currentLevel
+ * @param {Object} ruleSet
+ * @return {Level}
+ * @api private
+ */
+function matchRules(statusCode, currentLevel, ruleSet) {
+  let level = currentLevel;
+
+  if (ruleSet) {
+    const matchedRule = ruleSet.find((rule) => {
+      let ruleMatched = false;
+      if (rule.from && rule.to) {
+        ruleMatched = statusCode >= rule.from && statusCode <= rule.to;
+      } else {
+        ruleMatched = rule.codes.indexOf(statusCode) !== -1;
+      }
+      return ruleMatched;
+    });
+    if (matchedRule) {
+      level = levels.getLevel(matchedRule.level, level);
+    }
+  }
+  return level;
+}
+
+/**
+ * Log requests with the given `options` or a `format` string.
+ *
+ * Options:
+ *
+ *   - `format`        Format string, see below for tokens
+ *   - `level`         A log4js levels instance. Supports also 'auto'
+ *   - `nolog`         A string or RegExp to exclude target logs or function(req, res): boolean
+ *   - `statusRules`   A array of rules for setting specific logging levels base on status codes
+ *   - `context`       Whether to add a response of express to the context
+ *
+ * Tokens:
+ *
+ *   - `:req[header]` ex: `:req[Accept]`
+ *   - `:res[header]` ex: `:res[Content-Length]`
+ *   - `:http-version`
+ *   - `:response-time`
+ *   - `:remote-addr`
+ *   - `:date`
+ *   - `:method`
+ *   - `:url`
+ *   - `:referrer`
+ *   - `:user-agent`
+ *   - `:status`
+ *
+ * @return {Function}
+ * @param logger4js
+ * @param options
+ * @api public
+ */
+module.exports = function getLogger(logger4js, options) {
+  if (typeof options === 'string' || typeof options === 'function') {
+    options = { format: options };
+  } else {
+    options = options || {};
+  }
+
+  const thisLogger = logger4js;
+  let level = levels.getLevel(options.level, levels.INFO);
+  const fmt = options.format || DEFAULT_FORMAT;
+
+  return (req, res, next) => {
+    // mount safety
+    if (typeof req._logging !== 'undefined') return next();
+
+    // nologs
+    if (typeof options.nolog !== 'function') {
+      const nolog = createNoLogCondition(options.nolog);
+      if (nolog && nolog.test(req.originalUrl)) return next();
+    }
+
+    if (thisLogger.isLevelEnabled(level) || options.level === 'auto') {
+      const start = new Date();
+      const { writeHead } = res;
+
+      // flag as logging
+      req._logging = true;
+
+      // proxy for statusCode.
+      res.writeHead = (code, headers) => {
+        res.writeHead = writeHead;
+        res.writeHead(code, headers);
+
+        res.__statusCode = code;
+        res.__headers = headers || {};
+      };
+
+      // hook on end request to emit the log entry of the HTTP request.
+      let finished = false;
+      const handler = () => {
+        if (finished) {
+          return;
+        }
+        finished = true;
+
+        // nologs
+        if (typeof options.nolog === 'function') {
+          if (options.nolog(req, res) === true) {
+            req._logging = false;
+            return;
+          }
+        }
+
+        res.responseTime = new Date() - start;
+        // status code response level handling
+        if (res.statusCode && options.level === 'auto') {
+          level = levels.INFO;
+          if (res.statusCode >= 300) level = levels.WARN;
+          if (res.statusCode >= 400) level = levels.ERROR;
+        }
+        level = matchRules(res.statusCode, level, options.statusRules);
+
+        const combinedTokens = assembleTokens(req, res, options.tokens || []);
+
+        if (options.context) thisLogger.addContext('res', res);
+        if (typeof fmt === 'function') {
+          const line = fmt(req, res, (str) => format(str, combinedTokens));
+          if (line) thisLogger.log(level, line);
+        } else {
+          thisLogger.log(level, format(fmt, combinedTokens));
+        }
+        if (options.context) thisLogger.removeContext('res');
+      };
+      res.on('end', handler);
+      res.on('finish', handler);
+      res.on('error', handler);
+      res.on('close', handler);
+    }
+
+    // ensure next gets always called
+    return next();
+  };
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/layouts.js":
-/*!********************************************!*\
-  !*** ./node_modules/log4js/lib/layouts.js ***!
-  \********************************************/
+/***/ 1219:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const dateFormat = __webpack_require__(/*! date-format */ \"./node_modules/date-format/lib/index.js\");\nconst os = __webpack_require__(/*! os */ \"os\");\nconst util = __webpack_require__(/*! util */ \"util\");\nconst path = __webpack_require__(/*! path */ \"path\");\nconst url = __webpack_require__(/*! url */ \"url\");\nconst debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:layouts');\n\nconst styles = {\n  // styles\n  bold: [1, 22],\n  italic: [3, 23],\n  underline: [4, 24],\n  inverse: [7, 27],\n  // grayscale\n  white: [37, 39],\n  grey: [90, 39],\n  black: [90, 39],\n  // colors\n  blue: [34, 39],\n  cyan: [36, 39],\n  green: [32, 39],\n  magenta: [35, 39],\n  red: [91, 39],\n  yellow: [33, 39],\n};\n\nfunction colorizeStart(style) {\n  return style ? `\\x1B[${styles[style][0]}m` : '';\n}\n\nfunction colorizeEnd(style) {\n  return style ? `\\x1B[${styles[style][1]}m` : '';\n}\n\n/**\n * Taken from masylum's fork (https://github.com/masylum/log4js-node)\n */\nfunction colorize(str, style) {\n  return colorizeStart(style) + str + colorizeEnd(style);\n}\n\nfunction timestampLevelAndCategory(loggingEvent, colour) {\n  return colorize(\n    util.format(\n      '[%s] [%s] %s - ',\n      dateFormat.asString(loggingEvent.startTime),\n      loggingEvent.level.toString(),\n      loggingEvent.categoryName\n    ),\n    colour\n  );\n}\n\n/**\n * BasicLayout is a simple layout for storing the logs. The logs are stored\n * in following format:\n * <pre>\n * [startTime] [logLevel] categoryName - message\\n\n * </pre>\n *\n * @author Stephan Strittmatter\n */\nfunction basicLayout(loggingEvent) {\n  return (\n    timestampLevelAndCategory(loggingEvent) + util.format(...loggingEvent.data)\n  );\n}\n\n/**\n * colouredLayout - taken from masylum's fork.\n * same as basicLayout, but with colours.\n */\nfunction colouredLayout(loggingEvent) {\n  return (\n    timestampLevelAndCategory(loggingEvent, loggingEvent.level.colour) +\n    util.format(...loggingEvent.data)\n  );\n}\n\nfunction messagePassThroughLayout(loggingEvent) {\n  return util.format(...loggingEvent.data);\n}\n\nfunction dummyLayout(loggingEvent) {\n  return loggingEvent.data[0];\n}\n\n/**\n * PatternLayout\n * Format for specifiers is %[padding].[truncation][field]{[format]}\n * e.g. %5.10p - left pad the log level by 5 characters, up to a max of 10\n * both padding and truncation can be negative.\n * Negative truncation = trunc from end of string\n * Positive truncation = trunc from start of string\n * Negative padding = pad right\n * Positive padding = pad left\n *\n * Fields can be any of:\n *  - %r time in toLocaleTimeString format\n *  - %p log level\n *  - %c log category\n *  - %h hostname\n *  - %m log data\n *  - %m{l} where l is an integer, log data.slice(l)\n *  - %m{l,u} where l and u are integers, log data.slice(l, u)\n *  - %d date in constious formats\n *  - %% %\n *  - %n newline\n *  - %z pid\n *  - %f filename\n *  - %l line number\n *  - %o column postion\n *  - %s call stack\n *  - %C class name [#1316](https://github.com/log4js-node/log4js-node/pull/1316)\n *  - %M method or function name [#1316](https://github.com/log4js-node/log4js-node/pull/1316)\n *  - %A method or function alias [#1316](https://github.com/log4js-node/log4js-node/pull/1316)\n *  - %F fully qualified caller name [#1316](https://github.com/log4js-node/log4js-node/pull/1316)\n *  - %x{<tokenname>} add dynamic tokens to your log. Tokens are specified in the tokens parameter\n *  - %X{<tokenname>} add dynamic tokens to your log. Tokens are specified in logger context\n * You can use %[ and %] to define a colored block.\n *\n * Tokens are specified as simple key:value objects.\n * The key represents the token name whereas the value can be a string or function\n * which is called to extract the value to put in the log message. If token is not\n * found, it doesn't replace the field.\n *\n * A sample token would be: { 'pid' : function() { return process.pid; } }\n *\n * Takes a pattern string, array of tokens and returns a layout function.\n * @return {Function}\n * @param pattern\n * @param tokens\n * @param timezoneOffset\n *\n * @authors ['Stephan Strittmatter', 'Jan Schmidle']\n */\nfunction patternLayout(pattern, tokens) {\n  const TTCC_CONVERSION_PATTERN = '%r %p %c - %m%n';\n  const regex =\n    /%(-?[0-9]+)?(\\.?-?[0-9]+)?([[\\]cdhmnprzxXyflosCMAF%])(\\{([^}]+)\\})?|([^%]+)/;\n\n  pattern = pattern || TTCC_CONVERSION_PATTERN;\n\n  function categoryName(loggingEvent, specifier) {\n    let loggerName = loggingEvent.categoryName;\n    if (specifier) {\n      const precision = parseInt(specifier, 10);\n      const loggerNameBits = loggerName.split('.');\n      if (precision < loggerNameBits.length) {\n        loggerName = loggerNameBits\n          .slice(loggerNameBits.length - precision)\n          .join('.');\n      }\n    }\n    return loggerName;\n  }\n\n  function formatAsDate(loggingEvent, specifier) {\n    let format = dateFormat.ISO8601_FORMAT;\n    if (specifier) {\n      format = specifier;\n      // Pick up special cases\n      switch (format) {\n        case 'ISO8601':\n        case 'ISO8601_FORMAT':\n          format = dateFormat.ISO8601_FORMAT;\n          break;\n        case 'ISO8601_WITH_TZ_OFFSET':\n        case 'ISO8601_WITH_TZ_OFFSET_FORMAT':\n          format = dateFormat.ISO8601_WITH_TZ_OFFSET_FORMAT;\n          break;\n        case 'ABSOLUTE':\n          process.emitWarning(\n            'Pattern %d{ABSOLUTE} is deprecated in favor of %d{ABSOLUTETIME}. ' +\n              'Please use %d{ABSOLUTETIME} instead.',\n            'DeprecationWarning',\n            'log4js-node-DEP0003'\n          );\n          debug(\n            '[log4js-node-DEP0003]',\n            'DEPRECATION: Pattern %d{ABSOLUTE} is deprecated and replaced by %d{ABSOLUTETIME}.'\n          );\n        // falls through\n        case 'ABSOLUTETIME':\n        case 'ABSOLUTETIME_FORMAT':\n          format = dateFormat.ABSOLUTETIME_FORMAT;\n          break;\n        case 'DATE':\n          process.emitWarning(\n            'Pattern %d{DATE} is deprecated due to the confusion it causes when used. ' +\n              'Please use %d{DATETIME} instead.',\n            'DeprecationWarning',\n            'log4js-node-DEP0004'\n          );\n          debug(\n            '[log4js-node-DEP0004]',\n            'DEPRECATION: Pattern %d{DATE} is deprecated and replaced by %d{DATETIME}.'\n          );\n        // falls through\n        case 'DATETIME':\n        case 'DATETIME_FORMAT':\n          format = dateFormat.DATETIME_FORMAT;\n          break;\n        // no default\n      }\n    }\n    // Format the date\n    return dateFormat.asString(format, loggingEvent.startTime);\n  }\n\n  function hostname() {\n    return os.hostname().toString();\n  }\n\n  function formatMessage(loggingEvent, specifier) {\n    let dataSlice = loggingEvent.data;\n    if (specifier) {\n      const [lowerBound, upperBound] = specifier.split(',');\n      dataSlice = dataSlice.slice(lowerBound, upperBound);\n    }\n    return util.format(...dataSlice);\n  }\n\n  function endOfLine() {\n    return os.EOL;\n  }\n\n  function logLevel(loggingEvent) {\n    return loggingEvent.level.toString();\n  }\n\n  function startTime(loggingEvent) {\n    return dateFormat.asString('hh:mm:ss', loggingEvent.startTime);\n  }\n\n  function startColour(loggingEvent) {\n    return colorizeStart(loggingEvent.level.colour);\n  }\n\n  function endColour(loggingEvent) {\n    return colorizeEnd(loggingEvent.level.colour);\n  }\n\n  function percent() {\n    return '%';\n  }\n\n  function pid(loggingEvent) {\n    return loggingEvent && loggingEvent.pid\n      ? loggingEvent.pid.toString()\n      : process.pid.toString();\n  }\n\n  function clusterInfo() {\n    // this used to try to return the master and worker pids,\n    // but it would never have worked because master pid is not available to workers\n    // leaving this here to maintain compatibility for patterns\n    return pid();\n  }\n\n  function userDefined(loggingEvent, specifier) {\n    if (typeof tokens[specifier] !== 'undefined') {\n      return typeof tokens[specifier] === 'function'\n        ? tokens[specifier](loggingEvent)\n        : tokens[specifier];\n    }\n\n    return null;\n  }\n\n  function contextDefined(loggingEvent, specifier) {\n    const resolver = loggingEvent.context[specifier];\n\n    if (typeof resolver !== 'undefined') {\n      return typeof resolver === 'function' ? resolver(loggingEvent) : resolver;\n    }\n\n    return null;\n  }\n\n  function fileName(loggingEvent, specifier) {\n    let filename = loggingEvent.fileName || '';\n\n    // support for ESM as it uses url instead of path for file\n    /* istanbul ignore next: unsure how to simulate ESM for test coverage */\n    const convertFileURLToPath = function (filepath) {\n      const urlPrefix = 'file://';\n      if (filepath.startsWith(urlPrefix)) {\n        // https://nodejs.org/api/url.html#urlfileurltopathurl\n        if (typeof url.fileURLToPath === 'function') {\n          filepath = url.fileURLToPath(filepath);\n        }\n        // backward-compatible for nodejs pre-10.12.0 (without url.fileURLToPath method)\n        else {\n          // posix: file:///hello/world/foo.txt -> /hello/world/foo.txt -> /hello/world/foo.txt\n          // win32: file:///C:/path/foo.txt     -> /C:/path/foo.txt     -> \\C:\\path\\foo.txt     -> C:\\path\\foo.txt\n          // win32: file://nas/foo.txt          -> //nas/foo.txt        -> nas\\foo.txt          -> \\\\nas\\foo.txt\n          filepath = path.normalize(\n            filepath.replace(new RegExp(`^${urlPrefix}`), '')\n          );\n          if (process.platform === 'win32') {\n            if (filepath.startsWith('\\\\')) {\n              filepath = filepath.slice(1);\n            } else {\n              filepath = path.sep + path.sep + filepath;\n            }\n          }\n        }\n      }\n      return filepath;\n    };\n    filename = convertFileURLToPath(filename);\n\n    if (specifier) {\n      const fileDepth = parseInt(specifier, 10);\n      const fileList = filename.split(path.sep);\n      if (fileList.length > fileDepth) {\n        filename = fileList.slice(-fileDepth).join(path.sep);\n      }\n    }\n\n    return filename;\n  }\n\n  function lineNumber(loggingEvent) {\n    return loggingEvent.lineNumber ? `${loggingEvent.lineNumber}` : '';\n  }\n\n  function columnNumber(loggingEvent) {\n    return loggingEvent.columnNumber ? `${loggingEvent.columnNumber}` : '';\n  }\n\n  function callStack(loggingEvent) {\n    return loggingEvent.callStack || '';\n  }\n\n  function className(loggingEvent) {\n    return loggingEvent.className || '';\n  }\n\n  function functionName(loggingEvent) {\n    return loggingEvent.functionName || '';\n  }\n\n  function functionAlias(loggingEvent) {\n    return loggingEvent.functionAlias || '';\n  }\n\n  function callerName(loggingEvent) {\n    return loggingEvent.callerName || '';\n  }\n\n  const replacers = {\n    c: categoryName,\n    d: formatAsDate,\n    h: hostname,\n    m: formatMessage,\n    n: endOfLine,\n    p: logLevel,\n    r: startTime,\n    '[': startColour,\n    ']': endColour,\n    y: clusterInfo,\n    z: pid,\n    '%': percent,\n    x: userDefined,\n    X: contextDefined,\n    f: fileName,\n    l: lineNumber,\n    o: columnNumber,\n    s: callStack,\n    C: className,\n    M: functionName,\n    A: functionAlias,\n    F: callerName,\n  };\n\n  function replaceToken(conversionCharacter, loggingEvent, specifier) {\n    return replacers[conversionCharacter](loggingEvent, specifier);\n  }\n\n  function truncate(truncation, toTruncate) {\n    let len;\n    if (truncation) {\n      len = parseInt(truncation.slice(1), 10);\n      // negative truncate length means truncate from end of string\n      return len > 0 ? toTruncate.slice(0, len) : toTruncate.slice(len);\n    }\n\n    return toTruncate;\n  }\n\n  function pad(padding, toPad) {\n    let len;\n    if (padding) {\n      if (padding.charAt(0) === '-') {\n        len = parseInt(padding.slice(1), 10);\n        // Right pad with spaces\n        while (toPad.length < len) {\n          toPad += ' ';\n        }\n      } else {\n        len = parseInt(padding, 10);\n        // Left pad with spaces\n        while (toPad.length < len) {\n          toPad = ` ${toPad}`;\n        }\n      }\n    }\n    return toPad;\n  }\n\n  function truncateAndPad(toTruncAndPad, truncation, padding) {\n    let replacement = toTruncAndPad;\n    replacement = truncate(truncation, replacement);\n    replacement = pad(padding, replacement);\n    return replacement;\n  }\n\n  return function (loggingEvent) {\n    let formattedString = '';\n    let result;\n    let searchString = pattern;\n\n    while ((result = regex.exec(searchString)) !== null) {\n      // const matchedString = result[0];\n      const padding = result[1];\n      const truncation = result[2];\n      const conversionCharacter = result[3];\n      const specifier = result[5];\n      const text = result[6];\n\n      // Check if the pattern matched was just normal text\n      if (text) {\n        formattedString += text.toString();\n      } else {\n        // Create a raw replacement string based on the conversion\n        // character and specifier\n        const replacement = replaceToken(\n          conversionCharacter,\n          loggingEvent,\n          specifier\n        );\n        formattedString += truncateAndPad(replacement, truncation, padding);\n      }\n      searchString = searchString.slice(result.index + result[0].length);\n    }\n    return formattedString;\n  };\n}\n\nconst layoutMakers = {\n  messagePassThrough() {\n    return messagePassThroughLayout;\n  },\n  basic() {\n    return basicLayout;\n  },\n  colored() {\n    return colouredLayout;\n  },\n  coloured() {\n    return colouredLayout;\n  },\n  pattern(config) {\n    return patternLayout(config && config.pattern, config && config.tokens);\n  },\n  dummy() {\n    return dummyLayout;\n  },\n};\n\nmodule.exports = {\n  basicLayout,\n  messagePassThroughLayout,\n  patternLayout,\n  colouredLayout,\n  coloredLayout: colouredLayout,\n  dummyLayout,\n  addLayout(name, serializerGenerator) {\n    layoutMakers[name] = serializerGenerator;\n  },\n  layout(name, config) {\n    return layoutMakers[name] && layoutMakers[name](config);\n  },\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/layouts.js?");
+const dateFormat = __webpack_require__(520);
+const os = __webpack_require__(2037);
+const util = __webpack_require__(3837);
+const path = __webpack_require__(1017);
+const url = __webpack_require__(7310);
+const debug = __webpack_require__(5158)('log4js:layouts');
+
+const styles = {
+  // styles
+  bold: [1, 22],
+  italic: [3, 23],
+  underline: [4, 24],
+  inverse: [7, 27],
+  // grayscale
+  white: [37, 39],
+  grey: [90, 39],
+  black: [90, 39],
+  // colors
+  blue: [34, 39],
+  cyan: [36, 39],
+  green: [32, 39],
+  magenta: [35, 39],
+  red: [91, 39],
+  yellow: [33, 39],
+};
+
+function colorizeStart(style) {
+  return style ? `\x1B[${styles[style][0]}m` : '';
+}
+
+function colorizeEnd(style) {
+  return style ? `\x1B[${styles[style][1]}m` : '';
+}
+
+/**
+ * Taken from masylum's fork (https://github.com/masylum/log4js-node)
+ */
+function colorize(str, style) {
+  return colorizeStart(style) + str + colorizeEnd(style);
+}
+
+function timestampLevelAndCategory(loggingEvent, colour) {
+  return colorize(
+    util.format(
+      '[%s] [%s] %s - ',
+      dateFormat.asString(loggingEvent.startTime),
+      loggingEvent.level.toString(),
+      loggingEvent.categoryName
+    ),
+    colour
+  );
+}
+
+/**
+ * BasicLayout is a simple layout for storing the logs. The logs are stored
+ * in following format:
+ * <pre>
+ * [startTime] [logLevel] categoryName - message\n
+ * </pre>
+ *
+ * @author Stephan Strittmatter
+ */
+function basicLayout(loggingEvent) {
+  return (
+    timestampLevelAndCategory(loggingEvent) + util.format(...loggingEvent.data)
+  );
+}
+
+/**
+ * colouredLayout - taken from masylum's fork.
+ * same as basicLayout, but with colours.
+ */
+function colouredLayout(loggingEvent) {
+  return (
+    timestampLevelAndCategory(loggingEvent, loggingEvent.level.colour) +
+    util.format(...loggingEvent.data)
+  );
+}
+
+function messagePassThroughLayout(loggingEvent) {
+  return util.format(...loggingEvent.data);
+}
+
+function dummyLayout(loggingEvent) {
+  return loggingEvent.data[0];
+}
+
+/**
+ * PatternLayout
+ * Format for specifiers is %[padding].[truncation][field]{[format]}
+ * e.g. %5.10p - left pad the log level by 5 characters, up to a max of 10
+ * both padding and truncation can be negative.
+ * Negative truncation = trunc from end of string
+ * Positive truncation = trunc from start of string
+ * Negative padding = pad right
+ * Positive padding = pad left
+ *
+ * Fields can be any of:
+ *  - %r time in toLocaleTimeString format
+ *  - %p log level
+ *  - %c log category
+ *  - %h hostname
+ *  - %m log data
+ *  - %m{l} where l is an integer, log data.slice(l)
+ *  - %m{l,u} where l and u are integers, log data.slice(l, u)
+ *  - %d date in constious formats
+ *  - %% %
+ *  - %n newline
+ *  - %z pid
+ *  - %f filename
+ *  - %l line number
+ *  - %o column postion
+ *  - %s call stack
+ *  - %C class name [#1316](https://github.com/log4js-node/log4js-node/pull/1316)
+ *  - %M method or function name [#1316](https://github.com/log4js-node/log4js-node/pull/1316)
+ *  - %A method or function alias [#1316](https://github.com/log4js-node/log4js-node/pull/1316)
+ *  - %F fully qualified caller name [#1316](https://github.com/log4js-node/log4js-node/pull/1316)
+ *  - %x{<tokenname>} add dynamic tokens to your log. Tokens are specified in the tokens parameter
+ *  - %X{<tokenname>} add dynamic tokens to your log. Tokens are specified in logger context
+ * You can use %[ and %] to define a colored block.
+ *
+ * Tokens are specified as simple key:value objects.
+ * The key represents the token name whereas the value can be a string or function
+ * which is called to extract the value to put in the log message. If token is not
+ * found, it doesn't replace the field.
+ *
+ * A sample token would be: { 'pid' : function() { return process.pid; } }
+ *
+ * Takes a pattern string, array of tokens and returns a layout function.
+ * @return {Function}
+ * @param pattern
+ * @param tokens
+ * @param timezoneOffset
+ *
+ * @authors ['Stephan Strittmatter', 'Jan Schmidle']
+ */
+function patternLayout(pattern, tokens) {
+  const TTCC_CONVERSION_PATTERN = '%r %p %c - %m%n';
+  const regex =
+    /%(-?[0-9]+)?(\.?-?[0-9]+)?([[\]cdhmnprzxXyflosCMAF%])(\{([^}]+)\})?|([^%]+)/;
+
+  pattern = pattern || TTCC_CONVERSION_PATTERN;
+
+  function categoryName(loggingEvent, specifier) {
+    let loggerName = loggingEvent.categoryName;
+    if (specifier) {
+      const precision = parseInt(specifier, 10);
+      const loggerNameBits = loggerName.split('.');
+      if (precision < loggerNameBits.length) {
+        loggerName = loggerNameBits
+          .slice(loggerNameBits.length - precision)
+          .join('.');
+      }
+    }
+    return loggerName;
+  }
+
+  function formatAsDate(loggingEvent, specifier) {
+    let format = dateFormat.ISO8601_FORMAT;
+    if (specifier) {
+      format = specifier;
+      // Pick up special cases
+      switch (format) {
+        case 'ISO8601':
+        case 'ISO8601_FORMAT':
+          format = dateFormat.ISO8601_FORMAT;
+          break;
+        case 'ISO8601_WITH_TZ_OFFSET':
+        case 'ISO8601_WITH_TZ_OFFSET_FORMAT':
+          format = dateFormat.ISO8601_WITH_TZ_OFFSET_FORMAT;
+          break;
+        case 'ABSOLUTE':
+          process.emitWarning(
+            'Pattern %d{ABSOLUTE} is deprecated in favor of %d{ABSOLUTETIME}. ' +
+              'Please use %d{ABSOLUTETIME} instead.',
+            'DeprecationWarning',
+            'log4js-node-DEP0003'
+          );
+          debug(
+            '[log4js-node-DEP0003]',
+            'DEPRECATION: Pattern %d{ABSOLUTE} is deprecated and replaced by %d{ABSOLUTETIME}.'
+          );
+        // falls through
+        case 'ABSOLUTETIME':
+        case 'ABSOLUTETIME_FORMAT':
+          format = dateFormat.ABSOLUTETIME_FORMAT;
+          break;
+        case 'DATE':
+          process.emitWarning(
+            'Pattern %d{DATE} is deprecated due to the confusion it causes when used. ' +
+              'Please use %d{DATETIME} instead.',
+            'DeprecationWarning',
+            'log4js-node-DEP0004'
+          );
+          debug(
+            '[log4js-node-DEP0004]',
+            'DEPRECATION: Pattern %d{DATE} is deprecated and replaced by %d{DATETIME}.'
+          );
+        // falls through
+        case 'DATETIME':
+        case 'DATETIME_FORMAT':
+          format = dateFormat.DATETIME_FORMAT;
+          break;
+        // no default
+      }
+    }
+    // Format the date
+    return dateFormat.asString(format, loggingEvent.startTime);
+  }
+
+  function hostname() {
+    return os.hostname().toString();
+  }
+
+  function formatMessage(loggingEvent, specifier) {
+    let dataSlice = loggingEvent.data;
+    if (specifier) {
+      const [lowerBound, upperBound] = specifier.split(',');
+      dataSlice = dataSlice.slice(lowerBound, upperBound);
+    }
+    return util.format(...dataSlice);
+  }
+
+  function endOfLine() {
+    return os.EOL;
+  }
+
+  function logLevel(loggingEvent) {
+    return loggingEvent.level.toString();
+  }
+
+  function startTime(loggingEvent) {
+    return dateFormat.asString('hh:mm:ss', loggingEvent.startTime);
+  }
+
+  function startColour(loggingEvent) {
+    return colorizeStart(loggingEvent.level.colour);
+  }
+
+  function endColour(loggingEvent) {
+    return colorizeEnd(loggingEvent.level.colour);
+  }
+
+  function percent() {
+    return '%';
+  }
+
+  function pid(loggingEvent) {
+    return loggingEvent && loggingEvent.pid
+      ? loggingEvent.pid.toString()
+      : process.pid.toString();
+  }
+
+  function clusterInfo() {
+    // this used to try to return the master and worker pids,
+    // but it would never have worked because master pid is not available to workers
+    // leaving this here to maintain compatibility for patterns
+    return pid();
+  }
+
+  function userDefined(loggingEvent, specifier) {
+    if (typeof tokens[specifier] !== 'undefined') {
+      return typeof tokens[specifier] === 'function'
+        ? tokens[specifier](loggingEvent)
+        : tokens[specifier];
+    }
+
+    return null;
+  }
+
+  function contextDefined(loggingEvent, specifier) {
+    const resolver = loggingEvent.context[specifier];
+
+    if (typeof resolver !== 'undefined') {
+      return typeof resolver === 'function' ? resolver(loggingEvent) : resolver;
+    }
+
+    return null;
+  }
+
+  function fileName(loggingEvent, specifier) {
+    let filename = loggingEvent.fileName || '';
+
+    // support for ESM as it uses url instead of path for file
+    /* istanbul ignore next: unsure how to simulate ESM for test coverage */
+    const convertFileURLToPath = function (filepath) {
+      const urlPrefix = 'file://';
+      if (filepath.startsWith(urlPrefix)) {
+        // https://nodejs.org/api/url.html#urlfileurltopathurl
+        if (typeof url.fileURLToPath === 'function') {
+          filepath = url.fileURLToPath(filepath);
+        }
+        // backward-compatible for nodejs pre-10.12.0 (without url.fileURLToPath method)
+        else {
+          // posix: file:///hello/world/foo.txt -> /hello/world/foo.txt -> /hello/world/foo.txt
+          // win32: file:///C:/path/foo.txt     -> /C:/path/foo.txt     -> \C:\path\foo.txt     -> C:\path\foo.txt
+          // win32: file://nas/foo.txt          -> //nas/foo.txt        -> nas\foo.txt          -> \\nas\foo.txt
+          filepath = path.normalize(
+            filepath.replace(new RegExp(`^${urlPrefix}`), '')
+          );
+          if (process.platform === 'win32') {
+            if (filepath.startsWith('\\')) {
+              filepath = filepath.slice(1);
+            } else {
+              filepath = path.sep + path.sep + filepath;
+            }
+          }
+        }
+      }
+      return filepath;
+    };
+    filename = convertFileURLToPath(filename);
+
+    if (specifier) {
+      const fileDepth = parseInt(specifier, 10);
+      const fileList = filename.split(path.sep);
+      if (fileList.length > fileDepth) {
+        filename = fileList.slice(-fileDepth).join(path.sep);
+      }
+    }
+
+    return filename;
+  }
+
+  function lineNumber(loggingEvent) {
+    return loggingEvent.lineNumber ? `${loggingEvent.lineNumber}` : '';
+  }
+
+  function columnNumber(loggingEvent) {
+    return loggingEvent.columnNumber ? `${loggingEvent.columnNumber}` : '';
+  }
+
+  function callStack(loggingEvent) {
+    return loggingEvent.callStack || '';
+  }
+
+  function className(loggingEvent) {
+    return loggingEvent.className || '';
+  }
+
+  function functionName(loggingEvent) {
+    return loggingEvent.functionName || '';
+  }
+
+  function functionAlias(loggingEvent) {
+    return loggingEvent.functionAlias || '';
+  }
+
+  function callerName(loggingEvent) {
+    return loggingEvent.callerName || '';
+  }
+
+  const replacers = {
+    c: categoryName,
+    d: formatAsDate,
+    h: hostname,
+    m: formatMessage,
+    n: endOfLine,
+    p: logLevel,
+    r: startTime,
+    '[': startColour,
+    ']': endColour,
+    y: clusterInfo,
+    z: pid,
+    '%': percent,
+    x: userDefined,
+    X: contextDefined,
+    f: fileName,
+    l: lineNumber,
+    o: columnNumber,
+    s: callStack,
+    C: className,
+    M: functionName,
+    A: functionAlias,
+    F: callerName,
+  };
+
+  function replaceToken(conversionCharacter, loggingEvent, specifier) {
+    return replacers[conversionCharacter](loggingEvent, specifier);
+  }
+
+  function truncate(truncation, toTruncate) {
+    let len;
+    if (truncation) {
+      len = parseInt(truncation.slice(1), 10);
+      // negative truncate length means truncate from end of string
+      return len > 0 ? toTruncate.slice(0, len) : toTruncate.slice(len);
+    }
+
+    return toTruncate;
+  }
+
+  function pad(padding, toPad) {
+    let len;
+    if (padding) {
+      if (padding.charAt(0) === '-') {
+        len = parseInt(padding.slice(1), 10);
+        // Right pad with spaces
+        while (toPad.length < len) {
+          toPad += ' ';
+        }
+      } else {
+        len = parseInt(padding, 10);
+        // Left pad with spaces
+        while (toPad.length < len) {
+          toPad = ` ${toPad}`;
+        }
+      }
+    }
+    return toPad;
+  }
+
+  function truncateAndPad(toTruncAndPad, truncation, padding) {
+    let replacement = toTruncAndPad;
+    replacement = truncate(truncation, replacement);
+    replacement = pad(padding, replacement);
+    return replacement;
+  }
+
+  return function (loggingEvent) {
+    let formattedString = '';
+    let result;
+    let searchString = pattern;
+
+    while ((result = regex.exec(searchString)) !== null) {
+      // const matchedString = result[0];
+      const padding = result[1];
+      const truncation = result[2];
+      const conversionCharacter = result[3];
+      const specifier = result[5];
+      const text = result[6];
+
+      // Check if the pattern matched was just normal text
+      if (text) {
+        formattedString += text.toString();
+      } else {
+        // Create a raw replacement string based on the conversion
+        // character and specifier
+        const replacement = replaceToken(
+          conversionCharacter,
+          loggingEvent,
+          specifier
+        );
+        formattedString += truncateAndPad(replacement, truncation, padding);
+      }
+      searchString = searchString.slice(result.index + result[0].length);
+    }
+    return formattedString;
+  };
+}
+
+const layoutMakers = {
+  messagePassThrough() {
+    return messagePassThroughLayout;
+  },
+  basic() {
+    return basicLayout;
+  },
+  colored() {
+    return colouredLayout;
+  },
+  coloured() {
+    return colouredLayout;
+  },
+  pattern(config) {
+    return patternLayout(config && config.pattern, config && config.tokens);
+  },
+  dummy() {
+    return dummyLayout;
+  },
+};
+
+module.exports = {
+  basicLayout,
+  messagePassThroughLayout,
+  patternLayout,
+  colouredLayout,
+  coloredLayout: colouredLayout,
+  dummyLayout,
+  addLayout(name, serializerGenerator) {
+    layoutMakers[name] = serializerGenerator;
+  },
+  layout(name, config) {
+    return layoutMakers[name] && layoutMakers[name](config);
+  },
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/levels.js":
-/*!*******************************************!*\
-  !*** ./node_modules/log4js/lib/levels.js ***!
-  \*******************************************/
+/***/ 1935:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const configuration = __webpack_require__(/*! ./configuration */ \"./node_modules/log4js/lib/configuration.js\");\n\nconst validColours = [\n  'white',\n  'grey',\n  'black',\n  'blue',\n  'cyan',\n  'green',\n  'magenta',\n  'red',\n  'yellow',\n];\n\nclass Level {\n  constructor(level, levelStr, colour) {\n    this.level = level;\n    this.levelStr = levelStr;\n    this.colour = colour;\n  }\n\n  toString() {\n    return this.levelStr;\n  }\n\n  /**\n   * converts given String to corresponding Level\n   * @param {(Level|string)} sArg -- String value of Level OR Log4js.Level\n   * @param {Level} [defaultLevel] -- default Level, if no String representation\n   * @return {Level}\n   */\n  static getLevel(sArg, defaultLevel) {\n    if (!sArg) {\n      return defaultLevel;\n    }\n\n    if (sArg instanceof Level) {\n      return sArg;\n    }\n\n    // a json-serialised level won't be an instance of Level (see issue #768)\n    if (sArg instanceof Object && sArg.levelStr) {\n      sArg = sArg.levelStr;\n    }\n\n    return Level[sArg.toString().toUpperCase()] || defaultLevel;\n  }\n\n  static addLevels(customLevels) {\n    if (customLevels) {\n      const levels = Object.keys(customLevels);\n      levels.forEach((l) => {\n        const levelStr = l.toUpperCase();\n        Level[levelStr] = new Level(\n          customLevels[l].value,\n          levelStr,\n          customLevels[l].colour\n        );\n        const existingLevelIndex = Level.levels.findIndex(\n          (lvl) => lvl.levelStr === levelStr\n        );\n        if (existingLevelIndex > -1) {\n          Level.levels[existingLevelIndex] = Level[levelStr];\n        } else {\n          Level.levels.push(Level[levelStr]);\n        }\n      });\n      Level.levels.sort((a, b) => a.level - b.level);\n    }\n  }\n\n  isLessThanOrEqualTo(otherLevel) {\n    if (typeof otherLevel === 'string') {\n      otherLevel = Level.getLevel(otherLevel);\n    }\n    return this.level <= otherLevel.level;\n  }\n\n  isGreaterThanOrEqualTo(otherLevel) {\n    if (typeof otherLevel === 'string') {\n      otherLevel = Level.getLevel(otherLevel);\n    }\n    return this.level >= otherLevel.level;\n  }\n\n  isEqualTo(otherLevel) {\n    if (typeof otherLevel === 'string') {\n      otherLevel = Level.getLevel(otherLevel);\n    }\n    return this.level === otherLevel.level;\n  }\n}\n\nLevel.levels = [];\nLevel.addLevels({\n  ALL: { value: Number.MIN_VALUE, colour: 'grey' },\n  TRACE: { value: 5000, colour: 'blue' },\n  DEBUG: { value: 10000, colour: 'cyan' },\n  INFO: { value: 20000, colour: 'green' },\n  WARN: { value: 30000, colour: 'yellow' },\n  ERROR: { value: 40000, colour: 'red' },\n  FATAL: { value: 50000, colour: 'magenta' },\n  MARK: { value: 9007199254740992, colour: 'grey' }, // 2^53\n  OFF: { value: Number.MAX_VALUE, colour: 'grey' },\n});\n\nconfiguration.addListener((config) => {\n  const levelConfig = config.levels;\n  if (levelConfig) {\n    configuration.throwExceptionIf(\n      config,\n      configuration.not(configuration.anObject(levelConfig)),\n      'levels must be an object'\n    );\n    const newLevels = Object.keys(levelConfig);\n    newLevels.forEach((l) => {\n      configuration.throwExceptionIf(\n        config,\n        configuration.not(configuration.validIdentifier(l)),\n        `level name \"${l}\" is not a valid identifier (must start with a letter, only contain A-Z,a-z,0-9,_)`\n      );\n      configuration.throwExceptionIf(\n        config,\n        configuration.not(configuration.anObject(levelConfig[l])),\n        `level \"${l}\" must be an object`\n      );\n      configuration.throwExceptionIf(\n        config,\n        configuration.not(levelConfig[l].value),\n        `level \"${l}\" must have a 'value' property`\n      );\n      configuration.throwExceptionIf(\n        config,\n        configuration.not(configuration.anInteger(levelConfig[l].value)),\n        `level \"${l}\".value must have an integer value`\n      );\n      configuration.throwExceptionIf(\n        config,\n        configuration.not(levelConfig[l].colour),\n        `level \"${l}\" must have a 'colour' property`\n      );\n      configuration.throwExceptionIf(\n        config,\n        configuration.not(validColours.indexOf(levelConfig[l].colour) > -1),\n        `level \"${l}\".colour must be one of ${validColours.join(', ')}`\n      );\n    });\n  }\n});\n\nconfiguration.addListener((config) => {\n  Level.addLevels(config.levels);\n});\n\nmodule.exports = Level;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/levels.js?");
+const configuration = __webpack_require__(3338);
+
+const validColours = [
+  'white',
+  'grey',
+  'black',
+  'blue',
+  'cyan',
+  'green',
+  'magenta',
+  'red',
+  'yellow',
+];
+
+class Level {
+  constructor(level, levelStr, colour) {
+    this.level = level;
+    this.levelStr = levelStr;
+    this.colour = colour;
+  }
+
+  toString() {
+    return this.levelStr;
+  }
+
+  /**
+   * converts given String to corresponding Level
+   * @param {(Level|string)} sArg -- String value of Level OR Log4js.Level
+   * @param {Level} [defaultLevel] -- default Level, if no String representation
+   * @return {Level}
+   */
+  static getLevel(sArg, defaultLevel) {
+    if (!sArg) {
+      return defaultLevel;
+    }
+
+    if (sArg instanceof Level) {
+      return sArg;
+    }
+
+    // a json-serialised level won't be an instance of Level (see issue #768)
+    if (sArg instanceof Object && sArg.levelStr) {
+      sArg = sArg.levelStr;
+    }
+
+    return Level[sArg.toString().toUpperCase()] || defaultLevel;
+  }
+
+  static addLevels(customLevels) {
+    if (customLevels) {
+      const levels = Object.keys(customLevels);
+      levels.forEach((l) => {
+        const levelStr = l.toUpperCase();
+        Level[levelStr] = new Level(
+          customLevels[l].value,
+          levelStr,
+          customLevels[l].colour
+        );
+        const existingLevelIndex = Level.levels.findIndex(
+          (lvl) => lvl.levelStr === levelStr
+        );
+        if (existingLevelIndex > -1) {
+          Level.levels[existingLevelIndex] = Level[levelStr];
+        } else {
+          Level.levels.push(Level[levelStr]);
+        }
+      });
+      Level.levels.sort((a, b) => a.level - b.level);
+    }
+  }
+
+  isLessThanOrEqualTo(otherLevel) {
+    if (typeof otherLevel === 'string') {
+      otherLevel = Level.getLevel(otherLevel);
+    }
+    return this.level <= otherLevel.level;
+  }
+
+  isGreaterThanOrEqualTo(otherLevel) {
+    if (typeof otherLevel === 'string') {
+      otherLevel = Level.getLevel(otherLevel);
+    }
+    return this.level >= otherLevel.level;
+  }
+
+  isEqualTo(otherLevel) {
+    if (typeof otherLevel === 'string') {
+      otherLevel = Level.getLevel(otherLevel);
+    }
+    return this.level === otherLevel.level;
+  }
+}
+
+Level.levels = [];
+Level.addLevels({
+  ALL: { value: Number.MIN_VALUE, colour: 'grey' },
+  TRACE: { value: 5000, colour: 'blue' },
+  DEBUG: { value: 10000, colour: 'cyan' },
+  INFO: { value: 20000, colour: 'green' },
+  WARN: { value: 30000, colour: 'yellow' },
+  ERROR: { value: 40000, colour: 'red' },
+  FATAL: { value: 50000, colour: 'magenta' },
+  MARK: { value: 9007199254740992, colour: 'grey' }, // 2^53
+  OFF: { value: Number.MAX_VALUE, colour: 'grey' },
+});
+
+configuration.addListener((config) => {
+  const levelConfig = config.levels;
+  if (levelConfig) {
+    configuration.throwExceptionIf(
+      config,
+      configuration.not(configuration.anObject(levelConfig)),
+      'levels must be an object'
+    );
+    const newLevels = Object.keys(levelConfig);
+    newLevels.forEach((l) => {
+      configuration.throwExceptionIf(
+        config,
+        configuration.not(configuration.validIdentifier(l)),
+        `level name "${l}" is not a valid identifier (must start with a letter, only contain A-Z,a-z,0-9,_)`
+      );
+      configuration.throwExceptionIf(
+        config,
+        configuration.not(configuration.anObject(levelConfig[l])),
+        `level "${l}" must be an object`
+      );
+      configuration.throwExceptionIf(
+        config,
+        configuration.not(levelConfig[l].value),
+        `level "${l}" must have a 'value' property`
+      );
+      configuration.throwExceptionIf(
+        config,
+        configuration.not(configuration.anInteger(levelConfig[l].value)),
+        `level "${l}".value must have an integer value`
+      );
+      configuration.throwExceptionIf(
+        config,
+        configuration.not(levelConfig[l].colour),
+        `level "${l}" must have a 'colour' property`
+      );
+      configuration.throwExceptionIf(
+        config,
+        configuration.not(validColours.indexOf(levelConfig[l].colour) > -1),
+        `level "${l}".colour must be one of ${validColours.join(', ')}`
+      );
+    });
+  }
+});
+
+configuration.addListener((config) => {
+  Level.addLevels(config.levels);
+});
+
+module.exports = Level;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/log4js.js":
-/*!*******************************************!*\
-  !*** ./node_modules/log4js/lib/log4js.js ***!
-  \*******************************************/
+/***/ 4296:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("/**\n * @fileoverview log4js is a library to log in JavaScript in similar manner\n * than in log4j for Java (but not really).\n *\n * <h3>Example:</h3>\n * <pre>\n *  const logging = require('log4js');\n *  const log = logging.getLogger('some-category');\n *\n *  //call the log\n *  log.trace('trace me' );\n * </pre>\n *\n * NOTE: the authors below are the original browser-based log4js authors\n * don't try to contact them about bugs in this version :)\n * @author Stephan Strittmatter - http://jroller.com/page/stritti\n * @author Seth Chisamore - http://www.chisamore.com\n * @since 2005-05-20\n * Website: http://log4js.berlios.de\n */\nconst debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:main');\nconst fs = __webpack_require__(/*! fs */ \"fs\");\nconst deepClone = __webpack_require__(/*! rfdc */ \"./node_modules/rfdc/index.js\")({ proto: true });\nconst configuration = __webpack_require__(/*! ./configuration */ \"./node_modules/log4js/lib/configuration.js\");\nconst layouts = __webpack_require__(/*! ./layouts */ \"./node_modules/log4js/lib/layouts.js\");\nconst levels = __webpack_require__(/*! ./levels */ \"./node_modules/log4js/lib/levels.js\");\nconst appenders = __webpack_require__(/*! ./appenders */ \"./node_modules/log4js/lib/appenders/index.js\");\nconst categories = __webpack_require__(/*! ./categories */ \"./node_modules/log4js/lib/categories.js\");\nconst Logger = __webpack_require__(/*! ./logger */ \"./node_modules/log4js/lib/logger.js\");\nconst clustering = __webpack_require__(/*! ./clustering */ \"./node_modules/log4js/lib/clustering.js\");\nconst connectLogger = __webpack_require__(/*! ./connect-logger */ \"./node_modules/log4js/lib/connect-logger.js\");\nconst recordingModule = __webpack_require__(/*! ./appenders/recording */ \"./node_modules/log4js/lib/appenders/recording.js\");\n\nlet enabled = false;\n\nfunction sendLogEventToAppender(logEvent) {\n  if (!enabled) return;\n  debug('Received log event ', logEvent);\n  const categoryAppenders = categories.appendersForCategory(\n    logEvent.categoryName\n  );\n  categoryAppenders.forEach((appender) => {\n    appender(logEvent);\n  });\n}\n\nfunction loadConfigurationFile(filename) {\n  debug(`Loading configuration from ${filename}`);\n  try {\n    return JSON.parse(fs.readFileSync(filename, 'utf8'));\n  } catch (e) {\n    throw new Error(\n      `Problem reading config from file \"${filename}\". Error was ${e.message}`,\n      e\n    );\n  }\n}\n\nfunction configure(configurationFileOrObject) {\n  if (enabled) {\n    // eslint-disable-next-line no-use-before-define\n    shutdown();\n  }\n\n  let configObject = configurationFileOrObject;\n\n  if (typeof configObject === 'string') {\n    configObject = loadConfigurationFile(configurationFileOrObject);\n  }\n  debug(`Configuration is ${configObject}`);\n\n  configuration.configure(deepClone(configObject));\n\n  clustering.onMessage(sendLogEventToAppender);\n\n  enabled = true;\n\n  // eslint-disable-next-line no-use-before-define\n  return log4js;\n}\n\nfunction isConfigured() {\n  return enabled;\n}\n\nfunction recording() {\n  return recordingModule;\n}\n\n/**\n * This callback type is called `shutdownCallback` and is displayed as a global symbol.\n *\n * @callback shutdownCallback\n * @param {Error} [error]\n */\n\n/**\n * Shutdown all log appenders. This will first disable all writing to appenders\n * and then call the shutdown function each appender.\n *\n * @param {shutdownCallback} [callback] - The callback to be invoked once all appenders have\n *  shutdown. If an error occurs, the callback will be given the error object\n *  as the first argument.\n */\nfunction shutdown(callback = () => {}) {\n  if (typeof callback !== 'function') {\n    throw new TypeError('Invalid callback passed to shutdown');\n  }\n  debug('Shutdown called. Disabling all log writing.');\n  // First, disable all writing to appenders. This prevents appenders from\n  // not being able to be drained because of run-away log writes.\n  enabled = false;\n\n  // Clone out to maintain a reference\n  const appendersToCheck = Array.from(appenders.values());\n\n  // Reset immediately to prevent leaks\n  appenders.init();\n  categories.init();\n\n  // Count the number of shutdown functions\n  const shutdownFunctions = appendersToCheck.reduce(\n    (accum, next) => (next.shutdown ? accum + 1 : accum),\n    0\n  );\n  if (shutdownFunctions === 0) {\n    debug('No appenders with shutdown functions found.');\n    callback();\n  }\n\n  let completed = 0;\n  let error;\n  debug(`Found ${shutdownFunctions} appenders with shutdown functions.`);\n  function complete(err) {\n    error = error || err;\n    completed += 1;\n    debug(`Appender shutdowns complete: ${completed} / ${shutdownFunctions}`);\n    if (completed >= shutdownFunctions) {\n      debug('All shutdown functions completed.');\n      callback(error);\n    }\n  }\n\n  // Call each of the shutdown functions\n  appendersToCheck\n    .filter((a) => a.shutdown)\n    .forEach((a) => a.shutdown(complete));\n}\n\n/**\n * Get a logger instance.\n * @static\n * @param {string} [category=default]\n * @return {Logger} instance of logger for the category\n */\nfunction getLogger(category) {\n  if (!enabled) {\n    configure(\n      process.env.LOG4JS_CONFIG || {\n        appenders: { out: { type: 'stdout' } },\n        categories: { default: { appenders: ['out'], level: 'OFF' } },\n      }\n    );\n  }\n  return new Logger(category || 'default');\n}\n\n/**\n * @name log4js\n * @namespace Log4js\n * @property getLogger\n * @property configure\n * @property shutdown\n */\nconst log4js = {\n  getLogger,\n  configure,\n  isConfigured,\n  shutdown,\n  connectLogger,\n  levels,\n  addLayout: layouts.addLayout,\n  recording,\n};\n\nmodule.exports = log4js;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/log4js.js?");
+/**
+ * @fileoverview log4js is a library to log in JavaScript in similar manner
+ * than in log4j for Java (but not really).
+ *
+ * <h3>Example:</h3>
+ * <pre>
+ *  const logging = require('log4js');
+ *  const log = logging.getLogger('some-category');
+ *
+ *  //call the log
+ *  log.trace('trace me' );
+ * </pre>
+ *
+ * NOTE: the authors below are the original browser-based log4js authors
+ * don't try to contact them about bugs in this version :)
+ * @author Stephan Strittmatter - http://jroller.com/page/stritti
+ * @author Seth Chisamore - http://www.chisamore.com
+ * @since 2005-05-20
+ * Website: http://log4js.berlios.de
+ */
+const debug = __webpack_require__(5158)('log4js:main');
+const fs = __webpack_require__(7147);
+const deepClone = __webpack_require__(3188)({ proto: true });
+const configuration = __webpack_require__(3338);
+const layouts = __webpack_require__(1219);
+const levels = __webpack_require__(1935);
+const appenders = __webpack_require__(3530);
+const categories = __webpack_require__(3785);
+const Logger = __webpack_require__(6055);
+const clustering = __webpack_require__(5885);
+const connectLogger = __webpack_require__(198);
+const recordingModule = __webpack_require__(2344);
+
+let enabled = false;
+
+function sendLogEventToAppender(logEvent) {
+  if (!enabled) return;
+  debug('Received log event ', logEvent);
+  const categoryAppenders = categories.appendersForCategory(
+    logEvent.categoryName
+  );
+  categoryAppenders.forEach((appender) => {
+    appender(logEvent);
+  });
+}
+
+function loadConfigurationFile(filename) {
+  debug(`Loading configuration from ${filename}`);
+  try {
+    return JSON.parse(fs.readFileSync(filename, 'utf8'));
+  } catch (e) {
+    throw new Error(
+      `Problem reading config from file "${filename}". Error was ${e.message}`,
+      e
+    );
+  }
+}
+
+function configure(configurationFileOrObject) {
+  if (enabled) {
+    // eslint-disable-next-line no-use-before-define
+    shutdown();
+  }
+
+  let configObject = configurationFileOrObject;
+
+  if (typeof configObject === 'string') {
+    configObject = loadConfigurationFile(configurationFileOrObject);
+  }
+  debug(`Configuration is ${configObject}`);
+
+  configuration.configure(deepClone(configObject));
+
+  clustering.onMessage(sendLogEventToAppender);
+
+  enabled = true;
+
+  // eslint-disable-next-line no-use-before-define
+  return log4js;
+}
+
+function isConfigured() {
+  return enabled;
+}
+
+function recording() {
+  return recordingModule;
+}
+
+/**
+ * This callback type is called `shutdownCallback` and is displayed as a global symbol.
+ *
+ * @callback shutdownCallback
+ * @param {Error} [error]
+ */
+
+/**
+ * Shutdown all log appenders. This will first disable all writing to appenders
+ * and then call the shutdown function each appender.
+ *
+ * @param {shutdownCallback} [callback] - The callback to be invoked once all appenders have
+ *  shutdown. If an error occurs, the callback will be given the error object
+ *  as the first argument.
+ */
+function shutdown(callback = () => {}) {
+  if (typeof callback !== 'function') {
+    throw new TypeError('Invalid callback passed to shutdown');
+  }
+  debug('Shutdown called. Disabling all log writing.');
+  // First, disable all writing to appenders. This prevents appenders from
+  // not being able to be drained because of run-away log writes.
+  enabled = false;
+
+  // Clone out to maintain a reference
+  const appendersToCheck = Array.from(appenders.values());
+
+  // Reset immediately to prevent leaks
+  appenders.init();
+  categories.init();
+
+  // Count the number of shutdown functions
+  const shutdownFunctions = appendersToCheck.reduce(
+    (accum, next) => (next.shutdown ? accum + 1 : accum),
+    0
+  );
+  if (shutdownFunctions === 0) {
+    debug('No appenders with shutdown functions found.');
+    callback();
+  }
+
+  let completed = 0;
+  let error;
+  debug(`Found ${shutdownFunctions} appenders with shutdown functions.`);
+  function complete(err) {
+    error = error || err;
+    completed += 1;
+    debug(`Appender shutdowns complete: ${completed} / ${shutdownFunctions}`);
+    if (completed >= shutdownFunctions) {
+      debug('All shutdown functions completed.');
+      callback(error);
+    }
+  }
+
+  // Call each of the shutdown functions
+  appendersToCheck
+    .filter((a) => a.shutdown)
+    .forEach((a) => a.shutdown(complete));
+}
+
+/**
+ * Get a logger instance.
+ * @static
+ * @param {string} [category=default]
+ * @return {Logger} instance of logger for the category
+ */
+function getLogger(category) {
+  if (!enabled) {
+    configure(
+      process.env.LOG4JS_CONFIG || {
+        appenders: { out: { type: 'stdout' } },
+        categories: { default: { appenders: ['out'], level: 'OFF' } },
+      }
+    );
+  }
+  return new Logger(category || 'default');
+}
+
+/**
+ * @name log4js
+ * @namespace Log4js
+ * @property getLogger
+ * @property configure
+ * @property shutdown
+ */
+const log4js = {
+  getLogger,
+  configure,
+  isConfigured,
+  shutdown,
+  connectLogger,
+  levels,
+  addLayout: layouts.addLayout,
+  recording,
+};
+
+module.exports = log4js;
+
 
 /***/ }),
 
-/***/ "./node_modules/log4js/lib/logger.js":
-/*!*******************************************!*\
-  !*** ./node_modules/log4js/lib/logger.js ***!
-  \*******************************************/
+/***/ 6055:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("/* eslint no-underscore-dangle: [\"error\", { \"allow\": [\"_log\"] }] */\n\nconst debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('log4js:logger');\nconst LoggingEvent = __webpack_require__(/*! ./LoggingEvent */ \"./node_modules/log4js/lib/LoggingEvent.js\");\nconst levels = __webpack_require__(/*! ./levels */ \"./node_modules/log4js/lib/levels.js\");\nconst clustering = __webpack_require__(/*! ./clustering */ \"./node_modules/log4js/lib/clustering.js\");\nconst categories = __webpack_require__(/*! ./categories */ \"./node_modules/log4js/lib/categories.js\");\nconst configuration = __webpack_require__(/*! ./configuration */ \"./node_modules/log4js/lib/configuration.js\");\n\nconst stackReg = /^(?:\\s*)at (?:(.+) \\()?(?:([^(]+?):(\\d+):(\\d+))\\)?$/;\n/**\n * The top entry is the Error\n */\nconst baseCallStackSkip = 1;\n/**\n * The _log function is 3 levels deep, we need to skip those to make it to the callSite\n */\nconst defaultErrorCallStackSkip = 3;\n\n/**\n *\n * @param {Error} data\n * @param {number} skipIdx\n * @returns {import('../types/log4js').CallStack | null}\n */\nfunction defaultParseCallStack(\n  data,\n  skipIdx = defaultErrorCallStackSkip + baseCallStackSkip\n) {\n  try {\n    const stacklines = data.stack.split('\\n').slice(skipIdx);\n    if (!stacklines.length) {\n      // There's no stack in this stack\n      // Should we try a previous index if skipIdx was set?\n      return null;\n    }\n    const lineMatch = stackReg.exec(stacklines[0]);\n    /* istanbul ignore else: failsafe */\n    if (lineMatch && lineMatch.length === 5) {\n      // extract class, function and alias names\n      let className = '';\n      let functionName = '';\n      let functionAlias = '';\n      if (lineMatch[1] && lineMatch[1] !== '') {\n        // WARN: this will unset alias if alias is not present.\n        [functionName, functionAlias] = lineMatch[1]\n          .replace(/[[\\]]/g, '')\n          .split(' as ');\n        functionAlias = functionAlias || '';\n\n        if (functionName.includes('.'))\n          [className, functionName] = functionName.split('.');\n      }\n\n      return {\n        fileName: lineMatch[2],\n        lineNumber: parseInt(lineMatch[3], 10),\n        columnNumber: parseInt(lineMatch[4], 10),\n        callStack: stacklines.join('\\n'),\n        className,\n        functionName,\n        functionAlias,\n        callerName: lineMatch[1] || '',\n      };\n      // eslint-disable-next-line no-else-return\n    } else {\n      // will never get here unless nodejs has changes to Error\n      console.error('log4js.logger - defaultParseCallStack error'); // eslint-disable-line no-console\n    }\n  } catch (err) {\n    // will never get error unless nodejs has breaking changes to Error\n    console.error('log4js.logger - defaultParseCallStack error', err); // eslint-disable-line no-console\n  }\n  return null;\n}\n\n/**\n * Logger to log messages.\n * use {@see log4js#getLogger(String)} to get an instance.\n *\n * @name Logger\n * @namespace Log4js\n * @param name name of category to log to\n * @param level - the loglevel for the category\n * @param dispatch - the function which will receive the logevents\n *\n * @author Stephan Strittmatter\n */\nclass Logger {\n  constructor(name) {\n    if (!name) {\n      throw new Error('No category provided.');\n    }\n    this.category = name;\n    this.context = {};\n    /** @private */\n    this.callStackSkipIndex = 0;\n    /** @private */\n    this.parseCallStack = defaultParseCallStack;\n    debug(`Logger created (${this.category}, ${this.level})`);\n  }\n\n  get level() {\n    return levels.getLevel(\n      categories.getLevelForCategory(this.category),\n      levels.OFF\n    );\n  }\n\n  set level(level) {\n    categories.setLevelForCategory(\n      this.category,\n      levels.getLevel(level, this.level)\n    );\n  }\n\n  get useCallStack() {\n    return categories.getEnableCallStackForCategory(this.category);\n  }\n\n  set useCallStack(bool) {\n    categories.setEnableCallStackForCategory(this.category, bool === true);\n  }\n\n  get callStackLinesToSkip() {\n    return this.callStackSkipIndex;\n  }\n\n  set callStackLinesToSkip(number) {\n    if (typeof number !== 'number') {\n      throw new TypeError('Must be a number');\n    }\n    if (number < 0) {\n      throw new RangeError('Must be >= 0');\n    }\n    this.callStackSkipIndex = number;\n  }\n\n  log(level, ...args) {\n    const logLevel = levels.getLevel(level);\n    if (!logLevel) {\n      if (configuration.validIdentifier(level) && args.length > 0) {\n        // logLevel not found but of valid signature, WARN before fallback to INFO\n        this.log(\n          levels.WARN,\n          'log4js:logger.log: valid log-level not found as first parameter given:',\n          level\n        );\n        this.log(levels.INFO, `[${level}]`, ...args);\n      } else {\n        // apart from fallback, allow .log(...args) to be synonym with .log(\"INFO\", ...args)\n        this.log(levels.INFO, level, ...args);\n      }\n    } else if (this.isLevelEnabled(logLevel)) {\n      this._log(logLevel, args);\n    }\n  }\n\n  isLevelEnabled(otherLevel) {\n    return this.level.isLessThanOrEqualTo(otherLevel);\n  }\n\n  _log(level, data) {\n    debug(`sending log data (${level}) to appenders`);\n    const error = data.find((item) => item instanceof Error);\n    let callStack;\n    if (this.useCallStack) {\n      try {\n        if (error) {\n          callStack = this.parseCallStack(\n            error,\n            this.callStackSkipIndex + baseCallStackSkip\n          );\n        }\n      } catch (_err) {\n        // Ignore Error and use the original method of creating a new Error.\n      }\n      callStack =\n        callStack ||\n        this.parseCallStack(\n          new Error(),\n          this.callStackSkipIndex +\n            defaultErrorCallStackSkip +\n            baseCallStackSkip\n        );\n    }\n    const loggingEvent = new LoggingEvent(\n      this.category,\n      level,\n      data,\n      this.context,\n      callStack,\n      error\n    );\n    clustering.send(loggingEvent);\n  }\n\n  addContext(key, value) {\n    this.context[key] = value;\n  }\n\n  removeContext(key) {\n    delete this.context[key];\n  }\n\n  clearContext() {\n    this.context = {};\n  }\n\n  setParseCallStackFunction(parseFunction) {\n    if (typeof parseFunction === 'function') {\n      this.parseCallStack = parseFunction;\n    } else if (typeof parseFunction === 'undefined') {\n      this.parseCallStack = defaultParseCallStack;\n    } else {\n      throw new TypeError('Invalid type passed to setParseCallStackFunction');\n    }\n  }\n}\n\nfunction addLevelMethods(target) {\n  const level = levels.getLevel(target);\n\n  const levelStrLower = level.toString().toLowerCase();\n  const levelMethod = levelStrLower.replace(/_([a-z])/g, (g) =>\n    g[1].toUpperCase()\n  );\n  const isLevelMethod = levelMethod[0].toUpperCase() + levelMethod.slice(1);\n\n  Logger.prototype[`is${isLevelMethod}Enabled`] = function () {\n    return this.isLevelEnabled(level);\n  };\n\n  Logger.prototype[levelMethod] = function (...args) {\n    this.log(level, ...args);\n  };\n}\n\nlevels.levels.forEach(addLevelMethods);\n\nconfiguration.addListener(() => {\n  levels.levels.forEach(addLevelMethods);\n});\n\nmodule.exports = Logger;\n\n\n//# sourceURL=webpack://electron/./node_modules/log4js/lib/logger.js?");
+/* eslint no-underscore-dangle: ["error", { "allow": ["_log"] }] */
+
+const debug = __webpack_require__(5158)('log4js:logger');
+const LoggingEvent = __webpack_require__(4421);
+const levels = __webpack_require__(1935);
+const clustering = __webpack_require__(5885);
+const categories = __webpack_require__(3785);
+const configuration = __webpack_require__(3338);
+
+const stackReg = /^(?:\s*)at (?:(.+) \()?(?:([^(]+?):(\d+):(\d+))\)?$/;
+/**
+ * The top entry is the Error
+ */
+const baseCallStackSkip = 1;
+/**
+ * The _log function is 3 levels deep, we need to skip those to make it to the callSite
+ */
+const defaultErrorCallStackSkip = 3;
+
+/**
+ *
+ * @param {Error} data
+ * @param {number} skipIdx
+ * @returns {import('../types/log4js').CallStack | null}
+ */
+function defaultParseCallStack(
+  data,
+  skipIdx = defaultErrorCallStackSkip + baseCallStackSkip
+) {
+  try {
+    const stacklines = data.stack.split('\n').slice(skipIdx);
+    if (!stacklines.length) {
+      // There's no stack in this stack
+      // Should we try a previous index if skipIdx was set?
+      return null;
+    }
+    const lineMatch = stackReg.exec(stacklines[0]);
+    /* istanbul ignore else: failsafe */
+    if (lineMatch && lineMatch.length === 5) {
+      // extract class, function and alias names
+      let className = '';
+      let functionName = '';
+      let functionAlias = '';
+      if (lineMatch[1] && lineMatch[1] !== '') {
+        // WARN: this will unset alias if alias is not present.
+        [functionName, functionAlias] = lineMatch[1]
+          .replace(/[[\]]/g, '')
+          .split(' as ');
+        functionAlias = functionAlias || '';
+
+        if (functionName.includes('.'))
+          [className, functionName] = functionName.split('.');
+      }
+
+      return {
+        fileName: lineMatch[2],
+        lineNumber: parseInt(lineMatch[3], 10),
+        columnNumber: parseInt(lineMatch[4], 10),
+        callStack: stacklines.join('\n'),
+        className,
+        functionName,
+        functionAlias,
+        callerName: lineMatch[1] || '',
+      };
+      // eslint-disable-next-line no-else-return
+    } else {
+      // will never get here unless nodejs has changes to Error
+      console.error('log4js.logger - defaultParseCallStack error'); // eslint-disable-line no-console
+    }
+  } catch (err) {
+    // will never get error unless nodejs has breaking changes to Error
+    console.error('log4js.logger - defaultParseCallStack error', err); // eslint-disable-line no-console
+  }
+  return null;
+}
+
+/**
+ * Logger to log messages.
+ * use {@see log4js#getLogger(String)} to get an instance.
+ *
+ * @name Logger
+ * @namespace Log4js
+ * @param name name of category to log to
+ * @param level - the loglevel for the category
+ * @param dispatch - the function which will receive the logevents
+ *
+ * @author Stephan Strittmatter
+ */
+class Logger {
+  constructor(name) {
+    if (!name) {
+      throw new Error('No category provided.');
+    }
+    this.category = name;
+    this.context = {};
+    /** @private */
+    this.callStackSkipIndex = 0;
+    /** @private */
+    this.parseCallStack = defaultParseCallStack;
+    debug(`Logger created (${this.category}, ${this.level})`);
+  }
+
+  get level() {
+    return levels.getLevel(
+      categories.getLevelForCategory(this.category),
+      levels.OFF
+    );
+  }
+
+  set level(level) {
+    categories.setLevelForCategory(
+      this.category,
+      levels.getLevel(level, this.level)
+    );
+  }
+
+  get useCallStack() {
+    return categories.getEnableCallStackForCategory(this.category);
+  }
+
+  set useCallStack(bool) {
+    categories.setEnableCallStackForCategory(this.category, bool === true);
+  }
+
+  get callStackLinesToSkip() {
+    return this.callStackSkipIndex;
+  }
+
+  set callStackLinesToSkip(number) {
+    if (typeof number !== 'number') {
+      throw new TypeError('Must be a number');
+    }
+    if (number < 0) {
+      throw new RangeError('Must be >= 0');
+    }
+    this.callStackSkipIndex = number;
+  }
+
+  log(level, ...args) {
+    const logLevel = levels.getLevel(level);
+    if (!logLevel) {
+      if (configuration.validIdentifier(level) && args.length > 0) {
+        // logLevel not found but of valid signature, WARN before fallback to INFO
+        this.log(
+          levels.WARN,
+          'log4js:logger.log: valid log-level not found as first parameter given:',
+          level
+        );
+        this.log(levels.INFO, `[${level}]`, ...args);
+      } else {
+        // apart from fallback, allow .log(...args) to be synonym with .log("INFO", ...args)
+        this.log(levels.INFO, level, ...args);
+      }
+    } else if (this.isLevelEnabled(logLevel)) {
+      this._log(logLevel, args);
+    }
+  }
+
+  isLevelEnabled(otherLevel) {
+    return this.level.isLessThanOrEqualTo(otherLevel);
+  }
+
+  _log(level, data) {
+    debug(`sending log data (${level}) to appenders`);
+    const error = data.find((item) => item instanceof Error);
+    let callStack;
+    if (this.useCallStack) {
+      try {
+        if (error) {
+          callStack = this.parseCallStack(
+            error,
+            this.callStackSkipIndex + baseCallStackSkip
+          );
+        }
+      } catch (_err) {
+        // Ignore Error and use the original method of creating a new Error.
+      }
+      callStack =
+        callStack ||
+        this.parseCallStack(
+          new Error(),
+          this.callStackSkipIndex +
+            defaultErrorCallStackSkip +
+            baseCallStackSkip
+        );
+    }
+    const loggingEvent = new LoggingEvent(
+      this.category,
+      level,
+      data,
+      this.context,
+      callStack,
+      error
+    );
+    clustering.send(loggingEvent);
+  }
+
+  addContext(key, value) {
+    this.context[key] = value;
+  }
+
+  removeContext(key) {
+    delete this.context[key];
+  }
+
+  clearContext() {
+    this.context = {};
+  }
+
+  setParseCallStackFunction(parseFunction) {
+    if (typeof parseFunction === 'function') {
+      this.parseCallStack = parseFunction;
+    } else if (typeof parseFunction === 'undefined') {
+      this.parseCallStack = defaultParseCallStack;
+    } else {
+      throw new TypeError('Invalid type passed to setParseCallStackFunction');
+    }
+  }
+}
+
+function addLevelMethods(target) {
+  const level = levels.getLevel(target);
+
+  const levelStrLower = level.toString().toLowerCase();
+  const levelMethod = levelStrLower.replace(/_([a-z])/g, (g) =>
+    g[1].toUpperCase()
+  );
+  const isLevelMethod = levelMethod[0].toUpperCase() + levelMethod.slice(1);
+
+  Logger.prototype[`is${isLevelMethod}Enabled`] = function () {
+    return this.isLevelEnabled(level);
+  };
+
+  Logger.prototype[levelMethod] = function (...args) {
+    this.log(level, ...args);
+  };
+}
+
+levels.levels.forEach(addLevelMethods);
+
+configuration.addListener(() => {
+  levels.levels.forEach(addLevelMethods);
+});
+
+module.exports = Logger;
+
 
 /***/ }),
 
-/***/ "./node_modules/md5/md5.js":
-/*!*********************************!*\
-  !*** ./node_modules/md5/md5.js ***!
-  \*********************************/
+/***/ 2568:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("(function(){\r\n  var crypt = __webpack_require__(/*! crypt */ \"./node_modules/crypt/crypt.js\"),\r\n      utf8 = (__webpack_require__(/*! charenc */ \"./node_modules/charenc/charenc.js\").utf8),\r\n      isBuffer = __webpack_require__(/*! is-buffer */ \"./node_modules/is-buffer/index.js\"),\r\n      bin = (__webpack_require__(/*! charenc */ \"./node_modules/charenc/charenc.js\").bin),\r\n\r\n  // The core\r\n  md5 = function (message, options) {\r\n    // Convert to byte array\r\n    if (message.constructor == String)\r\n      if (options && options.encoding === 'binary')\r\n        message = bin.stringToBytes(message);\r\n      else\r\n        message = utf8.stringToBytes(message);\r\n    else if (isBuffer(message))\r\n      message = Array.prototype.slice.call(message, 0);\r\n    else if (!Array.isArray(message) && message.constructor !== Uint8Array)\r\n      message = message.toString();\r\n    // else, assume byte array already\r\n\r\n    var m = crypt.bytesToWords(message),\r\n        l = message.length * 8,\r\n        a =  1732584193,\r\n        b = -271733879,\r\n        c = -1732584194,\r\n        d =  271733878;\r\n\r\n    // Swap endian\r\n    for (var i = 0; i < m.length; i++) {\r\n      m[i] = ((m[i] <<  8) | (m[i] >>> 24)) & 0x00FF00FF |\r\n             ((m[i] << 24) | (m[i] >>>  8)) & 0xFF00FF00;\r\n    }\r\n\r\n    // Padding\r\n    m[l >>> 5] |= 0x80 << (l % 32);\r\n    m[(((l + 64) >>> 9) << 4) + 14] = l;\r\n\r\n    // Method shortcuts\r\n    var FF = md5._ff,\r\n        GG = md5._gg,\r\n        HH = md5._hh,\r\n        II = md5._ii;\r\n\r\n    for (var i = 0; i < m.length; i += 16) {\r\n\r\n      var aa = a,\r\n          bb = b,\r\n          cc = c,\r\n          dd = d;\r\n\r\n      a = FF(a, b, c, d, m[i+ 0],  7, -680876936);\r\n      d = FF(d, a, b, c, m[i+ 1], 12, -389564586);\r\n      c = FF(c, d, a, b, m[i+ 2], 17,  606105819);\r\n      b = FF(b, c, d, a, m[i+ 3], 22, -1044525330);\r\n      a = FF(a, b, c, d, m[i+ 4],  7, -176418897);\r\n      d = FF(d, a, b, c, m[i+ 5], 12,  1200080426);\r\n      c = FF(c, d, a, b, m[i+ 6], 17, -1473231341);\r\n      b = FF(b, c, d, a, m[i+ 7], 22, -45705983);\r\n      a = FF(a, b, c, d, m[i+ 8],  7,  1770035416);\r\n      d = FF(d, a, b, c, m[i+ 9], 12, -1958414417);\r\n      c = FF(c, d, a, b, m[i+10], 17, -42063);\r\n      b = FF(b, c, d, a, m[i+11], 22, -1990404162);\r\n      a = FF(a, b, c, d, m[i+12],  7,  1804603682);\r\n      d = FF(d, a, b, c, m[i+13], 12, -40341101);\r\n      c = FF(c, d, a, b, m[i+14], 17, -1502002290);\r\n      b = FF(b, c, d, a, m[i+15], 22,  1236535329);\r\n\r\n      a = GG(a, b, c, d, m[i+ 1],  5, -165796510);\r\n      d = GG(d, a, b, c, m[i+ 6],  9, -1069501632);\r\n      c = GG(c, d, a, b, m[i+11], 14,  643717713);\r\n      b = GG(b, c, d, a, m[i+ 0], 20, -373897302);\r\n      a = GG(a, b, c, d, m[i+ 5],  5, -701558691);\r\n      d = GG(d, a, b, c, m[i+10],  9,  38016083);\r\n      c = GG(c, d, a, b, m[i+15], 14, -660478335);\r\n      b = GG(b, c, d, a, m[i+ 4], 20, -405537848);\r\n      a = GG(a, b, c, d, m[i+ 9],  5,  568446438);\r\n      d = GG(d, a, b, c, m[i+14],  9, -1019803690);\r\n      c = GG(c, d, a, b, m[i+ 3], 14, -187363961);\r\n      b = GG(b, c, d, a, m[i+ 8], 20,  1163531501);\r\n      a = GG(a, b, c, d, m[i+13],  5, -1444681467);\r\n      d = GG(d, a, b, c, m[i+ 2],  9, -51403784);\r\n      c = GG(c, d, a, b, m[i+ 7], 14,  1735328473);\r\n      b = GG(b, c, d, a, m[i+12], 20, -1926607734);\r\n\r\n      a = HH(a, b, c, d, m[i+ 5],  4, -378558);\r\n      d = HH(d, a, b, c, m[i+ 8], 11, -2022574463);\r\n      c = HH(c, d, a, b, m[i+11], 16,  1839030562);\r\n      b = HH(b, c, d, a, m[i+14], 23, -35309556);\r\n      a = HH(a, b, c, d, m[i+ 1],  4, -1530992060);\r\n      d = HH(d, a, b, c, m[i+ 4], 11,  1272893353);\r\n      c = HH(c, d, a, b, m[i+ 7], 16, -155497632);\r\n      b = HH(b, c, d, a, m[i+10], 23, -1094730640);\r\n      a = HH(a, b, c, d, m[i+13],  4,  681279174);\r\n      d = HH(d, a, b, c, m[i+ 0], 11, -358537222);\r\n      c = HH(c, d, a, b, m[i+ 3], 16, -722521979);\r\n      b = HH(b, c, d, a, m[i+ 6], 23,  76029189);\r\n      a = HH(a, b, c, d, m[i+ 9],  4, -640364487);\r\n      d = HH(d, a, b, c, m[i+12], 11, -421815835);\r\n      c = HH(c, d, a, b, m[i+15], 16,  530742520);\r\n      b = HH(b, c, d, a, m[i+ 2], 23, -995338651);\r\n\r\n      a = II(a, b, c, d, m[i+ 0],  6, -198630844);\r\n      d = II(d, a, b, c, m[i+ 7], 10,  1126891415);\r\n      c = II(c, d, a, b, m[i+14], 15, -1416354905);\r\n      b = II(b, c, d, a, m[i+ 5], 21, -57434055);\r\n      a = II(a, b, c, d, m[i+12],  6,  1700485571);\r\n      d = II(d, a, b, c, m[i+ 3], 10, -1894986606);\r\n      c = II(c, d, a, b, m[i+10], 15, -1051523);\r\n      b = II(b, c, d, a, m[i+ 1], 21, -2054922799);\r\n      a = II(a, b, c, d, m[i+ 8],  6,  1873313359);\r\n      d = II(d, a, b, c, m[i+15], 10, -30611744);\r\n      c = II(c, d, a, b, m[i+ 6], 15, -1560198380);\r\n      b = II(b, c, d, a, m[i+13], 21,  1309151649);\r\n      a = II(a, b, c, d, m[i+ 4],  6, -145523070);\r\n      d = II(d, a, b, c, m[i+11], 10, -1120210379);\r\n      c = II(c, d, a, b, m[i+ 2], 15,  718787259);\r\n      b = II(b, c, d, a, m[i+ 9], 21, -343485551);\r\n\r\n      a = (a + aa) >>> 0;\r\n      b = (b + bb) >>> 0;\r\n      c = (c + cc) >>> 0;\r\n      d = (d + dd) >>> 0;\r\n    }\r\n\r\n    return crypt.endian([a, b, c, d]);\r\n  };\r\n\r\n  // Auxiliary functions\r\n  md5._ff  = function (a, b, c, d, x, s, t) {\r\n    var n = a + (b & c | ~b & d) + (x >>> 0) + t;\r\n    return ((n << s) | (n >>> (32 - s))) + b;\r\n  };\r\n  md5._gg  = function (a, b, c, d, x, s, t) {\r\n    var n = a + (b & d | c & ~d) + (x >>> 0) + t;\r\n    return ((n << s) | (n >>> (32 - s))) + b;\r\n  };\r\n  md5._hh  = function (a, b, c, d, x, s, t) {\r\n    var n = a + (b ^ c ^ d) + (x >>> 0) + t;\r\n    return ((n << s) | (n >>> (32 - s))) + b;\r\n  };\r\n  md5._ii  = function (a, b, c, d, x, s, t) {\r\n    var n = a + (c ^ (b | ~d)) + (x >>> 0) + t;\r\n    return ((n << s) | (n >>> (32 - s))) + b;\r\n  };\r\n\r\n  // Package private blocksize\r\n  md5._blocksize = 16;\r\n  md5._digestsize = 16;\r\n\r\n  module.exports = function (message, options) {\r\n    if (message === undefined || message === null)\r\n      throw new Error('Illegal argument ' + message);\r\n\r\n    var digestbytes = crypt.wordsToBytes(md5(message, options));\r\n    return options && options.asBytes ? digestbytes :\r\n        options && options.asString ? bin.bytesToString(digestbytes) :\r\n        crypt.bytesToHex(digestbytes);\r\n  };\r\n\r\n})();\r\n\n\n//# sourceURL=webpack://electron/./node_modules/md5/md5.js?");
+(function(){
+  var crypt = __webpack_require__(1012),
+      utf8 = (__webpack_require__(487).utf8),
+      isBuffer = __webpack_require__(8738),
+      bin = (__webpack_require__(487).bin),
+
+  // The core
+  md5 = function (message, options) {
+    // Convert to byte array
+    if (message.constructor == String)
+      if (options && options.encoding === 'binary')
+        message = bin.stringToBytes(message);
+      else
+        message = utf8.stringToBytes(message);
+    else if (isBuffer(message))
+      message = Array.prototype.slice.call(message, 0);
+    else if (!Array.isArray(message) && message.constructor !== Uint8Array)
+      message = message.toString();
+    // else, assume byte array already
+
+    var m = crypt.bytesToWords(message),
+        l = message.length * 8,
+        a =  1732584193,
+        b = -271733879,
+        c = -1732584194,
+        d =  271733878;
+
+    // Swap endian
+    for (var i = 0; i < m.length; i++) {
+      m[i] = ((m[i] <<  8) | (m[i] >>> 24)) & 0x00FF00FF |
+             ((m[i] << 24) | (m[i] >>>  8)) & 0xFF00FF00;
+    }
+
+    // Padding
+    m[l >>> 5] |= 0x80 << (l % 32);
+    m[(((l + 64) >>> 9) << 4) + 14] = l;
+
+    // Method shortcuts
+    var FF = md5._ff,
+        GG = md5._gg,
+        HH = md5._hh,
+        II = md5._ii;
+
+    for (var i = 0; i < m.length; i += 16) {
+
+      var aa = a,
+          bb = b,
+          cc = c,
+          dd = d;
+
+      a = FF(a, b, c, d, m[i+ 0],  7, -680876936);
+      d = FF(d, a, b, c, m[i+ 1], 12, -389564586);
+      c = FF(c, d, a, b, m[i+ 2], 17,  606105819);
+      b = FF(b, c, d, a, m[i+ 3], 22, -1044525330);
+      a = FF(a, b, c, d, m[i+ 4],  7, -176418897);
+      d = FF(d, a, b, c, m[i+ 5], 12,  1200080426);
+      c = FF(c, d, a, b, m[i+ 6], 17, -1473231341);
+      b = FF(b, c, d, a, m[i+ 7], 22, -45705983);
+      a = FF(a, b, c, d, m[i+ 8],  7,  1770035416);
+      d = FF(d, a, b, c, m[i+ 9], 12, -1958414417);
+      c = FF(c, d, a, b, m[i+10], 17, -42063);
+      b = FF(b, c, d, a, m[i+11], 22, -1990404162);
+      a = FF(a, b, c, d, m[i+12],  7,  1804603682);
+      d = FF(d, a, b, c, m[i+13], 12, -40341101);
+      c = FF(c, d, a, b, m[i+14], 17, -1502002290);
+      b = FF(b, c, d, a, m[i+15], 22,  1236535329);
+
+      a = GG(a, b, c, d, m[i+ 1],  5, -165796510);
+      d = GG(d, a, b, c, m[i+ 6],  9, -1069501632);
+      c = GG(c, d, a, b, m[i+11], 14,  643717713);
+      b = GG(b, c, d, a, m[i+ 0], 20, -373897302);
+      a = GG(a, b, c, d, m[i+ 5],  5, -701558691);
+      d = GG(d, a, b, c, m[i+10],  9,  38016083);
+      c = GG(c, d, a, b, m[i+15], 14, -660478335);
+      b = GG(b, c, d, a, m[i+ 4], 20, -405537848);
+      a = GG(a, b, c, d, m[i+ 9],  5,  568446438);
+      d = GG(d, a, b, c, m[i+14],  9, -1019803690);
+      c = GG(c, d, a, b, m[i+ 3], 14, -187363961);
+      b = GG(b, c, d, a, m[i+ 8], 20,  1163531501);
+      a = GG(a, b, c, d, m[i+13],  5, -1444681467);
+      d = GG(d, a, b, c, m[i+ 2],  9, -51403784);
+      c = GG(c, d, a, b, m[i+ 7], 14,  1735328473);
+      b = GG(b, c, d, a, m[i+12], 20, -1926607734);
+
+      a = HH(a, b, c, d, m[i+ 5],  4, -378558);
+      d = HH(d, a, b, c, m[i+ 8], 11, -2022574463);
+      c = HH(c, d, a, b, m[i+11], 16,  1839030562);
+      b = HH(b, c, d, a, m[i+14], 23, -35309556);
+      a = HH(a, b, c, d, m[i+ 1],  4, -1530992060);
+      d = HH(d, a, b, c, m[i+ 4], 11,  1272893353);
+      c = HH(c, d, a, b, m[i+ 7], 16, -155497632);
+      b = HH(b, c, d, a, m[i+10], 23, -1094730640);
+      a = HH(a, b, c, d, m[i+13],  4,  681279174);
+      d = HH(d, a, b, c, m[i+ 0], 11, -358537222);
+      c = HH(c, d, a, b, m[i+ 3], 16, -722521979);
+      b = HH(b, c, d, a, m[i+ 6], 23,  76029189);
+      a = HH(a, b, c, d, m[i+ 9],  4, -640364487);
+      d = HH(d, a, b, c, m[i+12], 11, -421815835);
+      c = HH(c, d, a, b, m[i+15], 16,  530742520);
+      b = HH(b, c, d, a, m[i+ 2], 23, -995338651);
+
+      a = II(a, b, c, d, m[i+ 0],  6, -198630844);
+      d = II(d, a, b, c, m[i+ 7], 10,  1126891415);
+      c = II(c, d, a, b, m[i+14], 15, -1416354905);
+      b = II(b, c, d, a, m[i+ 5], 21, -57434055);
+      a = II(a, b, c, d, m[i+12],  6,  1700485571);
+      d = II(d, a, b, c, m[i+ 3], 10, -1894986606);
+      c = II(c, d, a, b, m[i+10], 15, -1051523);
+      b = II(b, c, d, a, m[i+ 1], 21, -2054922799);
+      a = II(a, b, c, d, m[i+ 8],  6,  1873313359);
+      d = II(d, a, b, c, m[i+15], 10, -30611744);
+      c = II(c, d, a, b, m[i+ 6], 15, -1560198380);
+      b = II(b, c, d, a, m[i+13], 21,  1309151649);
+      a = II(a, b, c, d, m[i+ 4],  6, -145523070);
+      d = II(d, a, b, c, m[i+11], 10, -1120210379);
+      c = II(c, d, a, b, m[i+ 2], 15,  718787259);
+      b = II(b, c, d, a, m[i+ 9], 21, -343485551);
+
+      a = (a + aa) >>> 0;
+      b = (b + bb) >>> 0;
+      c = (c + cc) >>> 0;
+      d = (d + dd) >>> 0;
+    }
+
+    return crypt.endian([a, b, c, d]);
+  };
+
+  // Auxiliary functions
+  md5._ff  = function (a, b, c, d, x, s, t) {
+    var n = a + (b & c | ~b & d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._gg  = function (a, b, c, d, x, s, t) {
+    var n = a + (b & d | c & ~d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._hh  = function (a, b, c, d, x, s, t) {
+    var n = a + (b ^ c ^ d) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+  md5._ii  = function (a, b, c, d, x, s, t) {
+    var n = a + (c ^ (b | ~d)) + (x >>> 0) + t;
+    return ((n << s) | (n >>> (32 - s))) + b;
+  };
+
+  // Package private blocksize
+  md5._blocksize = 16;
+  md5._digestsize = 16;
+
+  module.exports = function (message, options) {
+    if (message === undefined || message === null)
+      throw new Error('Illegal argument ' + message);
+
+    var digestbytes = crypt.wordsToBytes(md5(message, options));
+    return options && options.asBytes ? digestbytes :
+        options && options.asString ? bin.bytesToString(digestbytes) :
+        crypt.bytesToHex(digestbytes);
+  };
+
+})();
+
 
 /***/ }),
 
-/***/ "./node_modules/ms/index.js":
-/*!**********************************!*\
-  !*** ./node_modules/ms/index.js ***!
-  \**********************************/
+/***/ 7824:
 /***/ ((module) => {
 
-eval("/**\n * Helpers.\n */\n\nvar s = 1000;\nvar m = s * 60;\nvar h = m * 60;\nvar d = h * 24;\nvar w = d * 7;\nvar y = d * 365.25;\n\n/**\n * Parse or format the given `val`.\n *\n * Options:\n *\n *  - `long` verbose formatting [false]\n *\n * @param {String|Number} val\n * @param {Object} [options]\n * @throws {Error} throw an error if val is not a non-empty string or a number\n * @return {String|Number}\n * @api public\n */\n\nmodule.exports = function(val, options) {\n  options = options || {};\n  var type = typeof val;\n  if (type === 'string' && val.length > 0) {\n    return parse(val);\n  } else if (type === 'number' && isFinite(val)) {\n    return options.long ? fmtLong(val) : fmtShort(val);\n  }\n  throw new Error(\n    'val is not a non-empty string or a valid number. val=' +\n      JSON.stringify(val)\n  );\n};\n\n/**\n * Parse the given `str` and return milliseconds.\n *\n * @param {String} str\n * @return {Number}\n * @api private\n */\n\nfunction parse(str) {\n  str = String(str);\n  if (str.length > 100) {\n    return;\n  }\n  var match = /^(-?(?:\\d+)?\\.?\\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(\n    str\n  );\n  if (!match) {\n    return;\n  }\n  var n = parseFloat(match[1]);\n  var type = (match[2] || 'ms').toLowerCase();\n  switch (type) {\n    case 'years':\n    case 'year':\n    case 'yrs':\n    case 'yr':\n    case 'y':\n      return n * y;\n    case 'weeks':\n    case 'week':\n    case 'w':\n      return n * w;\n    case 'days':\n    case 'day':\n    case 'd':\n      return n * d;\n    case 'hours':\n    case 'hour':\n    case 'hrs':\n    case 'hr':\n    case 'h':\n      return n * h;\n    case 'minutes':\n    case 'minute':\n    case 'mins':\n    case 'min':\n    case 'm':\n      return n * m;\n    case 'seconds':\n    case 'second':\n    case 'secs':\n    case 'sec':\n    case 's':\n      return n * s;\n    case 'milliseconds':\n    case 'millisecond':\n    case 'msecs':\n    case 'msec':\n    case 'ms':\n      return n;\n    default:\n      return undefined;\n  }\n}\n\n/**\n * Short format for `ms`.\n *\n * @param {Number} ms\n * @return {String}\n * @api private\n */\n\nfunction fmtShort(ms) {\n  var msAbs = Math.abs(ms);\n  if (msAbs >= d) {\n    return Math.round(ms / d) + 'd';\n  }\n  if (msAbs >= h) {\n    return Math.round(ms / h) + 'h';\n  }\n  if (msAbs >= m) {\n    return Math.round(ms / m) + 'm';\n  }\n  if (msAbs >= s) {\n    return Math.round(ms / s) + 's';\n  }\n  return ms + 'ms';\n}\n\n/**\n * Long format for `ms`.\n *\n * @param {Number} ms\n * @return {String}\n * @api private\n */\n\nfunction fmtLong(ms) {\n  var msAbs = Math.abs(ms);\n  if (msAbs >= d) {\n    return plural(ms, msAbs, d, 'day');\n  }\n  if (msAbs >= h) {\n    return plural(ms, msAbs, h, 'hour');\n  }\n  if (msAbs >= m) {\n    return plural(ms, msAbs, m, 'minute');\n  }\n  if (msAbs >= s) {\n    return plural(ms, msAbs, s, 'second');\n  }\n  return ms + ' ms';\n}\n\n/**\n * Pluralization helper.\n */\n\nfunction plural(ms, msAbs, n, name) {\n  var isPlural = msAbs >= n * 1.5;\n  return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/ms/index.js?");
+/**
+ * Helpers.
+ */
+
+var s = 1000;
+var m = s * 60;
+var h = m * 60;
+var d = h * 24;
+var w = d * 7;
+var y = d * 365.25;
+
+/**
+ * Parse or format the given `val`.
+ *
+ * Options:
+ *
+ *  - `long` verbose formatting [false]
+ *
+ * @param {String|Number} val
+ * @param {Object} [options]
+ * @throws {Error} throw an error if val is not a non-empty string or a number
+ * @return {String|Number}
+ * @api public
+ */
+
+module.exports = function(val, options) {
+  options = options || {};
+  var type = typeof val;
+  if (type === 'string' && val.length > 0) {
+    return parse(val);
+  } else if (type === 'number' && isFinite(val)) {
+    return options.long ? fmtLong(val) : fmtShort(val);
+  }
+  throw new Error(
+    'val is not a non-empty string or a valid number. val=' +
+      JSON.stringify(val)
+  );
+};
+
+/**
+ * Parse the given `str` and return milliseconds.
+ *
+ * @param {String} str
+ * @return {Number}
+ * @api private
+ */
+
+function parse(str) {
+  str = String(str);
+  if (str.length > 100) {
+    return;
+  }
+  var match = /^(-?(?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|weeks?|w|years?|yrs?|y)?$/i.exec(
+    str
+  );
+  if (!match) {
+    return;
+  }
+  var n = parseFloat(match[1]);
+  var type = (match[2] || 'ms').toLowerCase();
+  switch (type) {
+    case 'years':
+    case 'year':
+    case 'yrs':
+    case 'yr':
+    case 'y':
+      return n * y;
+    case 'weeks':
+    case 'week':
+    case 'w':
+      return n * w;
+    case 'days':
+    case 'day':
+    case 'd':
+      return n * d;
+    case 'hours':
+    case 'hour':
+    case 'hrs':
+    case 'hr':
+    case 'h':
+      return n * h;
+    case 'minutes':
+    case 'minute':
+    case 'mins':
+    case 'min':
+    case 'm':
+      return n * m;
+    case 'seconds':
+    case 'second':
+    case 'secs':
+    case 'sec':
+    case 's':
+      return n * s;
+    case 'milliseconds':
+    case 'millisecond':
+    case 'msecs':
+    case 'msec':
+    case 'ms':
+      return n;
+    default:
+      return undefined;
+  }
+}
+
+/**
+ * Short format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function fmtShort(ms) {
+  var msAbs = Math.abs(ms);
+  if (msAbs >= d) {
+    return Math.round(ms / d) + 'd';
+  }
+  if (msAbs >= h) {
+    return Math.round(ms / h) + 'h';
+  }
+  if (msAbs >= m) {
+    return Math.round(ms / m) + 'm';
+  }
+  if (msAbs >= s) {
+    return Math.round(ms / s) + 's';
+  }
+  return ms + 'ms';
+}
+
+/**
+ * Long format for `ms`.
+ *
+ * @param {Number} ms
+ * @return {String}
+ * @api private
+ */
+
+function fmtLong(ms) {
+  var msAbs = Math.abs(ms);
+  if (msAbs >= d) {
+    return plural(ms, msAbs, d, 'day');
+  }
+  if (msAbs >= h) {
+    return plural(ms, msAbs, h, 'hour');
+  }
+  if (msAbs >= m) {
+    return plural(ms, msAbs, m, 'minute');
+  }
+  if (msAbs >= s) {
+    return plural(ms, msAbs, s, 'second');
+  }
+  return ms + ' ms';
+}
+
+/**
+ * Pluralization helper.
+ */
+
+function plural(ms, msAbs, n, name) {
+  var isPlural = msAbs >= n * 1.5;
+  return Math.round(ms / n) + ' ' + name + (isPlural ? 's' : '');
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/node-machine-id/dist/index.js":
-/*!****************************************************!*\
-  !*** ./node_modules/node-machine-id/dist/index.js ***!
-  \****************************************************/
+/***/ 1572:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
-eval("!function(t,n){ true?module.exports=n(__webpack_require__(/*! child_process */ \"child_process\"),__webpack_require__(/*! crypto */ \"crypto\")):0}(this,function(t,n){return function(t){function n(e){if(r[e])return r[e].exports;var o=r[e]={exports:{},id:e,loaded:!1};return t[e].call(o.exports,o,o.exports,n),o.loaded=!0,o.exports}var r={};return n.m=t,n.c=r,n.p=\"\",n(0)}([function(t,n,r){t.exports=r(34)},function(t,n,r){var e=r(29)(\"wks\"),o=r(33),i=r(2).Symbol,c=\"function\"==typeof i,u=t.exports=function(t){return e[t]||(e[t]=c&&i[t]||(c?i:o)(\"Symbol.\"+t))};u.store=e},function(t,n){var r=t.exports=\"undefined\"!=typeof window&&window.Math==Math?window:\"undefined\"!=typeof self&&self.Math==Math?self:Function(\"return this\")();\"number\"==typeof __g&&(__g=r)},function(t,n,r){var e=r(9);t.exports=function(t){if(!e(t))throw TypeError(t+\" is not an object!\");return t}},function(t,n,r){t.exports=!r(24)(function(){return 7!=Object.defineProperty({},\"a\",{get:function(){return 7}}).a})},function(t,n,r){var e=r(12),o=r(17);t.exports=r(4)?function(t,n,r){return e.f(t,n,o(1,r))}:function(t,n,r){return t[n]=r,t}},function(t,n){var r=t.exports={version:\"2.4.0\"};\"number\"==typeof __e&&(__e=r)},function(t,n,r){var e=r(14);t.exports=function(t,n,r){if(e(t),void 0===n)return t;switch(r){case 1:return function(r){return t.call(n,r)};case 2:return function(r,e){return t.call(n,r,e)};case 3:return function(r,e,o){return t.call(n,r,e,o)}}return function(){return t.apply(n,arguments)}}},function(t,n){var r={}.hasOwnProperty;t.exports=function(t,n){return r.call(t,n)}},function(t,n){t.exports=function(t){return\"object\"==typeof t?null!==t:\"function\"==typeof t}},function(t,n){t.exports={}},function(t,n){var r={}.toString;t.exports=function(t){return r.call(t).slice(8,-1)}},function(t,n,r){var e=r(3),o=r(26),i=r(32),c=Object.defineProperty;n.f=r(4)?Object.defineProperty:function(t,n,r){if(e(t),n=i(n,!0),e(r),o)try{return c(t,n,r)}catch(t){}if(\"get\"in r||\"set\"in r)throw TypeError(\"Accessors not supported!\");return\"value\"in r&&(t[n]=r.value),t}},function(t,n,r){var e=r(42),o=r(15);t.exports=function(t){return e(o(t))}},function(t,n){t.exports=function(t){if(\"function\"!=typeof t)throw TypeError(t+\" is not a function!\");return t}},function(t,n){t.exports=function(t){if(void 0==t)throw TypeError(\"Can't call method on  \"+t);return t}},function(t,n,r){var e=r(9),o=r(2).document,i=e(o)&&e(o.createElement);t.exports=function(t){return i?o.createElement(t):{}}},function(t,n){t.exports=function(t,n){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:n}}},function(t,n,r){var e=r(12).f,o=r(8),i=r(1)(\"toStringTag\");t.exports=function(t,n,r){t&&!o(t=r?t:t.prototype,i)&&e(t,i,{configurable:!0,value:n})}},function(t,n,r){var e=r(29)(\"keys\"),o=r(33);t.exports=function(t){return e[t]||(e[t]=o(t))}},function(t,n){var r=Math.ceil,e=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?e:r)(t)}},function(t,n,r){var e=r(11),o=r(1)(\"toStringTag\"),i=\"Arguments\"==e(function(){return arguments}()),c=function(t,n){try{return t[n]}catch(t){}};t.exports=function(t){var n,r,u;return void 0===t?\"Undefined\":null===t?\"Null\":\"string\"==typeof(r=c(n=Object(t),o))?r:i?e(n):\"Object\"==(u=e(n))&&\"function\"==typeof n.callee?\"Arguments\":u}},function(t,n){t.exports=\"constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf\".split(\",\")},function(t,n,r){var e=r(2),o=r(6),i=r(7),c=r(5),u=\"prototype\",s=function(t,n,r){var f,a,p,l=t&s.F,v=t&s.G,h=t&s.S,d=t&s.P,y=t&s.B,_=t&s.W,x=v?o:o[n]||(o[n]={}),m=x[u],w=v?e:h?e[n]:(e[n]||{})[u];v&&(r=n);for(f in r)a=!l&&w&&void 0!==w[f],a&&f in x||(p=a?w[f]:r[f],x[f]=v&&\"function\"!=typeof w[f]?r[f]:y&&a?i(p,e):_&&w[f]==p?function(t){var n=function(n,r,e){if(this instanceof t){switch(arguments.length){case 0:return new t;case 1:return new t(n);case 2:return new t(n,r)}return new t(n,r,e)}return t.apply(this,arguments)};return n[u]=t[u],n}(p):d&&\"function\"==typeof p?i(Function.call,p):p,d&&((x.virtual||(x.virtual={}))[f]=p,t&s.R&&m&&!m[f]&&c(m,f,p)))};s.F=1,s.G=2,s.S=4,s.P=8,s.B=16,s.W=32,s.U=64,s.R=128,t.exports=s},function(t,n){t.exports=function(t){try{return!!t()}catch(t){return!0}}},function(t,n,r){t.exports=r(2).document&&document.documentElement},function(t,n,r){t.exports=!r(4)&&!r(24)(function(){return 7!=Object.defineProperty(r(16)(\"div\"),\"a\",{get:function(){return 7}}).a})},function(t,n,r){\"use strict\";var e=r(28),o=r(23),i=r(57),c=r(5),u=r(8),s=r(10),f=r(45),a=r(18),p=r(52),l=r(1)(\"iterator\"),v=!([].keys&&\"next\"in[].keys()),h=\"@@iterator\",d=\"keys\",y=\"values\",_=function(){return this};t.exports=function(t,n,r,x,m,w,g){f(r,n,x);var b,O,j,S=function(t){if(!v&&t in T)return T[t];switch(t){case d:return function(){return new r(this,t)};case y:return function(){return new r(this,t)}}return function(){return new r(this,t)}},E=n+\" Iterator\",P=m==y,M=!1,T=t.prototype,A=T[l]||T[h]||m&&T[m],k=A||S(m),C=m?P?S(\"entries\"):k:void 0,I=\"Array\"==n?T.entries||A:A;if(I&&(j=p(I.call(new t)),j!==Object.prototype&&(a(j,E,!0),e||u(j,l)||c(j,l,_))),P&&A&&A.name!==y&&(M=!0,k=function(){return A.call(this)}),e&&!g||!v&&!M&&T[l]||c(T,l,k),s[n]=k,s[E]=_,m)if(b={values:P?k:S(y),keys:w?k:S(d),entries:C},g)for(O in b)O in T||i(T,O,b[O]);else o(o.P+o.F*(v||M),n,b);return b}},function(t,n){t.exports=!0},function(t,n,r){var e=r(2),o=\"__core-js_shared__\",i=e[o]||(e[o]={});t.exports=function(t){return i[t]||(i[t]={})}},function(t,n,r){var e,o,i,c=r(7),u=r(41),s=r(25),f=r(16),a=r(2),p=a.process,l=a.setImmediate,v=a.clearImmediate,h=a.MessageChannel,d=0,y={},_=\"onreadystatechange\",x=function(){var t=+this;if(y.hasOwnProperty(t)){var n=y[t];delete y[t],n()}},m=function(t){x.call(t.data)};l&&v||(l=function(t){for(var n=[],r=1;arguments.length>r;)n.push(arguments[r++]);return y[++d]=function(){u(\"function\"==typeof t?t:Function(t),n)},e(d),d},v=function(t){delete y[t]},\"process\"==r(11)(p)?e=function(t){p.nextTick(c(x,t,1))}:h?(o=new h,i=o.port2,o.port1.onmessage=m,e=c(i.postMessage,i,1)):a.addEventListener&&\"function\"==typeof postMessage&&!a.importScripts?(e=function(t){a.postMessage(t+\"\",\"*\")},a.addEventListener(\"message\",m,!1)):e=_ in f(\"script\")?function(t){s.appendChild(f(\"script\"))[_]=function(){s.removeChild(this),x.call(t)}}:function(t){setTimeout(c(x,t,1),0)}),t.exports={set:l,clear:v}},function(t,n,r){var e=r(20),o=Math.min;t.exports=function(t){return t>0?o(e(t),9007199254740991):0}},function(t,n,r){var e=r(9);t.exports=function(t,n){if(!e(t))return t;var r,o;if(n&&\"function\"==typeof(r=t.toString)&&!e(o=r.call(t)))return o;if(\"function\"==typeof(r=t.valueOf)&&!e(o=r.call(t)))return o;if(!n&&\"function\"==typeof(r=t.toString)&&!e(o=r.call(t)))return o;throw TypeError(\"Can't convert object to primitive value\")}},function(t,n){var r=0,e=Math.random();t.exports=function(t){return\"Symbol(\".concat(void 0===t?\"\":t,\")_\",(++r+e).toString(36))}},function(t,n,r){\"use strict\";function e(t){return t&&t.__esModule?t:{default:t}}function o(){return\"win32\"!==process.platform?\"\":\"ia32\"===process.arch&&process.env.hasOwnProperty(\"PROCESSOR_ARCHITEW6432\")?\"mixed\":\"native\"}function i(t){return(0,l.createHash)(\"sha256\").update(t).digest(\"hex\")}function c(t){switch(h){case\"darwin\":return t.split(\"IOPlatformUUID\")[1].split(\"\\n\")[0].replace(/\\=|\\s+|\\\"/gi,\"\").toLowerCase();case\"win32\":return t.toString().split(\"REG_SZ\")[1].replace(/\\r+|\\n+|\\s+/gi,\"\").toLowerCase();case\"linux\":return t.toString().replace(/\\r+|\\n+|\\s+/gi,\"\").toLowerCase();case\"freebsd\":return t.toString().replace(/\\r+|\\n+|\\s+/gi,\"\").toLowerCase();default:throw new Error(\"Unsupported platform: \"+process.platform)}}function u(t){var n=c((0,p.execSync)(y[h]).toString());return t?n:i(n)}function s(t){return new a.default(function(n,r){return(0,p.exec)(y[h],{},function(e,o,u){if(e)return r(new Error(\"Error while obtaining machine id: \"+e.stack));var s=c(o.toString());return n(t?s:i(s))})})}Object.defineProperty(n,\"__esModule\",{value:!0});var f=r(35),a=e(f);n.machineIdSync=u,n.machineId=s;var p=r(70),l=r(71),v=process,h=v.platform,d={native:\"%windir%\\\\System32\",mixed:\"%windir%\\\\sysnative\\\\cmd.exe /c %windir%\\\\System32\"},y={darwin:\"ioreg -rd1 -c IOPlatformExpertDevice\",win32:d[o()]+\"\\\\REG.exe QUERY HKEY_LOCAL_MACHINE\\\\SOFTWARE\\\\Microsoft\\\\Cryptography /v MachineGuid\",linux:\"( cat /var/lib/dbus/machine-id /etc/machine-id 2> /dev/null || hostname ) | head -n 1 || :\",freebsd:\"kenv -q smbios.system.uuid || sysctl -n kern.hostuuid\"}},function(t,n,r){t.exports={default:r(36),__esModule:!0}},function(t,n,r){r(66),r(68),r(69),r(67),t.exports=r(6).Promise},function(t,n){t.exports=function(){}},function(t,n){t.exports=function(t,n,r,e){if(!(t instanceof n)||void 0!==e&&e in t)throw TypeError(r+\": incorrect invocation!\");return t}},function(t,n,r){var e=r(13),o=r(31),i=r(62);t.exports=function(t){return function(n,r,c){var u,s=e(n),f=o(s.length),a=i(c,f);if(t&&r!=r){for(;f>a;)if(u=s[a++],u!=u)return!0}else for(;f>a;a++)if((t||a in s)&&s[a]===r)return t||a||0;return!t&&-1}}},function(t,n,r){var e=r(7),o=r(44),i=r(43),c=r(3),u=r(31),s=r(64),f={},a={},n=t.exports=function(t,n,r,p,l){var v,h,d,y,_=l?function(){return t}:s(t),x=e(r,p,n?2:1),m=0;if(\"function\"!=typeof _)throw TypeError(t+\" is not iterable!\");if(i(_)){for(v=u(t.length);v>m;m++)if(y=n?x(c(h=t[m])[0],h[1]):x(t[m]),y===f||y===a)return y}else for(d=_.call(t);!(h=d.next()).done;)if(y=o(d,x,h.value,n),y===f||y===a)return y};n.BREAK=f,n.RETURN=a},function(t,n){t.exports=function(t,n,r){var e=void 0===r;switch(n.length){case 0:return e?t():t.call(r);case 1:return e?t(n[0]):t.call(r,n[0]);case 2:return e?t(n[0],n[1]):t.call(r,n[0],n[1]);case 3:return e?t(n[0],n[1],n[2]):t.call(r,n[0],n[1],n[2]);case 4:return e?t(n[0],n[1],n[2],n[3]):t.call(r,n[0],n[1],n[2],n[3])}return t.apply(r,n)}},function(t,n,r){var e=r(11);t.exports=Object(\"z\").propertyIsEnumerable(0)?Object:function(t){return\"String\"==e(t)?t.split(\"\"):Object(t)}},function(t,n,r){var e=r(10),o=r(1)(\"iterator\"),i=Array.prototype;t.exports=function(t){return void 0!==t&&(e.Array===t||i[o]===t)}},function(t,n,r){var e=r(3);t.exports=function(t,n,r,o){try{return o?n(e(r)[0],r[1]):n(r)}catch(n){var i=t.return;throw void 0!==i&&e(i.call(t)),n}}},function(t,n,r){\"use strict\";var e=r(49),o=r(17),i=r(18),c={};r(5)(c,r(1)(\"iterator\"),function(){return this}),t.exports=function(t,n,r){t.prototype=e(c,{next:o(1,r)}),i(t,n+\" Iterator\")}},function(t,n,r){var e=r(1)(\"iterator\"),o=!1;try{var i=[7][e]();i.return=function(){o=!0},Array.from(i,function(){throw 2})}catch(t){}t.exports=function(t,n){if(!n&&!o)return!1;var r=!1;try{var i=[7],c=i[e]();c.next=function(){return{done:r=!0}},i[e]=function(){return c},t(i)}catch(t){}return r}},function(t,n){t.exports=function(t,n){return{value:n,done:!!t}}},function(t,n,r){var e=r(2),o=r(30).set,i=e.MutationObserver||e.WebKitMutationObserver,c=e.process,u=e.Promise,s=\"process\"==r(11)(c);t.exports=function(){var t,n,r,f=function(){var e,o;for(s&&(e=c.domain)&&e.exit();t;){o=t.fn,t=t.next;try{o()}catch(e){throw t?r():n=void 0,e}}n=void 0,e&&e.enter()};if(s)r=function(){c.nextTick(f)};else if(i){var a=!0,p=document.createTextNode(\"\");new i(f).observe(p,{characterData:!0}),r=function(){p.data=a=!a}}else if(u&&u.resolve){var l=u.resolve();r=function(){l.then(f)}}else r=function(){o.call(e,f)};return function(e){var o={fn:e,next:void 0};n&&(n.next=o),t||(t=o,r()),n=o}}},function(t,n,r){var e=r(3),o=r(50),i=r(22),c=r(19)(\"IE_PROTO\"),u=function(){},s=\"prototype\",f=function(){var t,n=r(16)(\"iframe\"),e=i.length,o=\">\";for(n.style.display=\"none\",r(25).appendChild(n),n.src=\"javascript:\",t=n.contentWindow.document,t.open(),t.write(\"<script>document.F=Object</script\"+o),t.close(),f=t.F;e--;)delete f[s][i[e]];return f()};t.exports=Object.create||function(t,n){var r;return null!==t?(u[s]=e(t),r=new u,u[s]=null,r[c]=t):r=f(),void 0===n?r:o(r,n)}},function(t,n,r){var e=r(12),o=r(3),i=r(54);t.exports=r(4)?Object.defineProperties:function(t,n){o(t);for(var r,c=i(n),u=c.length,s=0;u>s;)e.f(t,r=c[s++],n[r]);return t}},function(t,n,r){var e=r(55),o=r(17),i=r(13),c=r(32),u=r(8),s=r(26),f=Object.getOwnPropertyDescriptor;n.f=r(4)?f:function(t,n){if(t=i(t),n=c(n,!0),s)try{return f(t,n)}catch(t){}if(u(t,n))return o(!e.f.call(t,n),t[n])}},function(t,n,r){var e=r(8),o=r(63),i=r(19)(\"IE_PROTO\"),c=Object.prototype;t.exports=Object.getPrototypeOf||function(t){return t=o(t),e(t,i)?t[i]:\"function\"==typeof t.constructor&&t instanceof t.constructor?t.constructor.prototype:t instanceof Object?c:null}},function(t,n,r){var e=r(8),o=r(13),i=r(39)(!1),c=r(19)(\"IE_PROTO\");t.exports=function(t,n){var r,u=o(t),s=0,f=[];for(r in u)r!=c&&e(u,r)&&f.push(r);for(;n.length>s;)e(u,r=n[s++])&&(~i(f,r)||f.push(r));return f}},function(t,n,r){var e=r(53),o=r(22);t.exports=Object.keys||function(t){return e(t,o)}},function(t,n){n.f={}.propertyIsEnumerable},function(t,n,r){var e=r(5);t.exports=function(t,n,r){for(var o in n)r&&t[o]?t[o]=n[o]:e(t,o,n[o]);return t}},function(t,n,r){t.exports=r(5)},function(t,n,r){var e=r(9),o=r(3),i=function(t,n){if(o(t),!e(n)&&null!==n)throw TypeError(n+\": can't set as prototype!\")};t.exports={set:Object.setPrototypeOf||(\"__proto__\"in{}?function(t,n,e){try{e=r(7)(Function.call,r(51).f(Object.prototype,\"__proto__\").set,2),e(t,[]),n=!(t instanceof Array)}catch(t){n=!0}return function(t,r){return i(t,r),n?t.__proto__=r:e(t,r),t}}({},!1):void 0),check:i}},function(t,n,r){\"use strict\";var e=r(2),o=r(6),i=r(12),c=r(4),u=r(1)(\"species\");t.exports=function(t){var n=\"function\"==typeof o[t]?o[t]:e[t];c&&n&&!n[u]&&i.f(n,u,{configurable:!0,get:function(){return this}})}},function(t,n,r){var e=r(3),o=r(14),i=r(1)(\"species\");t.exports=function(t,n){var r,c=e(t).constructor;return void 0===c||void 0==(r=e(c)[i])?n:o(r)}},function(t,n,r){var e=r(20),o=r(15);t.exports=function(t){return function(n,r){var i,c,u=String(o(n)),s=e(r),f=u.length;return s<0||s>=f?t?\"\":void 0:(i=u.charCodeAt(s),i<55296||i>56319||s+1===f||(c=u.charCodeAt(s+1))<56320||c>57343?t?u.charAt(s):i:t?u.slice(s,s+2):(i-55296<<10)+(c-56320)+65536)}}},function(t,n,r){var e=r(20),o=Math.max,i=Math.min;t.exports=function(t,n){return t=e(t),t<0?o(t+n,0):i(t,n)}},function(t,n,r){var e=r(15);t.exports=function(t){return Object(e(t))}},function(t,n,r){var e=r(21),o=r(1)(\"iterator\"),i=r(10);t.exports=r(6).getIteratorMethod=function(t){if(void 0!=t)return t[o]||t[\"@@iterator\"]||i[e(t)]}},function(t,n,r){\"use strict\";var e=r(37),o=r(47),i=r(10),c=r(13);t.exports=r(27)(Array,\"Array\",function(t,n){this._t=c(t),this._i=0,this._k=n},function(){var t=this._t,n=this._k,r=this._i++;return!t||r>=t.length?(this._t=void 0,o(1)):\"keys\"==n?o(0,r):\"values\"==n?o(0,t[r]):o(0,[r,t[r]])},\"values\"),i.Arguments=i.Array,e(\"keys\"),e(\"values\"),e(\"entries\")},function(t,n){},function(t,n,r){\"use strict\";var e,o,i,c=r(28),u=r(2),s=r(7),f=r(21),a=r(23),p=r(9),l=(r(3),r(14)),v=r(38),h=r(40),d=(r(58).set,r(60)),y=r(30).set,_=r(48)(),x=\"Promise\",m=u.TypeError,w=u.process,g=u[x],w=u.process,b=\"process\"==f(w),O=function(){},j=!!function(){try{var t=g.resolve(1),n=(t.constructor={})[r(1)(\"species\")]=function(t){t(O,O)};return(b||\"function\"==typeof PromiseRejectionEvent)&&t.then(O)instanceof n}catch(t){}}(),S=function(t,n){return t===n||t===g&&n===i},E=function(t){var n;return!(!p(t)||\"function\"!=typeof(n=t.then))&&n},P=function(t){return S(g,t)?new M(t):new o(t)},M=o=function(t){var n,r;this.promise=new t(function(t,e){if(void 0!==n||void 0!==r)throw m(\"Bad Promise constructor\");n=t,r=e}),this.resolve=l(n),this.reject=l(r)},T=function(t){try{t()}catch(t){return{error:t}}},A=function(t,n){if(!t._n){t._n=!0;var r=t._c;_(function(){for(var e=t._v,o=1==t._s,i=0,c=function(n){var r,i,c=o?n.ok:n.fail,u=n.resolve,s=n.reject,f=n.domain;try{c?(o||(2==t._h&&I(t),t._h=1),c===!0?r=e:(f&&f.enter(),r=c(e),f&&f.exit()),r===n.promise?s(m(\"Promise-chain cycle\")):(i=E(r))?i.call(r,u,s):u(r)):s(e)}catch(t){s(t)}};r.length>i;)c(r[i++]);t._c=[],t._n=!1,n&&!t._h&&k(t)})}},k=function(t){y.call(u,function(){var n,r,e,o=t._v;if(C(t)&&(n=T(function(){b?w.emit(\"unhandledRejection\",o,t):(r=u.onunhandledrejection)?r({promise:t,reason:o}):(e=u.console)&&e.error&&e.error(\"Unhandled promise rejection\",o)}),t._h=b||C(t)?2:1),t._a=void 0,n)throw n.error})},C=function(t){if(1==t._h)return!1;for(var n,r=t._a||t._c,e=0;r.length>e;)if(n=r[e++],n.fail||!C(n.promise))return!1;return!0},I=function(t){y.call(u,function(){var n;b?w.emit(\"rejectionHandled\",t):(n=u.onrejectionhandled)&&n({promise:t,reason:t._v})})},R=function(t){var n=this;n._d||(n._d=!0,n=n._w||n,n._v=t,n._s=2,n._a||(n._a=n._c.slice()),A(n,!0))},F=function(t){var n,r=this;if(!r._d){r._d=!0,r=r._w||r;try{if(r===t)throw m(\"Promise can't be resolved itself\");(n=E(t))?_(function(){var e={_w:r,_d:!1};try{n.call(t,s(F,e,1),s(R,e,1))}catch(t){R.call(e,t)}}):(r._v=t,r._s=1,A(r,!1))}catch(t){R.call({_w:r,_d:!1},t)}}};j||(g=function(t){v(this,g,x,\"_h\"),l(t),e.call(this);try{t(s(F,this,1),s(R,this,1))}catch(t){R.call(this,t)}},e=function(t){this._c=[],this._a=void 0,this._s=0,this._d=!1,this._v=void 0,this._h=0,this._n=!1},e.prototype=r(56)(g.prototype,{then:function(t,n){var r=P(d(this,g));return r.ok=\"function\"!=typeof t||t,r.fail=\"function\"==typeof n&&n,r.domain=b?w.domain:void 0,this._c.push(r),this._a&&this._a.push(r),this._s&&A(this,!1),r.promise},catch:function(t){return this.then(void 0,t)}}),M=function(){var t=new e;this.promise=t,this.resolve=s(F,t,1),this.reject=s(R,t,1)}),a(a.G+a.W+a.F*!j,{Promise:g}),r(18)(g,x),r(59)(x),i=r(6)[x],a(a.S+a.F*!j,x,{reject:function(t){var n=P(this),r=n.reject;return r(t),n.promise}}),a(a.S+a.F*(c||!j),x,{resolve:function(t){if(t instanceof g&&S(t.constructor,this))return t;var n=P(this),r=n.resolve;return r(t),n.promise}}),a(a.S+a.F*!(j&&r(46)(function(t){g.all(t).catch(O)})),x,{all:function(t){var n=this,r=P(n),e=r.resolve,o=r.reject,i=T(function(){var r=[],i=0,c=1;h(t,!1,function(t){var u=i++,s=!1;r.push(void 0),c++,n.resolve(t).then(function(t){s||(s=!0,r[u]=t,--c||e(r))},o)}),--c||e(r)});return i&&o(i.error),r.promise},race:function(t){var n=this,r=P(n),e=r.reject,o=T(function(){h(t,!1,function(t){n.resolve(t).then(r.resolve,e)})});return o&&e(o.error),r.promise}})},function(t,n,r){\"use strict\";var e=r(61)(!0);r(27)(String,\"String\",function(t){this._t=String(t),this._i=0},function(){var t,n=this._t,r=this._i;return r>=n.length?{value:void 0,done:!0}:(t=e(n,r),this._i+=t.length,{value:t,done:!1})})},function(t,n,r){r(65);for(var e=r(2),o=r(5),i=r(10),c=r(1)(\"toStringTag\"),u=[\"NodeList\",\"DOMTokenList\",\"MediaList\",\"StyleSheetList\",\"CSSRuleList\"],s=0;s<5;s++){var f=u[s],a=e[f],p=a&&a.prototype;p&&!p[c]&&o(p,c,f),i[f]=i.Array}},function(t,n){t.exports=__webpack_require__(/*! child_process */ \"child_process\")},function(t,n){t.exports=__webpack_require__(/*! crypto */ \"crypto\")}])});\n\n//# sourceURL=webpack://electron/./node_modules/node-machine-id/dist/index.js?");
+!function(t,n){ true?module.exports=n(__webpack_require__(2081),__webpack_require__(6113)):0}(this,function(t,n){return function(t){function n(e){if(r[e])return r[e].exports;var o=r[e]={exports:{},id:e,loaded:!1};return t[e].call(o.exports,o,o.exports,n),o.loaded=!0,o.exports}var r={};return n.m=t,n.c=r,n.p="",n(0)}([function(t,n,r){t.exports=r(34)},function(t,n,r){var e=r(29)("wks"),o=r(33),i=r(2).Symbol,c="function"==typeof i,u=t.exports=function(t){return e[t]||(e[t]=c&&i[t]||(c?i:o)("Symbol."+t))};u.store=e},function(t,n){var r=t.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=r)},function(t,n,r){var e=r(9);t.exports=function(t){if(!e(t))throw TypeError(t+" is not an object!");return t}},function(t,n,r){t.exports=!r(24)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(t,n,r){var e=r(12),o=r(17);t.exports=r(4)?function(t,n,r){return e.f(t,n,o(1,r))}:function(t,n,r){return t[n]=r,t}},function(t,n){var r=t.exports={version:"2.4.0"};"number"==typeof __e&&(__e=r)},function(t,n,r){var e=r(14);t.exports=function(t,n,r){if(e(t),void 0===n)return t;switch(r){case 1:return function(r){return t.call(n,r)};case 2:return function(r,e){return t.call(n,r,e)};case 3:return function(r,e,o){return t.call(n,r,e,o)}}return function(){return t.apply(n,arguments)}}},function(t,n){var r={}.hasOwnProperty;t.exports=function(t,n){return r.call(t,n)}},function(t,n){t.exports=function(t){return"object"==typeof t?null!==t:"function"==typeof t}},function(t,n){t.exports={}},function(t,n){var r={}.toString;t.exports=function(t){return r.call(t).slice(8,-1)}},function(t,n,r){var e=r(3),o=r(26),i=r(32),c=Object.defineProperty;n.f=r(4)?Object.defineProperty:function(t,n,r){if(e(t),n=i(n,!0),e(r),o)try{return c(t,n,r)}catch(t){}if("get"in r||"set"in r)throw TypeError("Accessors not supported!");return"value"in r&&(t[n]=r.value),t}},function(t,n,r){var e=r(42),o=r(15);t.exports=function(t){return e(o(t))}},function(t,n){t.exports=function(t){if("function"!=typeof t)throw TypeError(t+" is not a function!");return t}},function(t,n){t.exports=function(t){if(void 0==t)throw TypeError("Can't call method on  "+t);return t}},function(t,n,r){var e=r(9),o=r(2).document,i=e(o)&&e(o.createElement);t.exports=function(t){return i?o.createElement(t):{}}},function(t,n){t.exports=function(t,n){return{enumerable:!(1&t),configurable:!(2&t),writable:!(4&t),value:n}}},function(t,n,r){var e=r(12).f,o=r(8),i=r(1)("toStringTag");t.exports=function(t,n,r){t&&!o(t=r?t:t.prototype,i)&&e(t,i,{configurable:!0,value:n})}},function(t,n,r){var e=r(29)("keys"),o=r(33);t.exports=function(t){return e[t]||(e[t]=o(t))}},function(t,n){var r=Math.ceil,e=Math.floor;t.exports=function(t){return isNaN(t=+t)?0:(t>0?e:r)(t)}},function(t,n,r){var e=r(11),o=r(1)("toStringTag"),i="Arguments"==e(function(){return arguments}()),c=function(t,n){try{return t[n]}catch(t){}};t.exports=function(t){var n,r,u;return void 0===t?"Undefined":null===t?"Null":"string"==typeof(r=c(n=Object(t),o))?r:i?e(n):"Object"==(u=e(n))&&"function"==typeof n.callee?"Arguments":u}},function(t,n){t.exports="constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(",")},function(t,n,r){var e=r(2),o=r(6),i=r(7),c=r(5),u="prototype",s=function(t,n,r){var f,a,p,l=t&s.F,v=t&s.G,h=t&s.S,d=t&s.P,y=t&s.B,_=t&s.W,x=v?o:o[n]||(o[n]={}),m=x[u],w=v?e:h?e[n]:(e[n]||{})[u];v&&(r=n);for(f in r)a=!l&&w&&void 0!==w[f],a&&f in x||(p=a?w[f]:r[f],x[f]=v&&"function"!=typeof w[f]?r[f]:y&&a?i(p,e):_&&w[f]==p?function(t){var n=function(n,r,e){if(this instanceof t){switch(arguments.length){case 0:return new t;case 1:return new t(n);case 2:return new t(n,r)}return new t(n,r,e)}return t.apply(this,arguments)};return n[u]=t[u],n}(p):d&&"function"==typeof p?i(Function.call,p):p,d&&((x.virtual||(x.virtual={}))[f]=p,t&s.R&&m&&!m[f]&&c(m,f,p)))};s.F=1,s.G=2,s.S=4,s.P=8,s.B=16,s.W=32,s.U=64,s.R=128,t.exports=s},function(t,n){t.exports=function(t){try{return!!t()}catch(t){return!0}}},function(t,n,r){t.exports=r(2).document&&document.documentElement},function(t,n,r){t.exports=!r(4)&&!r(24)(function(){return 7!=Object.defineProperty(r(16)("div"),"a",{get:function(){return 7}}).a})},function(t,n,r){"use strict";var e=r(28),o=r(23),i=r(57),c=r(5),u=r(8),s=r(10),f=r(45),a=r(18),p=r(52),l=r(1)("iterator"),v=!([].keys&&"next"in[].keys()),h="@@iterator",d="keys",y="values",_=function(){return this};t.exports=function(t,n,r,x,m,w,g){f(r,n,x);var b,O,j,S=function(t){if(!v&&t in T)return T[t];switch(t){case d:return function(){return new r(this,t)};case y:return function(){return new r(this,t)}}return function(){return new r(this,t)}},E=n+" Iterator",P=m==y,M=!1,T=t.prototype,A=T[l]||T[h]||m&&T[m],k=A||S(m),C=m?P?S("entries"):k:void 0,I="Array"==n?T.entries||A:A;if(I&&(j=p(I.call(new t)),j!==Object.prototype&&(a(j,E,!0),e||u(j,l)||c(j,l,_))),P&&A&&A.name!==y&&(M=!0,k=function(){return A.call(this)}),e&&!g||!v&&!M&&T[l]||c(T,l,k),s[n]=k,s[E]=_,m)if(b={values:P?k:S(y),keys:w?k:S(d),entries:C},g)for(O in b)O in T||i(T,O,b[O]);else o(o.P+o.F*(v||M),n,b);return b}},function(t,n){t.exports=!0},function(t,n,r){var e=r(2),o="__core-js_shared__",i=e[o]||(e[o]={});t.exports=function(t){return i[t]||(i[t]={})}},function(t,n,r){var e,o,i,c=r(7),u=r(41),s=r(25),f=r(16),a=r(2),p=a.process,l=a.setImmediate,v=a.clearImmediate,h=a.MessageChannel,d=0,y={},_="onreadystatechange",x=function(){var t=+this;if(y.hasOwnProperty(t)){var n=y[t];delete y[t],n()}},m=function(t){x.call(t.data)};l&&v||(l=function(t){for(var n=[],r=1;arguments.length>r;)n.push(arguments[r++]);return y[++d]=function(){u("function"==typeof t?t:Function(t),n)},e(d),d},v=function(t){delete y[t]},"process"==r(11)(p)?e=function(t){p.nextTick(c(x,t,1))}:h?(o=new h,i=o.port2,o.port1.onmessage=m,e=c(i.postMessage,i,1)):a.addEventListener&&"function"==typeof postMessage&&!a.importScripts?(e=function(t){a.postMessage(t+"","*")},a.addEventListener("message",m,!1)):e=_ in f("script")?function(t){s.appendChild(f("script"))[_]=function(){s.removeChild(this),x.call(t)}}:function(t){setTimeout(c(x,t,1),0)}),t.exports={set:l,clear:v}},function(t,n,r){var e=r(20),o=Math.min;t.exports=function(t){return t>0?o(e(t),9007199254740991):0}},function(t,n,r){var e=r(9);t.exports=function(t,n){if(!e(t))return t;var r,o;if(n&&"function"==typeof(r=t.toString)&&!e(o=r.call(t)))return o;if("function"==typeof(r=t.valueOf)&&!e(o=r.call(t)))return o;if(!n&&"function"==typeof(r=t.toString)&&!e(o=r.call(t)))return o;throw TypeError("Can't convert object to primitive value")}},function(t,n){var r=0,e=Math.random();t.exports=function(t){return"Symbol(".concat(void 0===t?"":t,")_",(++r+e).toString(36))}},function(t,n,r){"use strict";function e(t){return t&&t.__esModule?t:{default:t}}function o(){return"win32"!==process.platform?"":"ia32"===process.arch&&process.env.hasOwnProperty("PROCESSOR_ARCHITEW6432")?"mixed":"native"}function i(t){return(0,l.createHash)("sha256").update(t).digest("hex")}function c(t){switch(h){case"darwin":return t.split("IOPlatformUUID")[1].split("\n")[0].replace(/\=|\s+|\"/gi,"").toLowerCase();case"win32":return t.toString().split("REG_SZ")[1].replace(/\r+|\n+|\s+/gi,"").toLowerCase();case"linux":return t.toString().replace(/\r+|\n+|\s+/gi,"").toLowerCase();case"freebsd":return t.toString().replace(/\r+|\n+|\s+/gi,"").toLowerCase();default:throw new Error("Unsupported platform: "+process.platform)}}function u(t){var n=c((0,p.execSync)(y[h]).toString());return t?n:i(n)}function s(t){return new a.default(function(n,r){return(0,p.exec)(y[h],{},function(e,o,u){if(e)return r(new Error("Error while obtaining machine id: "+e.stack));var s=c(o.toString());return n(t?s:i(s))})})}Object.defineProperty(n,"__esModule",{value:!0});var f=r(35),a=e(f);n.machineIdSync=u,n.machineId=s;var p=r(70),l=r(71),v=process,h=v.platform,d={native:"%windir%\\System32",mixed:"%windir%\\sysnative\\cmd.exe /c %windir%\\System32"},y={darwin:"ioreg -rd1 -c IOPlatformExpertDevice",win32:d[o()]+"\\REG.exe QUERY HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Cryptography /v MachineGuid",linux:"( cat /var/lib/dbus/machine-id /etc/machine-id 2> /dev/null || hostname ) | head -n 1 || :",freebsd:"kenv -q smbios.system.uuid || sysctl -n kern.hostuuid"}},function(t,n,r){t.exports={default:r(36),__esModule:!0}},function(t,n,r){r(66),r(68),r(69),r(67),t.exports=r(6).Promise},function(t,n){t.exports=function(){}},function(t,n){t.exports=function(t,n,r,e){if(!(t instanceof n)||void 0!==e&&e in t)throw TypeError(r+": incorrect invocation!");return t}},function(t,n,r){var e=r(13),o=r(31),i=r(62);t.exports=function(t){return function(n,r,c){var u,s=e(n),f=o(s.length),a=i(c,f);if(t&&r!=r){for(;f>a;)if(u=s[a++],u!=u)return!0}else for(;f>a;a++)if((t||a in s)&&s[a]===r)return t||a||0;return!t&&-1}}},function(t,n,r){var e=r(7),o=r(44),i=r(43),c=r(3),u=r(31),s=r(64),f={},a={},n=t.exports=function(t,n,r,p,l){var v,h,d,y,_=l?function(){return t}:s(t),x=e(r,p,n?2:1),m=0;if("function"!=typeof _)throw TypeError(t+" is not iterable!");if(i(_)){for(v=u(t.length);v>m;m++)if(y=n?x(c(h=t[m])[0],h[1]):x(t[m]),y===f||y===a)return y}else for(d=_.call(t);!(h=d.next()).done;)if(y=o(d,x,h.value,n),y===f||y===a)return y};n.BREAK=f,n.RETURN=a},function(t,n){t.exports=function(t,n,r){var e=void 0===r;switch(n.length){case 0:return e?t():t.call(r);case 1:return e?t(n[0]):t.call(r,n[0]);case 2:return e?t(n[0],n[1]):t.call(r,n[0],n[1]);case 3:return e?t(n[0],n[1],n[2]):t.call(r,n[0],n[1],n[2]);case 4:return e?t(n[0],n[1],n[2],n[3]):t.call(r,n[0],n[1],n[2],n[3])}return t.apply(r,n)}},function(t,n,r){var e=r(11);t.exports=Object("z").propertyIsEnumerable(0)?Object:function(t){return"String"==e(t)?t.split(""):Object(t)}},function(t,n,r){var e=r(10),o=r(1)("iterator"),i=Array.prototype;t.exports=function(t){return void 0!==t&&(e.Array===t||i[o]===t)}},function(t,n,r){var e=r(3);t.exports=function(t,n,r,o){try{return o?n(e(r)[0],r[1]):n(r)}catch(n){var i=t.return;throw void 0!==i&&e(i.call(t)),n}}},function(t,n,r){"use strict";var e=r(49),o=r(17),i=r(18),c={};r(5)(c,r(1)("iterator"),function(){return this}),t.exports=function(t,n,r){t.prototype=e(c,{next:o(1,r)}),i(t,n+" Iterator")}},function(t,n,r){var e=r(1)("iterator"),o=!1;try{var i=[7][e]();i.return=function(){o=!0},Array.from(i,function(){throw 2})}catch(t){}t.exports=function(t,n){if(!n&&!o)return!1;var r=!1;try{var i=[7],c=i[e]();c.next=function(){return{done:r=!0}},i[e]=function(){return c},t(i)}catch(t){}return r}},function(t,n){t.exports=function(t,n){return{value:n,done:!!t}}},function(t,n,r){var e=r(2),o=r(30).set,i=e.MutationObserver||e.WebKitMutationObserver,c=e.process,u=e.Promise,s="process"==r(11)(c);t.exports=function(){var t,n,r,f=function(){var e,o;for(s&&(e=c.domain)&&e.exit();t;){o=t.fn,t=t.next;try{o()}catch(e){throw t?r():n=void 0,e}}n=void 0,e&&e.enter()};if(s)r=function(){c.nextTick(f)};else if(i){var a=!0,p=document.createTextNode("");new i(f).observe(p,{characterData:!0}),r=function(){p.data=a=!a}}else if(u&&u.resolve){var l=u.resolve();r=function(){l.then(f)}}else r=function(){o.call(e,f)};return function(e){var o={fn:e,next:void 0};n&&(n.next=o),t||(t=o,r()),n=o}}},function(t,n,r){var e=r(3),o=r(50),i=r(22),c=r(19)("IE_PROTO"),u=function(){},s="prototype",f=function(){var t,n=r(16)("iframe"),e=i.length,o=">";for(n.style.display="none",r(25).appendChild(n),n.src="javascript:",t=n.contentWindow.document,t.open(),t.write("<script>document.F=Object</script"+o),t.close(),f=t.F;e--;)delete f[s][i[e]];return f()};t.exports=Object.create||function(t,n){var r;return null!==t?(u[s]=e(t),r=new u,u[s]=null,r[c]=t):r=f(),void 0===n?r:o(r,n)}},function(t,n,r){var e=r(12),o=r(3),i=r(54);t.exports=r(4)?Object.defineProperties:function(t,n){o(t);for(var r,c=i(n),u=c.length,s=0;u>s;)e.f(t,r=c[s++],n[r]);return t}},function(t,n,r){var e=r(55),o=r(17),i=r(13),c=r(32),u=r(8),s=r(26),f=Object.getOwnPropertyDescriptor;n.f=r(4)?f:function(t,n){if(t=i(t),n=c(n,!0),s)try{return f(t,n)}catch(t){}if(u(t,n))return o(!e.f.call(t,n),t[n])}},function(t,n,r){var e=r(8),o=r(63),i=r(19)("IE_PROTO"),c=Object.prototype;t.exports=Object.getPrototypeOf||function(t){return t=o(t),e(t,i)?t[i]:"function"==typeof t.constructor&&t instanceof t.constructor?t.constructor.prototype:t instanceof Object?c:null}},function(t,n,r){var e=r(8),o=r(13),i=r(39)(!1),c=r(19)("IE_PROTO");t.exports=function(t,n){var r,u=o(t),s=0,f=[];for(r in u)r!=c&&e(u,r)&&f.push(r);for(;n.length>s;)e(u,r=n[s++])&&(~i(f,r)||f.push(r));return f}},function(t,n,r){var e=r(53),o=r(22);t.exports=Object.keys||function(t){return e(t,o)}},function(t,n){n.f={}.propertyIsEnumerable},function(t,n,r){var e=r(5);t.exports=function(t,n,r){for(var o in n)r&&t[o]?t[o]=n[o]:e(t,o,n[o]);return t}},function(t,n,r){t.exports=r(5)},function(t,n,r){var e=r(9),o=r(3),i=function(t,n){if(o(t),!e(n)&&null!==n)throw TypeError(n+": can't set as prototype!")};t.exports={set:Object.setPrototypeOf||("__proto__"in{}?function(t,n,e){try{e=r(7)(Function.call,r(51).f(Object.prototype,"__proto__").set,2),e(t,[]),n=!(t instanceof Array)}catch(t){n=!0}return function(t,r){return i(t,r),n?t.__proto__=r:e(t,r),t}}({},!1):void 0),check:i}},function(t,n,r){"use strict";var e=r(2),o=r(6),i=r(12),c=r(4),u=r(1)("species");t.exports=function(t){var n="function"==typeof o[t]?o[t]:e[t];c&&n&&!n[u]&&i.f(n,u,{configurable:!0,get:function(){return this}})}},function(t,n,r){var e=r(3),o=r(14),i=r(1)("species");t.exports=function(t,n){var r,c=e(t).constructor;return void 0===c||void 0==(r=e(c)[i])?n:o(r)}},function(t,n,r){var e=r(20),o=r(15);t.exports=function(t){return function(n,r){var i,c,u=String(o(n)),s=e(r),f=u.length;return s<0||s>=f?t?"":void 0:(i=u.charCodeAt(s),i<55296||i>56319||s+1===f||(c=u.charCodeAt(s+1))<56320||c>57343?t?u.charAt(s):i:t?u.slice(s,s+2):(i-55296<<10)+(c-56320)+65536)}}},function(t,n,r){var e=r(20),o=Math.max,i=Math.min;t.exports=function(t,n){return t=e(t),t<0?o(t+n,0):i(t,n)}},function(t,n,r){var e=r(15);t.exports=function(t){return Object(e(t))}},function(t,n,r){var e=r(21),o=r(1)("iterator"),i=r(10);t.exports=r(6).getIteratorMethod=function(t){if(void 0!=t)return t[o]||t["@@iterator"]||i[e(t)]}},function(t,n,r){"use strict";var e=r(37),o=r(47),i=r(10),c=r(13);t.exports=r(27)(Array,"Array",function(t,n){this._t=c(t),this._i=0,this._k=n},function(){var t=this._t,n=this._k,r=this._i++;return!t||r>=t.length?(this._t=void 0,o(1)):"keys"==n?o(0,r):"values"==n?o(0,t[r]):o(0,[r,t[r]])},"values"),i.Arguments=i.Array,e("keys"),e("values"),e("entries")},function(t,n){},function(t,n,r){"use strict";var e,o,i,c=r(28),u=r(2),s=r(7),f=r(21),a=r(23),p=r(9),l=(r(3),r(14)),v=r(38),h=r(40),d=(r(58).set,r(60)),y=r(30).set,_=r(48)(),x="Promise",m=u.TypeError,w=u.process,g=u[x],w=u.process,b="process"==f(w),O=function(){},j=!!function(){try{var t=g.resolve(1),n=(t.constructor={})[r(1)("species")]=function(t){t(O,O)};return(b||"function"==typeof PromiseRejectionEvent)&&t.then(O)instanceof n}catch(t){}}(),S=function(t,n){return t===n||t===g&&n===i},E=function(t){var n;return!(!p(t)||"function"!=typeof(n=t.then))&&n},P=function(t){return S(g,t)?new M(t):new o(t)},M=o=function(t){var n,r;this.promise=new t(function(t,e){if(void 0!==n||void 0!==r)throw m("Bad Promise constructor");n=t,r=e}),this.resolve=l(n),this.reject=l(r)},T=function(t){try{t()}catch(t){return{error:t}}},A=function(t,n){if(!t._n){t._n=!0;var r=t._c;_(function(){for(var e=t._v,o=1==t._s,i=0,c=function(n){var r,i,c=o?n.ok:n.fail,u=n.resolve,s=n.reject,f=n.domain;try{c?(o||(2==t._h&&I(t),t._h=1),c===!0?r=e:(f&&f.enter(),r=c(e),f&&f.exit()),r===n.promise?s(m("Promise-chain cycle")):(i=E(r))?i.call(r,u,s):u(r)):s(e)}catch(t){s(t)}};r.length>i;)c(r[i++]);t._c=[],t._n=!1,n&&!t._h&&k(t)})}},k=function(t){y.call(u,function(){var n,r,e,o=t._v;if(C(t)&&(n=T(function(){b?w.emit("unhandledRejection",o,t):(r=u.onunhandledrejection)?r({promise:t,reason:o}):(e=u.console)&&e.error&&e.error("Unhandled promise rejection",o)}),t._h=b||C(t)?2:1),t._a=void 0,n)throw n.error})},C=function(t){if(1==t._h)return!1;for(var n,r=t._a||t._c,e=0;r.length>e;)if(n=r[e++],n.fail||!C(n.promise))return!1;return!0},I=function(t){y.call(u,function(){var n;b?w.emit("rejectionHandled",t):(n=u.onrejectionhandled)&&n({promise:t,reason:t._v})})},R=function(t){var n=this;n._d||(n._d=!0,n=n._w||n,n._v=t,n._s=2,n._a||(n._a=n._c.slice()),A(n,!0))},F=function(t){var n,r=this;if(!r._d){r._d=!0,r=r._w||r;try{if(r===t)throw m("Promise can't be resolved itself");(n=E(t))?_(function(){var e={_w:r,_d:!1};try{n.call(t,s(F,e,1),s(R,e,1))}catch(t){R.call(e,t)}}):(r._v=t,r._s=1,A(r,!1))}catch(t){R.call({_w:r,_d:!1},t)}}};j||(g=function(t){v(this,g,x,"_h"),l(t),e.call(this);try{t(s(F,this,1),s(R,this,1))}catch(t){R.call(this,t)}},e=function(t){this._c=[],this._a=void 0,this._s=0,this._d=!1,this._v=void 0,this._h=0,this._n=!1},e.prototype=r(56)(g.prototype,{then:function(t,n){var r=P(d(this,g));return r.ok="function"!=typeof t||t,r.fail="function"==typeof n&&n,r.domain=b?w.domain:void 0,this._c.push(r),this._a&&this._a.push(r),this._s&&A(this,!1),r.promise},catch:function(t){return this.then(void 0,t)}}),M=function(){var t=new e;this.promise=t,this.resolve=s(F,t,1),this.reject=s(R,t,1)}),a(a.G+a.W+a.F*!j,{Promise:g}),r(18)(g,x),r(59)(x),i=r(6)[x],a(a.S+a.F*!j,x,{reject:function(t){var n=P(this),r=n.reject;return r(t),n.promise}}),a(a.S+a.F*(c||!j),x,{resolve:function(t){if(t instanceof g&&S(t.constructor,this))return t;var n=P(this),r=n.resolve;return r(t),n.promise}}),a(a.S+a.F*!(j&&r(46)(function(t){g.all(t).catch(O)})),x,{all:function(t){var n=this,r=P(n),e=r.resolve,o=r.reject,i=T(function(){var r=[],i=0,c=1;h(t,!1,function(t){var u=i++,s=!1;r.push(void 0),c++,n.resolve(t).then(function(t){s||(s=!0,r[u]=t,--c||e(r))},o)}),--c||e(r)});return i&&o(i.error),r.promise},race:function(t){var n=this,r=P(n),e=r.reject,o=T(function(){h(t,!1,function(t){n.resolve(t).then(r.resolve,e)})});return o&&e(o.error),r.promise}})},function(t,n,r){"use strict";var e=r(61)(!0);r(27)(String,"String",function(t){this._t=String(t),this._i=0},function(){var t,n=this._t,r=this._i;return r>=n.length?{value:void 0,done:!0}:(t=e(n,r),this._i+=t.length,{value:t,done:!1})})},function(t,n,r){r(65);for(var e=r(2),o=r(5),i=r(10),c=r(1)("toStringTag"),u=["NodeList","DOMTokenList","MediaList","StyleSheetList","CSSRuleList"],s=0;s<5;s++){var f=u[s],a=e[f],p=a&&a.prototype;p&&!p[c]&&o(p,c,f),i[f]=i.Array}},function(t,n){t.exports=__webpack_require__(2081)},function(t,n){t.exports=__webpack_require__(6113)}])});
 
 /***/ }),
 
-/***/ "./node_modules/rfdc/index.js":
-/*!************************************!*\
-  !*** ./node_modules/rfdc/index.js ***!
-  \************************************/
+/***/ 3188:
 /***/ ((module) => {
 
 "use strict";
-eval("\nmodule.exports = rfdc\n\nfunction copyBuffer (cur) {\n  if (cur instanceof Buffer) {\n    return Buffer.from(cur)\n  }\n\n  return new cur.constructor(cur.buffer.slice(), cur.byteOffset, cur.length)\n}\n\nfunction rfdc (opts) {\n  opts = opts || {}\n\n  if (opts.circles) return rfdcCircles(opts)\n  return opts.proto ? cloneProto : clone\n\n  function cloneArray (a, fn) {\n    var keys = Object.keys(a)\n    var a2 = new Array(keys.length)\n    for (var i = 0; i < keys.length; i++) {\n      var k = keys[i]\n      var cur = a[k]\n      if (typeof cur !== 'object' || cur === null) {\n        a2[k] = cur\n      } else if (cur instanceof Date) {\n        a2[k] = new Date(cur)\n      } else if (ArrayBuffer.isView(cur)) {\n        a2[k] = copyBuffer(cur)\n      } else {\n        a2[k] = fn(cur)\n      }\n    }\n    return a2\n  }\n\n  function clone (o) {\n    if (typeof o !== 'object' || o === null) return o\n    if (o instanceof Date) return new Date(o)\n    if (Array.isArray(o)) return cloneArray(o, clone)\n    if (o instanceof Map) return new Map(cloneArray(Array.from(o), clone))\n    if (o instanceof Set) return new Set(cloneArray(Array.from(o), clone))\n    var o2 = {}\n    for (var k in o) {\n      if (Object.hasOwnProperty.call(o, k) === false) continue\n      var cur = o[k]\n      if (typeof cur !== 'object' || cur === null) {\n        o2[k] = cur\n      } else if (cur instanceof Date) {\n        o2[k] = new Date(cur)\n      } else if (cur instanceof Map) {\n        o2[k] = new Map(cloneArray(Array.from(cur), clone))\n      } else if (cur instanceof Set) {\n        o2[k] = new Set(cloneArray(Array.from(cur), clone))\n      } else if (ArrayBuffer.isView(cur)) {\n        o2[k] = copyBuffer(cur)\n      } else {\n        o2[k] = clone(cur)\n      }\n    }\n    return o2\n  }\n\n  function cloneProto (o) {\n    if (typeof o !== 'object' || o === null) return o\n    if (o instanceof Date) return new Date(o)\n    if (Array.isArray(o)) return cloneArray(o, cloneProto)\n    if (o instanceof Map) return new Map(cloneArray(Array.from(o), cloneProto))\n    if (o instanceof Set) return new Set(cloneArray(Array.from(o), cloneProto))\n    var o2 = {}\n    for (var k in o) {\n      var cur = o[k]\n      if (typeof cur !== 'object' || cur === null) {\n        o2[k] = cur\n      } else if (cur instanceof Date) {\n        o2[k] = new Date(cur)\n      } else if (cur instanceof Map) {\n        o2[k] = new Map(cloneArray(Array.from(cur), cloneProto))\n      } else if (cur instanceof Set) {\n        o2[k] = new Set(cloneArray(Array.from(cur), cloneProto))\n      } else if (ArrayBuffer.isView(cur)) {\n        o2[k] = copyBuffer(cur)\n      } else {\n        o2[k] = cloneProto(cur)\n      }\n    }\n    return o2\n  }\n}\n\nfunction rfdcCircles (opts) {\n  var refs = []\n  var refsNew = []\n\n  return opts.proto ? cloneProto : clone\n\n  function cloneArray (a, fn) {\n    var keys = Object.keys(a)\n    var a2 = new Array(keys.length)\n    for (var i = 0; i < keys.length; i++) {\n      var k = keys[i]\n      var cur = a[k]\n      if (typeof cur !== 'object' || cur === null) {\n        a2[k] = cur\n      } else if (cur instanceof Date) {\n        a2[k] = new Date(cur)\n      } else if (ArrayBuffer.isView(cur)) {\n        a2[k] = copyBuffer(cur)\n      } else {\n        var index = refs.indexOf(cur)\n        if (index !== -1) {\n          a2[k] = refsNew[index]\n        } else {\n          a2[k] = fn(cur)\n        }\n      }\n    }\n    return a2\n  }\n\n  function clone (o) {\n    if (typeof o !== 'object' || o === null) return o\n    if (o instanceof Date) return new Date(o)\n    if (Array.isArray(o)) return cloneArray(o, clone)\n    if (o instanceof Map) return new Map(cloneArray(Array.from(o), clone))\n    if (o instanceof Set) return new Set(cloneArray(Array.from(o), clone))\n    var o2 = {}\n    refs.push(o)\n    refsNew.push(o2)\n    for (var k in o) {\n      if (Object.hasOwnProperty.call(o, k) === false) continue\n      var cur = o[k]\n      if (typeof cur !== 'object' || cur === null) {\n        o2[k] = cur\n      } else if (cur instanceof Date) {\n        o2[k] = new Date(cur)\n      } else if (cur instanceof Map) {\n        o2[k] = new Map(cloneArray(Array.from(cur), clone))\n      } else if (cur instanceof Set) {\n        o2[k] = new Set(cloneArray(Array.from(cur), clone))\n      } else if (ArrayBuffer.isView(cur)) {\n        o2[k] = copyBuffer(cur)\n      } else {\n        var i = refs.indexOf(cur)\n        if (i !== -1) {\n          o2[k] = refsNew[i]\n        } else {\n          o2[k] = clone(cur)\n        }\n      }\n    }\n    refs.pop()\n    refsNew.pop()\n    return o2\n  }\n\n  function cloneProto (o) {\n    if (typeof o !== 'object' || o === null) return o\n    if (o instanceof Date) return new Date(o)\n    if (Array.isArray(o)) return cloneArray(o, cloneProto)\n    if (o instanceof Map) return new Map(cloneArray(Array.from(o), cloneProto))\n    if (o instanceof Set) return new Set(cloneArray(Array.from(o), cloneProto))\n    var o2 = {}\n    refs.push(o)\n    refsNew.push(o2)\n    for (var k in o) {\n      var cur = o[k]\n      if (typeof cur !== 'object' || cur === null) {\n        o2[k] = cur\n      } else if (cur instanceof Date) {\n        o2[k] = new Date(cur)\n      } else if (cur instanceof Map) {\n        o2[k] = new Map(cloneArray(Array.from(cur), cloneProto))\n      } else if (cur instanceof Set) {\n        o2[k] = new Set(cloneArray(Array.from(cur), cloneProto))\n      } else if (ArrayBuffer.isView(cur)) {\n        o2[k] = copyBuffer(cur)\n      } else {\n        var i = refs.indexOf(cur)\n        if (i !== -1) {\n          o2[k] = refsNew[i]\n        } else {\n          o2[k] = cloneProto(cur)\n        }\n      }\n    }\n    refs.pop()\n    refsNew.pop()\n    return o2\n  }\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/rfdc/index.js?");
+
+module.exports = rfdc
+
+function copyBuffer (cur) {
+  if (cur instanceof Buffer) {
+    return Buffer.from(cur)
+  }
+
+  return new cur.constructor(cur.buffer.slice(), cur.byteOffset, cur.length)
+}
+
+function rfdc (opts) {
+  opts = opts || {}
+
+  if (opts.circles) return rfdcCircles(opts)
+  return opts.proto ? cloneProto : clone
+
+  function cloneArray (a, fn) {
+    var keys = Object.keys(a)
+    var a2 = new Array(keys.length)
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i]
+      var cur = a[k]
+      if (typeof cur !== 'object' || cur === null) {
+        a2[k] = cur
+      } else if (cur instanceof Date) {
+        a2[k] = new Date(cur)
+      } else if (ArrayBuffer.isView(cur)) {
+        a2[k] = copyBuffer(cur)
+      } else {
+        a2[k] = fn(cur)
+      }
+    }
+    return a2
+  }
+
+  function clone (o) {
+    if (typeof o !== 'object' || o === null) return o
+    if (o instanceof Date) return new Date(o)
+    if (Array.isArray(o)) return cloneArray(o, clone)
+    if (o instanceof Map) return new Map(cloneArray(Array.from(o), clone))
+    if (o instanceof Set) return new Set(cloneArray(Array.from(o), clone))
+    var o2 = {}
+    for (var k in o) {
+      if (Object.hasOwnProperty.call(o, k) === false) continue
+      var cur = o[k]
+      if (typeof cur !== 'object' || cur === null) {
+        o2[k] = cur
+      } else if (cur instanceof Date) {
+        o2[k] = new Date(cur)
+      } else if (cur instanceof Map) {
+        o2[k] = new Map(cloneArray(Array.from(cur), clone))
+      } else if (cur instanceof Set) {
+        o2[k] = new Set(cloneArray(Array.from(cur), clone))
+      } else if (ArrayBuffer.isView(cur)) {
+        o2[k] = copyBuffer(cur)
+      } else {
+        o2[k] = clone(cur)
+      }
+    }
+    return o2
+  }
+
+  function cloneProto (o) {
+    if (typeof o !== 'object' || o === null) return o
+    if (o instanceof Date) return new Date(o)
+    if (Array.isArray(o)) return cloneArray(o, cloneProto)
+    if (o instanceof Map) return new Map(cloneArray(Array.from(o), cloneProto))
+    if (o instanceof Set) return new Set(cloneArray(Array.from(o), cloneProto))
+    var o2 = {}
+    for (var k in o) {
+      var cur = o[k]
+      if (typeof cur !== 'object' || cur === null) {
+        o2[k] = cur
+      } else if (cur instanceof Date) {
+        o2[k] = new Date(cur)
+      } else if (cur instanceof Map) {
+        o2[k] = new Map(cloneArray(Array.from(cur), cloneProto))
+      } else if (cur instanceof Set) {
+        o2[k] = new Set(cloneArray(Array.from(cur), cloneProto))
+      } else if (ArrayBuffer.isView(cur)) {
+        o2[k] = copyBuffer(cur)
+      } else {
+        o2[k] = cloneProto(cur)
+      }
+    }
+    return o2
+  }
+}
+
+function rfdcCircles (opts) {
+  var refs = []
+  var refsNew = []
+
+  return opts.proto ? cloneProto : clone
+
+  function cloneArray (a, fn) {
+    var keys = Object.keys(a)
+    var a2 = new Array(keys.length)
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i]
+      var cur = a[k]
+      if (typeof cur !== 'object' || cur === null) {
+        a2[k] = cur
+      } else if (cur instanceof Date) {
+        a2[k] = new Date(cur)
+      } else if (ArrayBuffer.isView(cur)) {
+        a2[k] = copyBuffer(cur)
+      } else {
+        var index = refs.indexOf(cur)
+        if (index !== -1) {
+          a2[k] = refsNew[index]
+        } else {
+          a2[k] = fn(cur)
+        }
+      }
+    }
+    return a2
+  }
+
+  function clone (o) {
+    if (typeof o !== 'object' || o === null) return o
+    if (o instanceof Date) return new Date(o)
+    if (Array.isArray(o)) return cloneArray(o, clone)
+    if (o instanceof Map) return new Map(cloneArray(Array.from(o), clone))
+    if (o instanceof Set) return new Set(cloneArray(Array.from(o), clone))
+    var o2 = {}
+    refs.push(o)
+    refsNew.push(o2)
+    for (var k in o) {
+      if (Object.hasOwnProperty.call(o, k) === false) continue
+      var cur = o[k]
+      if (typeof cur !== 'object' || cur === null) {
+        o2[k] = cur
+      } else if (cur instanceof Date) {
+        o2[k] = new Date(cur)
+      } else if (cur instanceof Map) {
+        o2[k] = new Map(cloneArray(Array.from(cur), clone))
+      } else if (cur instanceof Set) {
+        o2[k] = new Set(cloneArray(Array.from(cur), clone))
+      } else if (ArrayBuffer.isView(cur)) {
+        o2[k] = copyBuffer(cur)
+      } else {
+        var i = refs.indexOf(cur)
+        if (i !== -1) {
+          o2[k] = refsNew[i]
+        } else {
+          o2[k] = clone(cur)
+        }
+      }
+    }
+    refs.pop()
+    refsNew.pop()
+    return o2
+  }
+
+  function cloneProto (o) {
+    if (typeof o !== 'object' || o === null) return o
+    if (o instanceof Date) return new Date(o)
+    if (Array.isArray(o)) return cloneArray(o, cloneProto)
+    if (o instanceof Map) return new Map(cloneArray(Array.from(o), cloneProto))
+    if (o instanceof Set) return new Set(cloneArray(Array.from(o), cloneProto))
+    var o2 = {}
+    refs.push(o)
+    refsNew.push(o2)
+    for (var k in o) {
+      var cur = o[k]
+      if (typeof cur !== 'object' || cur === null) {
+        o2[k] = cur
+      } else if (cur instanceof Date) {
+        o2[k] = new Date(cur)
+      } else if (cur instanceof Map) {
+        o2[k] = new Map(cloneArray(Array.from(cur), cloneProto))
+      } else if (cur instanceof Set) {
+        o2[k] = new Set(cloneArray(Array.from(cur), cloneProto))
+      } else if (ArrayBuffer.isView(cur)) {
+        o2[k] = copyBuffer(cur)
+      } else {
+        var i = refs.indexOf(cur)
+        if (i !== -1) {
+          o2[k] = refsNew[i]
+        } else {
+          o2[k] = cloneProto(cur)
+        }
+      }
+    }
+    refs.pop()
+    refsNew.pop()
+    return o2
+  }
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/lib/DateRollingFileStream.js":
-/*!****************************************************************!*\
-  !*** ./node_modules/streamroller/lib/DateRollingFileStream.js ***!
-  \****************************************************************/
+/***/ 4745:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const RollingFileWriteStream = __webpack_require__(/*! ./RollingFileWriteStream */ \"./node_modules/streamroller/lib/RollingFileWriteStream.js\");\n\n// just to adapt the previous version\nclass DateRollingFileStream extends RollingFileWriteStream {\n  constructor(filename, pattern, options) {\n    if (pattern && typeof(pattern) === 'object') {\n      options = pattern;\n      pattern = null;\n    }\n    if (!options) {\n      options = {};\n    }\n    if (!pattern) {\n      pattern = 'yyyy-MM-dd';\n    }\n    options.pattern = pattern;\n    if (!options.numBackups && options.numBackups !== 0) {\n      if (!options.daysToKeep && options.daysToKeep !== 0) {\n        options.daysToKeep = 1;\n      } else {\n        process.emitWarning(\n          \"options.daysToKeep is deprecated due to the confusion it causes when used \" + \n          \"together with file size rolling. Please use options.numBackups instead.\",\n          \"DeprecationWarning\", \"streamroller-DEP0001\"\n        );\n      }\n      options.numBackups = options.daysToKeep;\n    } else {\n      options.daysToKeep = options.numBackups;\n    }\n    super(filename, options);\n    this.mode = this.options.mode;\n  }\n\n  get theStream() {\n    return this.currentFileStream;\n  }\n\n}\n\nmodule.exports = DateRollingFileStream;\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/lib/DateRollingFileStream.js?");
+const RollingFileWriteStream = __webpack_require__(2040);
+
+// just to adapt the previous version
+class DateRollingFileStream extends RollingFileWriteStream {
+  constructor(filename, pattern, options) {
+    if (pattern && typeof(pattern) === 'object') {
+      options = pattern;
+      pattern = null;
+    }
+    if (!options) {
+      options = {};
+    }
+    if (!pattern) {
+      pattern = 'yyyy-MM-dd';
+    }
+    options.pattern = pattern;
+    if (!options.numBackups && options.numBackups !== 0) {
+      if (!options.daysToKeep && options.daysToKeep !== 0) {
+        options.daysToKeep = 1;
+      } else {
+        process.emitWarning(
+          "options.daysToKeep is deprecated due to the confusion it causes when used " + 
+          "together with file size rolling. Please use options.numBackups instead.",
+          "DeprecationWarning", "streamroller-DEP0001"
+        );
+      }
+      options.numBackups = options.daysToKeep;
+    } else {
+      options.daysToKeep = options.numBackups;
+    }
+    super(filename, options);
+    this.mode = this.options.mode;
+  }
+
+  get theStream() {
+    return this.currentFileStream;
+  }
+
+}
+
+module.exports = DateRollingFileStream;
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/lib/RollingFileStream.js":
-/*!************************************************************!*\
-  !*** ./node_modules/streamroller/lib/RollingFileStream.js ***!
-  \************************************************************/
+/***/ 6667:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const RollingFileWriteStream = __webpack_require__(/*! ./RollingFileWriteStream */ \"./node_modules/streamroller/lib/RollingFileWriteStream.js\");\n\n// just to adapt the previous version\nclass RollingFileStream extends RollingFileWriteStream {\n  constructor(filename, size, backups, options) {\n    if (!options) {\n      options = {};\n    }\n    if (size) {\n      options.maxSize = size;\n    }\n    if (!options.numBackups && options.numBackups !== 0) {\n      if (!backups && backups !== 0) {\n        backups = 1;\n      }\n      options.numBackups = backups;\n    }\n    super(filename, options);\n    this.backups = options.numBackups;\n    this.size = this.options.maxSize;\n  }\n\n  get theStream() {\n    return this.currentFileStream;\n  }\n\n}\n\nmodule.exports = RollingFileStream;\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/lib/RollingFileStream.js?");
+const RollingFileWriteStream = __webpack_require__(2040);
+
+// just to adapt the previous version
+class RollingFileStream extends RollingFileWriteStream {
+  constructor(filename, size, backups, options) {
+    if (!options) {
+      options = {};
+    }
+    if (size) {
+      options.maxSize = size;
+    }
+    if (!options.numBackups && options.numBackups !== 0) {
+      if (!backups && backups !== 0) {
+        backups = 1;
+      }
+      options.numBackups = backups;
+    }
+    super(filename, options);
+    this.backups = options.numBackups;
+    this.size = this.options.maxSize;
+  }
+
+  get theStream() {
+    return this.currentFileStream;
+  }
+
+}
+
+module.exports = RollingFileStream;
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/lib/RollingFileWriteStream.js":
-/*!*****************************************************************!*\
-  !*** ./node_modules/streamroller/lib/RollingFileWriteStream.js ***!
-  \*****************************************************************/
+/***/ 2040:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")(\"streamroller:RollingFileWriteStream\");\nconst fs = __webpack_require__(/*! fs-extra */ \"./node_modules/streamroller/node_modules/fs-extra/lib/index.js\");\nconst path = __webpack_require__(/*! path */ \"path\");\nconst os = __webpack_require__(/*! os */ \"os\");\nconst newNow = __webpack_require__(/*! ./now */ \"./node_modules/streamroller/lib/now.js\");\nconst format = __webpack_require__(/*! date-format */ \"./node_modules/date-format/lib/index.js\");\nconst { Writable } = __webpack_require__(/*! stream */ \"stream\");\nconst fileNameFormatter = __webpack_require__(/*! ./fileNameFormatter */ \"./node_modules/streamroller/lib/fileNameFormatter.js\");\nconst fileNameParser = __webpack_require__(/*! ./fileNameParser */ \"./node_modules/streamroller/lib/fileNameParser.js\");\nconst moveAndMaybeCompressFile = __webpack_require__(/*! ./moveAndMaybeCompressFile */ \"./node_modules/streamroller/lib/moveAndMaybeCompressFile.js\");\n\nconst deleteFiles = fileNames => {\n  debug(`deleteFiles: files to delete: ${fileNames}`);\n  return Promise.all(fileNames.map(f => fs.unlink(f).catch((e) => {\n    debug(`deleteFiles: error when unlinking ${f}, ignoring. Error was ${e}`);\n  })));\n};\n\n/**\n * RollingFileWriteStream is mainly used when writing to a file rolling by date or size.\n * RollingFileWriteStream inherits from stream.Writable\n */\nclass RollingFileWriteStream extends Writable {\n  /**\n   * Create a RollingFileWriteStream\n   * @constructor\n   * @param {string} filePath - The file path to write.\n   * @param {object} options - The extra options\n   * @param {number} options.numToKeep - The max numbers of files to keep.\n   * @param {number} options.maxSize - The maxSize one file can reach. Unit is Byte.\n   *                                   This should be more than 1024. The default is 0.\n   *                                   If not specified or 0, then no log rolling will happen.\n   * @param {string} options.mode - The mode of the files. The default is '0600'. Refer to stream.writable for more.\n   * @param {string} options.flags - The default is 'a'. Refer to stream.flags for more.\n   * @param {boolean} options.compress - Whether to compress backup files.\n   * @param {boolean} options.keepFileExt - Whether to keep the file extension.\n   * @param {string} options.pattern - The date string pattern in the file name.\n   * @param {boolean} options.alwaysIncludePattern - Whether to add date to the name of the first file.\n   */\n  constructor(filePath, options) {\n    debug(`constructor: creating RollingFileWriteStream. path=${filePath}`);\n    if (typeof filePath !== \"string\" || filePath.length === 0) {\n      throw new Error(`Invalid filename: ${filePath}`);\n    } else if (filePath.endsWith(path.sep)) {\n      throw new Error(`Filename is a directory: ${filePath}`);\n    } else if (filePath.indexOf(`~${path.sep}`) === 0) {\n      // handle ~ expansion: https://github.com/nodejs/node/issues/684\n      // exclude ~ and ~filename as these can be valid files\n      filePath = filePath.replace(\"~\", os.homedir());\n    }\n    super(options);\n    this.options = this._parseOption(options);\n    this.fileObject = path.parse(filePath);\n    if (this.fileObject.dir === \"\") {\n      this.fileObject = path.parse(path.join(process.cwd(), filePath));\n    }\n    this.fileFormatter = fileNameFormatter({\n      file: this.fileObject,\n      alwaysIncludeDate: this.options.alwaysIncludePattern,\n      needsIndex: this.options.maxSize < Number.MAX_SAFE_INTEGER,\n      compress: this.options.compress,\n      keepFileExt: this.options.keepFileExt,\n      fileNameSep: this.options.fileNameSep\n    });\n\n    this.fileNameParser = fileNameParser({\n      file: this.fileObject,\n      keepFileExt: this.options.keepFileExt,\n      pattern: this.options.pattern,\n      fileNameSep: this.options.fileNameSep\n    });\n\n    this.state = {\n      currentSize: 0\n    };\n\n    if (this.options.pattern) {\n      this.state.currentDate = format(this.options.pattern, newNow());\n    }\n\n    this.filename = this.fileFormatter({\n      index: 0,\n      date: this.state.currentDate\n    });\n    if ([\"a\", \"a+\", \"as\", \"as+\"].includes(this.options.flags)) {\n      this._setExistingSizeAndDate();\n    }\n\n    debug(\n      `constructor: create new file ${this.filename}, state=${JSON.stringify(\n        this.state\n      )}`\n    );\n    this._renewWriteStream();\n  }\n\n  _setExistingSizeAndDate() {\n    try {\n      const stats = fs.statSync(this.filename);\n      this.state.currentSize = stats.size;\n      if (this.options.pattern) {\n        this.state.currentDate = format(this.options.pattern, stats.mtime);\n      }\n    } catch (e) {\n      //file does not exist, that's fine - move along\n      return;\n    }\n  }\n\n  _parseOption(rawOptions) {\n    const defaultOptions = {\n      maxSize: 0,\n      numToKeep: Number.MAX_SAFE_INTEGER,\n      encoding: \"utf8\",\n      mode: parseInt(\"0600\", 8),\n      flags: \"a\",\n      compress: false,\n      keepFileExt: false,\n      alwaysIncludePattern: false\n    };\n    const options = Object.assign({}, defaultOptions, rawOptions);\n    if (!options.maxSize) {\n      delete options.maxSize;\n    } else if (options.maxSize <= 0) {\n      throw new Error(`options.maxSize (${options.maxSize}) should be > 0`);\n    }\n    // options.numBackups will supercede options.numToKeep\n    if (options.numBackups || options.numBackups === 0) {\n      if (options.numBackups < 0) {\n        throw new Error(`options.numBackups (${options.numBackups}) should be >= 0`);\n      } else if (options.numBackups >= Number.MAX_SAFE_INTEGER) {\n        // to cater for numToKeep (include the hot file) at Number.MAX_SAFE_INTEGER\n        throw new Error(`options.numBackups (${options.numBackups}) should be < Number.MAX_SAFE_INTEGER`);\n      } else {\n        options.numToKeep = options.numBackups + 1;\n      }\n    } else if (options.numToKeep <= 0) {\n      throw new Error(`options.numToKeep (${options.numToKeep}) should be > 0`);\n    }\n    debug(\n      `_parseOption: creating stream with option=${JSON.stringify(options)}`\n    );\n    return options;\n  }\n\n  _final(callback) {\n    this.currentFileStream.end(\"\", this.options.encoding, callback);\n  }\n\n  _write(chunk, encoding, callback) {\n    this._shouldRoll().then(() => {\n      debug(\n        `_write: writing chunk. ` +\n          `file=${this.currentFileStream.path} ` +\n          `state=${JSON.stringify(this.state)} ` +\n          `chunk=${chunk}`\n      );\n      this.currentFileStream.write(chunk, encoding, e => {\n        this.state.currentSize += chunk.length;\n        callback(e);\n      });\n    });\n  }\n\n  async _shouldRoll() {\n    if (this._dateChanged() || this._tooBig()) {\n      debug(\n        `_shouldRoll: rolling because dateChanged? ${this._dateChanged()} or tooBig? ${this._tooBig()}`\n      );\n      await this._roll();\n    }\n  }\n\n  _dateChanged() {\n    return (\n      this.state.currentDate &&\n      this.state.currentDate !== format(this.options.pattern, newNow())\n    );\n  }\n\n  _tooBig() {\n    return this.state.currentSize >= this.options.maxSize;\n  }\n\n  _roll() {\n    debug(`_roll: closing the current stream`);\n    return new Promise((resolve, reject) => {\n      this.currentFileStream.end(\"\", this.options.encoding, () => {\n        this._moveOldFiles()\n          .then(resolve)\n          .catch(reject);\n      });\n    });\n  }\n\n  async _moveOldFiles() {\n    const files = await this._getExistingFiles();\n    const todaysFiles = this.state.currentDate\n      ? files.filter(f => f.date === this.state.currentDate)\n      : files;\n    for (let i = todaysFiles.length; i >= 0; i--) {\n      debug(`_moveOldFiles: i = ${i}`);\n      const sourceFilePath = this.fileFormatter({\n        date: this.state.currentDate,\n        index: i\n      });\n      const targetFilePath = this.fileFormatter({\n        date: this.state.currentDate,\n        index: i + 1\n      });\n\n      const moveAndCompressOptions = {\n        compress: this.options.compress && i === 0,\n        mode: this.options.mode\n      };\n      await moveAndMaybeCompressFile(\n        sourceFilePath,\n        targetFilePath,\n        moveAndCompressOptions\n      );\n    }\n\n    this.state.currentSize = 0;\n    this.state.currentDate = this.state.currentDate\n      ? format(this.options.pattern, newNow())\n      : null;\n    debug(\n      `_moveOldFiles: finished rolling files. state=${JSON.stringify(\n        this.state\n      )}`\n    );\n    this._renewWriteStream();\n    // wait for the file to be open before cleaning up old ones,\n    // otherwise the daysToKeep calculations can be off\n    await new Promise((resolve, reject) => {\n      this.currentFileStream.write(\"\", \"utf8\", () => {\n        this._clean()\n          .then(resolve)\n          .catch(reject);\n      });\n    });\n  }\n\n  // Sorted from the oldest to the latest\n  async _getExistingFiles() {\n    const files = await fs.readdir(this.fileObject.dir)\n      .catch( /* istanbul ignore next: will not happen on windows */ () => []);\n\n    debug(`_getExistingFiles: files=${files}`);\n    const existingFileDetails = files\n      .map(n => this.fileNameParser(n))\n      .filter(n => n);\n\n    const getKey = n =>\n      (n.timestamp ? n.timestamp : newNow().getTime()) - n.index;\n    existingFileDetails.sort((a, b) => getKey(a) - getKey(b));\n\n    return existingFileDetails;\n  }\n\n  _renewWriteStream() {\n    const filePath = this.fileFormatter({\n      date: this.state.currentDate,\n      index: 0\n    });\n\n    // attempt to create the directory\n    const mkdir = (dir) => {\n      try {\n        return fs.mkdirSync(dir, { recursive: true });\n      }\n      // backward-compatible fs.mkdirSync for nodejs pre-10.12.0 (without recursive option)\n      catch (e) {\n        // recursive creation of parent first\n        if (e.code === \"ENOENT\") {\n          mkdir(path.dirname(dir));\n          return mkdir(dir);\n        }\n\n        // throw error for all except EEXIST and EROFS (read-only filesystem)\n        if (e.code !== \"EEXIST\" && e.code !== \"EROFS\") {\n          throw e;\n        }\n\n        // EEXIST: throw if file and not directory\n        // EROFS : throw if directory not found\n        else {\n          try {\n            if (fs.statSync(dir).isDirectory()) {\n              return dir;\n            }\n            throw e;\n          } catch (err) {\n            throw e;\n          }\n        }\n      }\n    };\n    mkdir(this.fileObject.dir);\n\n    const ops = {\n      flags: this.options.flags,\n      encoding: this.options.encoding,\n      mode: this.options.mode\n    };\n    const renameKey = function(obj, oldKey, newKey) {\n      obj[newKey] = obj[oldKey];\n      delete obj[oldKey];\n      return obj;\n    };\n    // try to throw EISDIR, EROFS, EACCES\n    fs.appendFileSync(filePath, \"\", renameKey({ ...ops }, \"flags\", \"flag\"));\n    this.currentFileStream = fs.createWriteStream(filePath, ops);\n    this.currentFileStream.on(\"error\", e => {\n      this.emit(\"error\", e);\n    });\n  }\n\n  async _clean() {\n    const existingFileDetails = await this._getExistingFiles();\n    debug(\n      `_clean: numToKeep = ${this.options.numToKeep}, existingFiles = ${existingFileDetails.length}`\n    );\n    debug(\"_clean: existing files are: \", existingFileDetails);\n    if (this._tooManyFiles(existingFileDetails.length)) {\n      const fileNamesToRemove = existingFileDetails\n        .slice(0, existingFileDetails.length - this.options.numToKeep)\n        .map(f => path.format({ dir: this.fileObject.dir, base: f.filename }));\n      await deleteFiles(fileNamesToRemove);\n    }\n  }\n\n  _tooManyFiles(numFiles) {\n    return this.options.numToKeep > 0 && numFiles > this.options.numToKeep;\n  }\n}\n\nmodule.exports = RollingFileWriteStream;\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/lib/RollingFileWriteStream.js?");
+const debug = __webpack_require__(5158)("streamroller:RollingFileWriteStream");
+const fs = __webpack_require__(9646);
+const path = __webpack_require__(1017);
+const os = __webpack_require__(2037);
+const newNow = __webpack_require__(142);
+const format = __webpack_require__(520);
+const { Writable } = __webpack_require__(2781);
+const fileNameFormatter = __webpack_require__(5651);
+const fileNameParser = __webpack_require__(1297);
+const moveAndMaybeCompressFile = __webpack_require__(1845);
+
+const deleteFiles = fileNames => {
+  debug(`deleteFiles: files to delete: ${fileNames}`);
+  return Promise.all(fileNames.map(f => fs.unlink(f).catch((e) => {
+    debug(`deleteFiles: error when unlinking ${f}, ignoring. Error was ${e}`);
+  })));
+};
+
+/**
+ * RollingFileWriteStream is mainly used when writing to a file rolling by date or size.
+ * RollingFileWriteStream inherits from stream.Writable
+ */
+class RollingFileWriteStream extends Writable {
+  /**
+   * Create a RollingFileWriteStream
+   * @constructor
+   * @param {string} filePath - The file path to write.
+   * @param {object} options - The extra options
+   * @param {number} options.numToKeep - The max numbers of files to keep.
+   * @param {number} options.maxSize - The maxSize one file can reach. Unit is Byte.
+   *                                   This should be more than 1024. The default is 0.
+   *                                   If not specified or 0, then no log rolling will happen.
+   * @param {string} options.mode - The mode of the files. The default is '0600'. Refer to stream.writable for more.
+   * @param {string} options.flags - The default is 'a'. Refer to stream.flags for more.
+   * @param {boolean} options.compress - Whether to compress backup files.
+   * @param {boolean} options.keepFileExt - Whether to keep the file extension.
+   * @param {string} options.pattern - The date string pattern in the file name.
+   * @param {boolean} options.alwaysIncludePattern - Whether to add date to the name of the first file.
+   */
+  constructor(filePath, options) {
+    debug(`constructor: creating RollingFileWriteStream. path=${filePath}`);
+    if (typeof filePath !== "string" || filePath.length === 0) {
+      throw new Error(`Invalid filename: ${filePath}`);
+    } else if (filePath.endsWith(path.sep)) {
+      throw new Error(`Filename is a directory: ${filePath}`);
+    } else if (filePath.indexOf(`~${path.sep}`) === 0) {
+      // handle ~ expansion: https://github.com/nodejs/node/issues/684
+      // exclude ~ and ~filename as these can be valid files
+      filePath = filePath.replace("~", os.homedir());
+    }
+    super(options);
+    this.options = this._parseOption(options);
+    this.fileObject = path.parse(filePath);
+    if (this.fileObject.dir === "") {
+      this.fileObject = path.parse(path.join(process.cwd(), filePath));
+    }
+    this.fileFormatter = fileNameFormatter({
+      file: this.fileObject,
+      alwaysIncludeDate: this.options.alwaysIncludePattern,
+      needsIndex: this.options.maxSize < Number.MAX_SAFE_INTEGER,
+      compress: this.options.compress,
+      keepFileExt: this.options.keepFileExt,
+      fileNameSep: this.options.fileNameSep
+    });
+
+    this.fileNameParser = fileNameParser({
+      file: this.fileObject,
+      keepFileExt: this.options.keepFileExt,
+      pattern: this.options.pattern,
+      fileNameSep: this.options.fileNameSep
+    });
+
+    this.state = {
+      currentSize: 0
+    };
+
+    if (this.options.pattern) {
+      this.state.currentDate = format(this.options.pattern, newNow());
+    }
+
+    this.filename = this.fileFormatter({
+      index: 0,
+      date: this.state.currentDate
+    });
+    if (["a", "a+", "as", "as+"].includes(this.options.flags)) {
+      this._setExistingSizeAndDate();
+    }
+
+    debug(
+      `constructor: create new file ${this.filename}, state=${JSON.stringify(
+        this.state
+      )}`
+    );
+    this._renewWriteStream();
+  }
+
+  _setExistingSizeAndDate() {
+    try {
+      const stats = fs.statSync(this.filename);
+      this.state.currentSize = stats.size;
+      if (this.options.pattern) {
+        this.state.currentDate = format(this.options.pattern, stats.mtime);
+      }
+    } catch (e) {
+      //file does not exist, that's fine - move along
+      return;
+    }
+  }
+
+  _parseOption(rawOptions) {
+    const defaultOptions = {
+      maxSize: 0,
+      numToKeep: Number.MAX_SAFE_INTEGER,
+      encoding: "utf8",
+      mode: parseInt("0600", 8),
+      flags: "a",
+      compress: false,
+      keepFileExt: false,
+      alwaysIncludePattern: false
+    };
+    const options = Object.assign({}, defaultOptions, rawOptions);
+    if (!options.maxSize) {
+      delete options.maxSize;
+    } else if (options.maxSize <= 0) {
+      throw new Error(`options.maxSize (${options.maxSize}) should be > 0`);
+    }
+    // options.numBackups will supercede options.numToKeep
+    if (options.numBackups || options.numBackups === 0) {
+      if (options.numBackups < 0) {
+        throw new Error(`options.numBackups (${options.numBackups}) should be >= 0`);
+      } else if (options.numBackups >= Number.MAX_SAFE_INTEGER) {
+        // to cater for numToKeep (include the hot file) at Number.MAX_SAFE_INTEGER
+        throw new Error(`options.numBackups (${options.numBackups}) should be < Number.MAX_SAFE_INTEGER`);
+      } else {
+        options.numToKeep = options.numBackups + 1;
+      }
+    } else if (options.numToKeep <= 0) {
+      throw new Error(`options.numToKeep (${options.numToKeep}) should be > 0`);
+    }
+    debug(
+      `_parseOption: creating stream with option=${JSON.stringify(options)}`
+    );
+    return options;
+  }
+
+  _final(callback) {
+    this.currentFileStream.end("", this.options.encoding, callback);
+  }
+
+  _write(chunk, encoding, callback) {
+    this._shouldRoll().then(() => {
+      debug(
+        `_write: writing chunk. ` +
+          `file=${this.currentFileStream.path} ` +
+          `state=${JSON.stringify(this.state)} ` +
+          `chunk=${chunk}`
+      );
+      this.currentFileStream.write(chunk, encoding, e => {
+        this.state.currentSize += chunk.length;
+        callback(e);
+      });
+    });
+  }
+
+  async _shouldRoll() {
+    if (this._dateChanged() || this._tooBig()) {
+      debug(
+        `_shouldRoll: rolling because dateChanged? ${this._dateChanged()} or tooBig? ${this._tooBig()}`
+      );
+      await this._roll();
+    }
+  }
+
+  _dateChanged() {
+    return (
+      this.state.currentDate &&
+      this.state.currentDate !== format(this.options.pattern, newNow())
+    );
+  }
+
+  _tooBig() {
+    return this.state.currentSize >= this.options.maxSize;
+  }
+
+  _roll() {
+    debug(`_roll: closing the current stream`);
+    return new Promise((resolve, reject) => {
+      this.currentFileStream.end("", this.options.encoding, () => {
+        this._moveOldFiles()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
+
+  async _moveOldFiles() {
+    const files = await this._getExistingFiles();
+    const todaysFiles = this.state.currentDate
+      ? files.filter(f => f.date === this.state.currentDate)
+      : files;
+    for (let i = todaysFiles.length; i >= 0; i--) {
+      debug(`_moveOldFiles: i = ${i}`);
+      const sourceFilePath = this.fileFormatter({
+        date: this.state.currentDate,
+        index: i
+      });
+      const targetFilePath = this.fileFormatter({
+        date: this.state.currentDate,
+        index: i + 1
+      });
+
+      const moveAndCompressOptions = {
+        compress: this.options.compress && i === 0,
+        mode: this.options.mode
+      };
+      await moveAndMaybeCompressFile(
+        sourceFilePath,
+        targetFilePath,
+        moveAndCompressOptions
+      );
+    }
+
+    this.state.currentSize = 0;
+    this.state.currentDate = this.state.currentDate
+      ? format(this.options.pattern, newNow())
+      : null;
+    debug(
+      `_moveOldFiles: finished rolling files. state=${JSON.stringify(
+        this.state
+      )}`
+    );
+    this._renewWriteStream();
+    // wait for the file to be open before cleaning up old ones,
+    // otherwise the daysToKeep calculations can be off
+    await new Promise((resolve, reject) => {
+      this.currentFileStream.write("", "utf8", () => {
+        this._clean()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+  }
+
+  // Sorted from the oldest to the latest
+  async _getExistingFiles() {
+    const files = await fs.readdir(this.fileObject.dir)
+      .catch( /* istanbul ignore next: will not happen on windows */ () => []);
+
+    debug(`_getExistingFiles: files=${files}`);
+    const existingFileDetails = files
+      .map(n => this.fileNameParser(n))
+      .filter(n => n);
+
+    const getKey = n =>
+      (n.timestamp ? n.timestamp : newNow().getTime()) - n.index;
+    existingFileDetails.sort((a, b) => getKey(a) - getKey(b));
+
+    return existingFileDetails;
+  }
+
+  _renewWriteStream() {
+    const filePath = this.fileFormatter({
+      date: this.state.currentDate,
+      index: 0
+    });
+
+    // attempt to create the directory
+    const mkdir = (dir) => {
+      try {
+        return fs.mkdirSync(dir, { recursive: true });
+      }
+      // backward-compatible fs.mkdirSync for nodejs pre-10.12.0 (without recursive option)
+      catch (e) {
+        // recursive creation of parent first
+        if (e.code === "ENOENT") {
+          mkdir(path.dirname(dir));
+          return mkdir(dir);
+        }
+
+        // throw error for all except EEXIST and EROFS (read-only filesystem)
+        if (e.code !== "EEXIST" && e.code !== "EROFS") {
+          throw e;
+        }
+
+        // EEXIST: throw if file and not directory
+        // EROFS : throw if directory not found
+        else {
+          try {
+            if (fs.statSync(dir).isDirectory()) {
+              return dir;
+            }
+            throw e;
+          } catch (err) {
+            throw e;
+          }
+        }
+      }
+    };
+    mkdir(this.fileObject.dir);
+
+    const ops = {
+      flags: this.options.flags,
+      encoding: this.options.encoding,
+      mode: this.options.mode
+    };
+    const renameKey = function(obj, oldKey, newKey) {
+      obj[newKey] = obj[oldKey];
+      delete obj[oldKey];
+      return obj;
+    };
+    // try to throw EISDIR, EROFS, EACCES
+    fs.appendFileSync(filePath, "", renameKey({ ...ops }, "flags", "flag"));
+    this.currentFileStream = fs.createWriteStream(filePath, ops);
+    this.currentFileStream.on("error", e => {
+      this.emit("error", e);
+    });
+  }
+
+  async _clean() {
+    const existingFileDetails = await this._getExistingFiles();
+    debug(
+      `_clean: numToKeep = ${this.options.numToKeep}, existingFiles = ${existingFileDetails.length}`
+    );
+    debug("_clean: existing files are: ", existingFileDetails);
+    if (this._tooManyFiles(existingFileDetails.length)) {
+      const fileNamesToRemove = existingFileDetails
+        .slice(0, existingFileDetails.length - this.options.numToKeep)
+        .map(f => path.format({ dir: this.fileObject.dir, base: f.filename }));
+      await deleteFiles(fileNamesToRemove);
+    }
+  }
+
+  _tooManyFiles(numFiles) {
+    return this.options.numToKeep > 0 && numFiles > this.options.numToKeep;
+  }
+}
+
+module.exports = RollingFileWriteStream;
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/lib/fileNameFormatter.js":
-/*!************************************************************!*\
-  !*** ./node_modules/streamroller/lib/fileNameFormatter.js ***!
-  \************************************************************/
+/***/ 5651:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")(\"streamroller:fileNameFormatter\");\nconst path = __webpack_require__(/*! path */ \"path\");\nconst ZIP_EXT = \".gz\";\nconst DEFAULT_FILENAME_SEP = \".\";\n\nmodule.exports = ({\n  file,\n  keepFileExt,\n  needsIndex,\n  alwaysIncludeDate,\n  compress,\n  fileNameSep\n}) => {\n  let FILENAME_SEP = fileNameSep || DEFAULT_FILENAME_SEP;\n  const dirAndName = path.join(file.dir, file.name);\n\n  const ext = f => f + file.ext;\n\n  const index = (f, i, d) =>\n    (needsIndex || !d) && i ? f + FILENAME_SEP + i : f;\n\n  const date = (f, i, d) => {\n    return (i > 0 || alwaysIncludeDate) && d ? f + FILENAME_SEP + d : f;\n  };\n\n  const gzip = (f, i) => (i && compress ? f + ZIP_EXT : f);\n\n  const parts = keepFileExt\n    ? [date, index, ext, gzip]\n    : [ext, date, index, gzip];\n\n  return ({ date, index }) => {\n    debug(`_formatFileName: date=${date}, index=${index}`);\n    return parts.reduce(\n      (filename, part) => part(filename, index, date),\n      dirAndName\n    );\n  };\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/lib/fileNameFormatter.js?");
+const debug = __webpack_require__(5158)("streamroller:fileNameFormatter");
+const path = __webpack_require__(1017);
+const ZIP_EXT = ".gz";
+const DEFAULT_FILENAME_SEP = ".";
+
+module.exports = ({
+  file,
+  keepFileExt,
+  needsIndex,
+  alwaysIncludeDate,
+  compress,
+  fileNameSep
+}) => {
+  let FILENAME_SEP = fileNameSep || DEFAULT_FILENAME_SEP;
+  const dirAndName = path.join(file.dir, file.name);
+
+  const ext = f => f + file.ext;
+
+  const index = (f, i, d) =>
+    (needsIndex || !d) && i ? f + FILENAME_SEP + i : f;
+
+  const date = (f, i, d) => {
+    return (i > 0 || alwaysIncludeDate) && d ? f + FILENAME_SEP + d : f;
+  };
+
+  const gzip = (f, i) => (i && compress ? f + ZIP_EXT : f);
+
+  const parts = keepFileExt
+    ? [date, index, ext, gzip]
+    : [ext, date, index, gzip];
+
+  return ({ date, index }) => {
+    debug(`_formatFileName: date=${date}, index=${index}`);
+    return parts.reduce(
+      (filename, part) => part(filename, index, date),
+      dirAndName
+    );
+  };
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/lib/fileNameParser.js":
-/*!*********************************************************!*\
-  !*** ./node_modules/streamroller/lib/fileNameParser.js ***!
-  \*********************************************************/
+/***/ 1297:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")(\"streamroller:fileNameParser\");\nconst ZIP_EXT = \".gz\";\nconst format = __webpack_require__(/*! date-format */ \"./node_modules/date-format/lib/index.js\");\nconst DEFAULT_FILENAME_SEP = \".\";\n\nmodule.exports = ({ file, keepFileExt, pattern, fileNameSep }) => {\n  let FILENAME_SEP = fileNameSep || DEFAULT_FILENAME_SEP;\n  // All these functions take two arguments: f, the filename, and p, the result placeholder\n  // They return the filename with any matching parts removed.\n  // The \"zip\" function, for instance, removes the \".gz\" part of the filename (if present)\n  const zip = (f, p) => {\n    if (f.endsWith(ZIP_EXT)) {\n      debug(\"it is gzipped\");\n      p.isCompressed = true;\n      return f.slice(0, -1 * ZIP_EXT.length);\n    }\n    return f;\n  };\n\n  const __NOT_MATCHING__ = \"__NOT_MATCHING__\";\n\n  const extAtEnd = f => {\n    if (f.startsWith(file.name) && f.endsWith(file.ext)) {\n      debug(\"it starts and ends with the right things\");\n      return f.slice(file.name.length + 1, -1 * file.ext.length);\n    }\n    return __NOT_MATCHING__;\n  };\n\n  const extInMiddle = f => {\n    if (f.startsWith(file.base)) {\n      debug(\"it starts with the right things\");\n      return f.slice(file.base.length + 1);\n    }\n    return __NOT_MATCHING__;\n  };\n\n  const dateAndIndex = (f, p) => {\n    const items = f.split(FILENAME_SEP);\n    let indexStr = items[items.length - 1];\n    debug(\"items: \", items, \", indexStr: \", indexStr);\n    let dateStr = f;\n    if (indexStr !== undefined && indexStr.match(/^\\d+$/)) {\n      dateStr = f.slice(0, -1 * (indexStr.length + 1));\n      debug(`dateStr is ${dateStr}`);\n      if (pattern && !dateStr) {\n        dateStr = indexStr;\n        indexStr = \"0\";\n      }\n    } else {\n      indexStr = \"0\";\n    }\n\n    try {\n      // Two arguments for new Date() are intentional. This will set other date\n      // components to minimal values in the current timezone instead of UTC,\n      // as new Date(0) will do.\n      const date = format.parse(pattern, dateStr, new Date(0, 0));\n      if (format.asString(pattern, date) !== dateStr) return f;\n      p.index = parseInt(indexStr, 10);\n      p.date = dateStr;\n      p.timestamp = date.getTime();\n      return \"\";\n    } catch (e) {\n      //not a valid date, don't panic.\n      debug(`Problem parsing ${dateStr} as ${pattern}, error was: `, e);\n      return f;\n    }\n  };\n\n  const index = (f, p) => {\n    if (f.match(/^\\d+$/)) {\n      debug(\"it has an index\");\n      p.index = parseInt(f, 10);\n      return \"\";\n    }\n    return f;\n  };\n\n  let parts = [\n    zip,\n    keepFileExt ? extAtEnd : extInMiddle,\n    pattern ? dateAndIndex : index\n  ];\n\n  return filename => {\n    let result = { filename, index: 0, isCompressed: false };\n    // pass the filename through each of the file part parsers\n    let whatsLeftOver = parts.reduce(\n      (remains, part) => part(remains, result),\n      filename\n    );\n    // if there's anything left after parsing, then it wasn't a valid filename\n    return whatsLeftOver ? null : result;\n  };\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/lib/fileNameParser.js?");
+const debug = __webpack_require__(5158)("streamroller:fileNameParser");
+const ZIP_EXT = ".gz";
+const format = __webpack_require__(520);
+const DEFAULT_FILENAME_SEP = ".";
+
+module.exports = ({ file, keepFileExt, pattern, fileNameSep }) => {
+  let FILENAME_SEP = fileNameSep || DEFAULT_FILENAME_SEP;
+  // All these functions take two arguments: f, the filename, and p, the result placeholder
+  // They return the filename with any matching parts removed.
+  // The "zip" function, for instance, removes the ".gz" part of the filename (if present)
+  const zip = (f, p) => {
+    if (f.endsWith(ZIP_EXT)) {
+      debug("it is gzipped");
+      p.isCompressed = true;
+      return f.slice(0, -1 * ZIP_EXT.length);
+    }
+    return f;
+  };
+
+  const __NOT_MATCHING__ = "__NOT_MATCHING__";
+
+  const extAtEnd = f => {
+    if (f.startsWith(file.name) && f.endsWith(file.ext)) {
+      debug("it starts and ends with the right things");
+      return f.slice(file.name.length + 1, -1 * file.ext.length);
+    }
+    return __NOT_MATCHING__;
+  };
+
+  const extInMiddle = f => {
+    if (f.startsWith(file.base)) {
+      debug("it starts with the right things");
+      return f.slice(file.base.length + 1);
+    }
+    return __NOT_MATCHING__;
+  };
+
+  const dateAndIndex = (f, p) => {
+    const items = f.split(FILENAME_SEP);
+    let indexStr = items[items.length - 1];
+    debug("items: ", items, ", indexStr: ", indexStr);
+    let dateStr = f;
+    if (indexStr !== undefined && indexStr.match(/^\d+$/)) {
+      dateStr = f.slice(0, -1 * (indexStr.length + 1));
+      debug(`dateStr is ${dateStr}`);
+      if (pattern && !dateStr) {
+        dateStr = indexStr;
+        indexStr = "0";
+      }
+    } else {
+      indexStr = "0";
+    }
+
+    try {
+      // Two arguments for new Date() are intentional. This will set other date
+      // components to minimal values in the current timezone instead of UTC,
+      // as new Date(0) will do.
+      const date = format.parse(pattern, dateStr, new Date(0, 0));
+      if (format.asString(pattern, date) !== dateStr) return f;
+      p.index = parseInt(indexStr, 10);
+      p.date = dateStr;
+      p.timestamp = date.getTime();
+      return "";
+    } catch (e) {
+      //not a valid date, don't panic.
+      debug(`Problem parsing ${dateStr} as ${pattern}, error was: `, e);
+      return f;
+    }
+  };
+
+  const index = (f, p) => {
+    if (f.match(/^\d+$/)) {
+      debug("it has an index");
+      p.index = parseInt(f, 10);
+      return "";
+    }
+    return f;
+  };
+
+  let parts = [
+    zip,
+    keepFileExt ? extAtEnd : extInMiddle,
+    pattern ? dateAndIndex : index
+  ];
+
+  return filename => {
+    let result = { filename, index: 0, isCompressed: false };
+    // pass the filename through each of the file part parsers
+    let whatsLeftOver = parts.reduce(
+      (remains, part) => part(remains, result),
+      filename
+    );
+    // if there's anything left after parsing, then it wasn't a valid filename
+    return whatsLeftOver ? null : result;
+  };
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/lib/index.js":
-/*!************************************************!*\
-  !*** ./node_modules/streamroller/lib/index.js ***!
-  \************************************************/
+/***/ 6929:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("module.exports = {\n  RollingFileWriteStream: __webpack_require__(/*! ./RollingFileWriteStream */ \"./node_modules/streamroller/lib/RollingFileWriteStream.js\"),\n  RollingFileStream: __webpack_require__(/*! ./RollingFileStream */ \"./node_modules/streamroller/lib/RollingFileStream.js\"),\n  DateRollingFileStream: __webpack_require__(/*! ./DateRollingFileStream */ \"./node_modules/streamroller/lib/DateRollingFileStream.js\")\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/lib/index.js?");
+module.exports = {
+  RollingFileWriteStream: __webpack_require__(2040),
+  RollingFileStream: __webpack_require__(6667),
+  DateRollingFileStream: __webpack_require__(4745)
+};
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/lib/moveAndMaybeCompressFile.js":
-/*!*******************************************************************!*\
-  !*** ./node_modules/streamroller/lib/moveAndMaybeCompressFile.js ***!
-  \*******************************************************************/
+/***/ 1845:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const debug = __webpack_require__(/*! debug */ \"./node_modules/debug/src/index.js\")('streamroller:moveAndMaybeCompressFile');\nconst fs = __webpack_require__(/*! fs-extra */ \"./node_modules/streamroller/node_modules/fs-extra/lib/index.js\");\nconst zlib = __webpack_require__(/*! zlib */ \"zlib\");\n\nconst _parseOption = function(rawOptions){\n  const defaultOptions = {\n    mode: parseInt(\"0600\", 8),\n    compress: false,\n  };\n  const options = Object.assign({}, defaultOptions, rawOptions);\n  debug(`_parseOption: moveAndMaybeCompressFile called with option=${JSON.stringify(options)}`);\n  return options;\n};\n\nconst moveAndMaybeCompressFile = async (\n  sourceFilePath,\n  targetFilePath,\n  options\n) => {\n  options = _parseOption(options);\n\n  if (sourceFilePath === targetFilePath) {\n    debug(`moveAndMaybeCompressFile: source and target are the same, not doing anything`);\n    return;\n  }\n\n  if (await fs.pathExists(sourceFilePath)) {\n    debug(\n      `moveAndMaybeCompressFile: moving file from ${sourceFilePath} to ${targetFilePath} ${\n        options.compress ? \"with\" : \"without\"\n      } compress`\n    );\n    if (options.compress) {\n      await new Promise((resolve, reject) => {\n        let isCreated = false;\n        // to avoid concurrency, the forked process which can create the file will proceed (using flags wx)\n        const writeStream = fs.createWriteStream(targetFilePath, { mode: options.mode, flags: \"wx\" })\n          // wait until writable stream is valid before proceeding to read\n          .on(\"open\", () => {\n            isCreated = true;\n            const readStream = fs.createReadStream(sourceFilePath)\n              // wait until readable stream is valid before piping\n              .on(\"open\", () => {\n                readStream.pipe(zlib.createGzip()).pipe(writeStream);\n              })\n              .on(\"error\", (e) => {\n                debug(`moveAndMaybeCompressFile: error reading ${sourceFilePath}`, e);\n                // manually close writable: https://nodejs.org/api/stream.html#readablepipedestination-options\n                writeStream.destroy(e);\n              });\n          })\n          .on(\"finish\", () => {\n            debug(`moveAndMaybeCompressFile: finished compressing ${targetFilePath}, deleting ${sourceFilePath}`);\n            // delete sourceFilePath\n            fs.unlink(sourceFilePath)\n              .then(resolve)\n              .catch((e) => {\n                debug(`moveAndMaybeCompressFile: error deleting ${sourceFilePath}, truncating instead`, e);\n                // fallback to truncate\n                fs.truncate(sourceFilePath)\n                  .then(resolve)\n                  .catch((e) => {\n                    debug(`moveAndMaybeCompressFile: error truncating ${sourceFilePath}`, e);\n                    reject(e);\n                  });\n              });\n          })\n          .on(\"error\", (e) => {\n            if (!isCreated) {\n              debug(`moveAndMaybeCompressFile: error creating ${targetFilePath}`, e);\n              // do not do anything if handled by another forked process\n              reject(e);\n            } else {\n              debug(`moveAndMaybeCompressFile: error writing ${targetFilePath}, deleting`, e);\n              // delete targetFilePath (taking as nothing happened)\n              fs.unlink(targetFilePath)\n                .then(() => { reject(e); })\n                .catch((e) => {\n                  debug(`moveAndMaybeCompressFile: error deleting ${targetFilePath}`, e);\n                  reject(e);\n                });\n            }\n          });\n      }).catch(() => {});\n    } else {\n      debug(`moveAndMaybeCompressFile: renaming ${sourceFilePath} to ${targetFilePath}`);\n      try {\n        await fs.move(sourceFilePath, targetFilePath, { overwrite: true });\n      } catch (e) {\n        debug(`moveAndMaybeCompressFile: error renaming ${sourceFilePath} to ${targetFilePath}`, e);\n        /* istanbul ignore else: no need to do anything if file does not exist */\n        if (e.code !== \"ENOENT\") {\n          debug(`moveAndMaybeCompressFile: trying copy+truncate instead`);\n          try {\n            await fs.copy(sourceFilePath, targetFilePath, { overwrite: true });\n            await fs.truncate(sourceFilePath);\n          } catch (e) {\n            debug(`moveAndMaybeCompressFile: error copy+truncate`, e);\n          }\n        }\n      }\n    }\n  }\n};\n\nmodule.exports = moveAndMaybeCompressFile;\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/lib/moveAndMaybeCompressFile.js?");
+const debug = __webpack_require__(5158)('streamroller:moveAndMaybeCompressFile');
+const fs = __webpack_require__(9646);
+const zlib = __webpack_require__(9796);
+
+const _parseOption = function(rawOptions){
+  const defaultOptions = {
+    mode: parseInt("0600", 8),
+    compress: false,
+  };
+  const options = Object.assign({}, defaultOptions, rawOptions);
+  debug(`_parseOption: moveAndMaybeCompressFile called with option=${JSON.stringify(options)}`);
+  return options;
+};
+
+const moveAndMaybeCompressFile = async (
+  sourceFilePath,
+  targetFilePath,
+  options
+) => {
+  options = _parseOption(options);
+
+  if (sourceFilePath === targetFilePath) {
+    debug(`moveAndMaybeCompressFile: source and target are the same, not doing anything`);
+    return;
+  }
+
+  if (await fs.pathExists(sourceFilePath)) {
+    debug(
+      `moveAndMaybeCompressFile: moving file from ${sourceFilePath} to ${targetFilePath} ${
+        options.compress ? "with" : "without"
+      } compress`
+    );
+    if (options.compress) {
+      await new Promise((resolve, reject) => {
+        let isCreated = false;
+        // to avoid concurrency, the forked process which can create the file will proceed (using flags wx)
+        const writeStream = fs.createWriteStream(targetFilePath, { mode: options.mode, flags: "wx" })
+          // wait until writable stream is valid before proceeding to read
+          .on("open", () => {
+            isCreated = true;
+            const readStream = fs.createReadStream(sourceFilePath)
+              // wait until readable stream is valid before piping
+              .on("open", () => {
+                readStream.pipe(zlib.createGzip()).pipe(writeStream);
+              })
+              .on("error", (e) => {
+                debug(`moveAndMaybeCompressFile: error reading ${sourceFilePath}`, e);
+                // manually close writable: https://nodejs.org/api/stream.html#readablepipedestination-options
+                writeStream.destroy(e);
+              });
+          })
+          .on("finish", () => {
+            debug(`moveAndMaybeCompressFile: finished compressing ${targetFilePath}, deleting ${sourceFilePath}`);
+            // delete sourceFilePath
+            fs.unlink(sourceFilePath)
+              .then(resolve)
+              .catch((e) => {
+                debug(`moveAndMaybeCompressFile: error deleting ${sourceFilePath}, truncating instead`, e);
+                // fallback to truncate
+                fs.truncate(sourceFilePath)
+                  .then(resolve)
+                  .catch((e) => {
+                    debug(`moveAndMaybeCompressFile: error truncating ${sourceFilePath}`, e);
+                    reject(e);
+                  });
+              });
+          })
+          .on("error", (e) => {
+            if (!isCreated) {
+              debug(`moveAndMaybeCompressFile: error creating ${targetFilePath}`, e);
+              // do not do anything if handled by another forked process
+              reject(e);
+            } else {
+              debug(`moveAndMaybeCompressFile: error writing ${targetFilePath}, deleting`, e);
+              // delete targetFilePath (taking as nothing happened)
+              fs.unlink(targetFilePath)
+                .then(() => { reject(e); })
+                .catch((e) => {
+                  debug(`moveAndMaybeCompressFile: error deleting ${targetFilePath}`, e);
+                  reject(e);
+                });
+            }
+          });
+      }).catch(() => {});
+    } else {
+      debug(`moveAndMaybeCompressFile: renaming ${sourceFilePath} to ${targetFilePath}`);
+      try {
+        await fs.move(sourceFilePath, targetFilePath, { overwrite: true });
+      } catch (e) {
+        debug(`moveAndMaybeCompressFile: error renaming ${sourceFilePath} to ${targetFilePath}`, e);
+        /* istanbul ignore else: no need to do anything if file does not exist */
+        if (e.code !== "ENOENT") {
+          debug(`moveAndMaybeCompressFile: trying copy+truncate instead`);
+          try {
+            await fs.copy(sourceFilePath, targetFilePath, { overwrite: true });
+            await fs.truncate(sourceFilePath);
+          } catch (e) {
+            debug(`moveAndMaybeCompressFile: error copy+truncate`, e);
+          }
+        }
+      }
+    }
+  }
+};
+
+module.exports = moveAndMaybeCompressFile;
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/lib/now.js":
-/*!**********************************************!*\
-  !*** ./node_modules/streamroller/lib/now.js ***!
-  \**********************************************/
+/***/ 142:
 /***/ ((module) => {
 
-eval("// allows us to inject a mock date in tests\nmodule.exports = () => new Date();\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/lib/now.js?");
+// allows us to inject a mock date in tests
+module.exports = () => new Date();
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/copy-sync/copy-sync.js":
-/*!************************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/copy-sync/copy-sync.js ***!
-  \************************************************************************************/
+/***/ 8128:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst mkdirpSync = (__webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\").mkdirsSync)\nconst utimesSync = (__webpack_require__(/*! ../util/utimes.js */ \"./node_modules/streamroller/node_modules/fs-extra/lib/util/utimes.js\").utimesMillisSync)\nconst stat = __webpack_require__(/*! ../util/stat */ \"./node_modules/streamroller/node_modules/fs-extra/lib/util/stat.js\")\n\nfunction copySync (src, dest, opts) {\n  if (typeof opts === 'function') {\n    opts = { filter: opts }\n  }\n\n  opts = opts || {}\n  opts.clobber = 'clobber' in opts ? !!opts.clobber : true // default to true for now\n  opts.overwrite = 'overwrite' in opts ? !!opts.overwrite : opts.clobber // overwrite falls back to clobber\n\n  // Warn about using preserveTimestamps on 32-bit node\n  if (opts.preserveTimestamps && process.arch === 'ia32') {\n    console.warn(`fs-extra: Using the preserveTimestamps option in 32-bit node is not recommended;\\n\n    see https://github.com/jprichardson/node-fs-extra/issues/269`)\n  }\n\n  const { srcStat, destStat } = stat.checkPathsSync(src, dest, 'copy')\n  stat.checkParentPathsSync(src, srcStat, dest, 'copy')\n  return handleFilterAndCopy(destStat, src, dest, opts)\n}\n\nfunction handleFilterAndCopy (destStat, src, dest, opts) {\n  if (opts.filter && !opts.filter(src, dest)) return\n  const destParent = path.dirname(dest)\n  if (!fs.existsSync(destParent)) mkdirpSync(destParent)\n  return startCopy(destStat, src, dest, opts)\n}\n\nfunction startCopy (destStat, src, dest, opts) {\n  if (opts.filter && !opts.filter(src, dest)) return\n  return getStats(destStat, src, dest, opts)\n}\n\nfunction getStats (destStat, src, dest, opts) {\n  const statSync = opts.dereference ? fs.statSync : fs.lstatSync\n  const srcStat = statSync(src)\n\n  if (srcStat.isDirectory()) return onDir(srcStat, destStat, src, dest, opts)\n  else if (srcStat.isFile() ||\n           srcStat.isCharacterDevice() ||\n           srcStat.isBlockDevice()) return onFile(srcStat, destStat, src, dest, opts)\n  else if (srcStat.isSymbolicLink()) return onLink(destStat, src, dest, opts)\n}\n\nfunction onFile (srcStat, destStat, src, dest, opts) {\n  if (!destStat) return copyFile(srcStat, src, dest, opts)\n  return mayCopyFile(srcStat, src, dest, opts)\n}\n\nfunction mayCopyFile (srcStat, src, dest, opts) {\n  if (opts.overwrite) {\n    fs.unlinkSync(dest)\n    return copyFile(srcStat, src, dest, opts)\n  } else if (opts.errorOnExist) {\n    throw new Error(`'${dest}' already exists`)\n  }\n}\n\nfunction copyFile (srcStat, src, dest, opts) {\n  if (typeof fs.copyFileSync === 'function') {\n    fs.copyFileSync(src, dest)\n    fs.chmodSync(dest, srcStat.mode)\n    if (opts.preserveTimestamps) {\n      return utimesSync(dest, srcStat.atime, srcStat.mtime)\n    }\n    return\n  }\n  return copyFileFallback(srcStat, src, dest, opts)\n}\n\nfunction copyFileFallback (srcStat, src, dest, opts) {\n  const BUF_LENGTH = 64 * 1024\n  const _buff = __webpack_require__(/*! ../util/buffer */ \"./node_modules/streamroller/node_modules/fs-extra/lib/util/buffer.js\")(BUF_LENGTH)\n\n  const fdr = fs.openSync(src, 'r')\n  const fdw = fs.openSync(dest, 'w', srcStat.mode)\n  let pos = 0\n\n  while (pos < srcStat.size) {\n    const bytesRead = fs.readSync(fdr, _buff, 0, BUF_LENGTH, pos)\n    fs.writeSync(fdw, _buff, 0, bytesRead)\n    pos += bytesRead\n  }\n\n  if (opts.preserveTimestamps) fs.futimesSync(fdw, srcStat.atime, srcStat.mtime)\n\n  fs.closeSync(fdr)\n  fs.closeSync(fdw)\n}\n\nfunction onDir (srcStat, destStat, src, dest, opts) {\n  if (!destStat) return mkDirAndCopy(srcStat, src, dest, opts)\n  if (destStat && !destStat.isDirectory()) {\n    throw new Error(`Cannot overwrite non-directory '${dest}' with directory '${src}'.`)\n  }\n  return copyDir(src, dest, opts)\n}\n\nfunction mkDirAndCopy (srcStat, src, dest, opts) {\n  fs.mkdirSync(dest)\n  copyDir(src, dest, opts)\n  return fs.chmodSync(dest, srcStat.mode)\n}\n\nfunction copyDir (src, dest, opts) {\n  fs.readdirSync(src).forEach(item => copyDirItem(item, src, dest, opts))\n}\n\nfunction copyDirItem (item, src, dest, opts) {\n  const srcItem = path.join(src, item)\n  const destItem = path.join(dest, item)\n  const { destStat } = stat.checkPathsSync(srcItem, destItem, 'copy')\n  return startCopy(destStat, srcItem, destItem, opts)\n}\n\nfunction onLink (destStat, src, dest, opts) {\n  let resolvedSrc = fs.readlinkSync(src)\n  if (opts.dereference) {\n    resolvedSrc = path.resolve(process.cwd(), resolvedSrc)\n  }\n\n  if (!destStat) {\n    return fs.symlinkSync(resolvedSrc, dest)\n  } else {\n    let resolvedDest\n    try {\n      resolvedDest = fs.readlinkSync(dest)\n    } catch (err) {\n      // dest exists and is a regular file or directory,\n      // Windows may throw UNKNOWN error. If dest already exists,\n      // fs throws error anyway, so no need to guard against it here.\n      if (err.code === 'EINVAL' || err.code === 'UNKNOWN') return fs.symlinkSync(resolvedSrc, dest)\n      throw err\n    }\n    if (opts.dereference) {\n      resolvedDest = path.resolve(process.cwd(), resolvedDest)\n    }\n    if (stat.isSrcSubdir(resolvedSrc, resolvedDest)) {\n      throw new Error(`Cannot copy '${resolvedSrc}' to a subdirectory of itself, '${resolvedDest}'.`)\n    }\n\n    // prevent copy if src is a subdir of dest since unlinking\n    // dest in this case would result in removing src contents\n    // and therefore a broken symlink would be created.\n    if (fs.statSync(dest).isDirectory() && stat.isSrcSubdir(resolvedDest, resolvedSrc)) {\n      throw new Error(`Cannot overwrite '${resolvedDest}' with '${resolvedSrc}'.`)\n    }\n    return copyLink(resolvedSrc, dest)\n  }\n}\n\nfunction copyLink (resolvedSrc, dest) {\n  fs.unlinkSync(dest)\n  return fs.symlinkSync(resolvedSrc, dest)\n}\n\nmodule.exports = copySync\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/copy-sync/copy-sync.js?");
+
+
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+const mkdirpSync = (__webpack_require__(2690).mkdirsSync)
+const utimesSync = (__webpack_require__(3239).utimesMillisSync)
+const stat = __webpack_require__(5432)
+
+function copySync (src, dest, opts) {
+  if (typeof opts === 'function') {
+    opts = { filter: opts }
+  }
+
+  opts = opts || {}
+  opts.clobber = 'clobber' in opts ? !!opts.clobber : true // default to true for now
+  opts.overwrite = 'overwrite' in opts ? !!opts.overwrite : opts.clobber // overwrite falls back to clobber
+
+  // Warn about using preserveTimestamps on 32-bit node
+  if (opts.preserveTimestamps && process.arch === 'ia32') {
+    console.warn(`fs-extra: Using the preserveTimestamps option in 32-bit node is not recommended;\n
+    see https://github.com/jprichardson/node-fs-extra/issues/269`)
+  }
+
+  const { srcStat, destStat } = stat.checkPathsSync(src, dest, 'copy')
+  stat.checkParentPathsSync(src, srcStat, dest, 'copy')
+  return handleFilterAndCopy(destStat, src, dest, opts)
+}
+
+function handleFilterAndCopy (destStat, src, dest, opts) {
+  if (opts.filter && !opts.filter(src, dest)) return
+  const destParent = path.dirname(dest)
+  if (!fs.existsSync(destParent)) mkdirpSync(destParent)
+  return startCopy(destStat, src, dest, opts)
+}
+
+function startCopy (destStat, src, dest, opts) {
+  if (opts.filter && !opts.filter(src, dest)) return
+  return getStats(destStat, src, dest, opts)
+}
+
+function getStats (destStat, src, dest, opts) {
+  const statSync = opts.dereference ? fs.statSync : fs.lstatSync
+  const srcStat = statSync(src)
+
+  if (srcStat.isDirectory()) return onDir(srcStat, destStat, src, dest, opts)
+  else if (srcStat.isFile() ||
+           srcStat.isCharacterDevice() ||
+           srcStat.isBlockDevice()) return onFile(srcStat, destStat, src, dest, opts)
+  else if (srcStat.isSymbolicLink()) return onLink(destStat, src, dest, opts)
+}
+
+function onFile (srcStat, destStat, src, dest, opts) {
+  if (!destStat) return copyFile(srcStat, src, dest, opts)
+  return mayCopyFile(srcStat, src, dest, opts)
+}
+
+function mayCopyFile (srcStat, src, dest, opts) {
+  if (opts.overwrite) {
+    fs.unlinkSync(dest)
+    return copyFile(srcStat, src, dest, opts)
+  } else if (opts.errorOnExist) {
+    throw new Error(`'${dest}' already exists`)
+  }
+}
+
+function copyFile (srcStat, src, dest, opts) {
+  if (typeof fs.copyFileSync === 'function') {
+    fs.copyFileSync(src, dest)
+    fs.chmodSync(dest, srcStat.mode)
+    if (opts.preserveTimestamps) {
+      return utimesSync(dest, srcStat.atime, srcStat.mtime)
+    }
+    return
+  }
+  return copyFileFallback(srcStat, src, dest, opts)
+}
+
+function copyFileFallback (srcStat, src, dest, opts) {
+  const BUF_LENGTH = 64 * 1024
+  const _buff = __webpack_require__(5389)(BUF_LENGTH)
+
+  const fdr = fs.openSync(src, 'r')
+  const fdw = fs.openSync(dest, 'w', srcStat.mode)
+  let pos = 0
+
+  while (pos < srcStat.size) {
+    const bytesRead = fs.readSync(fdr, _buff, 0, BUF_LENGTH, pos)
+    fs.writeSync(fdw, _buff, 0, bytesRead)
+    pos += bytesRead
+  }
+
+  if (opts.preserveTimestamps) fs.futimesSync(fdw, srcStat.atime, srcStat.mtime)
+
+  fs.closeSync(fdr)
+  fs.closeSync(fdw)
+}
+
+function onDir (srcStat, destStat, src, dest, opts) {
+  if (!destStat) return mkDirAndCopy(srcStat, src, dest, opts)
+  if (destStat && !destStat.isDirectory()) {
+    throw new Error(`Cannot overwrite non-directory '${dest}' with directory '${src}'.`)
+  }
+  return copyDir(src, dest, opts)
+}
+
+function mkDirAndCopy (srcStat, src, dest, opts) {
+  fs.mkdirSync(dest)
+  copyDir(src, dest, opts)
+  return fs.chmodSync(dest, srcStat.mode)
+}
+
+function copyDir (src, dest, opts) {
+  fs.readdirSync(src).forEach(item => copyDirItem(item, src, dest, opts))
+}
+
+function copyDirItem (item, src, dest, opts) {
+  const srcItem = path.join(src, item)
+  const destItem = path.join(dest, item)
+  const { destStat } = stat.checkPathsSync(srcItem, destItem, 'copy')
+  return startCopy(destStat, srcItem, destItem, opts)
+}
+
+function onLink (destStat, src, dest, opts) {
+  let resolvedSrc = fs.readlinkSync(src)
+  if (opts.dereference) {
+    resolvedSrc = path.resolve(process.cwd(), resolvedSrc)
+  }
+
+  if (!destStat) {
+    return fs.symlinkSync(resolvedSrc, dest)
+  } else {
+    let resolvedDest
+    try {
+      resolvedDest = fs.readlinkSync(dest)
+    } catch (err) {
+      // dest exists and is a regular file or directory,
+      // Windows may throw UNKNOWN error. If dest already exists,
+      // fs throws error anyway, so no need to guard against it here.
+      if (err.code === 'EINVAL' || err.code === 'UNKNOWN') return fs.symlinkSync(resolvedSrc, dest)
+      throw err
+    }
+    if (opts.dereference) {
+      resolvedDest = path.resolve(process.cwd(), resolvedDest)
+    }
+    if (stat.isSrcSubdir(resolvedSrc, resolvedDest)) {
+      throw new Error(`Cannot copy '${resolvedSrc}' to a subdirectory of itself, '${resolvedDest}'.`)
+    }
+
+    // prevent copy if src is a subdir of dest since unlinking
+    // dest in this case would result in removing src contents
+    // and therefore a broken symlink would be created.
+    if (fs.statSync(dest).isDirectory() && stat.isSrcSubdir(resolvedDest, resolvedSrc)) {
+      throw new Error(`Cannot overwrite '${resolvedDest}' with '${resolvedSrc}'.`)
+    }
+    return copyLink(resolvedSrc, dest)
+  }
+}
+
+function copyLink (resolvedSrc, dest) {
+  fs.unlinkSync(dest)
+  return fs.symlinkSync(resolvedSrc, dest)
+}
+
+module.exports = copySync
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/copy-sync/index.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/copy-sync/index.js ***!
-  \********************************************************************************/
+/***/ 8755:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nmodule.exports = {\n  copySync: __webpack_require__(/*! ./copy-sync */ \"./node_modules/streamroller/node_modules/fs-extra/lib/copy-sync/copy-sync.js\")\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/copy-sync/index.js?");
+
+
+module.exports = {
+  copySync: __webpack_require__(8128)
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/copy/copy.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/copy/copy.js ***!
-  \**************************************************************************/
+/***/ 1127:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst mkdirp = (__webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\").mkdirs)\nconst pathExists = (__webpack_require__(/*! ../path-exists */ \"./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js\").pathExists)\nconst utimes = (__webpack_require__(/*! ../util/utimes */ \"./node_modules/streamroller/node_modules/fs-extra/lib/util/utimes.js\").utimesMillis)\nconst stat = __webpack_require__(/*! ../util/stat */ \"./node_modules/streamroller/node_modules/fs-extra/lib/util/stat.js\")\n\nfunction copy (src, dest, opts, cb) {\n  if (typeof opts === 'function' && !cb) {\n    cb = opts\n    opts = {}\n  } else if (typeof opts === 'function') {\n    opts = { filter: opts }\n  }\n\n  cb = cb || function () {}\n  opts = opts || {}\n\n  opts.clobber = 'clobber' in opts ? !!opts.clobber : true // default to true for now\n  opts.overwrite = 'overwrite' in opts ? !!opts.overwrite : opts.clobber // overwrite falls back to clobber\n\n  // Warn about using preserveTimestamps on 32-bit node\n  if (opts.preserveTimestamps && process.arch === 'ia32') {\n    console.warn(`fs-extra: Using the preserveTimestamps option in 32-bit node is not recommended;\\n\n    see https://github.com/jprichardson/node-fs-extra/issues/269`)\n  }\n\n  stat.checkPaths(src, dest, 'copy', (err, stats) => {\n    if (err) return cb(err)\n    const { srcStat, destStat } = stats\n    stat.checkParentPaths(src, srcStat, dest, 'copy', err => {\n      if (err) return cb(err)\n      if (opts.filter) return handleFilter(checkParentDir, destStat, src, dest, opts, cb)\n      return checkParentDir(destStat, src, dest, opts, cb)\n    })\n  })\n}\n\nfunction checkParentDir (destStat, src, dest, opts, cb) {\n  const destParent = path.dirname(dest)\n  pathExists(destParent, (err, dirExists) => {\n    if (err) return cb(err)\n    if (dirExists) return startCopy(destStat, src, dest, opts, cb)\n    mkdirp(destParent, err => {\n      if (err) return cb(err)\n      return startCopy(destStat, src, dest, opts, cb)\n    })\n  })\n}\n\nfunction handleFilter (onInclude, destStat, src, dest, opts, cb) {\n  Promise.resolve(opts.filter(src, dest)).then(include => {\n    if (include) return onInclude(destStat, src, dest, opts, cb)\n    return cb()\n  }, error => cb(error))\n}\n\nfunction startCopy (destStat, src, dest, opts, cb) {\n  if (opts.filter) return handleFilter(getStats, destStat, src, dest, opts, cb)\n  return getStats(destStat, src, dest, opts, cb)\n}\n\nfunction getStats (destStat, src, dest, opts, cb) {\n  const stat = opts.dereference ? fs.stat : fs.lstat\n  stat(src, (err, srcStat) => {\n    if (err) return cb(err)\n\n    if (srcStat.isDirectory()) return onDir(srcStat, destStat, src, dest, opts, cb)\n    else if (srcStat.isFile() ||\n             srcStat.isCharacterDevice() ||\n             srcStat.isBlockDevice()) return onFile(srcStat, destStat, src, dest, opts, cb)\n    else if (srcStat.isSymbolicLink()) return onLink(destStat, src, dest, opts, cb)\n  })\n}\n\nfunction onFile (srcStat, destStat, src, dest, opts, cb) {\n  if (!destStat) return copyFile(srcStat, src, dest, opts, cb)\n  return mayCopyFile(srcStat, src, dest, opts, cb)\n}\n\nfunction mayCopyFile (srcStat, src, dest, opts, cb) {\n  if (opts.overwrite) {\n    fs.unlink(dest, err => {\n      if (err) return cb(err)\n      return copyFile(srcStat, src, dest, opts, cb)\n    })\n  } else if (opts.errorOnExist) {\n    return cb(new Error(`'${dest}' already exists`))\n  } else return cb()\n}\n\nfunction copyFile (srcStat, src, dest, opts, cb) {\n  if (typeof fs.copyFile === 'function') {\n    return fs.copyFile(src, dest, err => {\n      if (err) return cb(err)\n      return setDestModeAndTimestamps(srcStat, dest, opts, cb)\n    })\n  }\n  return copyFileFallback(srcStat, src, dest, opts, cb)\n}\n\nfunction copyFileFallback (srcStat, src, dest, opts, cb) {\n  const rs = fs.createReadStream(src)\n  rs.on('error', err => cb(err)).once('open', () => {\n    const ws = fs.createWriteStream(dest, { mode: srcStat.mode })\n    ws.on('error', err => cb(err))\n      .on('open', () => rs.pipe(ws))\n      .once('close', () => setDestModeAndTimestamps(srcStat, dest, opts, cb))\n  })\n}\n\nfunction setDestModeAndTimestamps (srcStat, dest, opts, cb) {\n  fs.chmod(dest, srcStat.mode, err => {\n    if (err) return cb(err)\n    if (opts.preserveTimestamps) {\n      return utimes(dest, srcStat.atime, srcStat.mtime, cb)\n    }\n    return cb()\n  })\n}\n\nfunction onDir (srcStat, destStat, src, dest, opts, cb) {\n  if (!destStat) return mkDirAndCopy(srcStat, src, dest, opts, cb)\n  if (destStat && !destStat.isDirectory()) {\n    return cb(new Error(`Cannot overwrite non-directory '${dest}' with directory '${src}'.`))\n  }\n  return copyDir(src, dest, opts, cb)\n}\n\nfunction mkDirAndCopy (srcStat, src, dest, opts, cb) {\n  fs.mkdir(dest, err => {\n    if (err) return cb(err)\n    copyDir(src, dest, opts, err => {\n      if (err) return cb(err)\n      return fs.chmod(dest, srcStat.mode, cb)\n    })\n  })\n}\n\nfunction copyDir (src, dest, opts, cb) {\n  fs.readdir(src, (err, items) => {\n    if (err) return cb(err)\n    return copyDirItems(items, src, dest, opts, cb)\n  })\n}\n\nfunction copyDirItems (items, src, dest, opts, cb) {\n  const item = items.pop()\n  if (!item) return cb()\n  return copyDirItem(items, item, src, dest, opts, cb)\n}\n\nfunction copyDirItem (items, item, src, dest, opts, cb) {\n  const srcItem = path.join(src, item)\n  const destItem = path.join(dest, item)\n  stat.checkPaths(srcItem, destItem, 'copy', (err, stats) => {\n    if (err) return cb(err)\n    const { destStat } = stats\n    startCopy(destStat, srcItem, destItem, opts, err => {\n      if (err) return cb(err)\n      return copyDirItems(items, src, dest, opts, cb)\n    })\n  })\n}\n\nfunction onLink (destStat, src, dest, opts, cb) {\n  fs.readlink(src, (err, resolvedSrc) => {\n    if (err) return cb(err)\n    if (opts.dereference) {\n      resolvedSrc = path.resolve(process.cwd(), resolvedSrc)\n    }\n\n    if (!destStat) {\n      return fs.symlink(resolvedSrc, dest, cb)\n    } else {\n      fs.readlink(dest, (err, resolvedDest) => {\n        if (err) {\n          // dest exists and is a regular file or directory,\n          // Windows may throw UNKNOWN error. If dest already exists,\n          // fs throws error anyway, so no need to guard against it here.\n          if (err.code === 'EINVAL' || err.code === 'UNKNOWN') return fs.symlink(resolvedSrc, dest, cb)\n          return cb(err)\n        }\n        if (opts.dereference) {\n          resolvedDest = path.resolve(process.cwd(), resolvedDest)\n        }\n        if (stat.isSrcSubdir(resolvedSrc, resolvedDest)) {\n          return cb(new Error(`Cannot copy '${resolvedSrc}' to a subdirectory of itself, '${resolvedDest}'.`))\n        }\n\n        // do not copy if src is a subdir of dest since unlinking\n        // dest in this case would result in removing src contents\n        // and therefore a broken symlink would be created.\n        if (destStat.isDirectory() && stat.isSrcSubdir(resolvedDest, resolvedSrc)) {\n          return cb(new Error(`Cannot overwrite '${resolvedDest}' with '${resolvedSrc}'.`))\n        }\n        return copyLink(resolvedSrc, dest, cb)\n      })\n    }\n  })\n}\n\nfunction copyLink (resolvedSrc, dest, cb) {\n  fs.unlink(dest, err => {\n    if (err) return cb(err)\n    return fs.symlink(resolvedSrc, dest, cb)\n  })\n}\n\nmodule.exports = copy\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/copy/copy.js?");
+
+
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+const mkdirp = (__webpack_require__(2690).mkdirs)
+const pathExists = (__webpack_require__(2576).pathExists)
+const utimes = (__webpack_require__(3239).utimesMillis)
+const stat = __webpack_require__(5432)
+
+function copy (src, dest, opts, cb) {
+  if (typeof opts === 'function' && !cb) {
+    cb = opts
+    opts = {}
+  } else if (typeof opts === 'function') {
+    opts = { filter: opts }
+  }
+
+  cb = cb || function () {}
+  opts = opts || {}
+
+  opts.clobber = 'clobber' in opts ? !!opts.clobber : true // default to true for now
+  opts.overwrite = 'overwrite' in opts ? !!opts.overwrite : opts.clobber // overwrite falls back to clobber
+
+  // Warn about using preserveTimestamps on 32-bit node
+  if (opts.preserveTimestamps && process.arch === 'ia32') {
+    console.warn(`fs-extra: Using the preserveTimestamps option in 32-bit node is not recommended;\n
+    see https://github.com/jprichardson/node-fs-extra/issues/269`)
+  }
+
+  stat.checkPaths(src, dest, 'copy', (err, stats) => {
+    if (err) return cb(err)
+    const { srcStat, destStat } = stats
+    stat.checkParentPaths(src, srcStat, dest, 'copy', err => {
+      if (err) return cb(err)
+      if (opts.filter) return handleFilter(checkParentDir, destStat, src, dest, opts, cb)
+      return checkParentDir(destStat, src, dest, opts, cb)
+    })
+  })
+}
+
+function checkParentDir (destStat, src, dest, opts, cb) {
+  const destParent = path.dirname(dest)
+  pathExists(destParent, (err, dirExists) => {
+    if (err) return cb(err)
+    if (dirExists) return startCopy(destStat, src, dest, opts, cb)
+    mkdirp(destParent, err => {
+      if (err) return cb(err)
+      return startCopy(destStat, src, dest, opts, cb)
+    })
+  })
+}
+
+function handleFilter (onInclude, destStat, src, dest, opts, cb) {
+  Promise.resolve(opts.filter(src, dest)).then(include => {
+    if (include) return onInclude(destStat, src, dest, opts, cb)
+    return cb()
+  }, error => cb(error))
+}
+
+function startCopy (destStat, src, dest, opts, cb) {
+  if (opts.filter) return handleFilter(getStats, destStat, src, dest, opts, cb)
+  return getStats(destStat, src, dest, opts, cb)
+}
+
+function getStats (destStat, src, dest, opts, cb) {
+  const stat = opts.dereference ? fs.stat : fs.lstat
+  stat(src, (err, srcStat) => {
+    if (err) return cb(err)
+
+    if (srcStat.isDirectory()) return onDir(srcStat, destStat, src, dest, opts, cb)
+    else if (srcStat.isFile() ||
+             srcStat.isCharacterDevice() ||
+             srcStat.isBlockDevice()) return onFile(srcStat, destStat, src, dest, opts, cb)
+    else if (srcStat.isSymbolicLink()) return onLink(destStat, src, dest, opts, cb)
+  })
+}
+
+function onFile (srcStat, destStat, src, dest, opts, cb) {
+  if (!destStat) return copyFile(srcStat, src, dest, opts, cb)
+  return mayCopyFile(srcStat, src, dest, opts, cb)
+}
+
+function mayCopyFile (srcStat, src, dest, opts, cb) {
+  if (opts.overwrite) {
+    fs.unlink(dest, err => {
+      if (err) return cb(err)
+      return copyFile(srcStat, src, dest, opts, cb)
+    })
+  } else if (opts.errorOnExist) {
+    return cb(new Error(`'${dest}' already exists`))
+  } else return cb()
+}
+
+function copyFile (srcStat, src, dest, opts, cb) {
+  if (typeof fs.copyFile === 'function') {
+    return fs.copyFile(src, dest, err => {
+      if (err) return cb(err)
+      return setDestModeAndTimestamps(srcStat, dest, opts, cb)
+    })
+  }
+  return copyFileFallback(srcStat, src, dest, opts, cb)
+}
+
+function copyFileFallback (srcStat, src, dest, opts, cb) {
+  const rs = fs.createReadStream(src)
+  rs.on('error', err => cb(err)).once('open', () => {
+    const ws = fs.createWriteStream(dest, { mode: srcStat.mode })
+    ws.on('error', err => cb(err))
+      .on('open', () => rs.pipe(ws))
+      .once('close', () => setDestModeAndTimestamps(srcStat, dest, opts, cb))
+  })
+}
+
+function setDestModeAndTimestamps (srcStat, dest, opts, cb) {
+  fs.chmod(dest, srcStat.mode, err => {
+    if (err) return cb(err)
+    if (opts.preserveTimestamps) {
+      return utimes(dest, srcStat.atime, srcStat.mtime, cb)
+    }
+    return cb()
+  })
+}
+
+function onDir (srcStat, destStat, src, dest, opts, cb) {
+  if (!destStat) return mkDirAndCopy(srcStat, src, dest, opts, cb)
+  if (destStat && !destStat.isDirectory()) {
+    return cb(new Error(`Cannot overwrite non-directory '${dest}' with directory '${src}'.`))
+  }
+  return copyDir(src, dest, opts, cb)
+}
+
+function mkDirAndCopy (srcStat, src, dest, opts, cb) {
+  fs.mkdir(dest, err => {
+    if (err) return cb(err)
+    copyDir(src, dest, opts, err => {
+      if (err) return cb(err)
+      return fs.chmod(dest, srcStat.mode, cb)
+    })
+  })
+}
+
+function copyDir (src, dest, opts, cb) {
+  fs.readdir(src, (err, items) => {
+    if (err) return cb(err)
+    return copyDirItems(items, src, dest, opts, cb)
+  })
+}
+
+function copyDirItems (items, src, dest, opts, cb) {
+  const item = items.pop()
+  if (!item) return cb()
+  return copyDirItem(items, item, src, dest, opts, cb)
+}
+
+function copyDirItem (items, item, src, dest, opts, cb) {
+  const srcItem = path.join(src, item)
+  const destItem = path.join(dest, item)
+  stat.checkPaths(srcItem, destItem, 'copy', (err, stats) => {
+    if (err) return cb(err)
+    const { destStat } = stats
+    startCopy(destStat, srcItem, destItem, opts, err => {
+      if (err) return cb(err)
+      return copyDirItems(items, src, dest, opts, cb)
+    })
+  })
+}
+
+function onLink (destStat, src, dest, opts, cb) {
+  fs.readlink(src, (err, resolvedSrc) => {
+    if (err) return cb(err)
+    if (opts.dereference) {
+      resolvedSrc = path.resolve(process.cwd(), resolvedSrc)
+    }
+
+    if (!destStat) {
+      return fs.symlink(resolvedSrc, dest, cb)
+    } else {
+      fs.readlink(dest, (err, resolvedDest) => {
+        if (err) {
+          // dest exists and is a regular file or directory,
+          // Windows may throw UNKNOWN error. If dest already exists,
+          // fs throws error anyway, so no need to guard against it here.
+          if (err.code === 'EINVAL' || err.code === 'UNKNOWN') return fs.symlink(resolvedSrc, dest, cb)
+          return cb(err)
+        }
+        if (opts.dereference) {
+          resolvedDest = path.resolve(process.cwd(), resolvedDest)
+        }
+        if (stat.isSrcSubdir(resolvedSrc, resolvedDest)) {
+          return cb(new Error(`Cannot copy '${resolvedSrc}' to a subdirectory of itself, '${resolvedDest}'.`))
+        }
+
+        // do not copy if src is a subdir of dest since unlinking
+        // dest in this case would result in removing src contents
+        // and therefore a broken symlink would be created.
+        if (destStat.isDirectory() && stat.isSrcSubdir(resolvedDest, resolvedSrc)) {
+          return cb(new Error(`Cannot overwrite '${resolvedDest}' with '${resolvedSrc}'.`))
+        }
+        return copyLink(resolvedSrc, dest, cb)
+      })
+    }
+  })
+}
+
+function copyLink (resolvedSrc, dest, cb) {
+  fs.unlink(dest, err => {
+    if (err) return cb(err)
+    return fs.symlink(resolvedSrc, dest, cb)
+  })
+}
+
+module.exports = copy
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/copy/index.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/copy/index.js ***!
-  \***************************************************************************/
+/***/ 2268:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nmodule.exports = {\n  copy: u(__webpack_require__(/*! ./copy */ \"./node_modules/streamroller/node_modules/fs-extra/lib/copy/copy.js\"))\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/copy/index.js?");
+
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+module.exports = {
+  copy: u(__webpack_require__(1127))
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/empty/index.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/empty/index.js ***!
-  \****************************************************************************/
+/***/ 9850:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst mkdir = __webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\")\nconst remove = __webpack_require__(/*! ../remove */ \"./node_modules/streamroller/node_modules/fs-extra/lib/remove/index.js\")\n\nconst emptyDir = u(function emptyDir (dir, callback) {\n  callback = callback || function () {}\n  fs.readdir(dir, (err, items) => {\n    if (err) return mkdir.mkdirs(dir, callback)\n\n    items = items.map(item => path.join(dir, item))\n\n    deleteItem()\n\n    function deleteItem () {\n      const item = items.pop()\n      if (!item) return callback()\n      remove.remove(item, err => {\n        if (err) return callback(err)\n        deleteItem()\n      })\n    }\n  })\n})\n\nfunction emptyDirSync (dir) {\n  let items\n  try {\n    items = fs.readdirSync(dir)\n  } catch (err) {\n    return mkdir.mkdirsSync(dir)\n  }\n\n  items.forEach(item => {\n    item = path.join(dir, item)\n    remove.removeSync(item)\n  })\n}\n\nmodule.exports = {\n  emptyDirSync,\n  emptydirSync: emptyDirSync,\n  emptyDir,\n  emptydir: emptyDir\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/empty/index.js?");
+
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+const mkdir = __webpack_require__(2690)
+const remove = __webpack_require__(2734)
+
+const emptyDir = u(function emptyDir (dir, callback) {
+  callback = callback || function () {}
+  fs.readdir(dir, (err, items) => {
+    if (err) return mkdir.mkdirs(dir, callback)
+
+    items = items.map(item => path.join(dir, item))
+
+    deleteItem()
+
+    function deleteItem () {
+      const item = items.pop()
+      if (!item) return callback()
+      remove.remove(item, err => {
+        if (err) return callback(err)
+        deleteItem()
+      })
+    }
+  })
+})
+
+function emptyDirSync (dir) {
+  let items
+  try {
+    items = fs.readdirSync(dir)
+  } catch (err) {
+    return mkdir.mkdirsSync(dir)
+  }
+
+  items.forEach(item => {
+    item = path.join(dir, item)
+    remove.removeSync(item)
+  })
+}
+
+module.exports = {
+  emptyDirSync,
+  emptydirSync: emptyDirSync,
+  emptyDir,
+  emptydir: emptyDir
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/ensure/file.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/ensure/file.js ***!
-  \****************************************************************************/
+/***/ 3005:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nconst path = __webpack_require__(/*! path */ \"path\")\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst mkdir = __webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\")\nconst pathExists = (__webpack_require__(/*! ../path-exists */ \"./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js\").pathExists)\n\nfunction createFile (file, callback) {\n  function makeFile () {\n    fs.writeFile(file, '', err => {\n      if (err) return callback(err)\n      callback()\n    })\n  }\n\n  fs.stat(file, (err, stats) => { // eslint-disable-line handle-callback-err\n    if (!err && stats.isFile()) return callback()\n    const dir = path.dirname(file)\n    pathExists(dir, (err, dirExists) => {\n      if (err) return callback(err)\n      if (dirExists) return makeFile()\n      mkdir.mkdirs(dir, err => {\n        if (err) return callback(err)\n        makeFile()\n      })\n    })\n  })\n}\n\nfunction createFileSync (file) {\n  let stats\n  try {\n    stats = fs.statSync(file)\n  } catch (e) {}\n  if (stats && stats.isFile()) return\n\n  const dir = path.dirname(file)\n  if (!fs.existsSync(dir)) {\n    mkdir.mkdirsSync(dir)\n  }\n\n  fs.writeFileSync(file, '')\n}\n\nmodule.exports = {\n  createFile: u(createFile),\n  createFileSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/ensure/file.js?");
+
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+const path = __webpack_require__(1017)
+const fs = __webpack_require__(77)
+const mkdir = __webpack_require__(2690)
+const pathExists = (__webpack_require__(2576).pathExists)
+
+function createFile (file, callback) {
+  function makeFile () {
+    fs.writeFile(file, '', err => {
+      if (err) return callback(err)
+      callback()
+    })
+  }
+
+  fs.stat(file, (err, stats) => { // eslint-disable-line handle-callback-err
+    if (!err && stats.isFile()) return callback()
+    const dir = path.dirname(file)
+    pathExists(dir, (err, dirExists) => {
+      if (err) return callback(err)
+      if (dirExists) return makeFile()
+      mkdir.mkdirs(dir, err => {
+        if (err) return callback(err)
+        makeFile()
+      })
+    })
+  })
+}
+
+function createFileSync (file) {
+  let stats
+  try {
+    stats = fs.statSync(file)
+  } catch (e) {}
+  if (stats && stats.isFile()) return
+
+  const dir = path.dirname(file)
+  if (!fs.existsSync(dir)) {
+    mkdir.mkdirsSync(dir)
+  }
+
+  fs.writeFileSync(file, '')
+}
+
+module.exports = {
+  createFile: u(createFile),
+  createFileSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/ensure/index.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/ensure/index.js ***!
-  \*****************************************************************************/
+/***/ 6906:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst file = __webpack_require__(/*! ./file */ \"./node_modules/streamroller/node_modules/fs-extra/lib/ensure/file.js\")\nconst link = __webpack_require__(/*! ./link */ \"./node_modules/streamroller/node_modules/fs-extra/lib/ensure/link.js\")\nconst symlink = __webpack_require__(/*! ./symlink */ \"./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink.js\")\n\nmodule.exports = {\n  // file\n  createFile: file.createFile,\n  createFileSync: file.createFileSync,\n  ensureFile: file.createFile,\n  ensureFileSync: file.createFileSync,\n  // link\n  createLink: link.createLink,\n  createLinkSync: link.createLinkSync,\n  ensureLink: link.createLink,\n  ensureLinkSync: link.createLinkSync,\n  // symlink\n  createSymlink: symlink.createSymlink,\n  createSymlinkSync: symlink.createSymlinkSync,\n  ensureSymlink: symlink.createSymlink,\n  ensureSymlinkSync: symlink.createSymlinkSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/ensure/index.js?");
+
+
+const file = __webpack_require__(3005)
+const link = __webpack_require__(5014)
+const symlink = __webpack_require__(8707)
+
+module.exports = {
+  // file
+  createFile: file.createFile,
+  createFileSync: file.createFileSync,
+  ensureFile: file.createFile,
+  ensureFileSync: file.createFileSync,
+  // link
+  createLink: link.createLink,
+  createLinkSync: link.createLinkSync,
+  ensureLink: link.createLink,
+  ensureLinkSync: link.createLinkSync,
+  // symlink
+  createSymlink: symlink.createSymlink,
+  createSymlinkSync: symlink.createSymlinkSync,
+  ensureSymlink: symlink.createSymlink,
+  ensureSymlinkSync: symlink.createSymlinkSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/ensure/link.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/ensure/link.js ***!
-  \****************************************************************************/
+/***/ 5014:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nconst path = __webpack_require__(/*! path */ \"path\")\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst mkdir = __webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\")\nconst pathExists = (__webpack_require__(/*! ../path-exists */ \"./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js\").pathExists)\n\nfunction createLink (srcpath, dstpath, callback) {\n  function makeLink (srcpath, dstpath) {\n    fs.link(srcpath, dstpath, err => {\n      if (err) return callback(err)\n      callback(null)\n    })\n  }\n\n  pathExists(dstpath, (err, destinationExists) => {\n    if (err) return callback(err)\n    if (destinationExists) return callback(null)\n    fs.lstat(srcpath, (err) => {\n      if (err) {\n        err.message = err.message.replace('lstat', 'ensureLink')\n        return callback(err)\n      }\n\n      const dir = path.dirname(dstpath)\n      pathExists(dir, (err, dirExists) => {\n        if (err) return callback(err)\n        if (dirExists) return makeLink(srcpath, dstpath)\n        mkdir.mkdirs(dir, err => {\n          if (err) return callback(err)\n          makeLink(srcpath, dstpath)\n        })\n      })\n    })\n  })\n}\n\nfunction createLinkSync (srcpath, dstpath) {\n  const destinationExists = fs.existsSync(dstpath)\n  if (destinationExists) return undefined\n\n  try {\n    fs.lstatSync(srcpath)\n  } catch (err) {\n    err.message = err.message.replace('lstat', 'ensureLink')\n    throw err\n  }\n\n  const dir = path.dirname(dstpath)\n  const dirExists = fs.existsSync(dir)\n  if (dirExists) return fs.linkSync(srcpath, dstpath)\n  mkdir.mkdirsSync(dir)\n\n  return fs.linkSync(srcpath, dstpath)\n}\n\nmodule.exports = {\n  createLink: u(createLink),\n  createLinkSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/ensure/link.js?");
+
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+const path = __webpack_require__(1017)
+const fs = __webpack_require__(77)
+const mkdir = __webpack_require__(2690)
+const pathExists = (__webpack_require__(2576).pathExists)
+
+function createLink (srcpath, dstpath, callback) {
+  function makeLink (srcpath, dstpath) {
+    fs.link(srcpath, dstpath, err => {
+      if (err) return callback(err)
+      callback(null)
+    })
+  }
+
+  pathExists(dstpath, (err, destinationExists) => {
+    if (err) return callback(err)
+    if (destinationExists) return callback(null)
+    fs.lstat(srcpath, (err) => {
+      if (err) {
+        err.message = err.message.replace('lstat', 'ensureLink')
+        return callback(err)
+      }
+
+      const dir = path.dirname(dstpath)
+      pathExists(dir, (err, dirExists) => {
+        if (err) return callback(err)
+        if (dirExists) return makeLink(srcpath, dstpath)
+        mkdir.mkdirs(dir, err => {
+          if (err) return callback(err)
+          makeLink(srcpath, dstpath)
+        })
+      })
+    })
+  })
+}
+
+function createLinkSync (srcpath, dstpath) {
+  const destinationExists = fs.existsSync(dstpath)
+  if (destinationExists) return undefined
+
+  try {
+    fs.lstatSync(srcpath)
+  } catch (err) {
+    err.message = err.message.replace('lstat', 'ensureLink')
+    throw err
+  }
+
+  const dir = path.dirname(dstpath)
+  const dirExists = fs.existsSync(dir)
+  if (dirExists) return fs.linkSync(srcpath, dstpath)
+  mkdir.mkdirsSync(dir)
+
+  return fs.linkSync(srcpath, dstpath)
+}
+
+module.exports = {
+  createLink: u(createLink),
+  createLinkSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink-paths.js":
-/*!*************************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink-paths.js ***!
-  \*************************************************************************************/
+/***/ 2148:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst path = __webpack_require__(/*! path */ \"path\")\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst pathExists = (__webpack_require__(/*! ../path-exists */ \"./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js\").pathExists)\n\n/**\n * Function that returns two types of paths, one relative to symlink, and one\n * relative to the current working directory. Checks if path is absolute or\n * relative. If the path is relative, this function checks if the path is\n * relative to symlink or relative to current working directory. This is an\n * initiative to find a smarter `srcpath` to supply when building symlinks.\n * This allows you to determine which path to use out of one of three possible\n * types of source paths. The first is an absolute path. This is detected by\n * `path.isAbsolute()`. When an absolute path is provided, it is checked to\n * see if it exists. If it does it's used, if not an error is returned\n * (callback)/ thrown (sync). The other two options for `srcpath` are a\n * relative url. By default Node's `fs.symlink` works by creating a symlink\n * using `dstpath` and expects the `srcpath` to be relative to the newly\n * created symlink. If you provide a `srcpath` that does not exist on the file\n * system it results in a broken symlink. To minimize this, the function\n * checks to see if the 'relative to symlink' source file exists, and if it\n * does it will use it. If it does not, it checks if there's a file that\n * exists that is relative to the current working directory, if does its used.\n * This preserves the expectations of the original fs.symlink spec and adds\n * the ability to pass in `relative to current working direcotry` paths.\n */\n\nfunction symlinkPaths (srcpath, dstpath, callback) {\n  if (path.isAbsolute(srcpath)) {\n    return fs.lstat(srcpath, (err) => {\n      if (err) {\n        err.message = err.message.replace('lstat', 'ensureSymlink')\n        return callback(err)\n      }\n      return callback(null, {\n        'toCwd': srcpath,\n        'toDst': srcpath\n      })\n    })\n  } else {\n    const dstdir = path.dirname(dstpath)\n    const relativeToDst = path.join(dstdir, srcpath)\n    return pathExists(relativeToDst, (err, exists) => {\n      if (err) return callback(err)\n      if (exists) {\n        return callback(null, {\n          'toCwd': relativeToDst,\n          'toDst': srcpath\n        })\n      } else {\n        return fs.lstat(srcpath, (err) => {\n          if (err) {\n            err.message = err.message.replace('lstat', 'ensureSymlink')\n            return callback(err)\n          }\n          return callback(null, {\n            'toCwd': srcpath,\n            'toDst': path.relative(dstdir, srcpath)\n          })\n        })\n      }\n    })\n  }\n}\n\nfunction symlinkPathsSync (srcpath, dstpath) {\n  let exists\n  if (path.isAbsolute(srcpath)) {\n    exists = fs.existsSync(srcpath)\n    if (!exists) throw new Error('absolute srcpath does not exist')\n    return {\n      'toCwd': srcpath,\n      'toDst': srcpath\n    }\n  } else {\n    const dstdir = path.dirname(dstpath)\n    const relativeToDst = path.join(dstdir, srcpath)\n    exists = fs.existsSync(relativeToDst)\n    if (exists) {\n      return {\n        'toCwd': relativeToDst,\n        'toDst': srcpath\n      }\n    } else {\n      exists = fs.existsSync(srcpath)\n      if (!exists) throw new Error('relative srcpath does not exist')\n      return {\n        'toCwd': srcpath,\n        'toDst': path.relative(dstdir, srcpath)\n      }\n    }\n  }\n}\n\nmodule.exports = {\n  symlinkPaths,\n  symlinkPathsSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink-paths.js?");
+
+
+const path = __webpack_require__(1017)
+const fs = __webpack_require__(77)
+const pathExists = (__webpack_require__(2576).pathExists)
+
+/**
+ * Function that returns two types of paths, one relative to symlink, and one
+ * relative to the current working directory. Checks if path is absolute or
+ * relative. If the path is relative, this function checks if the path is
+ * relative to symlink or relative to current working directory. This is an
+ * initiative to find a smarter `srcpath` to supply when building symlinks.
+ * This allows you to determine which path to use out of one of three possible
+ * types of source paths. The first is an absolute path. This is detected by
+ * `path.isAbsolute()`. When an absolute path is provided, it is checked to
+ * see if it exists. If it does it's used, if not an error is returned
+ * (callback)/ thrown (sync). The other two options for `srcpath` are a
+ * relative url. By default Node's `fs.symlink` works by creating a symlink
+ * using `dstpath` and expects the `srcpath` to be relative to the newly
+ * created symlink. If you provide a `srcpath` that does not exist on the file
+ * system it results in a broken symlink. To minimize this, the function
+ * checks to see if the 'relative to symlink' source file exists, and if it
+ * does it will use it. If it does not, it checks if there's a file that
+ * exists that is relative to the current working directory, if does its used.
+ * This preserves the expectations of the original fs.symlink spec and adds
+ * the ability to pass in `relative to current working direcotry` paths.
+ */
+
+function symlinkPaths (srcpath, dstpath, callback) {
+  if (path.isAbsolute(srcpath)) {
+    return fs.lstat(srcpath, (err) => {
+      if (err) {
+        err.message = err.message.replace('lstat', 'ensureSymlink')
+        return callback(err)
+      }
+      return callback(null, {
+        'toCwd': srcpath,
+        'toDst': srcpath
+      })
+    })
+  } else {
+    const dstdir = path.dirname(dstpath)
+    const relativeToDst = path.join(dstdir, srcpath)
+    return pathExists(relativeToDst, (err, exists) => {
+      if (err) return callback(err)
+      if (exists) {
+        return callback(null, {
+          'toCwd': relativeToDst,
+          'toDst': srcpath
+        })
+      } else {
+        return fs.lstat(srcpath, (err) => {
+          if (err) {
+            err.message = err.message.replace('lstat', 'ensureSymlink')
+            return callback(err)
+          }
+          return callback(null, {
+            'toCwd': srcpath,
+            'toDst': path.relative(dstdir, srcpath)
+          })
+        })
+      }
+    })
+  }
+}
+
+function symlinkPathsSync (srcpath, dstpath) {
+  let exists
+  if (path.isAbsolute(srcpath)) {
+    exists = fs.existsSync(srcpath)
+    if (!exists) throw new Error('absolute srcpath does not exist')
+    return {
+      'toCwd': srcpath,
+      'toDst': srcpath
+    }
+  } else {
+    const dstdir = path.dirname(dstpath)
+    const relativeToDst = path.join(dstdir, srcpath)
+    exists = fs.existsSync(relativeToDst)
+    if (exists) {
+      return {
+        'toCwd': relativeToDst,
+        'toDst': srcpath
+      }
+    } else {
+      exists = fs.existsSync(srcpath)
+      if (!exists) throw new Error('relative srcpath does not exist')
+      return {
+        'toCwd': srcpath,
+        'toDst': path.relative(dstdir, srcpath)
+      }
+    }
+  }
+}
+
+module.exports = {
+  symlinkPaths,
+  symlinkPathsSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink-type.js":
-/*!************************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink-type.js ***!
-  \************************************************************************************/
+/***/ 8805:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\n\nfunction symlinkType (srcpath, type, callback) {\n  callback = (typeof type === 'function') ? type : callback\n  type = (typeof type === 'function') ? false : type\n  if (type) return callback(null, type)\n  fs.lstat(srcpath, (err, stats) => {\n    if (err) return callback(null, 'file')\n    type = (stats && stats.isDirectory()) ? 'dir' : 'file'\n    callback(null, type)\n  })\n}\n\nfunction symlinkTypeSync (srcpath, type) {\n  let stats\n\n  if (type) return type\n  try {\n    stats = fs.lstatSync(srcpath)\n  } catch (e) {\n    return 'file'\n  }\n  return (stats && stats.isDirectory()) ? 'dir' : 'file'\n}\n\nmodule.exports = {\n  symlinkType,\n  symlinkTypeSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink-type.js?");
+
+
+const fs = __webpack_require__(77)
+
+function symlinkType (srcpath, type, callback) {
+  callback = (typeof type === 'function') ? type : callback
+  type = (typeof type === 'function') ? false : type
+  if (type) return callback(null, type)
+  fs.lstat(srcpath, (err, stats) => {
+    if (err) return callback(null, 'file')
+    type = (stats && stats.isDirectory()) ? 'dir' : 'file'
+    callback(null, type)
+  })
+}
+
+function symlinkTypeSync (srcpath, type) {
+  let stats
+
+  if (type) return type
+  try {
+    stats = fs.lstatSync(srcpath)
+  } catch (e) {
+    return 'file'
+  }
+  return (stats && stats.isDirectory()) ? 'dir' : 'file'
+}
+
+module.exports = {
+  symlinkType,
+  symlinkTypeSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink.js":
-/*!*******************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink.js ***!
-  \*******************************************************************************/
+/***/ 8707:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nconst path = __webpack_require__(/*! path */ \"path\")\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst _mkdirs = __webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\")\nconst mkdirs = _mkdirs.mkdirs\nconst mkdirsSync = _mkdirs.mkdirsSync\n\nconst _symlinkPaths = __webpack_require__(/*! ./symlink-paths */ \"./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink-paths.js\")\nconst symlinkPaths = _symlinkPaths.symlinkPaths\nconst symlinkPathsSync = _symlinkPaths.symlinkPathsSync\n\nconst _symlinkType = __webpack_require__(/*! ./symlink-type */ \"./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink-type.js\")\nconst symlinkType = _symlinkType.symlinkType\nconst symlinkTypeSync = _symlinkType.symlinkTypeSync\n\nconst pathExists = (__webpack_require__(/*! ../path-exists */ \"./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js\").pathExists)\n\nfunction createSymlink (srcpath, dstpath, type, callback) {\n  callback = (typeof type === 'function') ? type : callback\n  type = (typeof type === 'function') ? false : type\n\n  pathExists(dstpath, (err, destinationExists) => {\n    if (err) return callback(err)\n    if (destinationExists) return callback(null)\n    symlinkPaths(srcpath, dstpath, (err, relative) => {\n      if (err) return callback(err)\n      srcpath = relative.toDst\n      symlinkType(relative.toCwd, type, (err, type) => {\n        if (err) return callback(err)\n        const dir = path.dirname(dstpath)\n        pathExists(dir, (err, dirExists) => {\n          if (err) return callback(err)\n          if (dirExists) return fs.symlink(srcpath, dstpath, type, callback)\n          mkdirs(dir, err => {\n            if (err) return callback(err)\n            fs.symlink(srcpath, dstpath, type, callback)\n          })\n        })\n      })\n    })\n  })\n}\n\nfunction createSymlinkSync (srcpath, dstpath, type) {\n  const destinationExists = fs.existsSync(dstpath)\n  if (destinationExists) return undefined\n\n  const relative = symlinkPathsSync(srcpath, dstpath)\n  srcpath = relative.toDst\n  type = symlinkTypeSync(relative.toCwd, type)\n  const dir = path.dirname(dstpath)\n  const exists = fs.existsSync(dir)\n  if (exists) return fs.symlinkSync(srcpath, dstpath, type)\n  mkdirsSync(dir)\n  return fs.symlinkSync(srcpath, dstpath, type)\n}\n\nmodule.exports = {\n  createSymlink: u(createSymlink),\n  createSymlinkSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/ensure/symlink.js?");
+
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+const path = __webpack_require__(1017)
+const fs = __webpack_require__(77)
+const _mkdirs = __webpack_require__(2690)
+const mkdirs = _mkdirs.mkdirs
+const mkdirsSync = _mkdirs.mkdirsSync
+
+const _symlinkPaths = __webpack_require__(2148)
+const symlinkPaths = _symlinkPaths.symlinkPaths
+const symlinkPathsSync = _symlinkPaths.symlinkPathsSync
+
+const _symlinkType = __webpack_require__(8805)
+const symlinkType = _symlinkType.symlinkType
+const symlinkTypeSync = _symlinkType.symlinkTypeSync
+
+const pathExists = (__webpack_require__(2576).pathExists)
+
+function createSymlink (srcpath, dstpath, type, callback) {
+  callback = (typeof type === 'function') ? type : callback
+  type = (typeof type === 'function') ? false : type
+
+  pathExists(dstpath, (err, destinationExists) => {
+    if (err) return callback(err)
+    if (destinationExists) return callback(null)
+    symlinkPaths(srcpath, dstpath, (err, relative) => {
+      if (err) return callback(err)
+      srcpath = relative.toDst
+      symlinkType(relative.toCwd, type, (err, type) => {
+        if (err) return callback(err)
+        const dir = path.dirname(dstpath)
+        pathExists(dir, (err, dirExists) => {
+          if (err) return callback(err)
+          if (dirExists) return fs.symlink(srcpath, dstpath, type, callback)
+          mkdirs(dir, err => {
+            if (err) return callback(err)
+            fs.symlink(srcpath, dstpath, type, callback)
+          })
+        })
+      })
+    })
+  })
+}
+
+function createSymlinkSync (srcpath, dstpath, type) {
+  const destinationExists = fs.existsSync(dstpath)
+  if (destinationExists) return undefined
+
+  const relative = symlinkPathsSync(srcpath, dstpath)
+  srcpath = relative.toDst
+  type = symlinkTypeSync(relative.toCwd, type)
+  const dir = path.dirname(dstpath)
+  const exists = fs.existsSync(dir)
+  if (exists) return fs.symlinkSync(srcpath, dstpath, type)
+  mkdirsSync(dir)
+  return fs.symlinkSync(srcpath, dstpath, type)
+}
+
+module.exports = {
+  createSymlink: u(createSymlink),
+  createSymlinkSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/fs/index.js":
-/*!*************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/fs/index.js ***!
-  \*************************************************************************/
+/***/ 1690:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
-eval("\n// This is adapted from https://github.com/normalize/mz\n// Copyright (c) 2014-2016 Jonathan Ong me@jongleberry.com and Contributors\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\n\nconst api = [\n  'access',\n  'appendFile',\n  'chmod',\n  'chown',\n  'close',\n  'copyFile',\n  'fchmod',\n  'fchown',\n  'fdatasync',\n  'fstat',\n  'fsync',\n  'ftruncate',\n  'futimes',\n  'lchown',\n  'lchmod',\n  'link',\n  'lstat',\n  'mkdir',\n  'mkdtemp',\n  'open',\n  'readFile',\n  'readdir',\n  'readlink',\n  'realpath',\n  'rename',\n  'rmdir',\n  'stat',\n  'symlink',\n  'truncate',\n  'unlink',\n  'utimes',\n  'writeFile'\n].filter(key => {\n  // Some commands are not available on some systems. Ex:\n  // fs.copyFile was added in Node.js v8.5.0\n  // fs.mkdtemp was added in Node.js v5.10.0\n  // fs.lchown is not available on at least some Linux\n  return typeof fs[key] === 'function'\n})\n\n// Export all keys:\nObject.keys(fs).forEach(key => {\n  if (key === 'promises') {\n    // fs.promises is a getter property that triggers ExperimentalWarning\n    // Don't re-export it here, the getter is defined in \"lib/index.js\"\n    return\n  }\n  exports[key] = fs[key]\n})\n\n// Universalify async methods:\napi.forEach(method => {\n  exports[method] = u(fs[method])\n})\n\n// We differ from mz/fs in that we still ship the old, broken, fs.exists()\n// since we are a drop-in replacement for the native module\nexports.exists = function (filename, callback) {\n  if (typeof callback === 'function') {\n    return fs.exists(filename, callback)\n  }\n  return new Promise(resolve => {\n    return fs.exists(filename, resolve)\n  })\n}\n\n// fs.read() & fs.write need special treatment due to multiple callback args\n\nexports.read = function (fd, buffer, offset, length, position, callback) {\n  if (typeof callback === 'function') {\n    return fs.read(fd, buffer, offset, length, position, callback)\n  }\n  return new Promise((resolve, reject) => {\n    fs.read(fd, buffer, offset, length, position, (err, bytesRead, buffer) => {\n      if (err) return reject(err)\n      resolve({ bytesRead, buffer })\n    })\n  })\n}\n\n// Function signature can be\n// fs.write(fd, buffer[, offset[, length[, position]]], callback)\n// OR\n// fs.write(fd, string[, position[, encoding]], callback)\n// We need to handle both cases, so we use ...args\nexports.write = function (fd, buffer, ...args) {\n  if (typeof args[args.length - 1] === 'function') {\n    return fs.write(fd, buffer, ...args)\n  }\n\n  return new Promise((resolve, reject) => {\n    fs.write(fd, buffer, ...args, (err, bytesWritten, buffer) => {\n      if (err) return reject(err)\n      resolve({ bytesWritten, buffer })\n    })\n  })\n}\n\n// fs.realpath.native only available in Node v9.2+\nif (typeof fs.realpath.native === 'function') {\n  exports.realpath.native = u(fs.realpath.native)\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/fs/index.js?");
+
+// This is adapted from https://github.com/normalize/mz
+// Copyright (c) 2014-2016 Jonathan Ong me@jongleberry.com and Contributors
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+const fs = __webpack_require__(77)
+
+const api = [
+  'access',
+  'appendFile',
+  'chmod',
+  'chown',
+  'close',
+  'copyFile',
+  'fchmod',
+  'fchown',
+  'fdatasync',
+  'fstat',
+  'fsync',
+  'ftruncate',
+  'futimes',
+  'lchown',
+  'lchmod',
+  'link',
+  'lstat',
+  'mkdir',
+  'mkdtemp',
+  'open',
+  'readFile',
+  'readdir',
+  'readlink',
+  'realpath',
+  'rename',
+  'rmdir',
+  'stat',
+  'symlink',
+  'truncate',
+  'unlink',
+  'utimes',
+  'writeFile'
+].filter(key => {
+  // Some commands are not available on some systems. Ex:
+  // fs.copyFile was added in Node.js v8.5.0
+  // fs.mkdtemp was added in Node.js v5.10.0
+  // fs.lchown is not available on at least some Linux
+  return typeof fs[key] === 'function'
+})
+
+// Export all keys:
+Object.keys(fs).forEach(key => {
+  if (key === 'promises') {
+    // fs.promises is a getter property that triggers ExperimentalWarning
+    // Don't re-export it here, the getter is defined in "lib/index.js"
+    return
+  }
+  exports[key] = fs[key]
+})
+
+// Universalify async methods:
+api.forEach(method => {
+  exports[method] = u(fs[method])
+})
+
+// We differ from mz/fs in that we still ship the old, broken, fs.exists()
+// since we are a drop-in replacement for the native module
+exports.exists = function (filename, callback) {
+  if (typeof callback === 'function') {
+    return fs.exists(filename, callback)
+  }
+  return new Promise(resolve => {
+    return fs.exists(filename, resolve)
+  })
+}
+
+// fs.read() & fs.write need special treatment due to multiple callback args
+
+exports.read = function (fd, buffer, offset, length, position, callback) {
+  if (typeof callback === 'function') {
+    return fs.read(fd, buffer, offset, length, position, callback)
+  }
+  return new Promise((resolve, reject) => {
+    fs.read(fd, buffer, offset, length, position, (err, bytesRead, buffer) => {
+      if (err) return reject(err)
+      resolve({ bytesRead, buffer })
+    })
+  })
+}
+
+// Function signature can be
+// fs.write(fd, buffer[, offset[, length[, position]]], callback)
+// OR
+// fs.write(fd, string[, position[, encoding]], callback)
+// We need to handle both cases, so we use ...args
+exports.write = function (fd, buffer, ...args) {
+  if (typeof args[args.length - 1] === 'function') {
+    return fs.write(fd, buffer, ...args)
+  }
+
+  return new Promise((resolve, reject) => {
+    fs.write(fd, buffer, ...args, (err, bytesWritten, buffer) => {
+      if (err) return reject(err)
+      resolve({ bytesWritten, buffer })
+    })
+  })
+}
+
+// fs.realpath.native only available in Node v9.2+
+if (typeof fs.realpath.native === 'function') {
+  exports.realpath.native = u(fs.realpath.native)
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/index.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/index.js ***!
-  \**********************************************************************/
+/***/ 9646:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nmodule.exports = Object.assign(\n  {},\n  // Export promiseified graceful-fs:\n  __webpack_require__(/*! ./fs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/fs/index.js\"),\n  // Export extra methods:\n  __webpack_require__(/*! ./copy-sync */ \"./node_modules/streamroller/node_modules/fs-extra/lib/copy-sync/index.js\"),\n  __webpack_require__(/*! ./copy */ \"./node_modules/streamroller/node_modules/fs-extra/lib/copy/index.js\"),\n  __webpack_require__(/*! ./empty */ \"./node_modules/streamroller/node_modules/fs-extra/lib/empty/index.js\"),\n  __webpack_require__(/*! ./ensure */ \"./node_modules/streamroller/node_modules/fs-extra/lib/ensure/index.js\"),\n  __webpack_require__(/*! ./json */ \"./node_modules/streamroller/node_modules/fs-extra/lib/json/index.js\"),\n  __webpack_require__(/*! ./mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\"),\n  __webpack_require__(/*! ./move-sync */ \"./node_modules/streamroller/node_modules/fs-extra/lib/move-sync/index.js\"),\n  __webpack_require__(/*! ./move */ \"./node_modules/streamroller/node_modules/fs-extra/lib/move/index.js\"),\n  __webpack_require__(/*! ./output */ \"./node_modules/streamroller/node_modules/fs-extra/lib/output/index.js\"),\n  __webpack_require__(/*! ./path-exists */ \"./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js\"),\n  __webpack_require__(/*! ./remove */ \"./node_modules/streamroller/node_modules/fs-extra/lib/remove/index.js\")\n)\n\n// Export fs.promises as a getter property so that we don't trigger\n// ExperimentalWarning before fs.promises is actually accessed.\nconst fs = __webpack_require__(/*! fs */ \"fs\")\nif (Object.getOwnPropertyDescriptor(fs, 'promises')) {\n  Object.defineProperty(module.exports, \"promises\", ({\n    get () { return fs.promises }\n  }))\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/index.js?");
+
+
+module.exports = Object.assign(
+  {},
+  // Export promiseified graceful-fs:
+  __webpack_require__(1690),
+  // Export extra methods:
+  __webpack_require__(8755),
+  __webpack_require__(2268),
+  __webpack_require__(9850),
+  __webpack_require__(6906),
+  __webpack_require__(6653),
+  __webpack_require__(2690),
+  __webpack_require__(7924),
+  __webpack_require__(5825),
+  __webpack_require__(3313),
+  __webpack_require__(2576),
+  __webpack_require__(2734)
+)
+
+// Export fs.promises as a getter property so that we don't trigger
+// ExperimentalWarning before fs.promises is actually accessed.
+const fs = __webpack_require__(7147)
+if (Object.getOwnPropertyDescriptor(fs, 'promises')) {
+  Object.defineProperty(module.exports, "promises", ({
+    get () { return fs.promises }
+  }))
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/json/index.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/json/index.js ***!
-  \***************************************************************************/
+/***/ 6653:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nconst jsonFile = __webpack_require__(/*! ./jsonfile */ \"./node_modules/streamroller/node_modules/fs-extra/lib/json/jsonfile.js\")\n\njsonFile.outputJson = u(__webpack_require__(/*! ./output-json */ \"./node_modules/streamroller/node_modules/fs-extra/lib/json/output-json.js\"))\njsonFile.outputJsonSync = __webpack_require__(/*! ./output-json-sync */ \"./node_modules/streamroller/node_modules/fs-extra/lib/json/output-json-sync.js\")\n// aliases\njsonFile.outputJSON = jsonFile.outputJson\njsonFile.outputJSONSync = jsonFile.outputJsonSync\njsonFile.writeJSON = jsonFile.writeJson\njsonFile.writeJSONSync = jsonFile.writeJsonSync\njsonFile.readJSON = jsonFile.readJson\njsonFile.readJSONSync = jsonFile.readJsonSync\n\nmodule.exports = jsonFile\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/json/index.js?");
+
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+const jsonFile = __webpack_require__(6267)
+
+jsonFile.outputJson = u(__webpack_require__(3885))
+jsonFile.outputJsonSync = __webpack_require__(5942)
+// aliases
+jsonFile.outputJSON = jsonFile.outputJson
+jsonFile.outputJSONSync = jsonFile.outputJsonSync
+jsonFile.writeJSON = jsonFile.writeJson
+jsonFile.writeJSONSync = jsonFile.writeJsonSync
+jsonFile.readJSON = jsonFile.readJson
+jsonFile.readJSONSync = jsonFile.readJsonSync
+
+module.exports = jsonFile
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/json/jsonfile.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/json/jsonfile.js ***!
-  \******************************************************************************/
+/***/ 6267:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nconst jsonFile = __webpack_require__(/*! jsonfile */ \"./node_modules/streamroller/node_modules/jsonfile/index.js\")\n\nmodule.exports = {\n  // jsonfile exports\n  readJson: u(jsonFile.readFile),\n  readJsonSync: jsonFile.readFileSync,\n  writeJson: u(jsonFile.writeFile),\n  writeJsonSync: jsonFile.writeFileSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/json/jsonfile.js?");
+
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+const jsonFile = __webpack_require__(592)
+
+module.exports = {
+  // jsonfile exports
+  readJson: u(jsonFile.readFile),
+  readJsonSync: jsonFile.readFileSync,
+  writeJson: u(jsonFile.writeFile),
+  writeJsonSync: jsonFile.writeFileSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/json/output-json-sync.js":
-/*!**************************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/json/output-json-sync.js ***!
-  \**************************************************************************************/
+/***/ 5942:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst mkdir = __webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\")\nconst jsonFile = __webpack_require__(/*! ./jsonfile */ \"./node_modules/streamroller/node_modules/fs-extra/lib/json/jsonfile.js\")\n\nfunction outputJsonSync (file, data, options) {\n  const dir = path.dirname(file)\n\n  if (!fs.existsSync(dir)) {\n    mkdir.mkdirsSync(dir)\n  }\n\n  jsonFile.writeJsonSync(file, data, options)\n}\n\nmodule.exports = outputJsonSync\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/json/output-json-sync.js?");
+
+
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+const mkdir = __webpack_require__(2690)
+const jsonFile = __webpack_require__(6267)
+
+function outputJsonSync (file, data, options) {
+  const dir = path.dirname(file)
+
+  if (!fs.existsSync(dir)) {
+    mkdir.mkdirsSync(dir)
+  }
+
+  jsonFile.writeJsonSync(file, data, options)
+}
+
+module.exports = outputJsonSync
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/json/output-json.js":
-/*!*********************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/json/output-json.js ***!
-  \*********************************************************************************/
+/***/ 3885:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst path = __webpack_require__(/*! path */ \"path\")\nconst mkdir = __webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\")\nconst pathExists = (__webpack_require__(/*! ../path-exists */ \"./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js\").pathExists)\nconst jsonFile = __webpack_require__(/*! ./jsonfile */ \"./node_modules/streamroller/node_modules/fs-extra/lib/json/jsonfile.js\")\n\nfunction outputJson (file, data, options, callback) {\n  if (typeof options === 'function') {\n    callback = options\n    options = {}\n  }\n\n  const dir = path.dirname(file)\n\n  pathExists(dir, (err, itDoes) => {\n    if (err) return callback(err)\n    if (itDoes) return jsonFile.writeJson(file, data, options, callback)\n\n    mkdir.mkdirs(dir, err => {\n      if (err) return callback(err)\n      jsonFile.writeJson(file, data, options, callback)\n    })\n  })\n}\n\nmodule.exports = outputJson\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/json/output-json.js?");
+
+
+const path = __webpack_require__(1017)
+const mkdir = __webpack_require__(2690)
+const pathExists = (__webpack_require__(2576).pathExists)
+const jsonFile = __webpack_require__(6267)
+
+function outputJson (file, data, options, callback) {
+  if (typeof options === 'function') {
+    callback = options
+    options = {}
+  }
+
+  const dir = path.dirname(file)
+
+  pathExists(dir, (err, itDoes) => {
+    if (err) return callback(err)
+    if (itDoes) return jsonFile.writeJson(file, data, options, callback)
+
+    mkdir.mkdirs(dir, err => {
+      if (err) return callback(err)
+      jsonFile.writeJson(file, data, options, callback)
+    })
+  })
+}
+
+module.exports = outputJson
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js ***!
-  \*****************************************************************************/
+/***/ 2690:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nconst mkdirs = u(__webpack_require__(/*! ./mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/mkdirs.js\"))\nconst mkdirsSync = __webpack_require__(/*! ./mkdirs-sync */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/mkdirs-sync.js\")\n\nmodule.exports = {\n  mkdirs,\n  mkdirsSync,\n  // alias\n  mkdirp: mkdirs,\n  mkdirpSync: mkdirsSync,\n  ensureDir: mkdirs,\n  ensureDirSync: mkdirsSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js?");
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+const mkdirs = u(__webpack_require__(3172))
+const mkdirsSync = __webpack_require__(3249)
+
+module.exports = {
+  mkdirs,
+  mkdirsSync,
+  // alias
+  mkdirp: mkdirs,
+  mkdirpSync: mkdirsSync,
+  ensureDir: mkdirs,
+  ensureDirSync: mkdirsSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/mkdirs-sync.js":
-/*!***********************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/mkdirs-sync.js ***!
-  \***********************************************************************************/
+/***/ 3249:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst invalidWin32Path = (__webpack_require__(/*! ./win32 */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/win32.js\").invalidWin32Path)\n\nconst o777 = parseInt('0777', 8)\n\nfunction mkdirsSync (p, opts, made) {\n  if (!opts || typeof opts !== 'object') {\n    opts = { mode: opts }\n  }\n\n  let mode = opts.mode\n  const xfs = opts.fs || fs\n\n  if (process.platform === 'win32' && invalidWin32Path(p)) {\n    const errInval = new Error(p + ' contains invalid WIN32 path characters.')\n    errInval.code = 'EINVAL'\n    throw errInval\n  }\n\n  if (mode === undefined) {\n    mode = o777 & (~process.umask())\n  }\n  if (!made) made = null\n\n  p = path.resolve(p)\n\n  try {\n    xfs.mkdirSync(p, mode)\n    made = made || p\n  } catch (err0) {\n    if (err0.code === 'ENOENT') {\n      if (path.dirname(p) === p) throw err0\n      made = mkdirsSync(path.dirname(p), opts, made)\n      mkdirsSync(p, opts, made)\n    } else {\n      // In the case of any other error, just see if there's a dir there\n      // already. If so, then hooray!  If not, then something is borked.\n      let stat\n      try {\n        stat = xfs.statSync(p)\n      } catch (err1) {\n        throw err0\n      }\n      if (!stat.isDirectory()) throw err0\n    }\n  }\n\n  return made\n}\n\nmodule.exports = mkdirsSync\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/mkdirs-sync.js?");
+
+
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+const invalidWin32Path = (__webpack_require__(8038).invalidWin32Path)
+
+const o777 = parseInt('0777', 8)
+
+function mkdirsSync (p, opts, made) {
+  if (!opts || typeof opts !== 'object') {
+    opts = { mode: opts }
+  }
+
+  let mode = opts.mode
+  const xfs = opts.fs || fs
+
+  if (process.platform === 'win32' && invalidWin32Path(p)) {
+    const errInval = new Error(p + ' contains invalid WIN32 path characters.')
+    errInval.code = 'EINVAL'
+    throw errInval
+  }
+
+  if (mode === undefined) {
+    mode = o777 & (~process.umask())
+  }
+  if (!made) made = null
+
+  p = path.resolve(p)
+
+  try {
+    xfs.mkdirSync(p, mode)
+    made = made || p
+  } catch (err0) {
+    if (err0.code === 'ENOENT') {
+      if (path.dirname(p) === p) throw err0
+      made = mkdirsSync(path.dirname(p), opts, made)
+      mkdirsSync(p, opts, made)
+    } else {
+      // In the case of any other error, just see if there's a dir there
+      // already. If so, then hooray!  If not, then something is borked.
+      let stat
+      try {
+        stat = xfs.statSync(p)
+      } catch (err1) {
+        throw err0
+      }
+      if (!stat.isDirectory()) throw err0
+    }
+  }
+
+  return made
+}
+
+module.exports = mkdirsSync
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/mkdirs.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/mkdirs.js ***!
-  \******************************************************************************/
+/***/ 3172:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst invalidWin32Path = (__webpack_require__(/*! ./win32 */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/win32.js\").invalidWin32Path)\n\nconst o777 = parseInt('0777', 8)\n\nfunction mkdirs (p, opts, callback, made) {\n  if (typeof opts === 'function') {\n    callback = opts\n    opts = {}\n  } else if (!opts || typeof opts !== 'object') {\n    opts = { mode: opts }\n  }\n\n  if (process.platform === 'win32' && invalidWin32Path(p)) {\n    const errInval = new Error(p + ' contains invalid WIN32 path characters.')\n    errInval.code = 'EINVAL'\n    return callback(errInval)\n  }\n\n  let mode = opts.mode\n  const xfs = opts.fs || fs\n\n  if (mode === undefined) {\n    mode = o777 & (~process.umask())\n  }\n  if (!made) made = null\n\n  callback = callback || function () {}\n  p = path.resolve(p)\n\n  xfs.mkdir(p, mode, er => {\n    if (!er) {\n      made = made || p\n      return callback(null, made)\n    }\n    switch (er.code) {\n      case 'ENOENT':\n        if (path.dirname(p) === p) return callback(er)\n        mkdirs(path.dirname(p), opts, (er, made) => {\n          if (er) callback(er, made)\n          else mkdirs(p, opts, callback, made)\n        })\n        break\n\n      // In the case of any other error, just see if there's a dir\n      // there already.  If so, then hooray!  If not, then something\n      // is borked.\n      default:\n        xfs.stat(p, (er2, stat) => {\n          // if the stat fails, then that's super weird.\n          // let the original error be the failure reason.\n          if (er2 || !stat.isDirectory()) callback(er, made)\n          else callback(null, made)\n        })\n        break\n    }\n  })\n}\n\nmodule.exports = mkdirs\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/mkdirs.js?");
+
+
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+const invalidWin32Path = (__webpack_require__(8038).invalidWin32Path)
+
+const o777 = parseInt('0777', 8)
+
+function mkdirs (p, opts, callback, made) {
+  if (typeof opts === 'function') {
+    callback = opts
+    opts = {}
+  } else if (!opts || typeof opts !== 'object') {
+    opts = { mode: opts }
+  }
+
+  if (process.platform === 'win32' && invalidWin32Path(p)) {
+    const errInval = new Error(p + ' contains invalid WIN32 path characters.')
+    errInval.code = 'EINVAL'
+    return callback(errInval)
+  }
+
+  let mode = opts.mode
+  const xfs = opts.fs || fs
+
+  if (mode === undefined) {
+    mode = o777 & (~process.umask())
+  }
+  if (!made) made = null
+
+  callback = callback || function () {}
+  p = path.resolve(p)
+
+  xfs.mkdir(p, mode, er => {
+    if (!er) {
+      made = made || p
+      return callback(null, made)
+    }
+    switch (er.code) {
+      case 'ENOENT':
+        if (path.dirname(p) === p) return callback(er)
+        mkdirs(path.dirname(p), opts, (er, made) => {
+          if (er) callback(er, made)
+          else mkdirs(p, opts, callback, made)
+        })
+        break
+
+      // In the case of any other error, just see if there's a dir
+      // there already.  If so, then hooray!  If not, then something
+      // is borked.
+      default:
+        xfs.stat(p, (er2, stat) => {
+          // if the stat fails, then that's super weird.
+          // let the original error be the failure reason.
+          if (er2 || !stat.isDirectory()) callback(er, made)
+          else callback(null, made)
+        })
+        break
+    }
+  })
+}
+
+module.exports = mkdirs
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/win32.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/win32.js ***!
-  \*****************************************************************************/
+/***/ 8038:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst path = __webpack_require__(/*! path */ \"path\")\n\n// get drive on windows\nfunction getRootPath (p) {\n  p = path.normalize(path.resolve(p)).split(path.sep)\n  if (p.length > 0) return p[0]\n  return null\n}\n\n// http://stackoverflow.com/a/62888/10333 contains more accurate\n// TODO: expand to include the rest\nconst INVALID_PATH_CHARS = /[<>:\"|?*]/\n\nfunction invalidWin32Path (p) {\n  const rp = getRootPath(p)\n  p = p.replace(rp, '')\n  return INVALID_PATH_CHARS.test(p)\n}\n\nmodule.exports = {\n  getRootPath,\n  invalidWin32Path\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/win32.js?");
+
+
+const path = __webpack_require__(1017)
+
+// get drive on windows
+function getRootPath (p) {
+  p = path.normalize(path.resolve(p)).split(path.sep)
+  if (p.length > 0) return p[0]
+  return null
+}
+
+// http://stackoverflow.com/a/62888/10333 contains more accurate
+// TODO: expand to include the rest
+const INVALID_PATH_CHARS = /[<>:"|?*]/
+
+function invalidWin32Path (p) {
+  const rp = getRootPath(p)
+  p = p.replace(rp, '')
+  return INVALID_PATH_CHARS.test(p)
+}
+
+module.exports = {
+  getRootPath,
+  invalidWin32Path
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/move-sync/index.js":
-/*!********************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/move-sync/index.js ***!
-  \********************************************************************************/
+/***/ 7924:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nmodule.exports = {\n  moveSync: __webpack_require__(/*! ./move-sync */ \"./node_modules/streamroller/node_modules/fs-extra/lib/move-sync/move-sync.js\")\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/move-sync/index.js?");
+
+
+module.exports = {
+  moveSync: __webpack_require__(5808)
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/move-sync/move-sync.js":
-/*!************************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/move-sync/move-sync.js ***!
-  \************************************************************************************/
+/***/ 5808:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst copySync = (__webpack_require__(/*! ../copy-sync */ \"./node_modules/streamroller/node_modules/fs-extra/lib/copy-sync/index.js\").copySync)\nconst removeSync = (__webpack_require__(/*! ../remove */ \"./node_modules/streamroller/node_modules/fs-extra/lib/remove/index.js\").removeSync)\nconst mkdirpSync = (__webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\").mkdirpSync)\nconst stat = __webpack_require__(/*! ../util/stat */ \"./node_modules/streamroller/node_modules/fs-extra/lib/util/stat.js\")\n\nfunction moveSync (src, dest, opts) {\n  opts = opts || {}\n  const overwrite = opts.overwrite || opts.clobber || false\n\n  const { srcStat } = stat.checkPathsSync(src, dest, 'move')\n  stat.checkParentPathsSync(src, srcStat, dest, 'move')\n  mkdirpSync(path.dirname(dest))\n  return doRename(src, dest, overwrite)\n}\n\nfunction doRename (src, dest, overwrite) {\n  if (overwrite) {\n    removeSync(dest)\n    return rename(src, dest, overwrite)\n  }\n  if (fs.existsSync(dest)) throw new Error('dest already exists.')\n  return rename(src, dest, overwrite)\n}\n\nfunction rename (src, dest, overwrite) {\n  try {\n    fs.renameSync(src, dest)\n  } catch (err) {\n    if (err.code !== 'EXDEV') throw err\n    return moveAcrossDevice(src, dest, overwrite)\n  }\n}\n\nfunction moveAcrossDevice (src, dest, overwrite) {\n  const opts = {\n    overwrite,\n    errorOnExist: true\n  }\n  copySync(src, dest, opts)\n  return removeSync(src)\n}\n\nmodule.exports = moveSync\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/move-sync/move-sync.js?");
+
+
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+const copySync = (__webpack_require__(8755).copySync)
+const removeSync = (__webpack_require__(2734).removeSync)
+const mkdirpSync = (__webpack_require__(2690).mkdirpSync)
+const stat = __webpack_require__(5432)
+
+function moveSync (src, dest, opts) {
+  opts = opts || {}
+  const overwrite = opts.overwrite || opts.clobber || false
+
+  const { srcStat } = stat.checkPathsSync(src, dest, 'move')
+  stat.checkParentPathsSync(src, srcStat, dest, 'move')
+  mkdirpSync(path.dirname(dest))
+  return doRename(src, dest, overwrite)
+}
+
+function doRename (src, dest, overwrite) {
+  if (overwrite) {
+    removeSync(dest)
+    return rename(src, dest, overwrite)
+  }
+  if (fs.existsSync(dest)) throw new Error('dest already exists.')
+  return rename(src, dest, overwrite)
+}
+
+function rename (src, dest, overwrite) {
+  try {
+    fs.renameSync(src, dest)
+  } catch (err) {
+    if (err.code !== 'EXDEV') throw err
+    return moveAcrossDevice(src, dest, overwrite)
+  }
+}
+
+function moveAcrossDevice (src, dest, overwrite) {
+  const opts = {
+    overwrite,
+    errorOnExist: true
+  }
+  copySync(src, dest, opts)
+  return removeSync(src)
+}
+
+module.exports = moveSync
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/move/index.js":
-/*!***************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/move/index.js ***!
-  \***************************************************************************/
+/***/ 5825:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nmodule.exports = {\n  move: u(__webpack_require__(/*! ./move */ \"./node_modules/streamroller/node_modules/fs-extra/lib/move/move.js\"))\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/move/index.js?");
+
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+module.exports = {
+  move: u(__webpack_require__(6967))
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/move/move.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/move/move.js ***!
-  \**************************************************************************/
+/***/ 6967:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst copy = (__webpack_require__(/*! ../copy */ \"./node_modules/streamroller/node_modules/fs-extra/lib/copy/index.js\").copy)\nconst remove = (__webpack_require__(/*! ../remove */ \"./node_modules/streamroller/node_modules/fs-extra/lib/remove/index.js\").remove)\nconst mkdirp = (__webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\").mkdirp)\nconst pathExists = (__webpack_require__(/*! ../path-exists */ \"./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js\").pathExists)\nconst stat = __webpack_require__(/*! ../util/stat */ \"./node_modules/streamroller/node_modules/fs-extra/lib/util/stat.js\")\n\nfunction move (src, dest, opts, cb) {\n  if (typeof opts === 'function') {\n    cb = opts\n    opts = {}\n  }\n\n  const overwrite = opts.overwrite || opts.clobber || false\n\n  stat.checkPaths(src, dest, 'move', (err, stats) => {\n    if (err) return cb(err)\n    const { srcStat } = stats\n    stat.checkParentPaths(src, srcStat, dest, 'move', err => {\n      if (err) return cb(err)\n      mkdirp(path.dirname(dest), err => {\n        if (err) return cb(err)\n        return doRename(src, dest, overwrite, cb)\n      })\n    })\n  })\n}\n\nfunction doRename (src, dest, overwrite, cb) {\n  if (overwrite) {\n    return remove(dest, err => {\n      if (err) return cb(err)\n      return rename(src, dest, overwrite, cb)\n    })\n  }\n  pathExists(dest, (err, destExists) => {\n    if (err) return cb(err)\n    if (destExists) return cb(new Error('dest already exists.'))\n    return rename(src, dest, overwrite, cb)\n  })\n}\n\nfunction rename (src, dest, overwrite, cb) {\n  fs.rename(src, dest, err => {\n    if (!err) return cb()\n    if (err.code !== 'EXDEV') return cb(err)\n    return moveAcrossDevice(src, dest, overwrite, cb)\n  })\n}\n\nfunction moveAcrossDevice (src, dest, overwrite, cb) {\n  const opts = {\n    overwrite,\n    errorOnExist: true\n  }\n  copy(src, dest, opts, err => {\n    if (err) return cb(err)\n    return remove(src, cb)\n  })\n}\n\nmodule.exports = move\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/move/move.js?");
+
+
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+const copy = (__webpack_require__(2268).copy)
+const remove = (__webpack_require__(2734).remove)
+const mkdirp = (__webpack_require__(2690).mkdirp)
+const pathExists = (__webpack_require__(2576).pathExists)
+const stat = __webpack_require__(5432)
+
+function move (src, dest, opts, cb) {
+  if (typeof opts === 'function') {
+    cb = opts
+    opts = {}
+  }
+
+  const overwrite = opts.overwrite || opts.clobber || false
+
+  stat.checkPaths(src, dest, 'move', (err, stats) => {
+    if (err) return cb(err)
+    const { srcStat } = stats
+    stat.checkParentPaths(src, srcStat, dest, 'move', err => {
+      if (err) return cb(err)
+      mkdirp(path.dirname(dest), err => {
+        if (err) return cb(err)
+        return doRename(src, dest, overwrite, cb)
+      })
+    })
+  })
+}
+
+function doRename (src, dest, overwrite, cb) {
+  if (overwrite) {
+    return remove(dest, err => {
+      if (err) return cb(err)
+      return rename(src, dest, overwrite, cb)
+    })
+  }
+  pathExists(dest, (err, destExists) => {
+    if (err) return cb(err)
+    if (destExists) return cb(new Error('dest already exists.'))
+    return rename(src, dest, overwrite, cb)
+  })
+}
+
+function rename (src, dest, overwrite, cb) {
+  fs.rename(src, dest, err => {
+    if (!err) return cb()
+    if (err.code !== 'EXDEV') return cb(err)
+    return moveAcrossDevice(src, dest, overwrite, cb)
+  })
+}
+
+function moveAcrossDevice (src, dest, overwrite, cb) {
+  const opts = {
+    overwrite,
+    errorOnExist: true
+  }
+  copy(src, dest, opts, err => {
+    if (err) return cb(err)
+    return remove(src, cb)
+  })
+}
+
+module.exports = move
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/output/index.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/output/index.js ***!
-  \*****************************************************************************/
+/***/ 3313:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst mkdir = __webpack_require__(/*! ../mkdirs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/mkdirs/index.js\")\nconst pathExists = (__webpack_require__(/*! ../path-exists */ \"./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js\").pathExists)\n\nfunction outputFile (file, data, encoding, callback) {\n  if (typeof encoding === 'function') {\n    callback = encoding\n    encoding = 'utf8'\n  }\n\n  const dir = path.dirname(file)\n  pathExists(dir, (err, itDoes) => {\n    if (err) return callback(err)\n    if (itDoes) return fs.writeFile(file, data, encoding, callback)\n\n    mkdir.mkdirs(dir, err => {\n      if (err) return callback(err)\n\n      fs.writeFile(file, data, encoding, callback)\n    })\n  })\n}\n\nfunction outputFileSync (file, ...args) {\n  const dir = path.dirname(file)\n  if (fs.existsSync(dir)) {\n    return fs.writeFileSync(file, ...args)\n  }\n  mkdir.mkdirsSync(dir)\n  fs.writeFileSync(file, ...args)\n}\n\nmodule.exports = {\n  outputFile: u(outputFile),\n  outputFileSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/output/index.js?");
+
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+const mkdir = __webpack_require__(2690)
+const pathExists = (__webpack_require__(2576).pathExists)
+
+function outputFile (file, data, encoding, callback) {
+  if (typeof encoding === 'function') {
+    callback = encoding
+    encoding = 'utf8'
+  }
+
+  const dir = path.dirname(file)
+  pathExists(dir, (err, itDoes) => {
+    if (err) return callback(err)
+    if (itDoes) return fs.writeFile(file, data, encoding, callback)
+
+    mkdir.mkdirs(dir, err => {
+      if (err) return callback(err)
+
+      fs.writeFile(file, data, encoding, callback)
+    })
+  })
+}
+
+function outputFileSync (file, ...args) {
+  const dir = path.dirname(file)
+  if (fs.existsSync(dir)) {
+    return fs.writeFileSync(file, ...args)
+  }
+  mkdir.mkdirsSync(dir)
+  fs.writeFileSync(file, ...args)
+}
+
+module.exports = {
+  outputFile: u(outputFile),
+  outputFileSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js":
-/*!**********************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js ***!
-  \**********************************************************************************/
+/***/ 2576:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromPromise)\nconst fs = __webpack_require__(/*! ../fs */ \"./node_modules/streamroller/node_modules/fs-extra/lib/fs/index.js\")\n\nfunction pathExists (path) {\n  return fs.access(path).then(() => true).catch(() => false)\n}\n\nmodule.exports = {\n  pathExists: u(pathExists),\n  pathExistsSync: fs.existsSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/path-exists/index.js?");
+
+const u = (__webpack_require__(2096)/* .fromPromise */ .p)
+const fs = __webpack_require__(1690)
+
+function pathExists (path) {
+  return fs.access(path).then(() => true).catch(() => false)
+}
+
+module.exports = {
+  pathExists: u(pathExists),
+  pathExistsSync: fs.existsSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/remove/index.js":
-/*!*****************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/remove/index.js ***!
-  \*****************************************************************************/
+/***/ 2734:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst u = (__webpack_require__(/*! universalify */ \"./node_modules/streamroller/node_modules/universalify/index.js\").fromCallback)\nconst rimraf = __webpack_require__(/*! ./rimraf */ \"./node_modules/streamroller/node_modules/fs-extra/lib/remove/rimraf.js\")\n\nmodule.exports = {\n  remove: u(rimraf),\n  removeSync: rimraf.sync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/remove/index.js?");
+
+
+const u = (__webpack_require__(2096)/* .fromCallback */ .E)
+const rimraf = __webpack_require__(4792)
+
+module.exports = {
+  remove: u(rimraf),
+  removeSync: rimraf.sync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/remove/rimraf.js":
-/*!******************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/remove/rimraf.js ***!
-  \******************************************************************************/
+/***/ 4792:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\nconst assert = __webpack_require__(/*! assert */ \"assert\")\n\nconst isWindows = (process.platform === 'win32')\n\nfunction defaults (options) {\n  const methods = [\n    'unlink',\n    'chmod',\n    'stat',\n    'lstat',\n    'rmdir',\n    'readdir'\n  ]\n  methods.forEach(m => {\n    options[m] = options[m] || fs[m]\n    m = m + 'Sync'\n    options[m] = options[m] || fs[m]\n  })\n\n  options.maxBusyTries = options.maxBusyTries || 3\n}\n\nfunction rimraf (p, options, cb) {\n  let busyTries = 0\n\n  if (typeof options === 'function') {\n    cb = options\n    options = {}\n  }\n\n  assert(p, 'rimraf: missing path')\n  assert.strictEqual(typeof p, 'string', 'rimraf: path should be a string')\n  assert.strictEqual(typeof cb, 'function', 'rimraf: callback function required')\n  assert(options, 'rimraf: invalid options argument provided')\n  assert.strictEqual(typeof options, 'object', 'rimraf: options should be object')\n\n  defaults(options)\n\n  rimraf_(p, options, function CB (er) {\n    if (er) {\n      if ((er.code === 'EBUSY' || er.code === 'ENOTEMPTY' || er.code === 'EPERM') &&\n          busyTries < options.maxBusyTries) {\n        busyTries++\n        const time = busyTries * 100\n        // try again, with the same exact callback as this one.\n        return setTimeout(() => rimraf_(p, options, CB), time)\n      }\n\n      // already gone\n      if (er.code === 'ENOENT') er = null\n    }\n\n    cb(er)\n  })\n}\n\n// Two possible strategies.\n// 1. Assume it's a file.  unlink it, then do the dir stuff on EPERM or EISDIR\n// 2. Assume it's a directory.  readdir, then do the file stuff on ENOTDIR\n//\n// Both result in an extra syscall when you guess wrong.  However, there\n// are likely far more normal files in the world than directories.  This\n// is based on the assumption that a the average number of files per\n// directory is >= 1.\n//\n// If anyone ever complains about this, then I guess the strategy could\n// be made configurable somehow.  But until then, YAGNI.\nfunction rimraf_ (p, options, cb) {\n  assert(p)\n  assert(options)\n  assert(typeof cb === 'function')\n\n  // sunos lets the root user unlink directories, which is... weird.\n  // so we have to lstat here and make sure it's not a dir.\n  options.lstat(p, (er, st) => {\n    if (er && er.code === 'ENOENT') {\n      return cb(null)\n    }\n\n    // Windows can EPERM on stat.  Life is suffering.\n    if (er && er.code === 'EPERM' && isWindows) {\n      return fixWinEPERM(p, options, er, cb)\n    }\n\n    if (st && st.isDirectory()) {\n      return rmdir(p, options, er, cb)\n    }\n\n    options.unlink(p, er => {\n      if (er) {\n        if (er.code === 'ENOENT') {\n          return cb(null)\n        }\n        if (er.code === 'EPERM') {\n          return (isWindows)\n            ? fixWinEPERM(p, options, er, cb)\n            : rmdir(p, options, er, cb)\n        }\n        if (er.code === 'EISDIR') {\n          return rmdir(p, options, er, cb)\n        }\n      }\n      return cb(er)\n    })\n  })\n}\n\nfunction fixWinEPERM (p, options, er, cb) {\n  assert(p)\n  assert(options)\n  assert(typeof cb === 'function')\n  if (er) {\n    assert(er instanceof Error)\n  }\n\n  options.chmod(p, 0o666, er2 => {\n    if (er2) {\n      cb(er2.code === 'ENOENT' ? null : er)\n    } else {\n      options.stat(p, (er3, stats) => {\n        if (er3) {\n          cb(er3.code === 'ENOENT' ? null : er)\n        } else if (stats.isDirectory()) {\n          rmdir(p, options, er, cb)\n        } else {\n          options.unlink(p, cb)\n        }\n      })\n    }\n  })\n}\n\nfunction fixWinEPERMSync (p, options, er) {\n  let stats\n\n  assert(p)\n  assert(options)\n  if (er) {\n    assert(er instanceof Error)\n  }\n\n  try {\n    options.chmodSync(p, 0o666)\n  } catch (er2) {\n    if (er2.code === 'ENOENT') {\n      return\n    } else {\n      throw er\n    }\n  }\n\n  try {\n    stats = options.statSync(p)\n  } catch (er3) {\n    if (er3.code === 'ENOENT') {\n      return\n    } else {\n      throw er\n    }\n  }\n\n  if (stats.isDirectory()) {\n    rmdirSync(p, options, er)\n  } else {\n    options.unlinkSync(p)\n  }\n}\n\nfunction rmdir (p, options, originalEr, cb) {\n  assert(p)\n  assert(options)\n  if (originalEr) {\n    assert(originalEr instanceof Error)\n  }\n  assert(typeof cb === 'function')\n\n  // try to rmdir first, and only readdir on ENOTEMPTY or EEXIST (SunOS)\n  // if we guessed wrong, and it's not a directory, then\n  // raise the original error.\n  options.rmdir(p, er => {\n    if (er && (er.code === 'ENOTEMPTY' || er.code === 'EEXIST' || er.code === 'EPERM')) {\n      rmkids(p, options, cb)\n    } else if (er && er.code === 'ENOTDIR') {\n      cb(originalEr)\n    } else {\n      cb(er)\n    }\n  })\n}\n\nfunction rmkids (p, options, cb) {\n  assert(p)\n  assert(options)\n  assert(typeof cb === 'function')\n\n  options.readdir(p, (er, files) => {\n    if (er) return cb(er)\n\n    let n = files.length\n    let errState\n\n    if (n === 0) return options.rmdir(p, cb)\n\n    files.forEach(f => {\n      rimraf(path.join(p, f), options, er => {\n        if (errState) {\n          return\n        }\n        if (er) return cb(errState = er)\n        if (--n === 0) {\n          options.rmdir(p, cb)\n        }\n      })\n    })\n  })\n}\n\n// this looks simpler, and is strictly *faster*, but will\n// tie up the JavaScript thread and fail on excessively\n// deep directory trees.\nfunction rimrafSync (p, options) {\n  let st\n\n  options = options || {}\n  defaults(options)\n\n  assert(p, 'rimraf: missing path')\n  assert.strictEqual(typeof p, 'string', 'rimraf: path should be a string')\n  assert(options, 'rimraf: missing options')\n  assert.strictEqual(typeof options, 'object', 'rimraf: options should be object')\n\n  try {\n    st = options.lstatSync(p)\n  } catch (er) {\n    if (er.code === 'ENOENT') {\n      return\n    }\n\n    // Windows can EPERM on stat.  Life is suffering.\n    if (er.code === 'EPERM' && isWindows) {\n      fixWinEPERMSync(p, options, er)\n    }\n  }\n\n  try {\n    // sunos lets the root user unlink directories, which is... weird.\n    if (st && st.isDirectory()) {\n      rmdirSync(p, options, null)\n    } else {\n      options.unlinkSync(p)\n    }\n  } catch (er) {\n    if (er.code === 'ENOENT') {\n      return\n    } else if (er.code === 'EPERM') {\n      return isWindows ? fixWinEPERMSync(p, options, er) : rmdirSync(p, options, er)\n    } else if (er.code !== 'EISDIR') {\n      throw er\n    }\n    rmdirSync(p, options, er)\n  }\n}\n\nfunction rmdirSync (p, options, originalEr) {\n  assert(p)\n  assert(options)\n  if (originalEr) {\n    assert(originalEr instanceof Error)\n  }\n\n  try {\n    options.rmdirSync(p)\n  } catch (er) {\n    if (er.code === 'ENOTDIR') {\n      throw originalEr\n    } else if (er.code === 'ENOTEMPTY' || er.code === 'EEXIST' || er.code === 'EPERM') {\n      rmkidsSync(p, options)\n    } else if (er.code !== 'ENOENT') {\n      throw er\n    }\n  }\n}\n\nfunction rmkidsSync (p, options) {\n  assert(p)\n  assert(options)\n  options.readdirSync(p).forEach(f => rimrafSync(path.join(p, f), options))\n\n  if (isWindows) {\n    // We only end up here once we got ENOTEMPTY at least once, and\n    // at this point, we are guaranteed to have removed all the kids.\n    // So, we know that it won't be ENOENT or ENOTDIR or anything else.\n    // try really hard to delete stuff on windows, because it has a\n    // PROFOUNDLY annoying habit of not closing handles promptly when\n    // files are deleted, resulting in spurious ENOTEMPTY errors.\n    const startTime = Date.now()\n    do {\n      try {\n        const ret = options.rmdirSync(p, options)\n        return ret\n      } catch (er) { }\n    } while (Date.now() - startTime < 500) // give up after 500ms\n  } else {\n    const ret = options.rmdirSync(p, options)\n    return ret\n  }\n}\n\nmodule.exports = rimraf\nrimraf.sync = rimrafSync\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/remove/rimraf.js?");
+
+
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+const assert = __webpack_require__(9491)
+
+const isWindows = (process.platform === 'win32')
+
+function defaults (options) {
+  const methods = [
+    'unlink',
+    'chmod',
+    'stat',
+    'lstat',
+    'rmdir',
+    'readdir'
+  ]
+  methods.forEach(m => {
+    options[m] = options[m] || fs[m]
+    m = m + 'Sync'
+    options[m] = options[m] || fs[m]
+  })
+
+  options.maxBusyTries = options.maxBusyTries || 3
+}
+
+function rimraf (p, options, cb) {
+  let busyTries = 0
+
+  if (typeof options === 'function') {
+    cb = options
+    options = {}
+  }
+
+  assert(p, 'rimraf: missing path')
+  assert.strictEqual(typeof p, 'string', 'rimraf: path should be a string')
+  assert.strictEqual(typeof cb, 'function', 'rimraf: callback function required')
+  assert(options, 'rimraf: invalid options argument provided')
+  assert.strictEqual(typeof options, 'object', 'rimraf: options should be object')
+
+  defaults(options)
+
+  rimraf_(p, options, function CB (er) {
+    if (er) {
+      if ((er.code === 'EBUSY' || er.code === 'ENOTEMPTY' || er.code === 'EPERM') &&
+          busyTries < options.maxBusyTries) {
+        busyTries++
+        const time = busyTries * 100
+        // try again, with the same exact callback as this one.
+        return setTimeout(() => rimraf_(p, options, CB), time)
+      }
+
+      // already gone
+      if (er.code === 'ENOENT') er = null
+    }
+
+    cb(er)
+  })
+}
+
+// Two possible strategies.
+// 1. Assume it's a file.  unlink it, then do the dir stuff on EPERM or EISDIR
+// 2. Assume it's a directory.  readdir, then do the file stuff on ENOTDIR
+//
+// Both result in an extra syscall when you guess wrong.  However, there
+// are likely far more normal files in the world than directories.  This
+// is based on the assumption that a the average number of files per
+// directory is >= 1.
+//
+// If anyone ever complains about this, then I guess the strategy could
+// be made configurable somehow.  But until then, YAGNI.
+function rimraf_ (p, options, cb) {
+  assert(p)
+  assert(options)
+  assert(typeof cb === 'function')
+
+  // sunos lets the root user unlink directories, which is... weird.
+  // so we have to lstat here and make sure it's not a dir.
+  options.lstat(p, (er, st) => {
+    if (er && er.code === 'ENOENT') {
+      return cb(null)
+    }
+
+    // Windows can EPERM on stat.  Life is suffering.
+    if (er && er.code === 'EPERM' && isWindows) {
+      return fixWinEPERM(p, options, er, cb)
+    }
+
+    if (st && st.isDirectory()) {
+      return rmdir(p, options, er, cb)
+    }
+
+    options.unlink(p, er => {
+      if (er) {
+        if (er.code === 'ENOENT') {
+          return cb(null)
+        }
+        if (er.code === 'EPERM') {
+          return (isWindows)
+            ? fixWinEPERM(p, options, er, cb)
+            : rmdir(p, options, er, cb)
+        }
+        if (er.code === 'EISDIR') {
+          return rmdir(p, options, er, cb)
+        }
+      }
+      return cb(er)
+    })
+  })
+}
+
+function fixWinEPERM (p, options, er, cb) {
+  assert(p)
+  assert(options)
+  assert(typeof cb === 'function')
+  if (er) {
+    assert(er instanceof Error)
+  }
+
+  options.chmod(p, 0o666, er2 => {
+    if (er2) {
+      cb(er2.code === 'ENOENT' ? null : er)
+    } else {
+      options.stat(p, (er3, stats) => {
+        if (er3) {
+          cb(er3.code === 'ENOENT' ? null : er)
+        } else if (stats.isDirectory()) {
+          rmdir(p, options, er, cb)
+        } else {
+          options.unlink(p, cb)
+        }
+      })
+    }
+  })
+}
+
+function fixWinEPERMSync (p, options, er) {
+  let stats
+
+  assert(p)
+  assert(options)
+  if (er) {
+    assert(er instanceof Error)
+  }
+
+  try {
+    options.chmodSync(p, 0o666)
+  } catch (er2) {
+    if (er2.code === 'ENOENT') {
+      return
+    } else {
+      throw er
+    }
+  }
+
+  try {
+    stats = options.statSync(p)
+  } catch (er3) {
+    if (er3.code === 'ENOENT') {
+      return
+    } else {
+      throw er
+    }
+  }
+
+  if (stats.isDirectory()) {
+    rmdirSync(p, options, er)
+  } else {
+    options.unlinkSync(p)
+  }
+}
+
+function rmdir (p, options, originalEr, cb) {
+  assert(p)
+  assert(options)
+  if (originalEr) {
+    assert(originalEr instanceof Error)
+  }
+  assert(typeof cb === 'function')
+
+  // try to rmdir first, and only readdir on ENOTEMPTY or EEXIST (SunOS)
+  // if we guessed wrong, and it's not a directory, then
+  // raise the original error.
+  options.rmdir(p, er => {
+    if (er && (er.code === 'ENOTEMPTY' || er.code === 'EEXIST' || er.code === 'EPERM')) {
+      rmkids(p, options, cb)
+    } else if (er && er.code === 'ENOTDIR') {
+      cb(originalEr)
+    } else {
+      cb(er)
+    }
+  })
+}
+
+function rmkids (p, options, cb) {
+  assert(p)
+  assert(options)
+  assert(typeof cb === 'function')
+
+  options.readdir(p, (er, files) => {
+    if (er) return cb(er)
+
+    let n = files.length
+    let errState
+
+    if (n === 0) return options.rmdir(p, cb)
+
+    files.forEach(f => {
+      rimraf(path.join(p, f), options, er => {
+        if (errState) {
+          return
+        }
+        if (er) return cb(errState = er)
+        if (--n === 0) {
+          options.rmdir(p, cb)
+        }
+      })
+    })
+  })
+}
+
+// this looks simpler, and is strictly *faster*, but will
+// tie up the JavaScript thread and fail on excessively
+// deep directory trees.
+function rimrafSync (p, options) {
+  let st
+
+  options = options || {}
+  defaults(options)
+
+  assert(p, 'rimraf: missing path')
+  assert.strictEqual(typeof p, 'string', 'rimraf: path should be a string')
+  assert(options, 'rimraf: missing options')
+  assert.strictEqual(typeof options, 'object', 'rimraf: options should be object')
+
+  try {
+    st = options.lstatSync(p)
+  } catch (er) {
+    if (er.code === 'ENOENT') {
+      return
+    }
+
+    // Windows can EPERM on stat.  Life is suffering.
+    if (er.code === 'EPERM' && isWindows) {
+      fixWinEPERMSync(p, options, er)
+    }
+  }
+
+  try {
+    // sunos lets the root user unlink directories, which is... weird.
+    if (st && st.isDirectory()) {
+      rmdirSync(p, options, null)
+    } else {
+      options.unlinkSync(p)
+    }
+  } catch (er) {
+    if (er.code === 'ENOENT') {
+      return
+    } else if (er.code === 'EPERM') {
+      return isWindows ? fixWinEPERMSync(p, options, er) : rmdirSync(p, options, er)
+    } else if (er.code !== 'EISDIR') {
+      throw er
+    }
+    rmdirSync(p, options, er)
+  }
+}
+
+function rmdirSync (p, options, originalEr) {
+  assert(p)
+  assert(options)
+  if (originalEr) {
+    assert(originalEr instanceof Error)
+  }
+
+  try {
+    options.rmdirSync(p)
+  } catch (er) {
+    if (er.code === 'ENOTDIR') {
+      throw originalEr
+    } else if (er.code === 'ENOTEMPTY' || er.code === 'EEXIST' || er.code === 'EPERM') {
+      rmkidsSync(p, options)
+    } else if (er.code !== 'ENOENT') {
+      throw er
+    }
+  }
+}
+
+function rmkidsSync (p, options) {
+  assert(p)
+  assert(options)
+  options.readdirSync(p).forEach(f => rimrafSync(path.join(p, f), options))
+
+  if (isWindows) {
+    // We only end up here once we got ENOTEMPTY at least once, and
+    // at this point, we are guaranteed to have removed all the kids.
+    // So, we know that it won't be ENOENT or ENOTDIR or anything else.
+    // try really hard to delete stuff on windows, because it has a
+    // PROFOUNDLY annoying habit of not closing handles promptly when
+    // files are deleted, resulting in spurious ENOTEMPTY errors.
+    const startTime = Date.now()
+    do {
+      try {
+        const ret = options.rmdirSync(p, options)
+        return ret
+      } catch (er) { }
+    } while (Date.now() - startTime < 500) // give up after 500ms
+  } else {
+    const ret = options.rmdirSync(p, options)
+    return ret
+  }
+}
+
+module.exports = rimraf
+rimraf.sync = rimrafSync
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/util/buffer.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/util/buffer.js ***!
-  \****************************************************************************/
+/***/ 5389:
 /***/ ((module) => {
 
 "use strict";
-eval("\n/* eslint-disable node/no-deprecated-api */\nmodule.exports = function (size) {\n  if (typeof Buffer.allocUnsafe === 'function') {\n    try {\n      return Buffer.allocUnsafe(size)\n    } catch (e) {\n      return new Buffer(size)\n    }\n  }\n  return new Buffer(size)\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/util/buffer.js?");
+
+/* eslint-disable node/no-deprecated-api */
+module.exports = function (size) {
+  if (typeof Buffer.allocUnsafe === 'function') {
+    try {
+      return Buffer.allocUnsafe(size)
+    } catch (e) {
+      return new Buffer(size)
+    }
+  }
+  return new Buffer(size)
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/util/stat.js":
-/*!**************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/util/stat.js ***!
-  \**************************************************************************/
+/***/ 5432:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst path = __webpack_require__(/*! path */ \"path\")\n\nconst NODE_VERSION_MAJOR_WITH_BIGINT = 10\nconst NODE_VERSION_MINOR_WITH_BIGINT = 5\nconst NODE_VERSION_PATCH_WITH_BIGINT = 0\nconst nodeVersion = process.versions.node.split('.')\nconst nodeVersionMajor = Number.parseInt(nodeVersion[0], 10)\nconst nodeVersionMinor = Number.parseInt(nodeVersion[1], 10)\nconst nodeVersionPatch = Number.parseInt(nodeVersion[2], 10)\n\nfunction nodeSupportsBigInt () {\n  if (nodeVersionMajor > NODE_VERSION_MAJOR_WITH_BIGINT) {\n    return true\n  } else if (nodeVersionMajor === NODE_VERSION_MAJOR_WITH_BIGINT) {\n    if (nodeVersionMinor > NODE_VERSION_MINOR_WITH_BIGINT) {\n      return true\n    } else if (nodeVersionMinor === NODE_VERSION_MINOR_WITH_BIGINT) {\n      if (nodeVersionPatch >= NODE_VERSION_PATCH_WITH_BIGINT) {\n        return true\n      }\n    }\n  }\n  return false\n}\n\nfunction getStats (src, dest, cb) {\n  if (nodeSupportsBigInt()) {\n    fs.stat(src, { bigint: true }, (err, srcStat) => {\n      if (err) return cb(err)\n      fs.stat(dest, { bigint: true }, (err, destStat) => {\n        if (err) {\n          if (err.code === 'ENOENT') return cb(null, { srcStat, destStat: null })\n          return cb(err)\n        }\n        return cb(null, { srcStat, destStat })\n      })\n    })\n  } else {\n    fs.stat(src, (err, srcStat) => {\n      if (err) return cb(err)\n      fs.stat(dest, (err, destStat) => {\n        if (err) {\n          if (err.code === 'ENOENT') return cb(null, { srcStat, destStat: null })\n          return cb(err)\n        }\n        return cb(null, { srcStat, destStat })\n      })\n    })\n  }\n}\n\nfunction getStatsSync (src, dest) {\n  let srcStat, destStat\n  if (nodeSupportsBigInt()) {\n    srcStat = fs.statSync(src, { bigint: true })\n  } else {\n    srcStat = fs.statSync(src)\n  }\n  try {\n    if (nodeSupportsBigInt()) {\n      destStat = fs.statSync(dest, { bigint: true })\n    } else {\n      destStat = fs.statSync(dest)\n    }\n  } catch (err) {\n    if (err.code === 'ENOENT') return { srcStat, destStat: null }\n    throw err\n  }\n  return { srcStat, destStat }\n}\n\nfunction checkPaths (src, dest, funcName, cb) {\n  getStats(src, dest, (err, stats) => {\n    if (err) return cb(err)\n    const { srcStat, destStat } = stats\n    if (destStat && destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {\n      return cb(new Error('Source and destination must not be the same.'))\n    }\n    if (srcStat.isDirectory() && isSrcSubdir(src, dest)) {\n      return cb(new Error(errMsg(src, dest, funcName)))\n    }\n    return cb(null, { srcStat, destStat })\n  })\n}\n\nfunction checkPathsSync (src, dest, funcName) {\n  const { srcStat, destStat } = getStatsSync(src, dest)\n  if (destStat && destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {\n    throw new Error('Source and destination must not be the same.')\n  }\n  if (srcStat.isDirectory() && isSrcSubdir(src, dest)) {\n    throw new Error(errMsg(src, dest, funcName))\n  }\n  return { srcStat, destStat }\n}\n\n// recursively check if dest parent is a subdirectory of src.\n// It works for all file types including symlinks since it\n// checks the src and dest inodes. It starts from the deepest\n// parent and stops once it reaches the src parent or the root path.\nfunction checkParentPaths (src, srcStat, dest, funcName, cb) {\n  const srcParent = path.resolve(path.dirname(src))\n  const destParent = path.resolve(path.dirname(dest))\n  if (destParent === srcParent || destParent === path.parse(destParent).root) return cb()\n  if (nodeSupportsBigInt()) {\n    fs.stat(destParent, { bigint: true }, (err, destStat) => {\n      if (err) {\n        if (err.code === 'ENOENT') return cb()\n        return cb(err)\n      }\n      if (destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {\n        return cb(new Error(errMsg(src, dest, funcName)))\n      }\n      return checkParentPaths(src, srcStat, destParent, funcName, cb)\n    })\n  } else {\n    fs.stat(destParent, (err, destStat) => {\n      if (err) {\n        if (err.code === 'ENOENT') return cb()\n        return cb(err)\n      }\n      if (destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {\n        return cb(new Error(errMsg(src, dest, funcName)))\n      }\n      return checkParentPaths(src, srcStat, destParent, funcName, cb)\n    })\n  }\n}\n\nfunction checkParentPathsSync (src, srcStat, dest, funcName) {\n  const srcParent = path.resolve(path.dirname(src))\n  const destParent = path.resolve(path.dirname(dest))\n  if (destParent === srcParent || destParent === path.parse(destParent).root) return\n  let destStat\n  try {\n    if (nodeSupportsBigInt()) {\n      destStat = fs.statSync(destParent, { bigint: true })\n    } else {\n      destStat = fs.statSync(destParent)\n    }\n  } catch (err) {\n    if (err.code === 'ENOENT') return\n    throw err\n  }\n  if (destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {\n    throw new Error(errMsg(src, dest, funcName))\n  }\n  return checkParentPathsSync(src, srcStat, destParent, funcName)\n}\n\n// return true if dest is a subdir of src, otherwise false.\n// It only checks the path strings.\nfunction isSrcSubdir (src, dest) {\n  const srcArr = path.resolve(src).split(path.sep).filter(i => i)\n  const destArr = path.resolve(dest).split(path.sep).filter(i => i)\n  return srcArr.reduce((acc, cur, i) => acc && destArr[i] === cur, true)\n}\n\nfunction errMsg (src, dest, funcName) {\n  return `Cannot ${funcName} '${src}' to a subdirectory of itself, '${dest}'.`\n}\n\nmodule.exports = {\n  checkPaths,\n  checkPathsSync,\n  checkParentPaths,\n  checkParentPathsSync,\n  isSrcSubdir\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/util/stat.js?");
+
+
+const fs = __webpack_require__(77)
+const path = __webpack_require__(1017)
+
+const NODE_VERSION_MAJOR_WITH_BIGINT = 10
+const NODE_VERSION_MINOR_WITH_BIGINT = 5
+const NODE_VERSION_PATCH_WITH_BIGINT = 0
+const nodeVersion = process.versions.node.split('.')
+const nodeVersionMajor = Number.parseInt(nodeVersion[0], 10)
+const nodeVersionMinor = Number.parseInt(nodeVersion[1], 10)
+const nodeVersionPatch = Number.parseInt(nodeVersion[2], 10)
+
+function nodeSupportsBigInt () {
+  if (nodeVersionMajor > NODE_VERSION_MAJOR_WITH_BIGINT) {
+    return true
+  } else if (nodeVersionMajor === NODE_VERSION_MAJOR_WITH_BIGINT) {
+    if (nodeVersionMinor > NODE_VERSION_MINOR_WITH_BIGINT) {
+      return true
+    } else if (nodeVersionMinor === NODE_VERSION_MINOR_WITH_BIGINT) {
+      if (nodeVersionPatch >= NODE_VERSION_PATCH_WITH_BIGINT) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+function getStats (src, dest, cb) {
+  if (nodeSupportsBigInt()) {
+    fs.stat(src, { bigint: true }, (err, srcStat) => {
+      if (err) return cb(err)
+      fs.stat(dest, { bigint: true }, (err, destStat) => {
+        if (err) {
+          if (err.code === 'ENOENT') return cb(null, { srcStat, destStat: null })
+          return cb(err)
+        }
+        return cb(null, { srcStat, destStat })
+      })
+    })
+  } else {
+    fs.stat(src, (err, srcStat) => {
+      if (err) return cb(err)
+      fs.stat(dest, (err, destStat) => {
+        if (err) {
+          if (err.code === 'ENOENT') return cb(null, { srcStat, destStat: null })
+          return cb(err)
+        }
+        return cb(null, { srcStat, destStat })
+      })
+    })
+  }
+}
+
+function getStatsSync (src, dest) {
+  let srcStat, destStat
+  if (nodeSupportsBigInt()) {
+    srcStat = fs.statSync(src, { bigint: true })
+  } else {
+    srcStat = fs.statSync(src)
+  }
+  try {
+    if (nodeSupportsBigInt()) {
+      destStat = fs.statSync(dest, { bigint: true })
+    } else {
+      destStat = fs.statSync(dest)
+    }
+  } catch (err) {
+    if (err.code === 'ENOENT') return { srcStat, destStat: null }
+    throw err
+  }
+  return { srcStat, destStat }
+}
+
+function checkPaths (src, dest, funcName, cb) {
+  getStats(src, dest, (err, stats) => {
+    if (err) return cb(err)
+    const { srcStat, destStat } = stats
+    if (destStat && destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {
+      return cb(new Error('Source and destination must not be the same.'))
+    }
+    if (srcStat.isDirectory() && isSrcSubdir(src, dest)) {
+      return cb(new Error(errMsg(src, dest, funcName)))
+    }
+    return cb(null, { srcStat, destStat })
+  })
+}
+
+function checkPathsSync (src, dest, funcName) {
+  const { srcStat, destStat } = getStatsSync(src, dest)
+  if (destStat && destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {
+    throw new Error('Source and destination must not be the same.')
+  }
+  if (srcStat.isDirectory() && isSrcSubdir(src, dest)) {
+    throw new Error(errMsg(src, dest, funcName))
+  }
+  return { srcStat, destStat }
+}
+
+// recursively check if dest parent is a subdirectory of src.
+// It works for all file types including symlinks since it
+// checks the src and dest inodes. It starts from the deepest
+// parent and stops once it reaches the src parent or the root path.
+function checkParentPaths (src, srcStat, dest, funcName, cb) {
+  const srcParent = path.resolve(path.dirname(src))
+  const destParent = path.resolve(path.dirname(dest))
+  if (destParent === srcParent || destParent === path.parse(destParent).root) return cb()
+  if (nodeSupportsBigInt()) {
+    fs.stat(destParent, { bigint: true }, (err, destStat) => {
+      if (err) {
+        if (err.code === 'ENOENT') return cb()
+        return cb(err)
+      }
+      if (destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {
+        return cb(new Error(errMsg(src, dest, funcName)))
+      }
+      return checkParentPaths(src, srcStat, destParent, funcName, cb)
+    })
+  } else {
+    fs.stat(destParent, (err, destStat) => {
+      if (err) {
+        if (err.code === 'ENOENT') return cb()
+        return cb(err)
+      }
+      if (destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {
+        return cb(new Error(errMsg(src, dest, funcName)))
+      }
+      return checkParentPaths(src, srcStat, destParent, funcName, cb)
+    })
+  }
+}
+
+function checkParentPathsSync (src, srcStat, dest, funcName) {
+  const srcParent = path.resolve(path.dirname(src))
+  const destParent = path.resolve(path.dirname(dest))
+  if (destParent === srcParent || destParent === path.parse(destParent).root) return
+  let destStat
+  try {
+    if (nodeSupportsBigInt()) {
+      destStat = fs.statSync(destParent, { bigint: true })
+    } else {
+      destStat = fs.statSync(destParent)
+    }
+  } catch (err) {
+    if (err.code === 'ENOENT') return
+    throw err
+  }
+  if (destStat.ino && destStat.dev && destStat.ino === srcStat.ino && destStat.dev === srcStat.dev) {
+    throw new Error(errMsg(src, dest, funcName))
+  }
+  return checkParentPathsSync(src, srcStat, destParent, funcName)
+}
+
+// return true if dest is a subdir of src, otherwise false.
+// It only checks the path strings.
+function isSrcSubdir (src, dest) {
+  const srcArr = path.resolve(src).split(path.sep).filter(i => i)
+  const destArr = path.resolve(dest).split(path.sep).filter(i => i)
+  return srcArr.reduce((acc, cur, i) => acc && destArr[i] === cur, true)
+}
+
+function errMsg (src, dest, funcName) {
+  return `Cannot ${funcName} '${src}' to a subdirectory of itself, '${dest}'.`
+}
+
+module.exports = {
+  checkPaths,
+  checkPathsSync,
+  checkParentPaths,
+  checkParentPathsSync,
+  isSrcSubdir
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/fs-extra/lib/util/utimes.js":
-/*!****************************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/fs-extra/lib/util/utimes.js ***!
-  \****************************************************************************/
+/***/ 3239:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\n\nconst fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\nconst os = __webpack_require__(/*! os */ \"os\")\nconst path = __webpack_require__(/*! path */ \"path\")\n\n// HFS, ext{2,3}, FAT do not, Node.js v0.10 does not\nfunction hasMillisResSync () {\n  let tmpfile = path.join('millis-test-sync' + Date.now().toString() + Math.random().toString().slice(2))\n  tmpfile = path.join(os.tmpdir(), tmpfile)\n\n  // 550 millis past UNIX epoch\n  const d = new Date(1435410243862)\n  fs.writeFileSync(tmpfile, 'https://github.com/jprichardson/node-fs-extra/pull/141')\n  const fd = fs.openSync(tmpfile, 'r+')\n  fs.futimesSync(fd, d, d)\n  fs.closeSync(fd)\n  return fs.statSync(tmpfile).mtime > 1435410243000\n}\n\nfunction hasMillisRes (callback) {\n  let tmpfile = path.join('millis-test' + Date.now().toString() + Math.random().toString().slice(2))\n  tmpfile = path.join(os.tmpdir(), tmpfile)\n\n  // 550 millis past UNIX epoch\n  const d = new Date(1435410243862)\n  fs.writeFile(tmpfile, 'https://github.com/jprichardson/node-fs-extra/pull/141', err => {\n    if (err) return callback(err)\n    fs.open(tmpfile, 'r+', (err, fd) => {\n      if (err) return callback(err)\n      fs.futimes(fd, d, d, err => {\n        if (err) return callback(err)\n        fs.close(fd, err => {\n          if (err) return callback(err)\n          fs.stat(tmpfile, (err, stats) => {\n            if (err) return callback(err)\n            callback(null, stats.mtime > 1435410243000)\n          })\n        })\n      })\n    })\n  })\n}\n\nfunction timeRemoveMillis (timestamp) {\n  if (typeof timestamp === 'number') {\n    return Math.floor(timestamp / 1000) * 1000\n  } else if (timestamp instanceof Date) {\n    return new Date(Math.floor(timestamp.getTime() / 1000) * 1000)\n  } else {\n    throw new Error('fs-extra: timeRemoveMillis() unknown parameter type')\n  }\n}\n\nfunction utimesMillis (path, atime, mtime, callback) {\n  // if (!HAS_MILLIS_RES) return fs.utimes(path, atime, mtime, callback)\n  fs.open(path, 'r+', (err, fd) => {\n    if (err) return callback(err)\n    fs.futimes(fd, atime, mtime, futimesErr => {\n      fs.close(fd, closeErr => {\n        if (callback) callback(futimesErr || closeErr)\n      })\n    })\n  })\n}\n\nfunction utimesMillisSync (path, atime, mtime) {\n  const fd = fs.openSync(path, 'r+')\n  fs.futimesSync(fd, atime, mtime)\n  return fs.closeSync(fd)\n}\n\nmodule.exports = {\n  hasMillisRes,\n  hasMillisResSync,\n  timeRemoveMillis,\n  utimesMillis,\n  utimesMillisSync\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/fs-extra/lib/util/utimes.js?");
+
+
+const fs = __webpack_require__(77)
+const os = __webpack_require__(2037)
+const path = __webpack_require__(1017)
+
+// HFS, ext{2,3}, FAT do not, Node.js v0.10 does not
+function hasMillisResSync () {
+  let tmpfile = path.join('millis-test-sync' + Date.now().toString() + Math.random().toString().slice(2))
+  tmpfile = path.join(os.tmpdir(), tmpfile)
+
+  // 550 millis past UNIX epoch
+  const d = new Date(1435410243862)
+  fs.writeFileSync(tmpfile, 'https://github.com/jprichardson/node-fs-extra/pull/141')
+  const fd = fs.openSync(tmpfile, 'r+')
+  fs.futimesSync(fd, d, d)
+  fs.closeSync(fd)
+  return fs.statSync(tmpfile).mtime > 1435410243000
+}
+
+function hasMillisRes (callback) {
+  let tmpfile = path.join('millis-test' + Date.now().toString() + Math.random().toString().slice(2))
+  tmpfile = path.join(os.tmpdir(), tmpfile)
+
+  // 550 millis past UNIX epoch
+  const d = new Date(1435410243862)
+  fs.writeFile(tmpfile, 'https://github.com/jprichardson/node-fs-extra/pull/141', err => {
+    if (err) return callback(err)
+    fs.open(tmpfile, 'r+', (err, fd) => {
+      if (err) return callback(err)
+      fs.futimes(fd, d, d, err => {
+        if (err) return callback(err)
+        fs.close(fd, err => {
+          if (err) return callback(err)
+          fs.stat(tmpfile, (err, stats) => {
+            if (err) return callback(err)
+            callback(null, stats.mtime > 1435410243000)
+          })
+        })
+      })
+    })
+  })
+}
+
+function timeRemoveMillis (timestamp) {
+  if (typeof timestamp === 'number') {
+    return Math.floor(timestamp / 1000) * 1000
+  } else if (timestamp instanceof Date) {
+    return new Date(Math.floor(timestamp.getTime() / 1000) * 1000)
+  } else {
+    throw new Error('fs-extra: timeRemoveMillis() unknown parameter type')
+  }
+}
+
+function utimesMillis (path, atime, mtime, callback) {
+  // if (!HAS_MILLIS_RES) return fs.utimes(path, atime, mtime, callback)
+  fs.open(path, 'r+', (err, fd) => {
+    if (err) return callback(err)
+    fs.futimes(fd, atime, mtime, futimesErr => {
+      fs.close(fd, closeErr => {
+        if (callback) callback(futimesErr || closeErr)
+      })
+    })
+  })
+}
+
+function utimesMillisSync (path, atime, mtime) {
+  const fd = fs.openSync(path, 'r+')
+  fs.futimesSync(fd, atime, mtime)
+  return fs.closeSync(fd)
+}
+
+module.exports = {
+  hasMillisRes,
+  hasMillisResSync,
+  timeRemoveMillis,
+  utimesMillis,
+  utimesMillisSync
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/jsonfile/index.js":
-/*!******************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/jsonfile/index.js ***!
-  \******************************************************************/
+/***/ 592:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("var _fs\ntry {\n  _fs = __webpack_require__(/*! graceful-fs */ \"./node_modules/graceful-fs/graceful-fs.js\")\n} catch (_) {\n  _fs = __webpack_require__(/*! fs */ \"fs\")\n}\n\nfunction readFile (file, options, callback) {\n  if (callback == null) {\n    callback = options\n    options = {}\n  }\n\n  if (typeof options === 'string') {\n    options = {encoding: options}\n  }\n\n  options = options || {}\n  var fs = options.fs || _fs\n\n  var shouldThrow = true\n  if ('throws' in options) {\n    shouldThrow = options.throws\n  }\n\n  fs.readFile(file, options, function (err, data) {\n    if (err) return callback(err)\n\n    data = stripBom(data)\n\n    var obj\n    try {\n      obj = JSON.parse(data, options ? options.reviver : null)\n    } catch (err2) {\n      if (shouldThrow) {\n        err2.message = file + ': ' + err2.message\n        return callback(err2)\n      } else {\n        return callback(null, null)\n      }\n    }\n\n    callback(null, obj)\n  })\n}\n\nfunction readFileSync (file, options) {\n  options = options || {}\n  if (typeof options === 'string') {\n    options = {encoding: options}\n  }\n\n  var fs = options.fs || _fs\n\n  var shouldThrow = true\n  if ('throws' in options) {\n    shouldThrow = options.throws\n  }\n\n  try {\n    var content = fs.readFileSync(file, options)\n    content = stripBom(content)\n    return JSON.parse(content, options.reviver)\n  } catch (err) {\n    if (shouldThrow) {\n      err.message = file + ': ' + err.message\n      throw err\n    } else {\n      return null\n    }\n  }\n}\n\nfunction stringify (obj, options) {\n  var spaces\n  var EOL = '\\n'\n  if (typeof options === 'object' && options !== null) {\n    if (options.spaces) {\n      spaces = options.spaces\n    }\n    if (options.EOL) {\n      EOL = options.EOL\n    }\n  }\n\n  var str = JSON.stringify(obj, options ? options.replacer : null, spaces)\n\n  return str.replace(/\\n/g, EOL) + EOL\n}\n\nfunction writeFile (file, obj, options, callback) {\n  if (callback == null) {\n    callback = options\n    options = {}\n  }\n  options = options || {}\n  var fs = options.fs || _fs\n\n  var str = ''\n  try {\n    str = stringify(obj, options)\n  } catch (err) {\n    // Need to return whether a callback was passed or not\n    if (callback) callback(err, null)\n    return\n  }\n\n  fs.writeFile(file, str, options, callback)\n}\n\nfunction writeFileSync (file, obj, options) {\n  options = options || {}\n  var fs = options.fs || _fs\n\n  var str = stringify(obj, options)\n  // not sure if fs.writeFileSync returns anything, but just in case\n  return fs.writeFileSync(file, str, options)\n}\n\nfunction stripBom (content) {\n  // we do this because JSON.parse would convert it to a utf8 string if encoding wasn't specified\n  if (Buffer.isBuffer(content)) content = content.toString('utf8')\n  content = content.replace(/^\\uFEFF/, '')\n  return content\n}\n\nvar jsonfile = {\n  readFile: readFile,\n  readFileSync: readFileSync,\n  writeFile: writeFile,\n  writeFileSync: writeFileSync\n}\n\nmodule.exports = jsonfile\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/jsonfile/index.js?");
+var _fs
+try {
+  _fs = __webpack_require__(77)
+} catch (_) {
+  _fs = __webpack_require__(7147)
+}
+
+function readFile (file, options, callback) {
+  if (callback == null) {
+    callback = options
+    options = {}
+  }
+
+  if (typeof options === 'string') {
+    options = {encoding: options}
+  }
+
+  options = options || {}
+  var fs = options.fs || _fs
+
+  var shouldThrow = true
+  if ('throws' in options) {
+    shouldThrow = options.throws
+  }
+
+  fs.readFile(file, options, function (err, data) {
+    if (err) return callback(err)
+
+    data = stripBom(data)
+
+    var obj
+    try {
+      obj = JSON.parse(data, options ? options.reviver : null)
+    } catch (err2) {
+      if (shouldThrow) {
+        err2.message = file + ': ' + err2.message
+        return callback(err2)
+      } else {
+        return callback(null, null)
+      }
+    }
+
+    callback(null, obj)
+  })
+}
+
+function readFileSync (file, options) {
+  options = options || {}
+  if (typeof options === 'string') {
+    options = {encoding: options}
+  }
+
+  var fs = options.fs || _fs
+
+  var shouldThrow = true
+  if ('throws' in options) {
+    shouldThrow = options.throws
+  }
+
+  try {
+    var content = fs.readFileSync(file, options)
+    content = stripBom(content)
+    return JSON.parse(content, options.reviver)
+  } catch (err) {
+    if (shouldThrow) {
+      err.message = file + ': ' + err.message
+      throw err
+    } else {
+      return null
+    }
+  }
+}
+
+function stringify (obj, options) {
+  var spaces
+  var EOL = '\n'
+  if (typeof options === 'object' && options !== null) {
+    if (options.spaces) {
+      spaces = options.spaces
+    }
+    if (options.EOL) {
+      EOL = options.EOL
+    }
+  }
+
+  var str = JSON.stringify(obj, options ? options.replacer : null, spaces)
+
+  return str.replace(/\n/g, EOL) + EOL
+}
+
+function writeFile (file, obj, options, callback) {
+  if (callback == null) {
+    callback = options
+    options = {}
+  }
+  options = options || {}
+  var fs = options.fs || _fs
+
+  var str = ''
+  try {
+    str = stringify(obj, options)
+  } catch (err) {
+    // Need to return whether a callback was passed or not
+    if (callback) callback(err, null)
+    return
+  }
+
+  fs.writeFile(file, str, options, callback)
+}
+
+function writeFileSync (file, obj, options) {
+  options = options || {}
+  var fs = options.fs || _fs
+
+  var str = stringify(obj, options)
+  // not sure if fs.writeFileSync returns anything, but just in case
+  return fs.writeFileSync(file, str, options)
+}
+
+function stripBom (content) {
+  // we do this because JSON.parse would convert it to a utf8 string if encoding wasn't specified
+  if (Buffer.isBuffer(content)) content = content.toString('utf8')
+  content = content.replace(/^\uFEFF/, '')
+  return content
+}
+
+var jsonfile = {
+  readFile: readFile,
+  readFileSync: readFileSync,
+  writeFile: writeFile,
+  writeFileSync: writeFileSync
+}
+
+module.exports = jsonfile
+
 
 /***/ }),
 
-/***/ "./node_modules/streamroller/node_modules/universalify/index.js":
-/*!**********************************************************************!*\
-  !*** ./node_modules/streamroller/node_modules/universalify/index.js ***!
-  \**********************************************************************/
+/***/ 2096:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-eval("\n\nexports.fromCallback = function (fn) {\n  return Object.defineProperty(function () {\n    if (typeof arguments[arguments.length - 1] === 'function') fn.apply(this, arguments)\n    else {\n      return new Promise((resolve, reject) => {\n        arguments[arguments.length] = (err, res) => {\n          if (err) return reject(err)\n          resolve(res)\n        }\n        arguments.length++\n        fn.apply(this, arguments)\n      })\n    }\n  }, 'name', { value: fn.name })\n}\n\nexports.fromPromise = function (fn) {\n  return Object.defineProperty(function () {\n    const cb = arguments[arguments.length - 1]\n    if (typeof cb !== 'function') return fn.apply(this, arguments)\n    else fn.apply(this, arguments).then(r => cb(null, r), cb)\n  }, 'name', { value: fn.name })\n}\n\n\n//# sourceURL=webpack://electron/./node_modules/streamroller/node_modules/universalify/index.js?");
+
+
+exports.E = function (fn) {
+  return Object.defineProperty(function () {
+    if (typeof arguments[arguments.length - 1] === 'function') fn.apply(this, arguments)
+    else {
+      return new Promise((resolve, reject) => {
+        arguments[arguments.length] = (err, res) => {
+          if (err) return reject(err)
+          resolve(res)
+        }
+        arguments.length++
+        fn.apply(this, arguments)
+      })
+    }
+  }, 'name', { value: fn.name })
+}
+
+exports.p = function (fn) {
+  return Object.defineProperty(function () {
+    const cb = arguments[arguments.length - 1]
+    if (typeof cb !== 'function') return fn.apply(this, arguments)
+    else fn.apply(this, arguments).then(r => cb(null, r), cb)
+  }, 'name', { value: fn.name })
+}
+
 
 /***/ }),
 
-/***/ "./node_modules/supports-color/index.js":
-/*!**********************************************!*\
-  !*** ./node_modules/supports-color/index.js ***!
-  \**********************************************/
+/***/ 2130:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-eval("\nconst os = __webpack_require__(/*! os */ \"os\");\nconst tty = __webpack_require__(/*! tty */ \"tty\");\nconst hasFlag = __webpack_require__(/*! has-flag */ \"./node_modules/has-flag/index.js\");\n\nconst {env} = process;\n\nlet forceColor;\nif (hasFlag('no-color') ||\n\thasFlag('no-colors') ||\n\thasFlag('color=false') ||\n\thasFlag('color=never')) {\n\tforceColor = 0;\n} else if (hasFlag('color') ||\n\thasFlag('colors') ||\n\thasFlag('color=true') ||\n\thasFlag('color=always')) {\n\tforceColor = 1;\n}\n\nif ('FORCE_COLOR' in env) {\n\tif (env.FORCE_COLOR === 'true') {\n\t\tforceColor = 1;\n\t} else if (env.FORCE_COLOR === 'false') {\n\t\tforceColor = 0;\n\t} else {\n\t\tforceColor = env.FORCE_COLOR.length === 0 ? 1 : Math.min(parseInt(env.FORCE_COLOR, 10), 3);\n\t}\n}\n\nfunction translateLevel(level) {\n\tif (level === 0) {\n\t\treturn false;\n\t}\n\n\treturn {\n\t\tlevel,\n\t\thasBasic: true,\n\t\thas256: level >= 2,\n\t\thas16m: level >= 3\n\t};\n}\n\nfunction supportsColor(haveStream, streamIsTTY) {\n\tif (forceColor === 0) {\n\t\treturn 0;\n\t}\n\n\tif (hasFlag('color=16m') ||\n\t\thasFlag('color=full') ||\n\t\thasFlag('color=truecolor')) {\n\t\treturn 3;\n\t}\n\n\tif (hasFlag('color=256')) {\n\t\treturn 2;\n\t}\n\n\tif (haveStream && !streamIsTTY && forceColor === undefined) {\n\t\treturn 0;\n\t}\n\n\tconst min = forceColor || 0;\n\n\tif (env.TERM === 'dumb') {\n\t\treturn min;\n\t}\n\n\tif (process.platform === 'win32') {\n\t\t// Windows 10 build 10586 is the first Windows release that supports 256 colors.\n\t\t// Windows 10 build 14931 is the first release that supports 16m/TrueColor.\n\t\tconst osRelease = os.release().split('.');\n\t\tif (\n\t\t\tNumber(osRelease[0]) >= 10 &&\n\t\t\tNumber(osRelease[2]) >= 10586\n\t\t) {\n\t\t\treturn Number(osRelease[2]) >= 14931 ? 3 : 2;\n\t\t}\n\n\t\treturn 1;\n\t}\n\n\tif ('CI' in env) {\n\t\tif (['TRAVIS', 'CIRCLECI', 'APPVEYOR', 'GITLAB_CI', 'GITHUB_ACTIONS', 'BUILDKITE'].some(sign => sign in env) || env.CI_NAME === 'codeship') {\n\t\t\treturn 1;\n\t\t}\n\n\t\treturn min;\n\t}\n\n\tif ('TEAMCITY_VERSION' in env) {\n\t\treturn /^(9\\.(0*[1-9]\\d*)\\.|\\d{2,}\\.)/.test(env.TEAMCITY_VERSION) ? 1 : 0;\n\t}\n\n\tif (env.COLORTERM === 'truecolor') {\n\t\treturn 3;\n\t}\n\n\tif ('TERM_PROGRAM' in env) {\n\t\tconst version = parseInt((env.TERM_PROGRAM_VERSION || '').split('.')[0], 10);\n\n\t\tswitch (env.TERM_PROGRAM) {\n\t\t\tcase 'iTerm.app':\n\t\t\t\treturn version >= 3 ? 3 : 2;\n\t\t\tcase 'Apple_Terminal':\n\t\t\t\treturn 2;\n\t\t\t// No default\n\t\t}\n\t}\n\n\tif (/-256(color)?$/i.test(env.TERM)) {\n\t\treturn 2;\n\t}\n\n\tif (/^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(env.TERM)) {\n\t\treturn 1;\n\t}\n\n\tif ('COLORTERM' in env) {\n\t\treturn 1;\n\t}\n\n\treturn min;\n}\n\nfunction getSupportLevel(stream) {\n\tconst level = supportsColor(stream, stream && stream.isTTY);\n\treturn translateLevel(level);\n}\n\nmodule.exports = {\n\tsupportsColor: getSupportLevel,\n\tstdout: translateLevel(supportsColor(true, tty.isatty(1))),\n\tstderr: translateLevel(supportsColor(true, tty.isatty(2)))\n};\n\n\n//# sourceURL=webpack://electron/./node_modules/supports-color/index.js?");
+
+const os = __webpack_require__(2037);
+const tty = __webpack_require__(6224);
+const hasFlag = __webpack_require__(6560);
+
+const {env} = process;
+
+let forceColor;
+if (hasFlag('no-color') ||
+	hasFlag('no-colors') ||
+	hasFlag('color=false') ||
+	hasFlag('color=never')) {
+	forceColor = 0;
+} else if (hasFlag('color') ||
+	hasFlag('colors') ||
+	hasFlag('color=true') ||
+	hasFlag('color=always')) {
+	forceColor = 1;
+}
+
+if ('FORCE_COLOR' in env) {
+	if (env.FORCE_COLOR === 'true') {
+		forceColor = 1;
+	} else if (env.FORCE_COLOR === 'false') {
+		forceColor = 0;
+	} else {
+		forceColor = env.FORCE_COLOR.length === 0 ? 1 : Math.min(parseInt(env.FORCE_COLOR, 10), 3);
+	}
+}
+
+function translateLevel(level) {
+	if (level === 0) {
+		return false;
+	}
+
+	return {
+		level,
+		hasBasic: true,
+		has256: level >= 2,
+		has16m: level >= 3
+	};
+}
+
+function supportsColor(haveStream, streamIsTTY) {
+	if (forceColor === 0) {
+		return 0;
+	}
+
+	if (hasFlag('color=16m') ||
+		hasFlag('color=full') ||
+		hasFlag('color=truecolor')) {
+		return 3;
+	}
+
+	if (hasFlag('color=256')) {
+		return 2;
+	}
+
+	if (haveStream && !streamIsTTY && forceColor === undefined) {
+		return 0;
+	}
+
+	const min = forceColor || 0;
+
+	if (env.TERM === 'dumb') {
+		return min;
+	}
+
+	if (process.platform === 'win32') {
+		// Windows 10 build 10586 is the first Windows release that supports 256 colors.
+		// Windows 10 build 14931 is the first release that supports 16m/TrueColor.
+		const osRelease = os.release().split('.');
+		if (
+			Number(osRelease[0]) >= 10 &&
+			Number(osRelease[2]) >= 10586
+		) {
+			return Number(osRelease[2]) >= 14931 ? 3 : 2;
+		}
+
+		return 1;
+	}
+
+	if ('CI' in env) {
+		if (['TRAVIS', 'CIRCLECI', 'APPVEYOR', 'GITLAB_CI', 'GITHUB_ACTIONS', 'BUILDKITE'].some(sign => sign in env) || env.CI_NAME === 'codeship') {
+			return 1;
+		}
+
+		return min;
+	}
+
+	if ('TEAMCITY_VERSION' in env) {
+		return /^(9\.(0*[1-9]\d*)\.|\d{2,}\.)/.test(env.TEAMCITY_VERSION) ? 1 : 0;
+	}
+
+	if (env.COLORTERM === 'truecolor') {
+		return 3;
+	}
+
+	if ('TERM_PROGRAM' in env) {
+		const version = parseInt((env.TERM_PROGRAM_VERSION || '').split('.')[0], 10);
+
+		switch (env.TERM_PROGRAM) {
+			case 'iTerm.app':
+				return version >= 3 ? 3 : 2;
+			case 'Apple_Terminal':
+				return 2;
+			// No default
+		}
+	}
+
+	if (/-256(color)?$/i.test(env.TERM)) {
+		return 2;
+	}
+
+	if (/^screen|^xterm|^vt100|^vt220|^rxvt|color|ansi|cygwin|linux/i.test(env.TERM)) {
+		return 1;
+	}
+
+	if ('COLORTERM' in env) {
+		return 1;
+	}
+
+	return min;
+}
+
+function getSupportLevel(stream) {
+	const level = supportsColor(stream, stream && stream.isTTY);
+	return translateLevel(level);
+}
+
+module.exports = {
+	supportsColor: getSupportLevel,
+	stdout: translateLevel(supportsColor(true, tty.isatty(1))),
+	stderr: translateLevel(supportsColor(true, tty.isatty(2)))
+};
+
 
 /***/ }),
 
-/***/ "./src/bridge.ts":
-/*!***********************!*\
-  !*** ./src/bridge.ts ***!
-  \***********************/
+/***/ 3002:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (this && this.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (g && (g = 0, op[0] && (_ = 0)), _) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.CapacitorSplashScreen = exports.configCapacitor = void 0;\nvar config_1 = __importDefault(__webpack_require__(/*! ./config */ \"./src/config.ts\"));\nvar fs_1 = __importDefault(__webpack_require__(/*! fs */ \"fs\"));\nvar path_1 = __importDefault(__webpack_require__(/*! path */ \"path\"));\nvar url_1 = __importDefault(__webpack_require__(/*! url */ \"url\"));\nvar electron_1 = __webpack_require__(/*! electron */ \"electron\");\nvar logger_1 = __importDefault(__webpack_require__(/*! ./utils/logger */ \"./src/utils/logger.ts\"));\nvar utils_1 = __webpack_require__(/*! ./utils */ \"./src/utils/index.ts\");\nvar capacitor_config_json_1 = __importDefault(__webpack_require__(/*! ../capacitor.config.json */ \"./capacitor.config.json\"));\nfunction getURLFileContents(path) {\n    console.trace();\n    return new Promise(function (resolve, reject) {\n        fs_1.default.readFile(path, function (err, data) {\n            if (err)\n                reject(err);\n            resolve(data.toString());\n        });\n    });\n}\nfunction getUserAgent(webContents) {\n    return webContents.userAgent || webContents.getUserAgent() || \"\";\n}\nvar configCapacitor = function (mainWindow) {\n    return __awaiter(this, void 0, void 0, function () {\n        var ua, appendUserAgent, overrideUserAgent;\n        return __generator(this, function (_a) {\n            ua = getUserAgent(mainWindow.webContents);\n            appendUserAgent = capacitor_config_json_1.default.electron && capacitor_config_json_1.default.electron.appendUserAgent\n                ? capacitor_config_json_1.default.electron.appendUserAgent\n                : capacitor_config_json_1.default.appendUserAgent;\n            if (appendUserAgent) {\n                mainWindow.webContents.setUserAgent(ua + \" \" + appendUserAgent);\n            }\n            overrideUserAgent = capacitor_config_json_1.default.electron && capacitor_config_json_1.default.electron.overrideUserAgent\n                ? capacitor_config_json_1.default.electron.overrideUserAgent\n                : capacitor_config_json_1.default.overrideUserAgent;\n            if (overrideUserAgent) {\n                mainWindow.webContents.setUserAgent(overrideUserAgent);\n            }\n            mainWindow.webContents.setUserAgent(ua.replace(/ Electron\\/[^ ]*/gi, \"\"));\n            return [2];\n        });\n    });\n};\nexports.configCapacitor = configCapacitor;\nvar CapacitorSplashScreen = (function () {\n    function CapacitorSplashScreen(mainWindow, splashOptions) {\n        var _this = this;\n        this.splashOptions = {};\n        this.mainWindowRef = null;\n        if (!splashOptions) {\n            splashOptions = {};\n        }\n        this.splashOptions = {\n            imageFileName: splashOptions.imageFileName || \"splash.png\",\n            windowWidth: splashOptions.windowWidth || 400,\n            windowHeight: splashOptions.windowHeight || 400,\n            textColor: splashOptions.textColor || \"#43A8FF\",\n            loadingText: splashOptions.loadingText || \"Loading...\",\n            textPercentageFromTop: splashOptions.textPercentageFromTop || 75,\n            transparentWindow: splashOptions.transparentWindow || false,\n            autoHideLaunchSplash: splashOptions.autoHideLaunchSplash != false,\n            customHtml: splashOptions.customHtml || false,\n        };\n        this.mainWindowRef = mainWindow;\n        try {\n            this.splashOptions = Object.assign(this.splashOptions, capacitor_config_json_1.default.plugins.SplashScreen || {});\n        }\n        catch (e) {\n            logger_1.default.error(e.message);\n        }\n        var start = Date.now();\n        electron_1.ipcMain.on(\"showCapacitorSplashScreen\", function (event, options) {\n            _this.show();\n            logger_1.default.info(\"showCapacitorSplashScreen\", Date.now() - start);\n            if (options) {\n                if (options.autoHide) {\n                    var showTime = options.showDuration || 3000;\n                    setTimeout(function () {\n                        _this.hide();\n                    }, showTime);\n                }\n            }\n        });\n        electron_1.ipcMain.on(\"hideCapacitorSplashScreen\", function (event, options) {\n            logger_1.default.info(\"hideCapacitorSplashScreen\", Date.now() - start);\n            _this.hide();\n        });\n    }\n    CapacitorSplashScreen.prototype.init = function () {\n        return __awaiter(this, void 0, void 0, function () {\n            var rootPath, imagePath, imageUrl, useFallback, splashHtml, start;\n            var _this = this;\n            return __generator(this, function (_a) {\n                switch (_a.label) {\n                    case 0:\n                        rootPath = electron_1.app.getAppPath();\n                        imagePath = path_1.default.join(rootPath, \"splash_assets\", this.splashOptions.imageFileName);\n                        imageUrl = \"\";\n                        useFallback = false;\n                        try {\n                            imageUrl = url_1.default.pathToFileURL(imagePath).href;\n                        }\n                        catch (err) {\n                            useFallback = true;\n                            imageUrl = \"./\".concat(this.splashOptions.imageFileName);\n                        }\n                        splashHtml = this.splashOptions.customHtml ||\n                            \"\\n      <html style=\\\"width: 100%; height: 100%; margin: 0; overflow: hidden;\\\">\\n      <body style=\\\"background-image: url('\".concat(imageUrl, \"'); background-position: center center; background-repeat: no-repeat; width: 100%; height: 100%; margin: 0; overflow: hidden;\\\">       <div style=\\\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: \").concat(this.splashOptions.textColor, \"; position: absolute; top: \").concat(this.splashOptions.textPercentageFromTop, \"%; text-align: center; font-size: 10vw; width: 100vw;\\\">\\n            \").concat(this.splashOptions.loadingText, \"\\n          </div>\\n        </body>\\n      </html>\\n    \");\n                        return [4, (0, utils_1.wait)(500)];\n                    case 1:\n                        _a.sent();\n                        console.info(\"innetIP\", (0, utils_1.getInnetIP)());\n                        this.mainWindowRef.loadURL(\"http://127.0.0.1:\".concat(config_1.default.port, \"/?\").concat(Date.now()));\n                        if (this.splashOptions.autoHideLaunchSplash) {\n                            start = Date.now();\n                            this.mainWindowRef.show();\n                            this.mainWindowRef.webContents.on(\"dom-ready\", function () {\n                                _this.mainWindowRef.show();\n                            });\n                            this.mainWindowRef.webContents.on(\"did-fail-load\", function (err) {\n                            });\n                        }\n                        return [2];\n                }\n            });\n        });\n    };\n    CapacitorSplashScreen.prototype.show = function () {\n        this.mainWindowRef.hide();\n    };\n    CapacitorSplashScreen.prototype.hide = function () {\n        this.splashWindow.hide();\n    };\n    return CapacitorSplashScreen;\n}());\nexports.CapacitorSplashScreen = CapacitorSplashScreen;\nexports[\"default\"] = {\n    configCapacitor: exports.configCapacitor,\n    CapacitorSplashScreen: CapacitorSplashScreen,\n};\n\n\n//# sourceURL=webpack://electron/./src/bridge.ts?");
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CapacitorSplashScreen = exports.configCapacitor = void 0;
+var config_1 = __importDefault(__webpack_require__(8913));
+var fs_1 = __importDefault(__webpack_require__(7147));
+var path_1 = __importDefault(__webpack_require__(1017));
+var url_1 = __importDefault(__webpack_require__(7310));
+var electron_1 = __webpack_require__(2298);
+var logger_1 = __importDefault(__webpack_require__(6645));
+var utils_1 = __webpack_require__(5928);
+var capacitor_config_json_1 = __importDefault(__webpack_require__(2844));
+function getURLFileContents(path) {
+    console.trace();
+    return new Promise(function (resolve, reject) {
+        fs_1.default.readFile(path, function (err, data) {
+            if (err)
+                reject(err);
+            resolve(data.toString());
+        });
+    });
+}
+function getUserAgent(webContents) {
+    return webContents.userAgent || webContents.getUserAgent() || "";
+}
+var configCapacitor = function (mainWindow) {
+    return __awaiter(this, void 0, void 0, function () {
+        var ua, appendUserAgent, overrideUserAgent;
+        return __generator(this, function (_a) {
+            ua = getUserAgent(mainWindow.webContents);
+            appendUserAgent = capacitor_config_json_1.default.electron && capacitor_config_json_1.default.electron.appendUserAgent
+                ? capacitor_config_json_1.default.electron.appendUserAgent
+                : capacitor_config_json_1.default.appendUserAgent;
+            if (appendUserAgent) {
+                mainWindow.webContents.setUserAgent(ua + " " + appendUserAgent);
+            }
+            overrideUserAgent = capacitor_config_json_1.default.electron && capacitor_config_json_1.default.electron.overrideUserAgent
+                ? capacitor_config_json_1.default.electron.overrideUserAgent
+                : capacitor_config_json_1.default.overrideUserAgent;
+            if (overrideUserAgent) {
+                mainWindow.webContents.setUserAgent(overrideUserAgent);
+            }
+            mainWindow.webContents.setUserAgent(ua.replace(/ Electron\/[^ ]*/gi, ""));
+            return [2];
+        });
+    });
+};
+exports.configCapacitor = configCapacitor;
+var CapacitorSplashScreen = (function () {
+    function CapacitorSplashScreen(mainWindow, splashOptions) {
+        var _this = this;
+        this.splashOptions = {};
+        this.mainWindowRef = null;
+        if (!splashOptions) {
+            splashOptions = {};
+        }
+        this.splashOptions = {
+            imageFileName: splashOptions.imageFileName || "splash.png",
+            windowWidth: splashOptions.windowWidth || 400,
+            windowHeight: splashOptions.windowHeight || 400,
+            textColor: splashOptions.textColor || "#43A8FF",
+            loadingText: splashOptions.loadingText || "Loading...",
+            textPercentageFromTop: splashOptions.textPercentageFromTop || 75,
+            transparentWindow: splashOptions.transparentWindow || false,
+            autoHideLaunchSplash: splashOptions.autoHideLaunchSplash != false,
+            customHtml: splashOptions.customHtml || false,
+        };
+        this.mainWindowRef = mainWindow;
+        try {
+            this.splashOptions = Object.assign(this.splashOptions, capacitor_config_json_1.default.plugins.SplashScreen || {});
+        }
+        catch (e) {
+            logger_1.default.error(e.message);
+        }
+        var start = Date.now();
+        electron_1.ipcMain.on("showCapacitorSplashScreen", function (event, options) {
+            _this.show();
+            logger_1.default.info("showCapacitorSplashScreen", Date.now() - start);
+            if (options) {
+                if (options.autoHide) {
+                    var showTime = options.showDuration || 3000;
+                    setTimeout(function () {
+                        _this.hide();
+                    }, showTime);
+                }
+            }
+        });
+        electron_1.ipcMain.on("hideCapacitorSplashScreen", function (event, options) {
+            logger_1.default.info("hideCapacitorSplashScreen", Date.now() - start);
+            _this.hide();
+        });
+    }
+    CapacitorSplashScreen.prototype.init = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var rootPath, imagePath, imageUrl, useFallback, splashHtml, start;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        rootPath = electron_1.app.getAppPath();
+                        imagePath = path_1.default.join(rootPath, "splash_assets", this.splashOptions.imageFileName);
+                        imageUrl = "";
+                        useFallback = false;
+                        try {
+                            imageUrl = url_1.default.pathToFileURL(imagePath).href;
+                        }
+                        catch (err) {
+                            useFallback = true;
+                            imageUrl = "./".concat(this.splashOptions.imageFileName);
+                        }
+                        splashHtml = this.splashOptions.customHtml ||
+                            "\n      <html style=\"width: 100%; height: 100%; margin: 0; overflow: hidden;\">\n      <body style=\"background-image: url('".concat(imageUrl, "'); background-position: center center; background-repeat: no-repeat; width: 100%; height: 100%; margin: 0; overflow: hidden;\">       <div style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: ").concat(this.splashOptions.textColor, "; position: absolute; top: ").concat(this.splashOptions.textPercentageFromTop, "%; text-align: center; font-size: 10vw; width: 100vw;\">\n            ").concat(this.splashOptions.loadingText, "\n          </div>\n        </body>\n      </html>\n    ");
+                        return [4, (0, utils_1.wait)(500)];
+                    case 1:
+                        _a.sent();
+                        console.info("innetIP", (0, utils_1.getInnetIP)());
+                        this.mainWindowRef.loadURL("http://127.0.0.1:".concat(config_1.default.port, "/?").concat(Date.now()));
+                        if (this.splashOptions.autoHideLaunchSplash) {
+                            start = Date.now();
+                            this.mainWindowRef.show();
+                            this.mainWindowRef.webContents.on("dom-ready", function () {
+                                _this.mainWindowRef.show();
+                            });
+                            this.mainWindowRef.webContents.on("did-fail-load", function (err) {
+                            });
+                        }
+                        return [2];
+                }
+            });
+        });
+    };
+    CapacitorSplashScreen.prototype.show = function () {
+        this.mainWindowRef.hide();
+    };
+    CapacitorSplashScreen.prototype.hide = function () {
+        this.splashWindow.hide();
+    };
+    return CapacitorSplashScreen;
+}());
+exports.CapacitorSplashScreen = CapacitorSplashScreen;
+exports["default"] = {
+    configCapacitor: exports.configCapacitor,
+    CapacitorSplashScreen: CapacitorSplashScreen,
+};
+
 
 /***/ }),
 
-/***/ "./src/config.ts":
-/*!***********************!*\
-  !*** ./src/config.ts ***!
-  \***********************/
+/***/ 8913:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __read = (this && this.__read) || function (o, n) {\n    var m = typeof Symbol === \"function\" && o[Symbol.iterator];\n    if (!m) return o;\n    var i = m.call(o), r, ar = [], e;\n    try {\n        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);\n    }\n    catch (error) { e = { error: error }; }\n    finally {\n        try {\n            if (r && !r.done && (m = i[\"return\"])) m.call(i);\n        }\n        finally { if (e) throw e.error; }\n    }\n    return ar;\n};\nvar __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {\n    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {\n        if (ar || !(i in from)) {\n            if (!ar) ar = Array.prototype.slice.call(from, 0, i);\n            ar[i] = from[i];\n        }\n    }\n    return to.concat(ar || Array.prototype.slice.call(from));\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.getProjectDistPath = void 0;\nvar node_machine_id_1 = __webpack_require__(/*! node-machine-id */ \"./node_modules/node-machine-id/dist/index.js\");\nvar md5_1 = __importDefault(__webpack_require__(/*! md5 */ \"./node_modules/md5/md5.js\"));\nvar path_1 = __importDefault(__webpack_require__(/*! path */ \"path\"));\nvar package_json_1 = __importDefault(__webpack_require__(/*! ../package.json */ \"./package.json\"));\nvar commander_1 = __webpack_require__(/*! commander */ \"./node_modules/commander/index.js\");\nvar os_1 = __importDefault(__webpack_require__(/*! os */ \"os\"));\nvar isDev = \"development\" != \"production\";\nconsole.info(\"==============isDev\", isDev);\nvar input = commander_1.program\n    .option(\"-p, --port <type>\", \"端口\", \"1080\")\n    .option(\"-d, --user-data-dir <type>\", \"用户存储目录\", path_1.default.join(os_1.default.homedir(), isDev ? \".ight-dev\" : \".ight\"))\n    .option(\"-l, --log\", \"打印隐藏日志\")\n    .option(\"-h, --host <type>\", \"端口\", \"127.0.0.1\")\n    .option(\"-show-set-host, --show-set-host\", \"显示设置host\")\n    .parse(process.argv);\nfunction getProjectDistPath(_path) {\n    if (_path === void 0) { _path = \"\"; }\n    var p = _path.replace(/^\\//, \"\");\n    if (isDev) {\n        p = path_1.default.resolve(p);\n    }\n    else {\n        p = path_1.default.resolve(\"resources/app.asar/dist/electron\", p);\n    }\n    return p;\n}\nexports.getProjectDistPath = getProjectDistPath;\nvar width = 480;\nvar height = /win/.test(process.platform) ? 800 : 700;\nvar proxyList = [];\nvar device = (0, md5_1.default)((0, node_machine_id_1.machineIdSync)()).toUpperCase();\nvar Config = {\n    isDev: isDev,\n    appVersion: package_json_1.default.version,\n    appVersionCode: package_json_1.default[\"versionCode\"],\n    appName: package_json_1.default.name,\n    electronUpdateUrl: \"https://dl.light-network.net/app\",\n    port: 5858,\n    homedir: function (str) {\n        var home = os_1.default.homedir();\n        return str ? path_1.default.join(home, str) : home;\n    },\n    width: width,\n    height: height,\n    frame: true,\n    device: device,\n    userSecret: \"\",\n    proxyList: proxyList,\n    addProxyList: function (list) {\n        proxyList.push.apply(proxyList, __spreadArray([], __read(list), false));\n    },\n};\nexports[\"default\"] = Config;\n\n\n//# sourceURL=webpack://electron/./src/config.ts?");
+
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getProjectDistPath = void 0;
+var node_machine_id_1 = __webpack_require__(1572);
+var md5_1 = __importDefault(__webpack_require__(2568));
+var path_1 = __importDefault(__webpack_require__(1017));
+var package_json_1 = __importDefault(__webpack_require__(4147));
+var commander_1 = __webpack_require__(7461);
+var os_1 = __importDefault(__webpack_require__(2037));
+var isDev = "production" != "production";
+console.info("==============isDev", isDev);
+var input = commander_1.program
+    .option("-p, --port <type>", "端口", "1080")
+    .option("-d, --user-data-dir <type>", "用户存储目录", path_1.default.join(os_1.default.homedir(), isDev ? ".ight-dev" : ".ight"))
+    .option("-l, --log", "打印隐藏日志")
+    .option("-h, --host <type>", "端口", "127.0.0.1")
+    .option("-show-set-host, --show-set-host", "显示设置host")
+    .parse(process.argv);
+function getProjectDistPath(_path) {
+    if (_path === void 0) { _path = ""; }
+    var p = _path.replace(/^\//, "");
+    if (isDev) {
+        p = path_1.default.resolve(p);
+    }
+    else {
+        p = path_1.default.resolve("resources/app.asar/dist/electron", p);
+    }
+    return p;
+}
+exports.getProjectDistPath = getProjectDistPath;
+var width = 480;
+var height = /win/.test(process.platform) ? 800 : 700;
+var proxyList = [];
+var device = (0, md5_1.default)((0, node_machine_id_1.machineIdSync)()).toUpperCase();
+var Config = {
+    isDev: isDev,
+    appVersion: package_json_1.default.version,
+    appVersionCode: package_json_1.default["versionCode"],
+    appName: package_json_1.default.name,
+    electronUpdateUrl: "https://dl.light-network.net/app",
+    port: 5858,
+    homedir: function (str) {
+        var home = os_1.default.homedir();
+        return str ? path_1.default.join(home, str) : home;
+    },
+    width: width,
+    height: height,
+    frame: true,
+    device: device,
+    userSecret: "",
+    proxyList: proxyList,
+    addProxyList: function (list) {
+        proxyList.push.apply(proxyList, __spreadArray([], __read(list), false));
+    },
+};
+exports["default"] = Config;
+
 
 /***/ }),
 
-/***/ "./src/localserver.ts":
-/*!****************************!*\
-  !*** ./src/localserver.ts ***!
-  \****************************/
+/***/ 706:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar http_1 = __importDefault(__webpack_require__(/*! http */ \"http\"));\nvar config_1 = __importDefault(__webpack_require__(/*! ./config */ \"./src/config.ts\"));\nvar fs_1 = __importDefault(__webpack_require__(/*! fs */ \"fs\"));\nvar util_1 = __webpack_require__(/*! ./utils/util */ \"./src/utils/util.ts\");\nvar logger_1 = __importDefault(__webpack_require__(/*! ./utils/logger */ \"./src/utils/logger.ts\"));\nvar electron_1 = __webpack_require__(/*! electron */ \"electron\");\nvar server = http_1.default.createServer(function (req, res) {\n    var host = req.headers.host;\n    if (![\"192.168\", \"10\", \"127.0.0.1\", \"localhost\"].find(function (v) { return host === null || host === void 0 ? void 0 : host.startsWith(v); })) {\n        console.warn(\"deny host request\", host);\n        return;\n    }\n    var _path = req.url || \"\";\n    _path = _path.replace(/^\\/[^\\/]+/, \"\");\n    _path = _path == \"/\" ? \"/index.html\" : _path;\n    _path = (0, util_1.getStaticResource)(_path);\n    var suff = _path.replace(/[?].*/, \"\");\n    var lastIdx = suff.lastIndexOf(\".\");\n    suff = lastIdx > suff.length - 6 ? suff.substring(lastIdx) : \"\";\n    if (!suff) {\n        _path = (0, util_1.getStaticResource)(\"/index.html\");\n        suff = \".html\";\n    }\n    var mtype = mimeType(suff);\n    fs_1.default.readFile(_path, function (err, data) {\n        if (err) {\n            res.writeHead(404, { \"content-type\": mtype });\n            res.end();\n            logger_1.default.info(\"req \", req.url, 404);\n            return;\n        }\n        res.writeHead(200, { \"content-type\": mtype + \"; charset=utf8\" });\n        res.end(data);\n    });\n});\nfunction mimeType(suff) {\n    switch (suff) {\n        case \".jpg\":\n        case \".jpeg\":\n            return \"image/jpeg\";\n        case \".png\":\n            return \"image/png\";\n        case \".gif\":\n            return \"image/gif\";\n        case \".htm\":\n        case \".html\":\n            return \"text/html\";\n        case \".ico\":\n            return \"image/vnd.microsoft.icon\";\n        case \".js\":\n            return \"text/javascript\";\n        case \".json\":\n            return \"application/json\";\n        case \".css\":\n            return \"text/css\";\n        case \".txt\":\n            return \"text/plain\";\n        case \".map\":\n            return \"text/plain\";\n        case \".svg\":\n            return \"image/svg+xml\";\n        case \".ttf\":\n            return \"font/ttf\";\n        case \".woff\":\n            return \"application/font-woff\";\n    }\n    return \"text/plain\";\n}\nserver.listen(0, function () {\n    var address = server.address();\n    config_1.default.port = typeof address == \"string\" ? parseInt(address.substring(address.indexOf(\":\"))) : (address === null || address === void 0 ? void 0 : address.port) || 0;\n    logger_1.default.console.info(\"http server port \", config_1.default.port);\n});\nelectron_1.app.on(\"quit\", function () {\n    server.close();\n    process.exit();\n});\n\n\n//# sourceURL=webpack://electron/./src/localserver.ts?");
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var http_1 = __importDefault(__webpack_require__(3685));
+var config_1 = __importDefault(__webpack_require__(8913));
+var fs_1 = __importDefault(__webpack_require__(7147));
+var util_1 = __webpack_require__(3980);
+var logger_1 = __importDefault(__webpack_require__(6645));
+var electron_1 = __webpack_require__(2298);
+var server = http_1.default.createServer(function (req, res) {
+    var host = req.headers.host;
+    if (!["192.168", "10", "127.0.0.1", "localhost"].find(function (v) { return host === null || host === void 0 ? void 0 : host.startsWith(v); })) {
+        console.warn("deny host request", host);
+        return;
+    }
+    var _path = req.url || "";
+    _path = _path.replace(/^\/[^\/]+/, "");
+    _path = _path == "/" ? "/index.html" : _path;
+    _path = (0, util_1.getStaticResource)(_path);
+    var suff = _path.replace(/[?].*/, "");
+    var lastIdx = suff.lastIndexOf(".");
+    suff = lastIdx > suff.length - 6 ? suff.substring(lastIdx) : "";
+    if (!suff) {
+        _path = (0, util_1.getStaticResource)("/index.html");
+        suff = ".html";
+    }
+    var mtype = mimeType(suff);
+    fs_1.default.readFile(_path, function (err, data) {
+        if (err) {
+            res.writeHead(404, { "content-type": mtype });
+            res.end();
+            logger_1.default.info("req ", req.url, 404);
+            return;
+        }
+        res.writeHead(200, { "content-type": mtype + "; charset=utf8" });
+        res.end(data);
+    });
+});
+function mimeType(suff) {
+    switch (suff) {
+        case ".jpg":
+        case ".jpeg":
+            return "image/jpeg";
+        case ".png":
+            return "image/png";
+        case ".gif":
+            return "image/gif";
+        case ".htm":
+        case ".html":
+            return "text/html";
+        case ".ico":
+            return "image/vnd.microsoft.icon";
+        case ".js":
+            return "text/javascript";
+        case ".json":
+            return "application/json";
+        case ".css":
+            return "text/css";
+        case ".txt":
+            return "text/plain";
+        case ".map":
+            return "text/plain";
+        case ".svg":
+            return "image/svg+xml";
+        case ".ttf":
+            return "font/ttf";
+        case ".woff":
+            return "application/font-woff";
+    }
+    return "text/plain";
+}
+server.listen(0, function () {
+    var address = server.address();
+    config_1.default.port = typeof address == "string" ? parseInt(address.substring(address.indexOf(":"))) : (address === null || address === void 0 ? void 0 : address.port) || 0;
+    logger_1.default.console.info("http server port ", config_1.default.port);
+});
+electron_1.app.on("quit", function () {
+    server.close();
+    process.exit();
+});
+
 
 /***/ }),
 
-/***/ "./src/main.ts":
-/*!*********************!*\
-  !*** ./src/main.ts ***!
-  \*********************/
+/***/ 8519:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (this && this.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (g && (g = 0, op[0] && (_ = 0)), _) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar electron_1 = __webpack_require__(/*! electron */ \"electron\");\n__webpack_require__(/*! ./localserver */ \"./src/localserver.ts\");\nvar bridge_1 = __webpack_require__(/*! ./bridge */ \"./src/bridge.ts\");\nvar config_1 = __importDefault(__webpack_require__(/*! ./config */ \"./src/config.ts\"));\nvar util_1 = __webpack_require__(/*! ./utils/util */ \"./src/utils/util.ts\");\nvar logger_1 = __importDefault(__webpack_require__(/*! ./utils/logger */ \"./src/utils/logger.ts\"));\nvar ui_tray_1 = __importDefault(__webpack_require__(/*! ./ui.tray */ \"./src/ui.tray.ts\"));\nvar utils_1 = __webpack_require__(/*! ./utils */ \"./src/utils/index.ts\");\nelectron_1.app.commandLine.appendSwitch(\"--ignore-certificate-errors\", \"true\");\nelectron_1.app.commandLine.appendSwitch(\"--disable-web-security\");\nvar mainWindow;\nvar appTray;\nvar splashScreen;\nvar useSplashScreen = true;\nvar start = Date.now();\nelectron_1.ipcMain.on(\"test\", function (event, arg) {\n    console.log(\"message test\", event, arg);\n});\nfunction getScreen() {\n    try {\n        var width = electron_1.screen.getPrimaryDisplay().workAreaSize.width;\n        var height = electron_1.screen.getPrimaryDisplay().workAreaSize.height;\n        return { width: width, height: height };\n    }\n    catch (err) {\n        return {\n            width: 1440,\n            height: 760,\n        };\n    }\n}\nfunction createWindow() {\n    return __awaiter(this, void 0, void 0, function () {\n        var _a, width, height;\n        return __generator(this, function (_b) {\n            _a = getScreen(), width = _a.width, height = _a.height;\n            mainWindow = new electron_1.BrowserWindow({\n                width: Math.floor(width * 0.9),\n                minWidth: Math.floor(width * 0.5),\n                maxWidth: width,\n                height: Math.floor(height * 0.9),\n                minHeight: Math.floor(height * 0.75),\n                maxHeight: height,\n                frame: true,\n                icon: (0, util_1.getStaticResource)(\"logo.png\"),\n                show: true,\n                webPreferences: {\n                    nodeIntegration: false,\n                    nodeIntegrationInWorker: false,\n                    preload: (0, util_1.getStaticResource)(\"./preload.js\"),\n                    plugins: true,\n                    scrollBounce: true,\n                    devTools: config_1.default.isDev ? true : false,\n                    webSecurity: false,\n                },\n            });\n            logger_1.default.info(\"===========open window========\");\n            (0, bridge_1.configCapacitor)(mainWindow);\n            electron_1.Menu.setApplicationMenu(electron_1.Menu.buildFromTemplate([]));\n            if (config_1.default.isDev) {\n                mainWindow.webContents.openDevTools();\n            }\n            console.info(\"===========useSplashScreen\", useSplashScreen);\n            mainWindow.webContents.on(\"did-finish-load\", function () {\n                mainWindow.webContents.executeJavaScript(\"\\n      window.env = {\\n        innerIP: \\\"\".concat((0, utils_1.getInnetIP)(), \"\\\"\\n      };\\n    \"));\n            });\n            if (useSplashScreen) {\n                splashScreen = new bridge_1.CapacitorSplashScreen(mainWindow);\n                splashScreen.init();\n            }\n            else {\n                setTimeout(function () {\n                    mainWindow === null || mainWindow === void 0 ? void 0 : mainWindow.webContents.on(\"dom-ready\", function () {\n                        mainWindow === null || mainWindow === void 0 ? void 0 : mainWindow.show();\n                    });\n                }, 2000);\n            }\n            appTray = (0, ui_tray_1.default)(mainWindow);\n            return [2, {\n                    window: mainWindow,\n                    tray: appTray,\n                }];\n        });\n    });\n}\nelectron_1.app.on(\"ready\", function () { return __awaiter(void 0, void 0, void 0, function () {\n    var gotTheLock, filter, timeMap_1, _a, window, tray;\n    return __generator(this, function (_b) {\n        switch (_b.label) {\n            case 0:\n                gotTheLock = electron_1.app.requestSingleInstanceLock();\n                logger_1.default.info(\"ready \", Date.now() - start);\n                if (!!gotTheLock) return [3, 1];\n                electron_1.app.quit();\n                return [3, 3];\n            case 1:\n                electron_1.app.on(\"second-instance\", function (event, commandLine, workingDirectory) {\n                    if (mainWindow) {\n                        if (mainWindow.isMinimized())\n                            mainWindow.restore();\n                        mainWindow.focus();\n                        mainWindow.show();\n                    }\n                });\n                filter = {\n                    urls: [\"*://*/*\"],\n                };\n                timeMap_1 = {};\n                electron_1.session.defaultSession.webRequest.onBeforeSendHeaders(filter, function (details, callback) { return __awaiter(void 0, void 0, void 0, function () {\n                    var secchua, bv, browserVersion, ua, info;\n                    return __generator(this, function (_a) {\n                        secchua = details.requestHeaders[\"sec-ch-ua\"] || \"\";\n                        bv = secchua.match(/v=\"\\d+\"/g) || [];\n                        browserVersion = bv[1] || \"\";\n                        ua = details.requestHeaders[\"User-Agent\"] || \"\";\n                        delete details.requestHeaders[\"Referer\"];\n                        details.requestHeaders[\"User-Agent\"] = ua = ua.replace(/ Electron\\/[^ ]*/gi, \"\");\n                        details.requestHeaders[\"DNT\"] = \"1\";\n                        details.requestHeaders[\"sec-ch-ua\"] = \"\\\"Not?A_Brand\\\";v=\\\"8\\\", \\\"Chromium\\\";\".concat(browserVersion, \", \\\"Microsoft Edge\\\";\").concat(browserVersion);\n                        if (/get/i.test(details.method)) {\n                            info = new URL(details.url);\n                            if (/\\.(png|jpg|jpeg|gif|webp)$/i.test(info.pathname)) {\n                                console.info(\"req==>\", details.url, details.requestHeaders[\"DNT\"], browserVersion);\n                            }\n                        }\n                        timeMap_1[details.url] = Date.now();\n                        callback({ requestHeaders: details.requestHeaders });\n                        return [2];\n                    });\n                }); });\n                electron_1.session.defaultSession.webRequest.onHeadersReceived(filter, function (details, callback) { return __awaiter(void 0, void 0, void 0, function () {\n                    return __generator(this, function (_a) {\n                        delete timeMap_1[details.url];\n                        callback({ responseHeaders: details.responseHeaders });\n                        return [2];\n                    });\n                }); });\n                electron_1.session.defaultSession.webRequest.onErrorOccurred(filter, function (details) { return __awaiter(void 0, void 0, void 0, function () {\n                    return __generator(this, function (_a) {\n                        delete timeMap_1[details.url];\n                        return [2];\n                    });\n                }); });\n                electron_1.session.defaultSession.setCertificateVerifyProc(function (request, callback) {\n                    var hostname = request.hostname;\n                    callback(0);\n                });\n                return [4, createWindow()];\n            case 2:\n                _a = _b.sent(), window = _a.window, tray = _a.tray;\n                mainWindow = window;\n                appTray = tray;\n                _b.label = 3;\n            case 3: return [2];\n        }\n    });\n}); });\nelectron_1.app.on(\"window-all-closed\", function () {\n    electron_1.app.quit();\n    electron_1.app.quit();\n});\nelectron_1.app.on(\"activate\", function () { return __awaiter(void 0, void 0, void 0, function () {\n    var _a, window, tray;\n    return __generator(this, function (_b) {\n        switch (_b.label) {\n            case 0:\n                logger_1.default.info(\"activate \", Date.now() - start);\n                if (!(mainWindow == null)) return [3, 2];\n                return [4, createWindow()];\n            case 1:\n                _a = _b.sent(), window = _a.window, tray = _a.tray;\n                mainWindow = window;\n                appTray = tray;\n                _b.label = 2;\n            case 2: return [2];\n        }\n    });\n}); });\nfunction padding(str, length) {\n    if (length === void 0) { length = 3; }\n    str = String(str);\n    if (str.length > length)\n        return str.substring(0, length);\n    var ar = [];\n    for (var i = 0; i < length - str.length; i++)\n        ar.push(\" \");\n    return str + \"\" + ar.join(\"\");\n}\nelectron_1.app.on(\"gpu-process-crashed\", function (err) {\n    logger_1.default.error(\"GPU进程崩溃，程序退出\", err);\n    electron_1.app.exit(0);\n});\nprocess.on(\"uncaughtException\", function (err) {\n    logger_1.default.info(\"uncaughtException logger\", err);\n});\nelectron_1.app.on(\"ready\", function () {\n});\n\n\n//# sourceURL=webpack://electron/./src/main.ts?");
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var electron_1 = __webpack_require__(2298);
+__webpack_require__(706);
+var bridge_1 = __webpack_require__(3002);
+var config_1 = __importDefault(__webpack_require__(8913));
+var util_1 = __webpack_require__(3980);
+var logger_1 = __importDefault(__webpack_require__(6645));
+var ui_tray_1 = __importDefault(__webpack_require__(9309));
+var utils_1 = __webpack_require__(5928);
+electron_1.app.commandLine.appendSwitch("--ignore-certificate-errors", "true");
+electron_1.app.commandLine.appendSwitch("--disable-web-security");
+electron_1.app.commandLine.appendSwitch('lang', 'en-US');
+var mainWindow;
+var appTray;
+var splashScreen;
+var useSplashScreen = true;
+var start = Date.now();
+electron_1.ipcMain.on("test", function (event, arg) {
+    console.log("message test", event, arg);
+});
+function getScreen() {
+    try {
+        var width = electron_1.screen.getPrimaryDisplay().workAreaSize.width;
+        var height = electron_1.screen.getPrimaryDisplay().workAreaSize.height;
+        return { width: width, height: height };
+    }
+    catch (err) {
+        return {
+            width: 1440,
+            height: 760,
+        };
+    }
+}
+function createWindow() {
+    return __awaiter(this, void 0, void 0, function () {
+        var _a, width, height;
+        return __generator(this, function (_b) {
+            _a = getScreen(), width = _a.width, height = _a.height;
+            mainWindow = new electron_1.BrowserWindow({
+                width: Math.floor(width * 0.9),
+                minWidth: Math.floor(width * 0.5),
+                maxWidth: width,
+                height: Math.floor(height * 0.9),
+                minHeight: Math.floor(height * 0.75),
+                maxHeight: height,
+                frame: true,
+                icon: (0, util_1.getStaticResource)("logo.png"),
+                show: true,
+                webPreferences: {
+                    nodeIntegration: false,
+                    nodeIntegrationInWorker: false,
+                    preload: (0, util_1.getStaticResource)("./preload.js"),
+                    plugins: true,
+                    scrollBounce: true,
+                    devTools: config_1.default.isDev ? true : false,
+                    webSecurity: false,
+                },
+            });
+            logger_1.default.info("===========open window========");
+            (0, bridge_1.configCapacitor)(mainWindow);
+            electron_1.Menu.setApplicationMenu(electron_1.Menu.buildFromTemplate([]));
+            if (config_1.default.isDev) {
+                mainWindow.webContents.openDevTools();
+            }
+            console.info("===========useSplashScreen", useSplashScreen);
+            mainWindow.webContents.on("did-finish-load", function () {
+                mainWindow.webContents.executeJavaScript("\n      window.env = {\n        innerIP: \"".concat((0, utils_1.getInnetIP)(), "\"\n      };\n    "));
+            });
+            if (useSplashScreen) {
+                splashScreen = new bridge_1.CapacitorSplashScreen(mainWindow);
+                splashScreen.init();
+            }
+            else {
+                setTimeout(function () {
+                    mainWindow === null || mainWindow === void 0 ? void 0 : mainWindow.webContents.on("dom-ready", function () {
+                        mainWindow === null || mainWindow === void 0 ? void 0 : mainWindow.show();
+                    });
+                }, 2000);
+            }
+            appTray = (0, ui_tray_1.default)(mainWindow);
+            return [2, {
+                    window: mainWindow,
+                    tray: appTray,
+                }];
+        });
+    });
+}
+electron_1.app.on("ready", function () { return __awaiter(void 0, void 0, void 0, function () {
+    var gotTheLock, filter, timeMap_1, _a, window, tray;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                gotTheLock = electron_1.app.requestSingleInstanceLock();
+                logger_1.default.info("ready ", Date.now() - start);
+                if (!!gotTheLock) return [3, 1];
+                electron_1.app.quit();
+                return [3, 3];
+            case 1:
+                electron_1.app.on("second-instance", function (event, commandLine, workingDirectory) {
+                    if (mainWindow) {
+                        if (mainWindow.isMinimized())
+                            mainWindow.restore();
+                        mainWindow.focus();
+                        mainWindow.show();
+                    }
+                });
+                filter = {
+                    urls: ["*://*/*"],
+                };
+                timeMap_1 = {};
+                electron_1.session.defaultSession.webRequest.onBeforeSendHeaders(filter, function (details, callback) { return __awaiter(void 0, void 0, void 0, function () {
+                    var secchua, bv, browserVersion, ua, info;
+                    return __generator(this, function (_a) {
+                        secchua = details.requestHeaders["sec-ch-ua"] || "";
+                        bv = secchua.match(/v="\d+"/g) || [];
+                        browserVersion = bv[1] || "";
+                        ua = details.requestHeaders["User-Agent"] || "";
+                        delete details.requestHeaders["Referer"];
+                        details.requestHeaders["User-Agent"] = ua = ua.replace(/ Electron\/[^ ]*/gi, "");
+                        details.requestHeaders["DNT"] = "1";
+                        details.requestHeaders["sec-ch-ua"] = "\"Not?A_Brand\";v=\"8\", \"Chromium\";".concat(browserVersion, ", \"Microsoft Edge\";").concat(browserVersion);
+                        if (/get/i.test(details.method)) {
+                            info = new URL(details.url);
+                            if (/\.(png|jpg|jpeg|gif|webp)$/i.test(info.pathname)) {
+                                console.info("req==>", details.url, details.requestHeaders["DNT"], browserVersion);
+                            }
+                        }
+                        timeMap_1[details.url] = Date.now();
+                        callback({ requestHeaders: details.requestHeaders });
+                        return [2];
+                    });
+                }); });
+                electron_1.session.defaultSession.webRequest.onHeadersReceived(filter, function (details, callback) { return __awaiter(void 0, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        delete timeMap_1[details.url];
+                        callback({ responseHeaders: details.responseHeaders });
+                        return [2];
+                    });
+                }); });
+                electron_1.session.defaultSession.webRequest.onErrorOccurred(filter, function (details) { return __awaiter(void 0, void 0, void 0, function () {
+                    return __generator(this, function (_a) {
+                        delete timeMap_1[details.url];
+                        return [2];
+                    });
+                }); });
+                electron_1.session.defaultSession.setCertificateVerifyProc(function (request, callback) {
+                    var hostname = request.hostname;
+                    callback(0);
+                });
+                return [4, createWindow()];
+            case 2:
+                _a = _b.sent(), window = _a.window, tray = _a.tray;
+                mainWindow = window;
+                appTray = tray;
+                _b.label = 3;
+            case 3: return [2];
+        }
+    });
+}); });
+electron_1.app.on("window-all-closed", function () {
+    electron_1.app.quit();
+    electron_1.app.quit();
+});
+electron_1.app.on("activate", function () { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, window, tray;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                logger_1.default.info("activate ", Date.now() - start);
+                if (!(mainWindow == null)) return [3, 2];
+                return [4, createWindow()];
+            case 1:
+                _a = _b.sent(), window = _a.window, tray = _a.tray;
+                mainWindow = window;
+                appTray = tray;
+                _b.label = 2;
+            case 2: return [2];
+        }
+    });
+}); });
+function padding(str, length) {
+    if (length === void 0) { length = 3; }
+    str = String(str);
+    if (str.length > length)
+        return str.substring(0, length);
+    var ar = [];
+    for (var i = 0; i < length - str.length; i++)
+        ar.push(" ");
+    return str + "" + ar.join("");
+}
+electron_1.app.on("gpu-process-crashed", function (err) {
+    logger_1.default.error("GPU进程崩溃，程序退出", err);
+    electron_1.app.exit(0);
+});
+process.on("uncaughtException", function (err) {
+    logger_1.default.info("uncaughtException logger", err);
+});
+electron_1.app.on("ready", function () {
+});
+
 
 /***/ }),
 
-/***/ "./src/ui.tray.ts":
-/*!************************!*\
-  !*** ./src/ui.tray.ts ***!
-  \************************/
+/***/ 9309:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar electron_1 = __webpack_require__(/*! electron */ \"electron\");\nvar logger_1 = __importDefault(__webpack_require__(/*! ./utils/logger */ \"./src/utils/logger.ts\"));\nvar util_1 = __webpack_require__(/*! ./utils/util */ \"./src/utils/util.ts\");\nvar config_1 = __importDefault(__webpack_require__(/*! ./config */ \"./src/config.ts\"));\nfunction default_1(win, options) {\n    options = Object.assign({}, options);\n    options.icon = options.icon || (0, util_1.getAppRoot)('app/logo.png');\n    var isTrayQuit = false;\n    var trayMenuTemplate = [\n        {\n            label: 'Open',\n            click: function () {\n                win.show();\n            },\n        },\n        {\n            label: 'Exist',\n            click: function () {\n                isTrayQuit = true;\n                electron_1.app.quit();\n                electron_1.app.quit();\n            },\n        },\n    ];\n    win.on('close', function (event) {\n        if ((0, util_1.isWindows)()) {\n            if (!isTrayQuit) {\n                event.preventDefault();\n                event.returnValue = false;\n                win.hide();\n            }\n            else {\n                win.destroy();\n                electron_1.app.quit();\n                electron_1.app.quit();\n            }\n        }\n        else {\n            win.destroy();\n            electron_1.app.quit();\n            electron_1.app.quit();\n        }\n    });\n    win.on('error', function (error) {\n        logger_1.default.error('error', error.messsage);\n    });\n    var appTray = new electron_1.Tray(options.icon || '');\n    var contextMenu = electron_1.Menu.buildFromTemplate(trayMenuTemplate);\n    appTray.setToolTip(config_1.default.appName + (config_1.default.isDev ? '-Dev' : ''));\n    appTray.setContextMenu(contextMenu);\n    appTray.on('click', function () {\n        win.show();\n    });\n    return appTray;\n}\nexports[\"default\"] = default_1;\n\n\n//# sourceURL=webpack://electron/./src/ui.tray.ts?");
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var electron_1 = __webpack_require__(2298);
+var logger_1 = __importDefault(__webpack_require__(6645));
+var util_1 = __webpack_require__(3980);
+var config_1 = __importDefault(__webpack_require__(8913));
+function default_1(win, options) {
+    options = Object.assign({}, options);
+    options.icon = options.icon || (0, util_1.getAppRoot)('app/logo.png');
+    var isTrayQuit = false;
+    var trayMenuTemplate = [
+        {
+            label: 'Open',
+            click: function () {
+                win.show();
+            },
+        },
+        {
+            label: 'Exist',
+            click: function () {
+                isTrayQuit = true;
+                electron_1.app.quit();
+                electron_1.app.quit();
+            },
+        },
+    ];
+    win.on('close', function (event) {
+        if ((0, util_1.isWindows)()) {
+            if (!isTrayQuit) {
+                event.preventDefault();
+                event.returnValue = false;
+                win.hide();
+            }
+            else {
+                win.destroy();
+                electron_1.app.quit();
+                electron_1.app.quit();
+            }
+        }
+        else {
+            win.destroy();
+            electron_1.app.quit();
+            electron_1.app.quit();
+        }
+    });
+    win.on('error', function (error) {
+        logger_1.default.error('error', error.messsage);
+    });
+    var appTray = new electron_1.Tray(options.icon || '');
+    var contextMenu = electron_1.Menu.buildFromTemplate(trayMenuTemplate);
+    appTray.setToolTip(config_1.default.appName + (config_1.default.isDev ? '-Dev' : ''));
+    appTray.setContextMenu(contextMenu);
+    appTray.on('click', function () {
+        win.show();
+    });
+    return appTray;
+}
+exports["default"] = default_1;
+
 
 /***/ }),
 
-/***/ "./src/utils/index.ts":
-/*!****************************!*\
-  !*** ./src/utils/index.ts ***!
-  \****************************/
+/***/ 5928:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (this && this.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (g && (g = 0, op[0] && (_ = 0)), _) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\nvar __values = (this && this.__values) || function(o) {\n    var s = typeof Symbol === \"function\" && Symbol.iterator, m = s && o[s], i = 0;\n    if (m) return m.call(o);\n    if (o && typeof o.length === \"number\") return {\n        next: function () {\n            if (o && i >= o.length) o = void 0;\n            return { value: o && o[i++], done: !o };\n        }\n    };\n    throw new TypeError(s ? \"Object is not iterable.\" : \"Symbol.iterator is not defined.\");\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.getInnetIP = exports.wait = void 0;\nvar os_1 = __importDefault(__webpack_require__(/*! os */ \"os\"));\nfunction wait(ttl) {\n    if (ttl === void 0) { ttl = 0; }\n    return __awaiter(this, void 0, void 0, function () {\n        return __generator(this, function (_a) {\n            return [2, new Promise(function (resolve) { return setTimeout(function () { return resolve(); }, ttl); })];\n        });\n    });\n}\nexports.wait = wait;\nfunction getInnetIP() {\n    var e_1, _a;\n    var list = os_1.default.networkInterfaces();\n    for (var key in list) {\n        var items = list[key] || [];\n        try {\n            for (var items_1 = (e_1 = void 0, __values(items)), items_1_1 = items_1.next(); !items_1_1.done; items_1_1 = items_1.next()) {\n                var item = items_1_1.value;\n                if (/IPv4/i.test(item.family)) {\n                    if (/^192\\.168/i.test(item.address))\n                        return item.address;\n                    if (/^10\\./i.test(item.address))\n                        return item.address;\n                }\n            }\n        }\n        catch (e_1_1) { e_1 = { error: e_1_1 }; }\n        finally {\n            try {\n                if (items_1_1 && !items_1_1.done && (_a = items_1.return)) _a.call(items_1);\n            }\n            finally { if (e_1) throw e_1.error; }\n        }\n    }\n    return \"127.0.0.1\";\n}\nexports.getInnetIP = getInnetIP;\n\n\n//# sourceURL=webpack://electron/./src/utils/index.ts?");
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __values = (this && this.__values) || function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getInnetIP = exports.wait = void 0;
+var os_1 = __importDefault(__webpack_require__(2037));
+function wait(ttl) {
+    if (ttl === void 0) { ttl = 0; }
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            return [2, new Promise(function (resolve) { return setTimeout(function () { return resolve(); }, ttl); })];
+        });
+    });
+}
+exports.wait = wait;
+function getInnetIP() {
+    var e_1, _a;
+    var list = os_1.default.networkInterfaces();
+    for (var key in list) {
+        var items = list[key] || [];
+        try {
+            for (var items_1 = (e_1 = void 0, __values(items)), items_1_1 = items_1.next(); !items_1_1.done; items_1_1 = items_1.next()) {
+                var item = items_1_1.value;
+                if (/IPv4/i.test(item.family)) {
+                    if (/^192\.168/i.test(item.address))
+                        return item.address;
+                    if (/^10\./i.test(item.address))
+                        return item.address;
+                }
+            }
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (items_1_1 && !items_1_1.done && (_a = items_1.return)) _a.call(items_1);
+            }
+            finally { if (e_1) throw e_1.error; }
+        }
+    }
+    return "127.0.0.1";
+}
+exports.getInnetIP = getInnetIP;
+
 
 /***/ }),
 
-/***/ "./src/utils/logger.ts":
-/*!*****************************!*\
-  !*** ./src/utils/logger.ts ***!
-  \*****************************/
+/***/ 6645:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __read = (this && this.__read) || function (o, n) {\n    var m = typeof Symbol === \"function\" && o[Symbol.iterator];\n    if (!m) return o;\n    var i = m.call(o), r, ar = [], e;\n    try {\n        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);\n    }\n    catch (error) { e = { error: error }; }\n    finally {\n        try {\n            if (r && !r.done && (m = i[\"return\"])) m.call(i);\n        }\n        finally { if (e) throw e.error; }\n    }\n    return ar;\n};\nvar __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {\n    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {\n        if (ar || !(i in from)) {\n            if (!ar) ar = Array.prototype.slice.call(from, 0, i);\n            ar[i] = from[i];\n        }\n    }\n    return to.concat(ar || Array.prototype.slice.call(from));\n};\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.multiThread = exports.Log = void 0;\nvar log4js_1 = __webpack_require__(/*! log4js */ \"./node_modules/log4js/lib/log4js.js\");\nvar tcfactor_1 = __importDefault(__webpack_require__(/*! ./tcfactor */ \"./src/utils/tcfactor.ts\"));\nvar electron_1 = __webpack_require__(/*! electron */ \"electron\");\nvar config_1 = __importDefault(__webpack_require__(/*! ../config */ \"./src/config.ts\"));\nvar util_1 = __webpack_require__(/*! ./util */ \"./src/utils/util.ts\");\nvar logger = (0, log4js_1.getLogger)();\nlogger.level = \"info\";\nvar isDev = \"development\" != \"production\";\nvar filename = (0, util_1.isWindows)() ? \"log.log\" : config_1.default.homedir(\"log.log\");\nconsole.log(\"filename\", filename);\nvar layout = {\n    type: \"pattern\",\n    pattern: \"%[[%d{yyyy-MM-dd hh:mm:ss}] [%p] %c%] %m\",\n};\n(0, log4js_1.configure)({\n    appenders: {\n        console: { type: \"console\", layout: layout },\n        log: { type: \"file\", filename: filename, layout: layout },\n    },\n    categories: {\n        default: { appenders: [\"console\", \"log\"], level: logger.level },\n        console: { appenders: [\"console\", \"log\"], level: logger.level },\n    },\n});\nvar Log = (function () {\n    function Log(logger) {\n        this.categories = {};\n        this.logger = logger;\n    }\n    Log.prototype.log = function () {\n        var _a;\n        var args = [];\n        for (var _i = 0; _i < arguments.length; _i++) {\n            args[_i] = arguments[_i];\n        }\n        (_a = this.logger).log.apply(_a, __spreadArray([\"log\"], __read(args), false));\n    };\n    Log.prototype.isLevelEnabled = function (level) {\n        return this.logger.isLevelEnabled(level);\n    };\n    Log.prototype.isTraceEnabled = function () {\n        return this.logger.isTraceEnabled();\n    };\n    Log.prototype.isDebugEnabled = function () {\n        return this.logger.isDebugEnabled();\n    };\n    Log.prototype.isInfoEnabled = function () {\n        return this.logger.isInfoEnabled();\n    };\n    Log.prototype.isWarnEnabled = function () {\n        return this.logger.isWarnEnabled();\n    };\n    Log.prototype.isErrorEnabled = function () {\n        return this.logger.isErrorEnabled();\n    };\n    Log.prototype.isFatalEnabled = function () {\n        return this.logger.isFatalEnabled();\n    };\n    Log.prototype._log = function (level, data) {\n        return this.logger._log(level, data);\n    };\n    Log.prototype.addContext = function (key, value) {\n        return this.logger.addContext(key, value);\n    };\n    Log.prototype.removeContext = function (key) {\n        return this.logger.removeContext(key);\n    };\n    Log.prototype.clearContext = function () {\n        return this.logger.clearContext();\n    };\n    Log.prototype.trace = function (message) {\n        var _a;\n        var args = [];\n        for (var _i = 1; _i < arguments.length; _i++) {\n            args[_i - 1] = arguments[_i];\n        }\n        return (_a = this.logger).trace.apply(_a, __spreadArray([message], __read(args), false));\n    };\n    Log.prototype.debug = function (message) {\n        var _a;\n        var args = [];\n        for (var _i = 1; _i < arguments.length; _i++) {\n            args[_i - 1] = arguments[_i];\n        }\n        return (_a = this.logger).debug.apply(_a, __spreadArray([message], __read(args), false));\n    };\n    Log.prototype.info = function (message) {\n        var _a;\n        var args = [];\n        for (var _i = 1; _i < arguments.length; _i++) {\n            args[_i - 1] = arguments[_i];\n        }\n        return (_a = this.logger).info.apply(_a, __spreadArray([message], __read(args), false));\n    };\n    Log.prototype.warn = function (message) {\n        var _a;\n        var args = [];\n        for (var _i = 1; _i < arguments.length; _i++) {\n            args[_i - 1] = arguments[_i];\n        }\n        return (_a = this.logger).warn.apply(_a, __spreadArray([message], __read(args), false));\n    };\n    Log.prototype.error = function (message) {\n        var _a;\n        var args = [];\n        for (var _i = 1; _i < arguments.length; _i++) {\n            args[_i - 1] = arguments[_i];\n        }\n        return (_a = this.logger).error.apply(_a, __spreadArray([message], __read(args), false));\n    };\n    Log.prototype.fatal = function (message) {\n        var _a;\n        var args = [];\n        for (var _i = 1; _i < arguments.length; _i++) {\n            args[_i - 1] = arguments[_i];\n        }\n        return (_a = this.logger).fatal.apply(_a, __spreadArray([message], __read(args), false));\n    };\n    Log.prototype.getLogger = function (category) {\n        if (!this.categories[category])\n            this.categories[category] = new Log((0, log4js_1.getLogger)(category));\n        return this.categories[category];\n    };\n    Object.defineProperty(Log.prototype, \"console\", {\n        get: function () {\n            return this.getLogger(\"console\");\n        },\n        enumerable: false,\n        configurable: true\n    });\n    return Log;\n}());\nexports.Log = Log;\nvar isMaster = !!electron_1.ipcMain;\nvar mlogger = new Log(logger);\nfunction multiThread(options) {\n    return new tcfactor_1.default({\n        app: options.app || \"logger\",\n        env: options.env,\n        isMaster: options.isMaster,\n        thread: options.thread,\n        executor: function () {\n            if (options.isMaster) {\n                return mlogger;\n            }\n            else {\n                var res = {};\n                var _loop_1 = function (key) {\n                    var target = Log.prototype[key];\n                    if (key.startsWith(\"_\"))\n                        return \"continue\";\n                    if (target instanceof Function) {\n                        res[key] = function () {\n                            var args = [];\n                            for (var _i = 0; _i < arguments.length; _i++) {\n                                args[_i] = arguments[_i];\n                            }\n                            mlogger[key].bind(mlogger).apply(void 0, __spreadArray([], __read(args), false));\n                            return target;\n                        };\n                    }\n                };\n                for (var key in Log.prototype) {\n                    _loop_1(key);\n                }\n                return res;\n            }\n        },\n    }).executor;\n}\nexports.multiThread = multiThread;\nvar log;\nif (electron_1.ipcRenderer || electron_1.ipcMain) {\n    log = multiThread({\n        app: \"logger\",\n        env: \"electron\",\n        thread: isMaster ? electron_1.ipcMain : electron_1.ipcRenderer,\n        isMaster: isMaster,\n    });\n}\nelse {\n    log = mlogger;\n}\nexports[\"default\"] = log;\n\n\n//# sourceURL=webpack://electron/./src/utils/logger.ts?");
+
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.multiThread = exports.Log = void 0;
+var log4js_1 = __webpack_require__(4296);
+var tcfactor_1 = __importDefault(__webpack_require__(6066));
+var electron_1 = __webpack_require__(2298);
+var config_1 = __importDefault(__webpack_require__(8913));
+var util_1 = __webpack_require__(3980);
+var logger = (0, log4js_1.getLogger)();
+logger.level = "info";
+var isDev = (/* unused pure expression or super */ null && ("production" != "production"));
+var filename = (0, util_1.isWindows)() ? "log.log" : config_1.default.homedir("log.log");
+console.log("filename", filename);
+var layout = {
+    type: "pattern",
+    pattern: "%[[%d{yyyy-MM-dd hh:mm:ss}] [%p] %c%] %m",
+};
+(0, log4js_1.configure)({
+    appenders: {
+        console: { type: "console", layout: layout },
+        log: { type: "file", filename: filename, layout: layout },
+    },
+    categories: {
+        default: { appenders: ["console", "log"], level: logger.level },
+        console: { appenders: ["console", "log"], level: logger.level },
+    },
+});
+var Log = (function () {
+    function Log(logger) {
+        this.categories = {};
+        this.logger = logger;
+    }
+    Log.prototype.log = function () {
+        var _a;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        (_a = this.logger).log.apply(_a, __spreadArray(["log"], __read(args), false));
+    };
+    Log.prototype.isLevelEnabled = function (level) {
+        return this.logger.isLevelEnabled(level);
+    };
+    Log.prototype.isTraceEnabled = function () {
+        return this.logger.isTraceEnabled();
+    };
+    Log.prototype.isDebugEnabled = function () {
+        return this.logger.isDebugEnabled();
+    };
+    Log.prototype.isInfoEnabled = function () {
+        return this.logger.isInfoEnabled();
+    };
+    Log.prototype.isWarnEnabled = function () {
+        return this.logger.isWarnEnabled();
+    };
+    Log.prototype.isErrorEnabled = function () {
+        return this.logger.isErrorEnabled();
+    };
+    Log.prototype.isFatalEnabled = function () {
+        return this.logger.isFatalEnabled();
+    };
+    Log.prototype._log = function (level, data) {
+        return this.logger._log(level, data);
+    };
+    Log.prototype.addContext = function (key, value) {
+        return this.logger.addContext(key, value);
+    };
+    Log.prototype.removeContext = function (key) {
+        return this.logger.removeContext(key);
+    };
+    Log.prototype.clearContext = function () {
+        return this.logger.clearContext();
+    };
+    Log.prototype.trace = function (message) {
+        var _a;
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        return (_a = this.logger).trace.apply(_a, __spreadArray([message], __read(args), false));
+    };
+    Log.prototype.debug = function (message) {
+        var _a;
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        return (_a = this.logger).debug.apply(_a, __spreadArray([message], __read(args), false));
+    };
+    Log.prototype.info = function (message) {
+        var _a;
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        return (_a = this.logger).info.apply(_a, __spreadArray([message], __read(args), false));
+    };
+    Log.prototype.warn = function (message) {
+        var _a;
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        return (_a = this.logger).warn.apply(_a, __spreadArray([message], __read(args), false));
+    };
+    Log.prototype.error = function (message) {
+        var _a;
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        return (_a = this.logger).error.apply(_a, __spreadArray([message], __read(args), false));
+    };
+    Log.prototype.fatal = function (message) {
+        var _a;
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        return (_a = this.logger).fatal.apply(_a, __spreadArray([message], __read(args), false));
+    };
+    Log.prototype.getLogger = function (category) {
+        if (!this.categories[category])
+            this.categories[category] = new Log((0, log4js_1.getLogger)(category));
+        return this.categories[category];
+    };
+    Object.defineProperty(Log.prototype, "console", {
+        get: function () {
+            return this.getLogger("console");
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return Log;
+}());
+exports.Log = Log;
+var isMaster = !!electron_1.ipcMain;
+var mlogger = new Log(logger);
+function multiThread(options) {
+    return new tcfactor_1.default({
+        app: options.app || "logger",
+        env: options.env,
+        isMaster: options.isMaster,
+        thread: options.thread,
+        executor: function () {
+            if (options.isMaster) {
+                return mlogger;
+            }
+            else {
+                var res = {};
+                var _loop_1 = function (key) {
+                    var target = Log.prototype[key];
+                    if (key.startsWith("_"))
+                        return "continue";
+                    if (target instanceof Function) {
+                        res[key] = function () {
+                            var args = [];
+                            for (var _i = 0; _i < arguments.length; _i++) {
+                                args[_i] = arguments[_i];
+                            }
+                            mlogger[key].bind(mlogger).apply(void 0, __spreadArray([], __read(args), false));
+                            return target;
+                        };
+                    }
+                };
+                for (var key in Log.prototype) {
+                    _loop_1(key);
+                }
+                return res;
+            }
+        },
+    }).executor;
+}
+exports.multiThread = multiThread;
+var log;
+if (electron_1.ipcRenderer || electron_1.ipcMain) {
+    log = multiThread({
+        app: "logger",
+        env: "electron",
+        thread: isMaster ? electron_1.ipcMain : electron_1.ipcRenderer,
+        isMaster: isMaster,
+    });
+}
+else {
+    log = mlogger;
+}
+exports["default"] = log;
+
 
 /***/ }),
 
-/***/ "./src/utils/tcfactor.ts":
-/*!*******************************!*\
-  !*** ./src/utils/tcfactor.ts ***!
-  \*******************************/
+/***/ 6066:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __extends = (this && this.__extends) || (function () {\n    var extendStatics = function (d, b) {\n        extendStatics = Object.setPrototypeOf ||\n            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||\n            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };\n        return extendStatics(d, b);\n    };\n    return function (d, b) {\n        if (typeof b !== \"function\" && b !== null)\n            throw new TypeError(\"Class extends value \" + String(b) + \" is not a constructor or null\");\n        extendStatics(d, b);\n        function __() { this.constructor = d; }\n        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());\n    };\n})();\nvar __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {\n    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }\n    return new (P || (P = Promise))(function (resolve, reject) {\n        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }\n        function rejected(value) { try { step(generator[\"throw\"](value)); } catch (e) { reject(e); } }\n        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }\n        step((generator = generator.apply(thisArg, _arguments || [])).next());\n    });\n};\nvar __generator = (this && this.__generator) || function (thisArg, body) {\n    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;\n    return g = { next: verb(0), \"throw\": verb(1), \"return\": verb(2) }, typeof Symbol === \"function\" && (g[Symbol.iterator] = function() { return this; }), g;\n    function verb(n) { return function (v) { return step([n, v]); }; }\n    function step(op) {\n        if (f) throw new TypeError(\"Generator is already executing.\");\n        while (g && (g = 0, op[0] && (_ = 0)), _) try {\n            if (f = 1, y && (t = op[0] & 2 ? y[\"return\"] : op[0] ? y[\"throw\"] || ((t = y[\"return\"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;\n            if (y = 0, t) op = [op[0] & 2, t.value];\n            switch (op[0]) {\n                case 0: case 1: t = op; break;\n                case 4: _.label++; return { value: op[1], done: false };\n                case 5: _.label++; y = op[1]; op = [0]; continue;\n                case 7: op = _.ops.pop(); _.trys.pop(); continue;\n                default:\n                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }\n                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }\n                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }\n                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }\n                    if (t[2]) _.ops.pop();\n                    _.trys.pop(); continue;\n            }\n            op = body.call(thisArg, _);\n        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }\n        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };\n    }\n};\nvar __read = (this && this.__read) || function (o, n) {\n    var m = typeof Symbol === \"function\" && o[Symbol.iterator];\n    if (!m) return o;\n    var i = m.call(o), r, ar = [], e;\n    try {\n        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);\n    }\n    catch (error) { e = { error: error }; }\n    finally {\n        try {\n            if (r && !r.done && (m = i[\"return\"])) m.call(i);\n        }\n        finally { if (e) throw e.error; }\n    }\n    return ar;\n};\nvar __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {\n    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {\n        if (ar || !(i in from)) {\n            if (!ar) ar = Array.prototype.slice.call(from, 0, i);\n            ar[i] = from[i];\n        }\n    }\n    return to.concat(ar || Array.prototype.slice.call(from));\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar events_1 = __webpack_require__(/*! events */ \"events\");\nfunction makeSendFromWorkerFun(env, event) {\n    switch (env) {\n        case \"electron\":\n            return function (data) {\n                event.reply(\"message\", data);\n            };\n        case \"cluster\":\n            return function (data) {\n                event.send(data);\n            };\n        case \"browser\":\n            return function (data) {\n                var _a;\n                (_a = global[\"self\"]) === null || _a === void 0 ? void 0 : _a.postMessage(data, \"/\");\n            };\n    }\n}\nfunction makeSendFromMainFun(env, thread) {\n    switch (env) {\n        case \"electron\":\n            return function (data) {\n                thread.send(\"message\", data);\n            };\n        case \"cluster\":\n            return function (data) {\n                var _a;\n                (_a = thread === null || thread === void 0 ? void 0 : thread.send) === null || _a === void 0 ? void 0 : _a.apply(thread, [data]);\n            };\n        case \"browser\":\n            return function (data) {\n                var _a;\n                (_a = global[\"self\"]) === null || _a === void 0 ? void 0 : _a.postMessage(data, \"/\");\n            };\n    }\n}\nvar TCFactor = (function (_super) {\n    __extends(TCFactor, _super);\n    function TCFactor(options) {\n        var _this_1 = _super.call(this) || this;\n        _this_1.taskCallback = {};\n        _this_1.setMaxListeners(9999);\n        _this_1.env = options.env;\n        _this_1.app = options.app;\n        if (TCFactor.___apps[_this_1.app])\n            throw new Error(\"\\u5DF2\\u7ECF\\u5B58\\u5728\\u5E94\\u7528\".concat(_this_1.app));\n        TCFactor.___apps[_this_1.app] = true;\n        _this_1.isMaster = options.isMaster;\n        _this_1.executor = options.executor();\n        _this_1.thread = options.thread;\n        _this_1.initEvent(_this_1.thread);\n        return _this_1;\n    }\n    TCFactor.prototype.initEvent = function (thread) {\n        return __awaiter(this, void 0, void 0, function () {\n            var _this, executor_1, _loop_1, this_1, key;\n            var _this_1 = this;\n            return __generator(this, function (_a) {\n                _this = this;\n                if (!thread)\n                    throw new Error(\"工作线程或进程都不存在\");\n                if (this.isMaster) {\n                    executor_1 = this.executor;\n                    thread.on(\"message\", function (event, _a) {\n                        var app = _a.app, task = _a.task, method = _a.method, args = _a.args;\n                        return __awaiter(_this_1, void 0, void 0, function () {\n                            var send, target, value;\n                            var _this_1 = this;\n                            return __generator(this, function (_b) {\n                                switch (_b.label) {\n                                    case 0:\n                                        if (app != this.app)\n                                            return [2];\n                                        send = makeSendFromWorkerFun(this.env, event);\n                                        if (args[args.length - 1] === \"[function]\") {\n                                            args[args.length - 1] = function (key, value) {\n                                                send ? send({ app: app, task: task, code: 2, key: key, value: value }) : console.warn(\"\\u4E3B\\u7EBF\\u7A0B\\u73AF\\u5883\".concat(_this_1.env, \"\\u4E0D\\u5B58\\u5728\\u53D1\\u9001\\u65B9\\u6CD5\"));\n                                            };\n                                        }\n                                        target = executor_1[method];\n                                        value = undefined;\n                                        if (!(target instanceof Function)) return [3, 2];\n                                        return [4, target.apply(executor_1, args)];\n                                    case 1:\n                                        value = _b.sent();\n                                        return [3, 3];\n                                    case 2:\n                                        value = target;\n                                        _b.label = 3;\n                                    case 3:\n                                        send ? send({ app: app, task: task, code: 1, value: value }) : console.warn(\"\\u4E3B\\u7EBF\\u7A0B\\u73AF\\u5883\".concat(this.env, \"\\u4E0D\\u5B58\\u5728\\u53D1\\u9001\\u65B9\\u6CD5\"));\n                                        return [2];\n                                }\n                            });\n                        });\n                    });\n                }\n                else {\n                    thread.on(\"message\", function () {\n                        var args = [];\n                        for (var _i = 0; _i < arguments.length; _i++) {\n                            args[_i] = arguments[_i];\n                        }\n                        return __awaiter(_this_1, void 0, void 0, function () {\n                            var data, app, task, code, value, key;\n                            var _a;\n                            return __generator(this, function (_b) {\n                                data = {};\n                                if (this.env == \"electron\") {\n                                    data = args[1];\n                                }\n                                else if (this.env == \"cluster\") {\n                                    data = args[0];\n                                }\n                                else {\n                                    data = (_a = args[0]) === null || _a === void 0 ? void 0 : _a.data;\n                                }\n                                app = data.app, task = data.task, code = data.code, value = data.value, key = data.key;\n                                this.emit(task, { code: code, value: value, key: key });\n                                return [2];\n                            });\n                        });\n                    });\n                    _loop_1 = function (key) {\n                        if (key.startsWith(\"_\"))\n                            return \"continue\";\n                        var targetFun = this_1.executor[key];\n                        if (targetFun instanceof Function) {\n                            this_1.executor[key] = new Proxy(this_1.executor[key], {\n                                apply: function (target, thisArg, args) {\n                                    targetFun.bind(target).apply(void 0, __spreadArray([], __read(args), false));\n                                    return _this.execute.apply(_this, __spreadArray([key], __read(args), false));\n                                },\n                            });\n                        }\n                    };\n                    this_1 = this;\n                    for (key in this.executor) {\n                        _loop_1(key);\n                    }\n                }\n                return [2];\n            });\n        });\n    };\n    TCFactor.prototype.execute = function (method) {\n        var _this_1 = this;\n        var args = [];\n        for (var _i = 1; _i < arguments.length; _i++) {\n            args[_i - 1] = arguments[_i];\n        }\n        if (this.isMaster) {\n            return this.executor[method].apply(this.executor, args);\n        }\n        return new Promise(function (resolve, reject) {\n            var task = \"task-\" + Math.floor(Math.random() * 9999999999);\n            if (args[args.length - 1] instanceof Function) {\n                _this_1.taskCallback[task] = args[args.length - 1];\n                args[args.length - 1] = \"[function]\";\n            }\n            _this_1.on(task, function (_a) {\n                var code = _a.code, value = _a.value, key = _a.key, message = _a.message;\n                if (code == 1) {\n                    _this_1.removeAllListeners(task);\n                    resolve(value);\n                }\n                else if (code == 2) {\n                    _this_1.taskCallback[task](key, value);\n                }\n                else {\n                    reject(new Error(message));\n                }\n            });\n            var send = makeSendFromMainFun(_this_1.env, _this_1.thread);\n            send ? send({ app: _this_1.app, task: task, method: method, args: args }) : console.warn(\"\\u5B50\\u7EBF\\u7A0B\\u73AF\\u5883\".concat(_this_1.env, \"\\u4E0D\\u5B58\\u5728\\u53D1\\u9001\\u65B9\\u6CD5\"));\n        });\n    };\n    TCFactor.___apps = {};\n    return TCFactor;\n}(events_1.EventEmitter));\nexports[\"default\"] = TCFactor;\n\n\n//# sourceURL=webpack://electron/./src/utils/tcfactor.ts?");
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __read = (this && this.__read) || function (o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+var events_1 = __webpack_require__(2361);
+function makeSendFromWorkerFun(env, event) {
+    switch (env) {
+        case "electron":
+            return function (data) {
+                event.reply("message", data);
+            };
+        case "cluster":
+            return function (data) {
+                event.send(data);
+            };
+        case "browser":
+            return function (data) {
+                var _a;
+                (_a = global["self"]) === null || _a === void 0 ? void 0 : _a.postMessage(data, "/");
+            };
+    }
+}
+function makeSendFromMainFun(env, thread) {
+    switch (env) {
+        case "electron":
+            return function (data) {
+                thread.send("message", data);
+            };
+        case "cluster":
+            return function (data) {
+                var _a;
+                (_a = thread === null || thread === void 0 ? void 0 : thread.send) === null || _a === void 0 ? void 0 : _a.apply(thread, [data]);
+            };
+        case "browser":
+            return function (data) {
+                var _a;
+                (_a = global["self"]) === null || _a === void 0 ? void 0 : _a.postMessage(data, "/");
+            };
+    }
+}
+var TCFactor = (function (_super) {
+    __extends(TCFactor, _super);
+    function TCFactor(options) {
+        var _this_1 = _super.call(this) || this;
+        _this_1.taskCallback = {};
+        _this_1.setMaxListeners(9999);
+        _this_1.env = options.env;
+        _this_1.app = options.app;
+        if (TCFactor.___apps[_this_1.app])
+            throw new Error("\u5DF2\u7ECF\u5B58\u5728\u5E94\u7528".concat(_this_1.app));
+        TCFactor.___apps[_this_1.app] = true;
+        _this_1.isMaster = options.isMaster;
+        _this_1.executor = options.executor();
+        _this_1.thread = options.thread;
+        _this_1.initEvent(_this_1.thread);
+        return _this_1;
+    }
+    TCFactor.prototype.initEvent = function (thread) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this, executor_1, _loop_1, this_1, key;
+            var _this_1 = this;
+            return __generator(this, function (_a) {
+                _this = this;
+                if (!thread)
+                    throw new Error("工作线程或进程都不存在");
+                if (this.isMaster) {
+                    executor_1 = this.executor;
+                    thread.on("message", function (event, _a) {
+                        var app = _a.app, task = _a.task, method = _a.method, args = _a.args;
+                        return __awaiter(_this_1, void 0, void 0, function () {
+                            var send, target, value;
+                            var _this_1 = this;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
+                                    case 0:
+                                        if (app != this.app)
+                                            return [2];
+                                        send = makeSendFromWorkerFun(this.env, event);
+                                        if (args[args.length - 1] === "[function]") {
+                                            args[args.length - 1] = function (key, value) {
+                                                send ? send({ app: app, task: task, code: 2, key: key, value: value }) : console.warn("\u4E3B\u7EBF\u7A0B\u73AF\u5883".concat(_this_1.env, "\u4E0D\u5B58\u5728\u53D1\u9001\u65B9\u6CD5"));
+                                            };
+                                        }
+                                        target = executor_1[method];
+                                        value = undefined;
+                                        if (!(target instanceof Function)) return [3, 2];
+                                        return [4, target.apply(executor_1, args)];
+                                    case 1:
+                                        value = _b.sent();
+                                        return [3, 3];
+                                    case 2:
+                                        value = target;
+                                        _b.label = 3;
+                                    case 3:
+                                        send ? send({ app: app, task: task, code: 1, value: value }) : console.warn("\u4E3B\u7EBF\u7A0B\u73AF\u5883".concat(this.env, "\u4E0D\u5B58\u5728\u53D1\u9001\u65B9\u6CD5"));
+                                        return [2];
+                                }
+                            });
+                        });
+                    });
+                }
+                else {
+                    thread.on("message", function () {
+                        var args = [];
+                        for (var _i = 0; _i < arguments.length; _i++) {
+                            args[_i] = arguments[_i];
+                        }
+                        return __awaiter(_this_1, void 0, void 0, function () {
+                            var data, app, task, code, value, key;
+                            var _a;
+                            return __generator(this, function (_b) {
+                                data = {};
+                                if (this.env == "electron") {
+                                    data = args[1];
+                                }
+                                else if (this.env == "cluster") {
+                                    data = args[0];
+                                }
+                                else {
+                                    data = (_a = args[0]) === null || _a === void 0 ? void 0 : _a.data;
+                                }
+                                app = data.app, task = data.task, code = data.code, value = data.value, key = data.key;
+                                this.emit(task, { code: code, value: value, key: key });
+                                return [2];
+                            });
+                        });
+                    });
+                    _loop_1 = function (key) {
+                        if (key.startsWith("_"))
+                            return "continue";
+                        var targetFun = this_1.executor[key];
+                        if (targetFun instanceof Function) {
+                            this_1.executor[key] = new Proxy(this_1.executor[key], {
+                                apply: function (target, thisArg, args) {
+                                    targetFun.bind(target).apply(void 0, __spreadArray([], __read(args), false));
+                                    return _this.execute.apply(_this, __spreadArray([key], __read(args), false));
+                                },
+                            });
+                        }
+                    };
+                    this_1 = this;
+                    for (key in this.executor) {
+                        _loop_1(key);
+                    }
+                }
+                return [2];
+            });
+        });
+    };
+    TCFactor.prototype.execute = function (method) {
+        var _this_1 = this;
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        if (this.isMaster) {
+            return this.executor[method].apply(this.executor, args);
+        }
+        return new Promise(function (resolve, reject) {
+            var task = "task-" + Math.floor(Math.random() * 9999999999);
+            if (args[args.length - 1] instanceof Function) {
+                _this_1.taskCallback[task] = args[args.length - 1];
+                args[args.length - 1] = "[function]";
+            }
+            _this_1.on(task, function (_a) {
+                var code = _a.code, value = _a.value, key = _a.key, message = _a.message;
+                if (code == 1) {
+                    _this_1.removeAllListeners(task);
+                    resolve(value);
+                }
+                else if (code == 2) {
+                    _this_1.taskCallback[task](key, value);
+                }
+                else {
+                    reject(new Error(message));
+                }
+            });
+            var send = makeSendFromMainFun(_this_1.env, _this_1.thread);
+            send ? send({ app: _this_1.app, task: task, method: method, args: args }) : console.warn("\u5B50\u7EBF\u7A0B\u73AF\u5883".concat(_this_1.env, "\u4E0D\u5B58\u5728\u53D1\u9001\u65B9\u6CD5"));
+        });
+    };
+    TCFactor.___apps = {};
+    return TCFactor;
+}(events_1.EventEmitter));
+exports["default"] = TCFactor;
+
 
 /***/ }),
 
-/***/ "./src/utils/util.ts":
-/*!***************************!*\
-  !*** ./src/utils/util.ts ***!
-  \***************************/
+/***/ 3980:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports.buffer2array = exports.cycle = exports.random2Int = exports.bit2Int = exports.int2Bit = exports.string2Bit = exports.md5 = exports.getPage = exports.loadResource = exports.getResourceAbsPath = exports.getAppRoot = exports.getProjectDistPath = exports.getStaticResource = exports.getResourceBrowserPath = exports.isLinux = exports.isMac = exports.isWindows = void 0;\nvar config_1 = __importDefault(__webpack_require__(/*! ../config */ \"./src/config.ts\"));\nvar path_1 = __importDefault(__webpack_require__(/*! path */ \"path\"));\nvar fs_1 = __importDefault(__webpack_require__(/*! fs */ \"fs\"));\nvar isDev = config_1.default.isDev;\nfunction isWindows() {\n    return process.platform == \"win32\";\n}\nexports.isWindows = isWindows;\nfunction isMac() {\n    return process.platform == \"darwin\";\n}\nexports.isMac = isMac;\nfunction isLinux() {\n    return process.platform == \"linux\";\n}\nexports.isLinux = isLinux;\nfunction getResourceBrowserPath(_path) {\n    if (_path === void 0) { _path = \"\"; }\n    if (isDev) {\n        return \"http://127.0.0.1:\".concat(config_1.default.port, \"/\") + _path.replace(/^\\//, \"\");\n    }\n    else {\n        var p = path_1.default.join(\"file:///\", __dirname, \"/\" + _path.replace(/^\\//, \"\"));\n        console.info(\"res\", p);\n        return p;\n    }\n}\nexports.getResourceBrowserPath = getResourceBrowserPath;\nfunction getStaticResource(_path) {\n    if (_path === void 0) { _path = \"\"; }\n    var p = _path.replace(/^\\//, \"\");\n    if (isDev) {\n        p = path_1.default.resolve(\"app\", p);\n    }\n    else {\n        p = path_1.default.join(getAppRoot(), \"app\", p);\n    }\n    return p;\n}\nexports.getStaticResource = getStaticResource;\nfunction getProjectDistPath(_path) {\n    if (_path === void 0) { _path = \"\"; }\n    var p = _path.replace(/^\\//, \"\");\n    if (isDev) {\n        p = path_1.default.join(getAppRoot(), \"\", p);\n    }\n    else {\n        p = path_1.default.join(getAppRoot(), \"dist/electron\", p);\n    }\n    return p;\n}\nexports.getProjectDistPath = getProjectDistPath;\nfunction getAppRoot(_path) {\n    if (_path === void 0) { _path = \"\"; }\n    var p = _path.replace(/^\\//, \"\");\n    if (isDev) {\n        p = path_1.default.resolve(p);\n    }\n    else {\n        if (isWindows())\n            p = path_1.default.resolve(\"resources/app.asar/\", p);\n        else\n            p = path_1.default.resolve(__dirname.replace(/dist\\/electron(\\/)?$/g, \"\"), p);\n    }\n    return p;\n}\nexports.getAppRoot = getAppRoot;\nfunction getResourceAbsPath(_path) {\n    if (_path === void 0) { _path = \"\"; }\n    var p = _path.replace(/^\\//, \"\");\n    if (isDev) {\n        p = path_1.default.join(getAppRoot(), \"resources\", p);\n    }\n    else {\n        p = path_1.default.join(getAppRoot(), \"dist/electron/resources\", p);\n    }\n    return p;\n}\nexports.getResourceAbsPath = getResourceAbsPath;\nfunction loadResource(name, isJSON) {\n    try {\n        var txt = fs_1.default.readFileSync(getResourceAbsPath(name)).toString(\"utf8\") || \"\";\n        if (isJSON)\n            return JSON.parse(txt);\n        else\n            return txt.trim();\n    }\n    catch (e) {\n        return {};\n    }\n}\nexports.loadResource = loadResource;\nfunction getPage(_path, _query) {\n    if (_path === void 0) { _path = \"\"; }\n    return getResourceBrowserPath(\"/index.html#\" + _path);\n}\nexports.getPage = getPage;\nvar crypto_1 = __importDefault(__webpack_require__(/*! crypto */ \"crypto\"));\nfunction md5(value) {\n    var md5 = crypto_1.default.createHash(\"md5\");\n    var result = md5.update(value.toString()).digest(\"hex\");\n    return result.toUpperCase();\n}\nexports.md5 = md5;\nfunction string2Bit(value, length) {\n    if (length === void 0) { length = 6; }\n    value = value.substring(0, length);\n    return value.split(\"\").map(function (v) { return v.charCodeAt(0); });\n}\nexports.string2Bit = string2Bit;\nfunction int2Bit(value, length) {\n    if (length === void 0) { length = 6; }\n    var max = 6;\n    var s = Array(max);\n    value = Math.floor(value % 281474976710656);\n    var high = Math.floor(value / Math.pow(2, 32));\n    var low = Math.floor(value % Math.pow(2, 32));\n    for (var i = max - 1; i >= 0; i--) {\n        if (i >= 2) {\n            s[i] = (low >> ((max - i - 1) * 8)) & 0xff;\n        }\n        else {\n            s[i] = (high >> (((max - i - 1) % 4) * 8)) & 0xff;\n        }\n    }\n    return s.slice(max - Math.min(length, max));\n}\nexports.int2Bit = int2Bit;\nfunction bit2Int(value) {\n    var max = 6;\n    value = value.slice(Math.max(value.length - max, 0));\n    var result = 0;\n    var low = 0, high = 0;\n    for (var i = 0; i < value.length; i++) {\n        var move = (value.length - i - 1) * 8;\n        var v = value[i];\n        if (move >= 32) {\n            high += Math.pow(2, 32) * (v << move % 32);\n        }\n        else if (move <= 24) {\n            low += move == 24 ? v * Math.pow(2, 24) : v << move;\n        }\n    }\n    result = high + low;\n    return result;\n}\nexports.bit2Int = bit2Int;\nfunction random2Int(max) {\n    return Math.floor(Math.random() * (max + 1));\n}\nexports.random2Int = random2Int;\nfunction cycle(interval, handle) {\n    if (interval === void 0) { interval = 5; }\n    interval = Math.max(interval, 1);\n    var thread;\n    (function _cycle() {\n        thread = setTimeout(function () {\n            try {\n                handle && handle();\n                _cycle();\n            }\n            catch (e) { }\n        }, interval * 1000);\n    })();\n    return {\n        stop: function () {\n            clearTimeout(thread);\n        },\n    };\n}\nexports.cycle = cycle;\nfunction buffer2array(buffer, limit) {\n    var ret = [];\n    var max = limit ? limit : buffer.length;\n    max = Math.min(max, buffer.length);\n    for (var i = 0; i < max; i++) {\n        ret.push(buffer[i]);\n    }\n    return ret;\n}\nexports.buffer2array = buffer2array;\n\n\n//# sourceURL=webpack://electron/./src/utils/util.ts?");
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.buffer2array = exports.cycle = exports.random2Int = exports.bit2Int = exports.int2Bit = exports.string2Bit = exports.md5 = exports.getPage = exports.loadResource = exports.getResourceAbsPath = exports.getAppRoot = exports.getProjectDistPath = exports.getStaticResource = exports.getResourceBrowserPath = exports.isLinux = exports.isMac = exports.isWindows = void 0;
+var config_1 = __importDefault(__webpack_require__(8913));
+var path_1 = __importDefault(__webpack_require__(1017));
+var fs_1 = __importDefault(__webpack_require__(7147));
+var isDev = config_1.default.isDev;
+function isWindows() {
+    return process.platform == "win32";
+}
+exports.isWindows = isWindows;
+function isMac() {
+    return process.platform == "darwin";
+}
+exports.isMac = isMac;
+function isLinux() {
+    return process.platform == "linux";
+}
+exports.isLinux = isLinux;
+function getResourceBrowserPath(_path) {
+    if (_path === void 0) { _path = ""; }
+    if (isDev) {
+        return "http://127.0.0.1:".concat(config_1.default.port, "/") + _path.replace(/^\//, "");
+    }
+    else {
+        var p = path_1.default.join("file:///", __dirname, "/" + _path.replace(/^\//, ""));
+        console.info("res", p);
+        return p;
+    }
+}
+exports.getResourceBrowserPath = getResourceBrowserPath;
+function getStaticResource(_path) {
+    if (_path === void 0) { _path = ""; }
+    var p = _path.replace(/^\//, "");
+    if (isDev) {
+        p = path_1.default.resolve("app", p);
+    }
+    else {
+        p = path_1.default.join(getAppRoot(), "app", p);
+    }
+    return p;
+}
+exports.getStaticResource = getStaticResource;
+function getProjectDistPath(_path) {
+    if (_path === void 0) { _path = ""; }
+    var p = _path.replace(/^\//, "");
+    if (isDev) {
+        p = path_1.default.join(getAppRoot(), "", p);
+    }
+    else {
+        p = path_1.default.join(getAppRoot(), "dist/electron", p);
+    }
+    return p;
+}
+exports.getProjectDistPath = getProjectDistPath;
+function getAppRoot(_path) {
+    if (_path === void 0) { _path = ""; }
+    var p = _path.replace(/^\//, "");
+    if (isDev) {
+        p = path_1.default.resolve(p);
+    }
+    else {
+        if (isWindows())
+            p = path_1.default.resolve("resources/app.asar/", p);
+        else
+            p = path_1.default.resolve(__dirname.replace(/dist\/electron(\/)?$/g, ""), p);
+    }
+    return p;
+}
+exports.getAppRoot = getAppRoot;
+function getResourceAbsPath(_path) {
+    if (_path === void 0) { _path = ""; }
+    var p = _path.replace(/^\//, "");
+    if (isDev) {
+        p = path_1.default.join(getAppRoot(), "resources", p);
+    }
+    else {
+        p = path_1.default.join(getAppRoot(), "dist/electron/resources", p);
+    }
+    return p;
+}
+exports.getResourceAbsPath = getResourceAbsPath;
+function loadResource(name, isJSON) {
+    try {
+        var txt = fs_1.default.readFileSync(getResourceAbsPath(name)).toString("utf8") || "";
+        if (isJSON)
+            return JSON.parse(txt);
+        else
+            return txt.trim();
+    }
+    catch (e) {
+        return {};
+    }
+}
+exports.loadResource = loadResource;
+function getPage(_path, _query) {
+    if (_path === void 0) { _path = ""; }
+    return getResourceBrowserPath("/index.html#" + _path);
+}
+exports.getPage = getPage;
+var crypto_1 = __importDefault(__webpack_require__(6113));
+function md5(value) {
+    var md5 = crypto_1.default.createHash("md5");
+    var result = md5.update(value.toString()).digest("hex");
+    return result.toUpperCase();
+}
+exports.md5 = md5;
+function string2Bit(value, length) {
+    if (length === void 0) { length = 6; }
+    value = value.substring(0, length);
+    return value.split("").map(function (v) { return v.charCodeAt(0); });
+}
+exports.string2Bit = string2Bit;
+function int2Bit(value, length) {
+    if (length === void 0) { length = 6; }
+    var max = 6;
+    var s = Array(max);
+    value = Math.floor(value % 281474976710656);
+    var high = Math.floor(value / Math.pow(2, 32));
+    var low = Math.floor(value % Math.pow(2, 32));
+    for (var i = max - 1; i >= 0; i--) {
+        if (i >= 2) {
+            s[i] = (low >> ((max - i - 1) * 8)) & 0xff;
+        }
+        else {
+            s[i] = (high >> (((max - i - 1) % 4) * 8)) & 0xff;
+        }
+    }
+    return s.slice(max - Math.min(length, max));
+}
+exports.int2Bit = int2Bit;
+function bit2Int(value) {
+    var max = 6;
+    value = value.slice(Math.max(value.length - max, 0));
+    var result = 0;
+    var low = 0, high = 0;
+    for (var i = 0; i < value.length; i++) {
+        var move = (value.length - i - 1) * 8;
+        var v = value[i];
+        if (move >= 32) {
+            high += Math.pow(2, 32) * (v << move % 32);
+        }
+        else if (move <= 24) {
+            low += move == 24 ? v * Math.pow(2, 24) : v << move;
+        }
+    }
+    result = high + low;
+    return result;
+}
+exports.bit2Int = bit2Int;
+function random2Int(max) {
+    return Math.floor(Math.random() * (max + 1));
+}
+exports.random2Int = random2Int;
+function cycle(interval, handle) {
+    if (interval === void 0) { interval = 5; }
+    interval = Math.max(interval, 1);
+    var thread;
+    (function _cycle() {
+        thread = setTimeout(function () {
+            try {
+                handle && handle();
+                _cycle();
+            }
+            catch (e) { }
+        }, interval * 1000);
+    })();
+    return {
+        stop: function () {
+            clearTimeout(thread);
+        },
+    };
+}
+exports.cycle = cycle;
+function buffer2array(buffer, limit) {
+    var ret = [];
+    var max = limit ? limit : buffer.length;
+    max = Math.min(max, buffer.length);
+    for (var i = 0; i < max; i++) {
+        ret.push(buffer[i]);
+    }
+    return ret;
+}
+exports.buffer2array = buffer2array;
+
 
 /***/ }),
 
-/***/ "assert":
-/*!*************************!*\
-  !*** external "assert" ***!
-  \*************************/
+/***/ 9491:
 /***/ ((module) => {
 
 "use strict";
@@ -987,10 +10512,7 @@ module.exports = require("assert");
 
 /***/ }),
 
-/***/ "child_process":
-/*!********************************!*\
-  !*** external "child_process" ***!
-  \********************************/
+/***/ 2081:
 /***/ ((module) => {
 
 "use strict";
@@ -998,10 +10520,7 @@ module.exports = require("child_process");
 
 /***/ }),
 
-/***/ "cluster":
-/*!**************************!*\
-  !*** external "cluster" ***!
-  \**************************/
+/***/ 5001:
 /***/ ((module) => {
 
 "use strict";
@@ -1009,10 +10528,7 @@ module.exports = require("cluster");
 
 /***/ }),
 
-/***/ "constants":
-/*!****************************!*\
-  !*** external "constants" ***!
-  \****************************/
+/***/ 2057:
 /***/ ((module) => {
 
 "use strict";
@@ -1020,10 +10536,7 @@ module.exports = require("constants");
 
 /***/ }),
 
-/***/ "crypto":
-/*!*************************!*\
-  !*** external "crypto" ***!
-  \*************************/
+/***/ 6113:
 /***/ ((module) => {
 
 "use strict";
@@ -1031,10 +10544,7 @@ module.exports = require("crypto");
 
 /***/ }),
 
-/***/ "electron":
-/*!***************************!*\
-  !*** external "electron" ***!
-  \***************************/
+/***/ 2298:
 /***/ ((module) => {
 
 "use strict";
@@ -1042,10 +10552,7 @@ module.exports = require("electron");
 
 /***/ }),
 
-/***/ "events":
-/*!*************************!*\
-  !*** external "events" ***!
-  \*************************/
+/***/ 2361:
 /***/ ((module) => {
 
 "use strict";
@@ -1053,10 +10560,7 @@ module.exports = require("events");
 
 /***/ }),
 
-/***/ "fs":
-/*!*********************!*\
-  !*** external "fs" ***!
-  \*********************/
+/***/ 7147:
 /***/ ((module) => {
 
 "use strict";
@@ -1064,10 +10568,7 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ "http":
-/*!***********************!*\
-  !*** external "http" ***!
-  \***********************/
+/***/ 3685:
 /***/ ((module) => {
 
 "use strict";
@@ -1075,10 +10576,7 @@ module.exports = require("http");
 
 /***/ }),
 
-/***/ "net":
-/*!**********************!*\
-  !*** external "net" ***!
-  \**********************/
+/***/ 1808:
 /***/ ((module) => {
 
 "use strict";
@@ -1086,10 +10584,7 @@ module.exports = require("net");
 
 /***/ }),
 
-/***/ "os":
-/*!*********************!*\
-  !*** external "os" ***!
-  \*********************/
+/***/ 2037:
 /***/ ((module) => {
 
 "use strict";
@@ -1097,10 +10592,7 @@ module.exports = require("os");
 
 /***/ }),
 
-/***/ "path":
-/*!***********************!*\
-  !*** external "path" ***!
-  \***********************/
+/***/ 1017:
 /***/ ((module) => {
 
 "use strict";
@@ -1108,10 +10600,7 @@ module.exports = require("path");
 
 /***/ }),
 
-/***/ "process":
-/*!**************************!*\
-  !*** external "process" ***!
-  \**************************/
+/***/ 7282:
 /***/ ((module) => {
 
 "use strict";
@@ -1119,10 +10608,7 @@ module.exports = require("process");
 
 /***/ }),
 
-/***/ "stream":
-/*!*************************!*\
-  !*** external "stream" ***!
-  \*************************/
+/***/ 2781:
 /***/ ((module) => {
 
 "use strict";
@@ -1130,10 +10616,7 @@ module.exports = require("stream");
 
 /***/ }),
 
-/***/ "tty":
-/*!**********************!*\
-  !*** external "tty" ***!
-  \**********************/
+/***/ 6224:
 /***/ ((module) => {
 
 "use strict";
@@ -1141,10 +10624,7 @@ module.exports = require("tty");
 
 /***/ }),
 
-/***/ "url":
-/*!**********************!*\
-  !*** external "url" ***!
-  \**********************/
+/***/ 7310:
 /***/ ((module) => {
 
 "use strict";
@@ -1152,10 +10632,7 @@ module.exports = require("url");
 
 /***/ }),
 
-/***/ "util":
-/*!***********************!*\
-  !*** external "util" ***!
-  \***********************/
+/***/ 3837:
 /***/ ((module) => {
 
 "use strict";
@@ -1163,10 +10640,7 @@ module.exports = require("util");
 
 /***/ }),
 
-/***/ "zlib":
-/*!***********************!*\
-  !*** external "zlib" ***!
-  \***********************/
+/***/ 9796:
 /***/ ((module) => {
 
 "use strict";
@@ -1174,106 +10648,3468 @@ module.exports = require("zlib");
 
 /***/ }),
 
-/***/ "./node_modules/commander/index.js":
-/*!*****************************************!*\
-  !*** ./node_modules/commander/index.js ***!
-  \*****************************************/
+/***/ 7461:
 /***/ ((module, exports, __webpack_require__) => {
 
-eval("const { Argument } = __webpack_require__(/*! ./lib/argument.js */ \"./node_modules/commander/lib/argument.js\");\nconst { Command } = __webpack_require__(/*! ./lib/command.js */ \"./node_modules/commander/lib/command.js\");\nconst { CommanderError, InvalidArgumentError } = __webpack_require__(/*! ./lib/error.js */ \"./node_modules/commander/lib/error.js\");\nconst { Help } = __webpack_require__(/*! ./lib/help.js */ \"./node_modules/commander/lib/help.js\");\nconst { Option } = __webpack_require__(/*! ./lib/option.js */ \"./node_modules/commander/lib/option.js\");\n\n// @ts-check\n\n/**\n * Expose the root command.\n */\n\nexports = module.exports = new Command();\nexports.program = exports; // More explicit access to global command.\n// Implicit export of createArgument, createCommand, and createOption.\n\n/**\n * Expose classes\n */\n\nexports.Argument = Argument;\nexports.Command = Command;\nexports.CommanderError = CommanderError;\nexports.Help = Help;\nexports.InvalidArgumentError = InvalidArgumentError;\nexports.InvalidOptionArgumentError = InvalidArgumentError; // Deprecated\nexports.Option = Option;\n\n\n//# sourceURL=webpack://electron/./node_modules/commander/index.js?");
+const { Argument } = __webpack_require__(8998);
+const { Command } = __webpack_require__(5282);
+const { CommanderError, InvalidArgumentError } = __webpack_require__(8056);
+const { Help } = __webpack_require__(8917);
+const { Option } = __webpack_require__(5790);
+
+// @ts-check
+
+/**
+ * Expose the root command.
+ */
+
+exports = module.exports = new Command();
+exports.program = exports; // More explicit access to global command.
+// Implicit export of createArgument, createCommand, and createOption.
+
+/**
+ * Expose classes
+ */
+
+exports.Argument = Argument;
+exports.Command = Command;
+exports.CommanderError = CommanderError;
+exports.Help = Help;
+exports.InvalidArgumentError = InvalidArgumentError;
+exports.InvalidOptionArgumentError = InvalidArgumentError; // Deprecated
+exports.Option = Option;
+
 
 /***/ }),
 
-/***/ "./node_modules/commander/lib/argument.js":
-/*!************************************************!*\
-  !*** ./node_modules/commander/lib/argument.js ***!
-  \************************************************/
+/***/ 8998:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("const { InvalidArgumentError } = __webpack_require__(/*! ./error.js */ \"./node_modules/commander/lib/error.js\");\n\n// @ts-check\n\nclass Argument {\n  /**\n   * Initialize a new command argument with the given name and description.\n   * The default is that the argument is required, and you can explicitly\n   * indicate this with <> around the name. Put [] around the name for an optional argument.\n   *\n   * @param {string} name\n   * @param {string} [description]\n   */\n\n  constructor(name, description) {\n    this.description = description || '';\n    this.variadic = false;\n    this.parseArg = undefined;\n    this.defaultValue = undefined;\n    this.defaultValueDescription = undefined;\n    this.argChoices = undefined;\n\n    switch (name[0]) {\n      case '<': // e.g. <required>\n        this.required = true;\n        this._name = name.slice(1, -1);\n        break;\n      case '[': // e.g. [optional]\n        this.required = false;\n        this._name = name.slice(1, -1);\n        break;\n      default:\n        this.required = true;\n        this._name = name;\n        break;\n    }\n\n    if (this._name.length > 3 && this._name.slice(-3) === '...') {\n      this.variadic = true;\n      this._name = this._name.slice(0, -3);\n    }\n  }\n\n  /**\n   * Return argument name.\n   *\n   * @return {string}\n   */\n\n  name() {\n    return this._name;\n  }\n\n  /**\n   * @api private\n   */\n\n  _concatValue(value, previous) {\n    if (previous === this.defaultValue || !Array.isArray(previous)) {\n      return [value];\n    }\n\n    return previous.concat(value);\n  }\n\n  /**\n   * Set the default value, and optionally supply the description to be displayed in the help.\n   *\n   * @param {any} value\n   * @param {string} [description]\n   * @return {Argument}\n   */\n\n  default(value, description) {\n    this.defaultValue = value;\n    this.defaultValueDescription = description;\n    return this;\n  }\n\n  /**\n   * Set the custom handler for processing CLI command arguments into argument values.\n   *\n   * @param {Function} [fn]\n   * @return {Argument}\n   */\n\n  argParser(fn) {\n    this.parseArg = fn;\n    return this;\n  }\n\n  /**\n   * Only allow argument value to be one of choices.\n   *\n   * @param {string[]} values\n   * @return {Argument}\n   */\n\n  choices(values) {\n    this.argChoices = values.slice();\n    this.parseArg = (arg, previous) => {\n      if (!this.argChoices.includes(arg)) {\n        throw new InvalidArgumentError(`Allowed choices are ${this.argChoices.join(', ')}.`);\n      }\n      if (this.variadic) {\n        return this._concatValue(arg, previous);\n      }\n      return arg;\n    };\n    return this;\n  }\n\n  /**\n   * Make argument required.\n   */\n  argRequired() {\n    this.required = true;\n    return this;\n  }\n\n  /**\n   * Make argument optional.\n   */\n  argOptional() {\n    this.required = false;\n    return this;\n  }\n}\n\n/**\n * Takes an argument and returns its human readable equivalent for help usage.\n *\n * @param {Argument} arg\n * @return {string}\n * @api private\n */\n\nfunction humanReadableArgName(arg) {\n  const nameOutput = arg.name() + (arg.variadic === true ? '...' : '');\n\n  return arg.required\n    ? '<' + nameOutput + '>'\n    : '[' + nameOutput + ']';\n}\n\nexports.Argument = Argument;\nexports.humanReadableArgName = humanReadableArgName;\n\n\n//# sourceURL=webpack://electron/./node_modules/commander/lib/argument.js?");
+const { InvalidArgumentError } = __webpack_require__(8056);
+
+// @ts-check
+
+class Argument {
+  /**
+   * Initialize a new command argument with the given name and description.
+   * The default is that the argument is required, and you can explicitly
+   * indicate this with <> around the name. Put [] around the name for an optional argument.
+   *
+   * @param {string} name
+   * @param {string} [description]
+   */
+
+  constructor(name, description) {
+    this.description = description || '';
+    this.variadic = false;
+    this.parseArg = undefined;
+    this.defaultValue = undefined;
+    this.defaultValueDescription = undefined;
+    this.argChoices = undefined;
+
+    switch (name[0]) {
+      case '<': // e.g. <required>
+        this.required = true;
+        this._name = name.slice(1, -1);
+        break;
+      case '[': // e.g. [optional]
+        this.required = false;
+        this._name = name.slice(1, -1);
+        break;
+      default:
+        this.required = true;
+        this._name = name;
+        break;
+    }
+
+    if (this._name.length > 3 && this._name.slice(-3) === '...') {
+      this.variadic = true;
+      this._name = this._name.slice(0, -3);
+    }
+  }
+
+  /**
+   * Return argument name.
+   *
+   * @return {string}
+   */
+
+  name() {
+    return this._name;
+  }
+
+  /**
+   * @api private
+   */
+
+  _concatValue(value, previous) {
+    if (previous === this.defaultValue || !Array.isArray(previous)) {
+      return [value];
+    }
+
+    return previous.concat(value);
+  }
+
+  /**
+   * Set the default value, and optionally supply the description to be displayed in the help.
+   *
+   * @param {any} value
+   * @param {string} [description]
+   * @return {Argument}
+   */
+
+  default(value, description) {
+    this.defaultValue = value;
+    this.defaultValueDescription = description;
+    return this;
+  }
+
+  /**
+   * Set the custom handler for processing CLI command arguments into argument values.
+   *
+   * @param {Function} [fn]
+   * @return {Argument}
+   */
+
+  argParser(fn) {
+    this.parseArg = fn;
+    return this;
+  }
+
+  /**
+   * Only allow argument value to be one of choices.
+   *
+   * @param {string[]} values
+   * @return {Argument}
+   */
+
+  choices(values) {
+    this.argChoices = values.slice();
+    this.parseArg = (arg, previous) => {
+      if (!this.argChoices.includes(arg)) {
+        throw new InvalidArgumentError(`Allowed choices are ${this.argChoices.join(', ')}.`);
+      }
+      if (this.variadic) {
+        return this._concatValue(arg, previous);
+      }
+      return arg;
+    };
+    return this;
+  }
+
+  /**
+   * Make argument required.
+   */
+  argRequired() {
+    this.required = true;
+    return this;
+  }
+
+  /**
+   * Make argument optional.
+   */
+  argOptional() {
+    this.required = false;
+    return this;
+  }
+}
+
+/**
+ * Takes an argument and returns its human readable equivalent for help usage.
+ *
+ * @param {Argument} arg
+ * @return {string}
+ * @api private
+ */
+
+function humanReadableArgName(arg) {
+  const nameOutput = arg.name() + (arg.variadic === true ? '...' : '');
+
+  return arg.required
+    ? '<' + nameOutput + '>'
+    : '[' + nameOutput + ']';
+}
+
+exports.Argument = Argument;
+exports.humanReadableArgName = humanReadableArgName;
+
 
 /***/ }),
 
-/***/ "./node_modules/commander/lib/command.js":
-/*!***********************************************!*\
-  !*** ./node_modules/commander/lib/command.js ***!
-  \***********************************************/
+/***/ 5282:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("const EventEmitter = (__webpack_require__(/*! events */ \"events\").EventEmitter);\nconst childProcess = __webpack_require__(/*! child_process */ \"child_process\");\nconst path = __webpack_require__(/*! path */ \"path\");\nconst fs = __webpack_require__(/*! fs */ \"fs\");\nconst process = __webpack_require__(/*! process */ \"process\");\n\nconst { Argument, humanReadableArgName } = __webpack_require__(/*! ./argument.js */ \"./node_modules/commander/lib/argument.js\");\nconst { CommanderError } = __webpack_require__(/*! ./error.js */ \"./node_modules/commander/lib/error.js\");\nconst { Help } = __webpack_require__(/*! ./help.js */ \"./node_modules/commander/lib/help.js\");\nconst { Option, splitOptionFlags, DualOptions } = __webpack_require__(/*! ./option.js */ \"./node_modules/commander/lib/option.js\");\nconst { suggestSimilar } = __webpack_require__(/*! ./suggestSimilar */ \"./node_modules/commander/lib/suggestSimilar.js\");\n\n// @ts-check\n\nclass Command extends EventEmitter {\n  /**\n   * Initialize a new `Command`.\n   *\n   * @param {string} [name]\n   */\n\n  constructor(name) {\n    super();\n    /** @type {Command[]} */\n    this.commands = [];\n    /** @type {Option[]} */\n    this.options = [];\n    this.parent = null;\n    this._allowUnknownOption = false;\n    this._allowExcessArguments = true;\n    /** @type {Argument[]} */\n    this._args = [];\n    /** @type {string[]} */\n    this.args = []; // cli args with options removed\n    this.rawArgs = [];\n    this.processedArgs = []; // like .args but after custom processing and collecting variadic\n    this._scriptPath = null;\n    this._name = name || '';\n    this._optionValues = {};\n    this._optionValueSources = {}; // default, env, cli etc\n    this._storeOptionsAsProperties = false;\n    this._actionHandler = null;\n    this._executableHandler = false;\n    this._executableFile = null; // custom name for executable\n    this._executableDir = null; // custom search directory for subcommands\n    this._defaultCommandName = null;\n    this._exitCallback = null;\n    this._aliases = [];\n    this._combineFlagAndOptionalValue = true;\n    this._description = '';\n    this._summary = '';\n    this._argsDescription = undefined; // legacy\n    this._enablePositionalOptions = false;\n    this._passThroughOptions = false;\n    this._lifeCycleHooks = {}; // a hash of arrays\n    /** @type {boolean | string} */\n    this._showHelpAfterError = false;\n    this._showSuggestionAfterError = true;\n\n    // see .configureOutput() for docs\n    this._outputConfiguration = {\n      writeOut: (str) => process.stdout.write(str),\n      writeErr: (str) => process.stderr.write(str),\n      getOutHelpWidth: () => process.stdout.isTTY ? process.stdout.columns : undefined,\n      getErrHelpWidth: () => process.stderr.isTTY ? process.stderr.columns : undefined,\n      outputError: (str, write) => write(str)\n    };\n\n    this._hidden = false;\n    this._hasHelpOption = true;\n    this._helpFlags = '-h, --help';\n    this._helpDescription = 'display help for command';\n    this._helpShortFlag = '-h';\n    this._helpLongFlag = '--help';\n    this._addImplicitHelpCommand = undefined; // Deliberately undefined, not decided whether true or false\n    this._helpCommandName = 'help';\n    this._helpCommandnameAndArgs = 'help [command]';\n    this._helpCommandDescription = 'display help for command';\n    this._helpConfiguration = {};\n  }\n\n  /**\n   * Copy settings that are useful to have in common across root command and subcommands.\n   *\n   * (Used internally when adding a command using `.command()` so subcommands inherit parent settings.)\n   *\n   * @param {Command} sourceCommand\n   * @return {Command} `this` command for chaining\n   */\n  copyInheritedSettings(sourceCommand) {\n    this._outputConfiguration = sourceCommand._outputConfiguration;\n    this._hasHelpOption = sourceCommand._hasHelpOption;\n    this._helpFlags = sourceCommand._helpFlags;\n    this._helpDescription = sourceCommand._helpDescription;\n    this._helpShortFlag = sourceCommand._helpShortFlag;\n    this._helpLongFlag = sourceCommand._helpLongFlag;\n    this._helpCommandName = sourceCommand._helpCommandName;\n    this._helpCommandnameAndArgs = sourceCommand._helpCommandnameAndArgs;\n    this._helpCommandDescription = sourceCommand._helpCommandDescription;\n    this._helpConfiguration = sourceCommand._helpConfiguration;\n    this._exitCallback = sourceCommand._exitCallback;\n    this._storeOptionsAsProperties = sourceCommand._storeOptionsAsProperties;\n    this._combineFlagAndOptionalValue = sourceCommand._combineFlagAndOptionalValue;\n    this._allowExcessArguments = sourceCommand._allowExcessArguments;\n    this._enablePositionalOptions = sourceCommand._enablePositionalOptions;\n    this._showHelpAfterError = sourceCommand._showHelpAfterError;\n    this._showSuggestionAfterError = sourceCommand._showSuggestionAfterError;\n\n    return this;\n  }\n\n  /**\n   * Define a command.\n   *\n   * There are two styles of command: pay attention to where to put the description.\n   *\n   * @example\n   * // Command implemented using action handler (description is supplied separately to `.command`)\n   * program\n   *   .command('clone <source> [destination]')\n   *   .description('clone a repository into a newly created directory')\n   *   .action((source, destination) => {\n   *     console.log('clone command called');\n   *   });\n   *\n   * // Command implemented using separate executable file (description is second parameter to `.command`)\n   * program\n   *   .command('start <service>', 'start named service')\n   *   .command('stop [service]', 'stop named service, or all if no name supplied');\n   *\n   * @param {string} nameAndArgs - command name and arguments, args are `<required>` or `[optional]` and last may also be `variadic...`\n   * @param {Object|string} [actionOptsOrExecDesc] - configuration options (for action), or description (for executable)\n   * @param {Object} [execOpts] - configuration options (for executable)\n   * @return {Command} returns new command for action handler, or `this` for executable command\n   */\n\n  command(nameAndArgs, actionOptsOrExecDesc, execOpts) {\n    let desc = actionOptsOrExecDesc;\n    let opts = execOpts;\n    if (typeof desc === 'object' && desc !== null) {\n      opts = desc;\n      desc = null;\n    }\n    opts = opts || {};\n    const [, name, args] = nameAndArgs.match(/([^ ]+) *(.*)/);\n\n    const cmd = this.createCommand(name);\n    if (desc) {\n      cmd.description(desc);\n      cmd._executableHandler = true;\n    }\n    if (opts.isDefault) this._defaultCommandName = cmd._name;\n    cmd._hidden = !!(opts.noHelp || opts.hidden); // noHelp is deprecated old name for hidden\n    cmd._executableFile = opts.executableFile || null; // Custom name for executable file, set missing to null to match constructor\n    if (args) cmd.arguments(args);\n    this.commands.push(cmd);\n    cmd.parent = this;\n    cmd.copyInheritedSettings(this);\n\n    if (desc) return this;\n    return cmd;\n  }\n\n  /**\n   * Factory routine to create a new unattached command.\n   *\n   * See .command() for creating an attached subcommand, which uses this routine to\n   * create the command. You can override createCommand to customise subcommands.\n   *\n   * @param {string} [name]\n   * @return {Command} new command\n   */\n\n  createCommand(name) {\n    return new Command(name);\n  }\n\n  /**\n   * You can customise the help with a subclass of Help by overriding createHelp,\n   * or by overriding Help properties using configureHelp().\n   *\n   * @return {Help}\n   */\n\n  createHelp() {\n    return Object.assign(new Help(), this.configureHelp());\n  }\n\n  /**\n   * You can customise the help by overriding Help properties using configureHelp(),\n   * or with a subclass of Help by overriding createHelp().\n   *\n   * @param {Object} [configuration] - configuration options\n   * @return {Command|Object} `this` command for chaining, or stored configuration\n   */\n\n  configureHelp(configuration) {\n    if (configuration === undefined) return this._helpConfiguration;\n\n    this._helpConfiguration = configuration;\n    return this;\n  }\n\n  /**\n   * The default output goes to stdout and stderr. You can customise this for special\n   * applications. You can also customise the display of errors by overriding outputError.\n   *\n   * The configuration properties are all functions:\n   *\n   *     // functions to change where being written, stdout and stderr\n   *     writeOut(str)\n   *     writeErr(str)\n   *     // matching functions to specify width for wrapping help\n   *     getOutHelpWidth()\n   *     getErrHelpWidth()\n   *     // functions based on what is being written out\n   *     outputError(str, write) // used for displaying errors, and not used for displaying help\n   *\n   * @param {Object} [configuration] - configuration options\n   * @return {Command|Object} `this` command for chaining, or stored configuration\n   */\n\n  configureOutput(configuration) {\n    if (configuration === undefined) return this._outputConfiguration;\n\n    Object.assign(this._outputConfiguration, configuration);\n    return this;\n  }\n\n  /**\n   * Display the help or a custom message after an error occurs.\n   *\n   * @param {boolean|string} [displayHelp]\n   * @return {Command} `this` command for chaining\n   */\n  showHelpAfterError(displayHelp = true) {\n    if (typeof displayHelp !== 'string') displayHelp = !!displayHelp;\n    this._showHelpAfterError = displayHelp;\n    return this;\n  }\n\n  /**\n   * Display suggestion of similar commands for unknown commands, or options for unknown options.\n   *\n   * @param {boolean} [displaySuggestion]\n   * @return {Command} `this` command for chaining\n   */\n  showSuggestionAfterError(displaySuggestion = true) {\n    this._showSuggestionAfterError = !!displaySuggestion;\n    return this;\n  }\n\n  /**\n   * Add a prepared subcommand.\n   *\n   * See .command() for creating an attached subcommand which inherits settings from its parent.\n   *\n   * @param {Command} cmd - new subcommand\n   * @param {Object} [opts] - configuration options\n   * @return {Command} `this` command for chaining\n   */\n\n  addCommand(cmd, opts) {\n    if (!cmd._name) {\n      throw new Error(`Command passed to .addCommand() must have a name\n- specify the name in Command constructor or using .name()`);\n    }\n\n    opts = opts || {};\n    if (opts.isDefault) this._defaultCommandName = cmd._name;\n    if (opts.noHelp || opts.hidden) cmd._hidden = true; // modifying passed command due to existing implementation\n\n    this.commands.push(cmd);\n    cmd.parent = this;\n    return this;\n  }\n\n  /**\n   * Factory routine to create a new unattached argument.\n   *\n   * See .argument() for creating an attached argument, which uses this routine to\n   * create the argument. You can override createArgument to return a custom argument.\n   *\n   * @param {string} name\n   * @param {string} [description]\n   * @return {Argument} new argument\n   */\n\n  createArgument(name, description) {\n    return new Argument(name, description);\n  }\n\n  /**\n   * Define argument syntax for command.\n   *\n   * The default is that the argument is required, and you can explicitly\n   * indicate this with <> around the name. Put [] around the name for an optional argument.\n   *\n   * @example\n   * program.argument('<input-file>');\n   * program.argument('[output-file]');\n   *\n   * @param {string} name\n   * @param {string} [description]\n   * @param {Function|*} [fn] - custom argument processing function\n   * @param {*} [defaultValue]\n   * @return {Command} `this` command for chaining\n   */\n  argument(name, description, fn, defaultValue) {\n    const argument = this.createArgument(name, description);\n    if (typeof fn === 'function') {\n      argument.default(defaultValue).argParser(fn);\n    } else {\n      argument.default(fn);\n    }\n    this.addArgument(argument);\n    return this;\n  }\n\n  /**\n   * Define argument syntax for command, adding multiple at once (without descriptions).\n   *\n   * See also .argument().\n   *\n   * @example\n   * program.arguments('<cmd> [env]');\n   *\n   * @param {string} names\n   * @return {Command} `this` command for chaining\n   */\n\n  arguments(names) {\n    names.split(/ +/).forEach((detail) => {\n      this.argument(detail);\n    });\n    return this;\n  }\n\n  /**\n   * Define argument syntax for command, adding a prepared argument.\n   *\n   * @param {Argument} argument\n   * @return {Command} `this` command for chaining\n   */\n  addArgument(argument) {\n    const previousArgument = this._args.slice(-1)[0];\n    if (previousArgument && previousArgument.variadic) {\n      throw new Error(`only the last argument can be variadic '${previousArgument.name()}'`);\n    }\n    if (argument.required && argument.defaultValue !== undefined && argument.parseArg === undefined) {\n      throw new Error(`a default value for a required argument is never used: '${argument.name()}'`);\n    }\n    this._args.push(argument);\n    return this;\n  }\n\n  /**\n   * Override default decision whether to add implicit help command.\n   *\n   *    addHelpCommand() // force on\n   *    addHelpCommand(false); // force off\n   *    addHelpCommand('help [cmd]', 'display help for [cmd]'); // force on with custom details\n   *\n   * @return {Command} `this` command for chaining\n   */\n\n  addHelpCommand(enableOrNameAndArgs, description) {\n    if (enableOrNameAndArgs === false) {\n      this._addImplicitHelpCommand = false;\n    } else {\n      this._addImplicitHelpCommand = true;\n      if (typeof enableOrNameAndArgs === 'string') {\n        this._helpCommandName = enableOrNameAndArgs.split(' ')[0];\n        this._helpCommandnameAndArgs = enableOrNameAndArgs;\n      }\n      this._helpCommandDescription = description || this._helpCommandDescription;\n    }\n    return this;\n  }\n\n  /**\n   * @return {boolean}\n   * @api private\n   */\n\n  _hasImplicitHelpCommand() {\n    if (this._addImplicitHelpCommand === undefined) {\n      return this.commands.length && !this._actionHandler && !this._findCommand('help');\n    }\n    return this._addImplicitHelpCommand;\n  }\n\n  /**\n   * Add hook for life cycle event.\n   *\n   * @param {string} event\n   * @param {Function} listener\n   * @return {Command} `this` command for chaining\n   */\n\n  hook(event, listener) {\n    const allowedValues = ['preSubcommand', 'preAction', 'postAction'];\n    if (!allowedValues.includes(event)) {\n      throw new Error(`Unexpected value for event passed to hook : '${event}'.\nExpecting one of '${allowedValues.join(\"', '\")}'`);\n    }\n    if (this._lifeCycleHooks[event]) {\n      this._lifeCycleHooks[event].push(listener);\n    } else {\n      this._lifeCycleHooks[event] = [listener];\n    }\n    return this;\n  }\n\n  /**\n   * Register callback to use as replacement for calling process.exit.\n   *\n   * @param {Function} [fn] optional callback which will be passed a CommanderError, defaults to throwing\n   * @return {Command} `this` command for chaining\n   */\n\n  exitOverride(fn) {\n    if (fn) {\n      this._exitCallback = fn;\n    } else {\n      this._exitCallback = (err) => {\n        if (err.code !== 'commander.executeSubCommandAsync') {\n          throw err;\n        } else {\n          // Async callback from spawn events, not useful to throw.\n        }\n      };\n    }\n    return this;\n  }\n\n  /**\n   * Call process.exit, and _exitCallback if defined.\n   *\n   * @param {number} exitCode exit code for using with process.exit\n   * @param {string} code an id string representing the error\n   * @param {string} message human-readable description of the error\n   * @return never\n   * @api private\n   */\n\n  _exit(exitCode, code, message) {\n    if (this._exitCallback) {\n      this._exitCallback(new CommanderError(exitCode, code, message));\n      // Expecting this line is not reached.\n    }\n    process.exit(exitCode);\n  }\n\n  /**\n   * Register callback `fn` for the command.\n   *\n   * @example\n   * program\n   *   .command('serve')\n   *   .description('start service')\n   *   .action(function() {\n   *      // do work here\n   *   });\n   *\n   * @param {Function} fn\n   * @return {Command} `this` command for chaining\n   */\n\n  action(fn) {\n    const listener = (args) => {\n      // The .action callback takes an extra parameter which is the command or options.\n      const expectedArgsCount = this._args.length;\n      const actionArgs = args.slice(0, expectedArgsCount);\n      if (this._storeOptionsAsProperties) {\n        actionArgs[expectedArgsCount] = this; // backwards compatible \"options\"\n      } else {\n        actionArgs[expectedArgsCount] = this.opts();\n      }\n      actionArgs.push(this);\n\n      return fn.apply(this, actionArgs);\n    };\n    this._actionHandler = listener;\n    return this;\n  }\n\n  /**\n   * Factory routine to create a new unattached option.\n   *\n   * See .option() for creating an attached option, which uses this routine to\n   * create the option. You can override createOption to return a custom option.\n   *\n   * @param {string} flags\n   * @param {string} [description]\n   * @return {Option} new option\n   */\n\n  createOption(flags, description) {\n    return new Option(flags, description);\n  }\n\n  /**\n   * Add an option.\n   *\n   * @param {Option} option\n   * @return {Command} `this` command for chaining\n   */\n  addOption(option) {\n    const oname = option.name();\n    const name = option.attributeName();\n\n    // store default value\n    if (option.negate) {\n      // --no-foo is special and defaults foo to true, unless a --foo option is already defined\n      const positiveLongFlag = option.long.replace(/^--no-/, '--');\n      if (!this._findOption(positiveLongFlag)) {\n        this.setOptionValueWithSource(name, option.defaultValue === undefined ? true : option.defaultValue, 'default');\n      }\n    } else if (option.defaultValue !== undefined) {\n      this.setOptionValueWithSource(name, option.defaultValue, 'default');\n    }\n\n    // register the option\n    this.options.push(option);\n\n    // handler for cli and env supplied values\n    const handleOptionValue = (val, invalidValueMessage, valueSource) => {\n      // val is null for optional option used without an optional-argument.\n      // val is undefined for boolean and negated option.\n      if (val == null && option.presetArg !== undefined) {\n        val = option.presetArg;\n      }\n\n      // custom processing\n      const oldValue = this.getOptionValue(name);\n      if (val !== null && option.parseArg) {\n        try {\n          val = option.parseArg(val, oldValue);\n        } catch (err) {\n          if (err.code === 'commander.invalidArgument') {\n            const message = `${invalidValueMessage} ${err.message}`;\n            this.error(message, { exitCode: err.exitCode, code: err.code });\n          }\n          throw err;\n        }\n      } else if (val !== null && option.variadic) {\n        val = option._concatValue(val, oldValue);\n      }\n\n      // Fill-in appropriate missing values. Long winded but easy to follow.\n      if (val == null) {\n        if (option.negate) {\n          val = false;\n        } else if (option.isBoolean() || option.optional) {\n          val = true;\n        } else {\n          val = ''; // not normal, parseArg might have failed or be a mock function for testing\n        }\n      }\n      this.setOptionValueWithSource(name, val, valueSource);\n    };\n\n    this.on('option:' + oname, (val) => {\n      const invalidValueMessage = `error: option '${option.flags}' argument '${val}' is invalid.`;\n      handleOptionValue(val, invalidValueMessage, 'cli');\n    });\n\n    if (option.envVar) {\n      this.on('optionEnv:' + oname, (val) => {\n        const invalidValueMessage = `error: option '${option.flags}' value '${val}' from env '${option.envVar}' is invalid.`;\n        handleOptionValue(val, invalidValueMessage, 'env');\n      });\n    }\n\n    return this;\n  }\n\n  /**\n   * Internal implementation shared by .option() and .requiredOption()\n   *\n   * @api private\n   */\n  _optionEx(config, flags, description, fn, defaultValue) {\n    if (typeof flags === 'object' && flags instanceof Option) {\n      throw new Error('To add an Option object use addOption() instead of option() or requiredOption()');\n    }\n    const option = this.createOption(flags, description);\n    option.makeOptionMandatory(!!config.mandatory);\n    if (typeof fn === 'function') {\n      option.default(defaultValue).argParser(fn);\n    } else if (fn instanceof RegExp) {\n      // deprecated\n      const regex = fn;\n      fn = (val, def) => {\n        const m = regex.exec(val);\n        return m ? m[0] : def;\n      };\n      option.default(defaultValue).argParser(fn);\n    } else {\n      option.default(fn);\n    }\n\n    return this.addOption(option);\n  }\n\n  /**\n   * Define option with `flags`, `description` and optional\n   * coercion `fn`.\n   *\n   * The `flags` string contains the short and/or long flags,\n   * separated by comma, a pipe or space. The following are all valid\n   * all will output this way when `--help` is used.\n   *\n   *     \"-p, --pepper\"\n   *     \"-p|--pepper\"\n   *     \"-p --pepper\"\n   *\n   * @example\n   * // simple boolean defaulting to undefined\n   * program.option('-p, --pepper', 'add pepper');\n   *\n   * program.pepper\n   * // => undefined\n   *\n   * --pepper\n   * program.pepper\n   * // => true\n   *\n   * // simple boolean defaulting to true (unless non-negated option is also defined)\n   * program.option('-C, --no-cheese', 'remove cheese');\n   *\n   * program.cheese\n   * // => true\n   *\n   * --no-cheese\n   * program.cheese\n   * // => false\n   *\n   * // required argument\n   * program.option('-C, --chdir <path>', 'change the working directory');\n   *\n   * --chdir /tmp\n   * program.chdir\n   * // => \"/tmp\"\n   *\n   * // optional argument\n   * program.option('-c, --cheese [type]', 'add cheese [marble]');\n   *\n   * @param {string} flags\n   * @param {string} [description]\n   * @param {Function|*} [fn] - custom option processing function or default value\n   * @param {*} [defaultValue]\n   * @return {Command} `this` command for chaining\n   */\n\n  option(flags, description, fn, defaultValue) {\n    return this._optionEx({}, flags, description, fn, defaultValue);\n  }\n\n  /**\n  * Add a required option which must have a value after parsing. This usually means\n  * the option must be specified on the command line. (Otherwise the same as .option().)\n  *\n  * The `flags` string contains the short and/or long flags, separated by comma, a pipe or space.\n  *\n  * @param {string} flags\n  * @param {string} [description]\n  * @param {Function|*} [fn] - custom option processing function or default value\n  * @param {*} [defaultValue]\n  * @return {Command} `this` command for chaining\n  */\n\n  requiredOption(flags, description, fn, defaultValue) {\n    return this._optionEx({ mandatory: true }, flags, description, fn, defaultValue);\n  }\n\n  /**\n   * Alter parsing of short flags with optional values.\n   *\n   * @example\n   * // for `.option('-f,--flag [value]'):\n   * program.combineFlagAndOptionalValue(true);  // `-f80` is treated like `--flag=80`, this is the default behaviour\n   * program.combineFlagAndOptionalValue(false) // `-fb` is treated like `-f -b`\n   *\n   * @param {Boolean} [combine=true] - if `true` or omitted, an optional value can be specified directly after the flag.\n   */\n  combineFlagAndOptionalValue(combine = true) {\n    this._combineFlagAndOptionalValue = !!combine;\n    return this;\n  }\n\n  /**\n   * Allow unknown options on the command line.\n   *\n   * @param {Boolean} [allowUnknown=true] - if `true` or omitted, no error will be thrown\n   * for unknown options.\n   */\n  allowUnknownOption(allowUnknown = true) {\n    this._allowUnknownOption = !!allowUnknown;\n    return this;\n  }\n\n  /**\n   * Allow excess command-arguments on the command line. Pass false to make excess arguments an error.\n   *\n   * @param {Boolean} [allowExcess=true] - if `true` or omitted, no error will be thrown\n   * for excess arguments.\n   */\n  allowExcessArguments(allowExcess = true) {\n    this._allowExcessArguments = !!allowExcess;\n    return this;\n  }\n\n  /**\n   * Enable positional options. Positional means global options are specified before subcommands which lets\n   * subcommands reuse the same option names, and also enables subcommands to turn on passThroughOptions.\n   * The default behaviour is non-positional and global options may appear anywhere on the command line.\n   *\n   * @param {Boolean} [positional=true]\n   */\n  enablePositionalOptions(positional = true) {\n    this._enablePositionalOptions = !!positional;\n    return this;\n  }\n\n  /**\n   * Pass through options that come after command-arguments rather than treat them as command-options,\n   * so actual command-options come before command-arguments. Turning this on for a subcommand requires\n   * positional options to have been enabled on the program (parent commands).\n   * The default behaviour is non-positional and options may appear before or after command-arguments.\n   *\n   * @param {Boolean} [passThrough=true]\n   * for unknown options.\n   */\n  passThroughOptions(passThrough = true) {\n    this._passThroughOptions = !!passThrough;\n    if (!!this.parent && passThrough && !this.parent._enablePositionalOptions) {\n      throw new Error('passThroughOptions can not be used without turning on enablePositionalOptions for parent command(s)');\n    }\n    return this;\n  }\n\n  /**\n    * Whether to store option values as properties on command object,\n    * or store separately (specify false). In both cases the option values can be accessed using .opts().\n    *\n    * @param {boolean} [storeAsProperties=true]\n    * @return {Command} `this` command for chaining\n    */\n\n  storeOptionsAsProperties(storeAsProperties = true) {\n    this._storeOptionsAsProperties = !!storeAsProperties;\n    if (this.options.length) {\n      throw new Error('call .storeOptionsAsProperties() before adding options');\n    }\n    return this;\n  }\n\n  /**\n   * Retrieve option value.\n   *\n   * @param {string} key\n   * @return {Object} value\n   */\n\n  getOptionValue(key) {\n    if (this._storeOptionsAsProperties) {\n      return this[key];\n    }\n    return this._optionValues[key];\n  }\n\n  /**\n   * Store option value.\n   *\n   * @param {string} key\n   * @param {Object} value\n   * @return {Command} `this` command for chaining\n   */\n\n  setOptionValue(key, value) {\n    return this.setOptionValueWithSource(key, value, undefined);\n  }\n\n  /**\n    * Store option value and where the value came from.\n    *\n    * @param {string} key\n    * @param {Object} value\n    * @param {string} source - expected values are default/config/env/cli/implied\n    * @return {Command} `this` command for chaining\n    */\n\n  setOptionValueWithSource(key, value, source) {\n    if (this._storeOptionsAsProperties) {\n      this[key] = value;\n    } else {\n      this._optionValues[key] = value;\n    }\n    this._optionValueSources[key] = source;\n    return this;\n  }\n\n  /**\n    * Get source of option value.\n    * Expected values are default | config | env | cli | implied\n    *\n    * @param {string} key\n    * @return {string}\n    */\n\n  getOptionValueSource(key) {\n    return this._optionValueSources[key];\n  }\n\n  /**\n    * Get source of option value. See also .optsWithGlobals().\n    * Expected values are default | config | env | cli | implied\n    *\n    * @param {string} key\n    * @return {string}\n    */\n\n  getOptionValueSourceWithGlobals(key) {\n    // global overwrites local, like optsWithGlobals\n    let source;\n    getCommandAndParents(this).forEach((cmd) => {\n      if (cmd.getOptionValueSource(key) !== undefined) {\n        source = cmd.getOptionValueSource(key);\n      }\n    });\n    return source;\n  }\n\n  /**\n   * Get user arguments from implied or explicit arguments.\n   * Side-effects: set _scriptPath if args included script. Used for default program name, and subcommand searches.\n   *\n   * @api private\n   */\n\n  _prepareUserArgs(argv, parseOptions) {\n    if (argv !== undefined && !Array.isArray(argv)) {\n      throw new Error('first parameter to parse must be array or undefined');\n    }\n    parseOptions = parseOptions || {};\n\n    // Default to using process.argv\n    if (argv === undefined) {\n      argv = process.argv;\n      // @ts-ignore: unknown property\n      if (process.versions && process.versions.electron) {\n        parseOptions.from = 'electron';\n      }\n    }\n    this.rawArgs = argv.slice();\n\n    // make it a little easier for callers by supporting various argv conventions\n    let userArgs;\n    switch (parseOptions.from) {\n      case undefined:\n      case 'node':\n        this._scriptPath = argv[1];\n        userArgs = argv.slice(2);\n        break;\n      case 'electron':\n        // @ts-ignore: unknown property\n        if (process.defaultApp) {\n          this._scriptPath = argv[1];\n          userArgs = argv.slice(2);\n        } else {\n          userArgs = argv.slice(1);\n        }\n        break;\n      case 'user':\n        userArgs = argv.slice(0);\n        break;\n      default:\n        throw new Error(`unexpected parse option { from: '${parseOptions.from}' }`);\n    }\n\n    // Find default name for program from arguments.\n    if (!this._name && this._scriptPath) this.nameFromFilename(this._scriptPath);\n    this._name = this._name || 'program';\n\n    return userArgs;\n  }\n\n  /**\n   * Parse `argv`, setting options and invoking commands when defined.\n   *\n   * The default expectation is that the arguments are from node and have the application as argv[0]\n   * and the script being run in argv[1], with user parameters after that.\n   *\n   * @example\n   * program.parse(process.argv);\n   * program.parse(); // implicitly use process.argv and auto-detect node vs electron conventions\n   * program.parse(my-args, { from: 'user' }); // just user supplied arguments, nothing special about argv[0]\n   *\n   * @param {string[]} [argv] - optional, defaults to process.argv\n   * @param {Object} [parseOptions] - optionally specify style of options with from: node/user/electron\n   * @param {string} [parseOptions.from] - where the args are from: 'node', 'user', 'electron'\n   * @return {Command} `this` command for chaining\n   */\n\n  parse(argv, parseOptions) {\n    const userArgs = this._prepareUserArgs(argv, parseOptions);\n    this._parseCommand([], userArgs);\n\n    return this;\n  }\n\n  /**\n   * Parse `argv`, setting options and invoking commands when defined.\n   *\n   * Use parseAsync instead of parse if any of your action handlers are async. Returns a Promise.\n   *\n   * The default expectation is that the arguments are from node and have the application as argv[0]\n   * and the script being run in argv[1], with user parameters after that.\n   *\n   * @example\n   * await program.parseAsync(process.argv);\n   * await program.parseAsync(); // implicitly use process.argv and auto-detect node vs electron conventions\n   * await program.parseAsync(my-args, { from: 'user' }); // just user supplied arguments, nothing special about argv[0]\n   *\n   * @param {string[]} [argv]\n   * @param {Object} [parseOptions]\n   * @param {string} parseOptions.from - where the args are from: 'node', 'user', 'electron'\n   * @return {Promise}\n   */\n\n  async parseAsync(argv, parseOptions) {\n    const userArgs = this._prepareUserArgs(argv, parseOptions);\n    await this._parseCommand([], userArgs);\n\n    return this;\n  }\n\n  /**\n   * Execute a sub-command executable.\n   *\n   * @api private\n   */\n\n  _executeSubCommand(subcommand, args) {\n    args = args.slice();\n    let launchWithNode = false; // Use node for source targets so do not need to get permissions correct, and on Windows.\n    const sourceExt = ['.js', '.ts', '.tsx', '.mjs', '.cjs'];\n\n    function findFile(baseDir, baseName) {\n      // Look for specified file\n      const localBin = path.resolve(baseDir, baseName);\n      if (fs.existsSync(localBin)) return localBin;\n\n      // Stop looking if candidate already has an expected extension.\n      if (sourceExt.includes(path.extname(baseName))) return undefined;\n\n      // Try all the extensions.\n      const foundExt = sourceExt.find(ext => fs.existsSync(`${localBin}${ext}`));\n      if (foundExt) return `${localBin}${foundExt}`;\n\n      return undefined;\n    }\n\n    // Not checking for help first. Unlikely to have mandatory and executable, and can't robustly test for help flags in external command.\n    this._checkForMissingMandatoryOptions();\n    this._checkForConflictingOptions();\n\n    // executableFile and executableDir might be full path, or just a name\n    let executableFile = subcommand._executableFile || `${this._name}-${subcommand._name}`;\n    let executableDir = this._executableDir || '';\n    if (this._scriptPath) {\n      let resolvedScriptPath; // resolve possible symlink for installed npm binary\n      try {\n        resolvedScriptPath = fs.realpathSync(this._scriptPath);\n      } catch (err) {\n        resolvedScriptPath = this._scriptPath;\n      }\n      executableDir = path.resolve(path.dirname(resolvedScriptPath), executableDir);\n    }\n\n    // Look for a local file in preference to a command in PATH.\n    if (executableDir) {\n      let localFile = findFile(executableDir, executableFile);\n\n      // Legacy search using prefix of script name instead of command name\n      if (!localFile && !subcommand._executableFile && this._scriptPath) {\n        const legacyName = path.basename(this._scriptPath, path.extname(this._scriptPath));\n        if (legacyName !== this._name) {\n          localFile = findFile(executableDir, `${legacyName}-${subcommand._name}`);\n        }\n      }\n      executableFile = localFile || executableFile;\n    }\n\n    launchWithNode = sourceExt.includes(path.extname(executableFile));\n\n    let proc;\n    if (process.platform !== 'win32') {\n      if (launchWithNode) {\n        args.unshift(executableFile);\n        // add executable arguments to spawn\n        args = incrementNodeInspectorPort(process.execArgv).concat(args);\n\n        proc = childProcess.spawn(process.argv[0], args, { stdio: 'inherit' });\n      } else {\n        proc = childProcess.spawn(executableFile, args, { stdio: 'inherit' });\n      }\n    } else {\n      args.unshift(executableFile);\n      // add executable arguments to spawn\n      args = incrementNodeInspectorPort(process.execArgv).concat(args);\n      proc = childProcess.spawn(process.execPath, args, { stdio: 'inherit' });\n    }\n\n    if (!proc.killed) { // testing mainly to avoid leak warnings during unit tests with mocked spawn\n      const signals = ['SIGUSR1', 'SIGUSR2', 'SIGTERM', 'SIGINT', 'SIGHUP'];\n      signals.forEach((signal) => {\n        // @ts-ignore\n        process.on(signal, () => {\n          if (proc.killed === false && proc.exitCode === null) {\n            proc.kill(signal);\n          }\n        });\n      });\n    }\n\n    // By default terminate process when spawned process terminates.\n    // Suppressing the exit if exitCallback defined is a bit messy and of limited use, but does allow process to stay running!\n    const exitCallback = this._exitCallback;\n    if (!exitCallback) {\n      proc.on('close', process.exit.bind(process));\n    } else {\n      proc.on('close', () => {\n        exitCallback(new CommanderError(process.exitCode || 0, 'commander.executeSubCommandAsync', '(close)'));\n      });\n    }\n    proc.on('error', (err) => {\n      // @ts-ignore\n      if (err.code === 'ENOENT') {\n        const executableDirMessage = executableDir\n          ? `searched for local subcommand relative to directory '${executableDir}'`\n          : 'no directory for search for local subcommand, use .executableDir() to supply a custom directory';\n        const executableMissing = `'${executableFile}' does not exist\n - if '${subcommand._name}' is not meant to be an executable command, remove description parameter from '.command()' and use '.description()' instead\n - if the default executable name is not suitable, use the executableFile option to supply a custom name or path\n - ${executableDirMessage}`;\n        throw new Error(executableMissing);\n      // @ts-ignore\n      } else if (err.code === 'EACCES') {\n        throw new Error(`'${executableFile}' not executable`);\n      }\n      if (!exitCallback) {\n        process.exit(1);\n      } else {\n        const wrappedError = new CommanderError(1, 'commander.executeSubCommandAsync', '(error)');\n        wrappedError.nestedError = err;\n        exitCallback(wrappedError);\n      }\n    });\n\n    // Store the reference to the child process\n    this.runningCommand = proc;\n  }\n\n  /**\n   * @api private\n   */\n\n  _dispatchSubcommand(commandName, operands, unknown) {\n    const subCommand = this._findCommand(commandName);\n    if (!subCommand) this.help({ error: true });\n\n    let hookResult;\n    hookResult = this._chainOrCallSubCommandHook(hookResult, subCommand, 'preSubcommand');\n    hookResult = this._chainOrCall(hookResult, () => {\n      if (subCommand._executableHandler) {\n        this._executeSubCommand(subCommand, operands.concat(unknown));\n      } else {\n        return subCommand._parseCommand(operands, unknown);\n      }\n    });\n    return hookResult;\n  }\n\n  /**\n   * Check this.args against expected this._args.\n   *\n   * @api private\n   */\n\n  _checkNumberOfArguments() {\n    // too few\n    this._args.forEach((arg, i) => {\n      if (arg.required && this.args[i] == null) {\n        this.missingArgument(arg.name());\n      }\n    });\n    // too many\n    if (this._args.length > 0 && this._args[this._args.length - 1].variadic) {\n      return;\n    }\n    if (this.args.length > this._args.length) {\n      this._excessArguments(this.args);\n    }\n  }\n\n  /**\n   * Process this.args using this._args and save as this.processedArgs!\n   *\n   * @api private\n   */\n\n  _processArguments() {\n    const myParseArg = (argument, value, previous) => {\n      // Extra processing for nice error message on parsing failure.\n      let parsedValue = value;\n      if (value !== null && argument.parseArg) {\n        try {\n          parsedValue = argument.parseArg(value, previous);\n        } catch (err) {\n          if (err.code === 'commander.invalidArgument') {\n            const message = `error: command-argument value '${value}' is invalid for argument '${argument.name()}'. ${err.message}`;\n            this.error(message, { exitCode: err.exitCode, code: err.code });\n          }\n          throw err;\n        }\n      }\n      return parsedValue;\n    };\n\n    this._checkNumberOfArguments();\n\n    const processedArgs = [];\n    this._args.forEach((declaredArg, index) => {\n      let value = declaredArg.defaultValue;\n      if (declaredArg.variadic) {\n        // Collect together remaining arguments for passing together as an array.\n        if (index < this.args.length) {\n          value = this.args.slice(index);\n          if (declaredArg.parseArg) {\n            value = value.reduce((processed, v) => {\n              return myParseArg(declaredArg, v, processed);\n            }, declaredArg.defaultValue);\n          }\n        } else if (value === undefined) {\n          value = [];\n        }\n      } else if (index < this.args.length) {\n        value = this.args[index];\n        if (declaredArg.parseArg) {\n          value = myParseArg(declaredArg, value, declaredArg.defaultValue);\n        }\n      }\n      processedArgs[index] = value;\n    });\n    this.processedArgs = processedArgs;\n  }\n\n  /**\n   * Once we have a promise we chain, but call synchronously until then.\n   *\n   * @param {Promise|undefined} promise\n   * @param {Function} fn\n   * @return {Promise|undefined}\n   * @api private\n   */\n\n  _chainOrCall(promise, fn) {\n    // thenable\n    if (promise && promise.then && typeof promise.then === 'function') {\n      // already have a promise, chain callback\n      return promise.then(() => fn());\n    }\n    // callback might return a promise\n    return fn();\n  }\n\n  /**\n   *\n   * @param {Promise|undefined} promise\n   * @param {string} event\n   * @return {Promise|undefined}\n   * @api private\n   */\n\n  _chainOrCallHooks(promise, event) {\n    let result = promise;\n    const hooks = [];\n    getCommandAndParents(this)\n      .reverse()\n      .filter(cmd => cmd._lifeCycleHooks[event] !== undefined)\n      .forEach(hookedCommand => {\n        hookedCommand._lifeCycleHooks[event].forEach((callback) => {\n          hooks.push({ hookedCommand, callback });\n        });\n      });\n    if (event === 'postAction') {\n      hooks.reverse();\n    }\n\n    hooks.forEach((hookDetail) => {\n      result = this._chainOrCall(result, () => {\n        return hookDetail.callback(hookDetail.hookedCommand, this);\n      });\n    });\n    return result;\n  }\n\n  /**\n   *\n   * @param {Promise|undefined} promise\n   * @param {Command} subCommand\n   * @param {string} event\n   * @return {Promise|undefined}\n   * @api private\n   */\n\n  _chainOrCallSubCommandHook(promise, subCommand, event) {\n    let result = promise;\n    if (this._lifeCycleHooks[event] !== undefined) {\n      this._lifeCycleHooks[event].forEach((hook) => {\n        result = this._chainOrCall(result, () => {\n          return hook(this, subCommand);\n        });\n      });\n    }\n    return result;\n  }\n\n  /**\n   * Process arguments in context of this command.\n   * Returns action result, in case it is a promise.\n   *\n   * @api private\n   */\n\n  _parseCommand(operands, unknown) {\n    const parsed = this.parseOptions(unknown);\n    this._parseOptionsEnv(); // after cli, so parseArg not called on both cli and env\n    this._parseOptionsImplied();\n    operands = operands.concat(parsed.operands);\n    unknown = parsed.unknown;\n    this.args = operands.concat(unknown);\n\n    if (operands && this._findCommand(operands[0])) {\n      return this._dispatchSubcommand(operands[0], operands.slice(1), unknown);\n    }\n    if (this._hasImplicitHelpCommand() && operands[0] === this._helpCommandName) {\n      if (operands.length === 1) {\n        this.help();\n      }\n      return this._dispatchSubcommand(operands[1], [], [this._helpLongFlag]);\n    }\n    if (this._defaultCommandName) {\n      outputHelpIfRequested(this, unknown); // Run the help for default command from parent rather than passing to default command\n      return this._dispatchSubcommand(this._defaultCommandName, operands, unknown);\n    }\n    if (this.commands.length && this.args.length === 0 && !this._actionHandler && !this._defaultCommandName) {\n      // probably missing subcommand and no handler, user needs help (and exit)\n      this.help({ error: true });\n    }\n\n    outputHelpIfRequested(this, parsed.unknown);\n    this._checkForMissingMandatoryOptions();\n    this._checkForConflictingOptions();\n\n    // We do not always call this check to avoid masking a \"better\" error, like unknown command.\n    const checkForUnknownOptions = () => {\n      if (parsed.unknown.length > 0) {\n        this.unknownOption(parsed.unknown[0]);\n      }\n    };\n\n    const commandEvent = `command:${this.name()}`;\n    if (this._actionHandler) {\n      checkForUnknownOptions();\n      this._processArguments();\n\n      let actionResult;\n      actionResult = this._chainOrCallHooks(actionResult, 'preAction');\n      actionResult = this._chainOrCall(actionResult, () => this._actionHandler(this.processedArgs));\n      if (this.parent) {\n        actionResult = this._chainOrCall(actionResult, () => {\n          this.parent.emit(commandEvent, operands, unknown); // legacy\n        });\n      }\n      actionResult = this._chainOrCallHooks(actionResult, 'postAction');\n      return actionResult;\n    }\n    if (this.parent && this.parent.listenerCount(commandEvent)) {\n      checkForUnknownOptions();\n      this._processArguments();\n      this.parent.emit(commandEvent, operands, unknown); // legacy\n    } else if (operands.length) {\n      if (this._findCommand('*')) { // legacy default command\n        return this._dispatchSubcommand('*', operands, unknown);\n      }\n      if (this.listenerCount('command:*')) {\n        // skip option check, emit event for possible misspelling suggestion\n        this.emit('command:*', operands, unknown);\n      } else if (this.commands.length) {\n        this.unknownCommand();\n      } else {\n        checkForUnknownOptions();\n        this._processArguments();\n      }\n    } else if (this.commands.length) {\n      checkForUnknownOptions();\n      // This command has subcommands and nothing hooked up at this level, so display help (and exit).\n      this.help({ error: true });\n    } else {\n      checkForUnknownOptions();\n      this._processArguments();\n      // fall through for caller to handle after calling .parse()\n    }\n  }\n\n  /**\n   * Find matching command.\n   *\n   * @api private\n   */\n  _findCommand(name) {\n    if (!name) return undefined;\n    return this.commands.find(cmd => cmd._name === name || cmd._aliases.includes(name));\n  }\n\n  /**\n   * Return an option matching `arg` if any.\n   *\n   * @param {string} arg\n   * @return {Option}\n   * @api private\n   */\n\n  _findOption(arg) {\n    return this.options.find(option => option.is(arg));\n  }\n\n  /**\n   * Display an error message if a mandatory option does not have a value.\n   * Called after checking for help flags in leaf subcommand.\n   *\n   * @api private\n   */\n\n  _checkForMissingMandatoryOptions() {\n    // Walk up hierarchy so can call in subcommand after checking for displaying help.\n    for (let cmd = this; cmd; cmd = cmd.parent) {\n      cmd.options.forEach((anOption) => {\n        if (anOption.mandatory && (cmd.getOptionValue(anOption.attributeName()) === undefined)) {\n          cmd.missingMandatoryOptionValue(anOption);\n        }\n      });\n    }\n  }\n\n  /**\n   * Display an error message if conflicting options are used together in this.\n   *\n   * @api private\n   */\n  _checkForConflictingLocalOptions() {\n    const definedNonDefaultOptions = this.options.filter(\n      (option) => {\n        const optionKey = option.attributeName();\n        if (this.getOptionValue(optionKey) === undefined) {\n          return false;\n        }\n        return this.getOptionValueSource(optionKey) !== 'default';\n      }\n    );\n\n    const optionsWithConflicting = definedNonDefaultOptions.filter(\n      (option) => option.conflictsWith.length > 0\n    );\n\n    optionsWithConflicting.forEach((option) => {\n      const conflictingAndDefined = definedNonDefaultOptions.find((defined) =>\n        option.conflictsWith.includes(defined.attributeName())\n      );\n      if (conflictingAndDefined) {\n        this._conflictingOption(option, conflictingAndDefined);\n      }\n    });\n  }\n\n  /**\n   * Display an error message if conflicting options are used together.\n   * Called after checking for help flags in leaf subcommand.\n   *\n   * @api private\n   */\n  _checkForConflictingOptions() {\n    // Walk up hierarchy so can call in subcommand after checking for displaying help.\n    for (let cmd = this; cmd; cmd = cmd.parent) {\n      cmd._checkForConflictingLocalOptions();\n    }\n  }\n\n  /**\n   * Parse options from `argv` removing known options,\n   * and return argv split into operands and unknown arguments.\n   *\n   * Examples:\n   *\n   *     argv => operands, unknown\n   *     --known kkk op => [op], []\n   *     op --known kkk => [op], []\n   *     sub --unknown uuu op => [sub], [--unknown uuu op]\n   *     sub -- --unknown uuu op => [sub --unknown uuu op], []\n   *\n   * @param {String[]} argv\n   * @return {{operands: String[], unknown: String[]}}\n   */\n\n  parseOptions(argv) {\n    const operands = []; // operands, not options or values\n    const unknown = []; // first unknown option and remaining unknown args\n    let dest = operands;\n    const args = argv.slice();\n\n    function maybeOption(arg) {\n      return arg.length > 1 && arg[0] === '-';\n    }\n\n    // parse options\n    let activeVariadicOption = null;\n    while (args.length) {\n      const arg = args.shift();\n\n      // literal\n      if (arg === '--') {\n        if (dest === unknown) dest.push(arg);\n        dest.push(...args);\n        break;\n      }\n\n      if (activeVariadicOption && !maybeOption(arg)) {\n        this.emit(`option:${activeVariadicOption.name()}`, arg);\n        continue;\n      }\n      activeVariadicOption = null;\n\n      if (maybeOption(arg)) {\n        const option = this._findOption(arg);\n        // recognised option, call listener to assign value with possible custom processing\n        if (option) {\n          if (option.required) {\n            const value = args.shift();\n            if (value === undefined) this.optionMissingArgument(option);\n            this.emit(`option:${option.name()}`, value);\n          } else if (option.optional) {\n            let value = null;\n            // historical behaviour is optional value is following arg unless an option\n            if (args.length > 0 && !maybeOption(args[0])) {\n              value = args.shift();\n            }\n            this.emit(`option:${option.name()}`, value);\n          } else { // boolean flag\n            this.emit(`option:${option.name()}`);\n          }\n          activeVariadicOption = option.variadic ? option : null;\n          continue;\n        }\n      }\n\n      // Look for combo options following single dash, eat first one if known.\n      if (arg.length > 2 && arg[0] === '-' && arg[1] !== '-') {\n        const option = this._findOption(`-${arg[1]}`);\n        if (option) {\n          if (option.required || (option.optional && this._combineFlagAndOptionalValue)) {\n            // option with value following in same argument\n            this.emit(`option:${option.name()}`, arg.slice(2));\n          } else {\n            // boolean option, emit and put back remainder of arg for further processing\n            this.emit(`option:${option.name()}`);\n            args.unshift(`-${arg.slice(2)}`);\n          }\n          continue;\n        }\n      }\n\n      // Look for known long flag with value, like --foo=bar\n      if (/^--[^=]+=/.test(arg)) {\n        const index = arg.indexOf('=');\n        const option = this._findOption(arg.slice(0, index));\n        if (option && (option.required || option.optional)) {\n          this.emit(`option:${option.name()}`, arg.slice(index + 1));\n          continue;\n        }\n      }\n\n      // Not a recognised option by this command.\n      // Might be a command-argument, or subcommand option, or unknown option, or help command or option.\n\n      // An unknown option means further arguments also classified as unknown so can be reprocessed by subcommands.\n      if (maybeOption(arg)) {\n        dest = unknown;\n      }\n\n      // If using positionalOptions, stop processing our options at subcommand.\n      if ((this._enablePositionalOptions || this._passThroughOptions) && operands.length === 0 && unknown.length === 0) {\n        if (this._findCommand(arg)) {\n          operands.push(arg);\n          if (args.length > 0) unknown.push(...args);\n          break;\n        } else if (arg === this._helpCommandName && this._hasImplicitHelpCommand()) {\n          operands.push(arg);\n          if (args.length > 0) operands.push(...args);\n          break;\n        } else if (this._defaultCommandName) {\n          unknown.push(arg);\n          if (args.length > 0) unknown.push(...args);\n          break;\n        }\n      }\n\n      // If using passThroughOptions, stop processing options at first command-argument.\n      if (this._passThroughOptions) {\n        dest.push(arg);\n        if (args.length > 0) dest.push(...args);\n        break;\n      }\n\n      // add arg\n      dest.push(arg);\n    }\n\n    return { operands, unknown };\n  }\n\n  /**\n   * Return an object containing local option values as key-value pairs.\n   *\n   * @return {Object}\n   */\n  opts() {\n    if (this._storeOptionsAsProperties) {\n      // Preserve original behaviour so backwards compatible when still using properties\n      const result = {};\n      const len = this.options.length;\n\n      for (let i = 0; i < len; i++) {\n        const key = this.options[i].attributeName();\n        result[key] = key === this._versionOptionName ? this._version : this[key];\n      }\n      return result;\n    }\n\n    return this._optionValues;\n  }\n\n  /**\n   * Return an object containing merged local and global option values as key-value pairs.\n   *\n   * @return {Object}\n   */\n  optsWithGlobals() {\n    // globals overwrite locals\n    return getCommandAndParents(this).reduce(\n      (combinedOptions, cmd) => Object.assign(combinedOptions, cmd.opts()),\n      {}\n    );\n  }\n\n  /**\n   * Display error message and exit (or call exitOverride).\n   *\n   * @param {string} message\n   * @param {Object} [errorOptions]\n   * @param {string} [errorOptions.code] - an id string representing the error\n   * @param {number} [errorOptions.exitCode] - used with process.exit\n   */\n  error(message, errorOptions) {\n    // output handling\n    this._outputConfiguration.outputError(`${message}\\n`, this._outputConfiguration.writeErr);\n    if (typeof this._showHelpAfterError === 'string') {\n      this._outputConfiguration.writeErr(`${this._showHelpAfterError}\\n`);\n    } else if (this._showHelpAfterError) {\n      this._outputConfiguration.writeErr('\\n');\n      this.outputHelp({ error: true });\n    }\n\n    // exit handling\n    const config = errorOptions || {};\n    const exitCode = config.exitCode || 1;\n    const code = config.code || 'commander.error';\n    this._exit(exitCode, code, message);\n  }\n\n  /**\n   * Apply any option related environment variables, if option does\n   * not have a value from cli or client code.\n   *\n   * @api private\n   */\n  _parseOptionsEnv() {\n    this.options.forEach((option) => {\n      if (option.envVar && option.envVar in process.env) {\n        const optionKey = option.attributeName();\n        // Priority check. Do not overwrite cli or options from unknown source (client-code).\n        if (this.getOptionValue(optionKey) === undefined || ['default', 'config', 'env'].includes(this.getOptionValueSource(optionKey))) {\n          if (option.required || option.optional) { // option can take a value\n            // keep very simple, optional always takes value\n            this.emit(`optionEnv:${option.name()}`, process.env[option.envVar]);\n          } else { // boolean\n            // keep very simple, only care that envVar defined and not the value\n            this.emit(`optionEnv:${option.name()}`);\n          }\n        }\n      }\n    });\n  }\n\n  /**\n   * Apply any implied option values, if option is undefined or default value.\n   *\n   * @api private\n   */\n  _parseOptionsImplied() {\n    const dualHelper = new DualOptions(this.options);\n    const hasCustomOptionValue = (optionKey) => {\n      return this.getOptionValue(optionKey) !== undefined && !['default', 'implied'].includes(this.getOptionValueSource(optionKey));\n    };\n    this.options\n      .filter(option => (option.implied !== undefined) &&\n        hasCustomOptionValue(option.attributeName()) &&\n        dualHelper.valueFromOption(this.getOptionValue(option.attributeName()), option))\n      .forEach((option) => {\n        Object.keys(option.implied)\n          .filter(impliedKey => !hasCustomOptionValue(impliedKey))\n          .forEach(impliedKey => {\n            this.setOptionValueWithSource(impliedKey, option.implied[impliedKey], 'implied');\n          });\n      });\n  }\n\n  /**\n   * Argument `name` is missing.\n   *\n   * @param {string} name\n   * @api private\n   */\n\n  missingArgument(name) {\n    const message = `error: missing required argument '${name}'`;\n    this.error(message, { code: 'commander.missingArgument' });\n  }\n\n  /**\n   * `Option` is missing an argument.\n   *\n   * @param {Option} option\n   * @api private\n   */\n\n  optionMissingArgument(option) {\n    const message = `error: option '${option.flags}' argument missing`;\n    this.error(message, { code: 'commander.optionMissingArgument' });\n  }\n\n  /**\n   * `Option` does not have a value, and is a mandatory option.\n   *\n   * @param {Option} option\n   * @api private\n   */\n\n  missingMandatoryOptionValue(option) {\n    const message = `error: required option '${option.flags}' not specified`;\n    this.error(message, { code: 'commander.missingMandatoryOptionValue' });\n  }\n\n  /**\n   * `Option` conflicts with another option.\n   *\n   * @param {Option} option\n   * @param {Option} conflictingOption\n   * @api private\n   */\n  _conflictingOption(option, conflictingOption) {\n    // The calling code does not know whether a negated option is the source of the\n    // value, so do some work to take an educated guess.\n    const findBestOptionFromValue = (option) => {\n      const optionKey = option.attributeName();\n      const optionValue = this.getOptionValue(optionKey);\n      const negativeOption = this.options.find(target => target.negate && optionKey === target.attributeName());\n      const positiveOption = this.options.find(target => !target.negate && optionKey === target.attributeName());\n      if (negativeOption && (\n        (negativeOption.presetArg === undefined && optionValue === false) ||\n        (negativeOption.presetArg !== undefined && optionValue === negativeOption.presetArg)\n      )) {\n        return negativeOption;\n      }\n      return positiveOption || option;\n    };\n\n    const getErrorMessage = (option) => {\n      const bestOption = findBestOptionFromValue(option);\n      const optionKey = bestOption.attributeName();\n      const source = this.getOptionValueSource(optionKey);\n      if (source === 'env') {\n        return `environment variable '${bestOption.envVar}'`;\n      }\n      return `option '${bestOption.flags}'`;\n    };\n\n    const message = `error: ${getErrorMessage(option)} cannot be used with ${getErrorMessage(conflictingOption)}`;\n    this.error(message, { code: 'commander.conflictingOption' });\n  }\n\n  /**\n   * Unknown option `flag`.\n   *\n   * @param {string} flag\n   * @api private\n   */\n\n  unknownOption(flag) {\n    if (this._allowUnknownOption) return;\n    let suggestion = '';\n\n    if (flag.startsWith('--') && this._showSuggestionAfterError) {\n      // Looping to pick up the global options too\n      let candidateFlags = [];\n      let command = this;\n      do {\n        const moreFlags = command.createHelp().visibleOptions(command)\n          .filter(option => option.long)\n          .map(option => option.long);\n        candidateFlags = candidateFlags.concat(moreFlags);\n        command = command.parent;\n      } while (command && !command._enablePositionalOptions);\n      suggestion = suggestSimilar(flag, candidateFlags);\n    }\n\n    const message = `error: unknown option '${flag}'${suggestion}`;\n    this.error(message, { code: 'commander.unknownOption' });\n  }\n\n  /**\n   * Excess arguments, more than expected.\n   *\n   * @param {string[]} receivedArgs\n   * @api private\n   */\n\n  _excessArguments(receivedArgs) {\n    if (this._allowExcessArguments) return;\n\n    const expected = this._args.length;\n    const s = (expected === 1) ? '' : 's';\n    const forSubcommand = this.parent ? ` for '${this.name()}'` : '';\n    const message = `error: too many arguments${forSubcommand}. Expected ${expected} argument${s} but got ${receivedArgs.length}.`;\n    this.error(message, { code: 'commander.excessArguments' });\n  }\n\n  /**\n   * Unknown command.\n   *\n   * @api private\n   */\n\n  unknownCommand() {\n    const unknownName = this.args[0];\n    let suggestion = '';\n\n    if (this._showSuggestionAfterError) {\n      const candidateNames = [];\n      this.createHelp().visibleCommands(this).forEach((command) => {\n        candidateNames.push(command.name());\n        // just visible alias\n        if (command.alias()) candidateNames.push(command.alias());\n      });\n      suggestion = suggestSimilar(unknownName, candidateNames);\n    }\n\n    const message = `error: unknown command '${unknownName}'${suggestion}`;\n    this.error(message, { code: 'commander.unknownCommand' });\n  }\n\n  /**\n   * Set the program version to `str`.\n   *\n   * This method auto-registers the \"-V, --version\" flag\n   * which will print the version number when passed.\n   *\n   * You can optionally supply the  flags and description to override the defaults.\n   *\n   * @param {string} str\n   * @param {string} [flags]\n   * @param {string} [description]\n   * @return {this | string} `this` command for chaining, or version string if no arguments\n   */\n\n  version(str, flags, description) {\n    if (str === undefined) return this._version;\n    this._version = str;\n    flags = flags || '-V, --version';\n    description = description || 'output the version number';\n    const versionOption = this.createOption(flags, description);\n    this._versionOptionName = versionOption.attributeName();\n    this.options.push(versionOption);\n    this.on('option:' + versionOption.name(), () => {\n      this._outputConfiguration.writeOut(`${str}\\n`);\n      this._exit(0, 'commander.version', str);\n    });\n    return this;\n  }\n\n  /**\n   * Set the description.\n   *\n   * @param {string} [str]\n   * @param {Object} [argsDescription]\n   * @return {string|Command}\n   */\n  description(str, argsDescription) {\n    if (str === undefined && argsDescription === undefined) return this._description;\n    this._description = str;\n    if (argsDescription) {\n      this._argsDescription = argsDescription;\n    }\n    return this;\n  }\n\n  /**\n   * Set the summary. Used when listed as subcommand of parent.\n   *\n   * @param {string} [str]\n   * @return {string|Command}\n   */\n  summary(str) {\n    if (str === undefined) return this._summary;\n    this._summary = str;\n    return this;\n  }\n\n  /**\n   * Set an alias for the command.\n   *\n   * You may call more than once to add multiple aliases. Only the first alias is shown in the auto-generated help.\n   *\n   * @param {string} [alias]\n   * @return {string|Command}\n   */\n\n  alias(alias) {\n    if (alias === undefined) return this._aliases[0]; // just return first, for backwards compatibility\n\n    /** @type {Command} */\n    let command = this;\n    if (this.commands.length !== 0 && this.commands[this.commands.length - 1]._executableHandler) {\n      // assume adding alias for last added executable subcommand, rather than this\n      command = this.commands[this.commands.length - 1];\n    }\n\n    if (alias === command._name) throw new Error('Command alias can\\'t be the same as its name');\n\n    command._aliases.push(alias);\n    return this;\n  }\n\n  /**\n   * Set aliases for the command.\n   *\n   * Only the first alias is shown in the auto-generated help.\n   *\n   * @param {string[]} [aliases]\n   * @return {string[]|Command}\n   */\n\n  aliases(aliases) {\n    // Getter for the array of aliases is the main reason for having aliases() in addition to alias().\n    if (aliases === undefined) return this._aliases;\n\n    aliases.forEach((alias) => this.alias(alias));\n    return this;\n  }\n\n  /**\n   * Set / get the command usage `str`.\n   *\n   * @param {string} [str]\n   * @return {String|Command}\n   */\n\n  usage(str) {\n    if (str === undefined) {\n      if (this._usage) return this._usage;\n\n      const args = this._args.map((arg) => {\n        return humanReadableArgName(arg);\n      });\n      return [].concat(\n        (this.options.length || this._hasHelpOption ? '[options]' : []),\n        (this.commands.length ? '[command]' : []),\n        (this._args.length ? args : [])\n      ).join(' ');\n    }\n\n    this._usage = str;\n    return this;\n  }\n\n  /**\n   * Get or set the name of the command.\n   *\n   * @param {string} [str]\n   * @return {string|Command}\n   */\n\n  name(str) {\n    if (str === undefined) return this._name;\n    this._name = str;\n    return this;\n  }\n\n  /**\n   * Set the name of the command from script filename, such as process.argv[1],\n   * or require.main.filename, or __filename.\n   *\n   * (Used internally and public although not documented in README.)\n   *\n   * @example\n   * program.nameFromFilename(require.main.filename);\n   *\n   * @param {string} filename\n   * @return {Command}\n   */\n\n  nameFromFilename(filename) {\n    this._name = path.basename(filename, path.extname(filename));\n\n    return this;\n  }\n\n  /**\n   * Get or set the directory for searching for executable subcommands of this command.\n   *\n   * @example\n   * program.executableDir(__dirname);\n   * // or\n   * program.executableDir('subcommands');\n   *\n   * @param {string} [path]\n   * @return {string|Command}\n   */\n\n  executableDir(path) {\n    if (path === undefined) return this._executableDir;\n    this._executableDir = path;\n    return this;\n  }\n\n  /**\n   * Return program help documentation.\n   *\n   * @param {{ error: boolean }} [contextOptions] - pass {error:true} to wrap for stderr instead of stdout\n   * @return {string}\n   */\n\n  helpInformation(contextOptions) {\n    const helper = this.createHelp();\n    if (helper.helpWidth === undefined) {\n      helper.helpWidth = (contextOptions && contextOptions.error) ? this._outputConfiguration.getErrHelpWidth() : this._outputConfiguration.getOutHelpWidth();\n    }\n    return helper.formatHelp(this, helper);\n  }\n\n  /**\n   * @api private\n   */\n\n  _getHelpContext(contextOptions) {\n    contextOptions = contextOptions || {};\n    const context = { error: !!contextOptions.error };\n    let write;\n    if (context.error) {\n      write = (arg) => this._outputConfiguration.writeErr(arg);\n    } else {\n      write = (arg) => this._outputConfiguration.writeOut(arg);\n    }\n    context.write = contextOptions.write || write;\n    context.command = this;\n    return context;\n  }\n\n  /**\n   * Output help information for this command.\n   *\n   * Outputs built-in help, and custom text added using `.addHelpText()`.\n   *\n   * @param {{ error: boolean } | Function} [contextOptions] - pass {error:true} to write to stderr instead of stdout\n   */\n\n  outputHelp(contextOptions) {\n    let deprecatedCallback;\n    if (typeof contextOptions === 'function') {\n      deprecatedCallback = contextOptions;\n      contextOptions = undefined;\n    }\n    const context = this._getHelpContext(contextOptions);\n\n    getCommandAndParents(this).reverse().forEach(command => command.emit('beforeAllHelp', context));\n    this.emit('beforeHelp', context);\n\n    let helpInformation = this.helpInformation(context);\n    if (deprecatedCallback) {\n      helpInformation = deprecatedCallback(helpInformation);\n      if (typeof helpInformation !== 'string' && !Buffer.isBuffer(helpInformation)) {\n        throw new Error('outputHelp callback must return a string or a Buffer');\n      }\n    }\n    context.write(helpInformation);\n\n    this.emit(this._helpLongFlag); // deprecated\n    this.emit('afterHelp', context);\n    getCommandAndParents(this).forEach(command => command.emit('afterAllHelp', context));\n  }\n\n  /**\n   * You can pass in flags and a description to override the help\n   * flags and help description for your command. Pass in false to\n   * disable the built-in help option.\n   *\n   * @param {string | boolean} [flags]\n   * @param {string} [description]\n   * @return {Command} `this` command for chaining\n   */\n\n  helpOption(flags, description) {\n    if (typeof flags === 'boolean') {\n      this._hasHelpOption = flags;\n      return this;\n    }\n    this._helpFlags = flags || this._helpFlags;\n    this._helpDescription = description || this._helpDescription;\n\n    const helpFlags = splitOptionFlags(this._helpFlags);\n    this._helpShortFlag = helpFlags.shortFlag;\n    this._helpLongFlag = helpFlags.longFlag;\n\n    return this;\n  }\n\n  /**\n   * Output help information and exit.\n   *\n   * Outputs built-in help, and custom text added using `.addHelpText()`.\n   *\n   * @param {{ error: boolean }} [contextOptions] - pass {error:true} to write to stderr instead of stdout\n   */\n\n  help(contextOptions) {\n    this.outputHelp(contextOptions);\n    let exitCode = process.exitCode || 0;\n    if (exitCode === 0 && contextOptions && typeof contextOptions !== 'function' && contextOptions.error) {\n      exitCode = 1;\n    }\n    // message: do not have all displayed text available so only passing placeholder.\n    this._exit(exitCode, 'commander.help', '(outputHelp)');\n  }\n\n  /**\n   * Add additional text to be displayed with the built-in help.\n   *\n   * Position is 'before' or 'after' to affect just this command,\n   * and 'beforeAll' or 'afterAll' to affect this command and all its subcommands.\n   *\n   * @param {string} position - before or after built-in help\n   * @param {string | Function} text - string to add, or a function returning a string\n   * @return {Command} `this` command for chaining\n   */\n  addHelpText(position, text) {\n    const allowedValues = ['beforeAll', 'before', 'after', 'afterAll'];\n    if (!allowedValues.includes(position)) {\n      throw new Error(`Unexpected value for position to addHelpText.\nExpecting one of '${allowedValues.join(\"', '\")}'`);\n    }\n    const helpEvent = `${position}Help`;\n    this.on(helpEvent, (context) => {\n      let helpStr;\n      if (typeof text === 'function') {\n        helpStr = text({ error: context.error, command: context.command });\n      } else {\n        helpStr = text;\n      }\n      // Ignore falsy value when nothing to output.\n      if (helpStr) {\n        context.write(`${helpStr}\\n`);\n      }\n    });\n    return this;\n  }\n}\n\n/**\n * Output help information if help flags specified\n *\n * @param {Command} cmd - command to output help for\n * @param {Array} args - array of options to search for help flags\n * @api private\n */\n\nfunction outputHelpIfRequested(cmd, args) {\n  const helpOption = cmd._hasHelpOption && args.find(arg => arg === cmd._helpLongFlag || arg === cmd._helpShortFlag);\n  if (helpOption) {\n    cmd.outputHelp();\n    // (Do not have all displayed text available so only passing placeholder.)\n    cmd._exit(0, 'commander.helpDisplayed', '(outputHelp)');\n  }\n}\n\n/**\n * Scan arguments and increment port number for inspect calls (to avoid conflicts when spawning new command).\n *\n * @param {string[]} args - array of arguments from node.execArgv\n * @returns {string[]}\n * @api private\n */\n\nfunction incrementNodeInspectorPort(args) {\n  // Testing for these options:\n  //  --inspect[=[host:]port]\n  //  --inspect-brk[=[host:]port]\n  //  --inspect-port=[host:]port\n  return args.map((arg) => {\n    if (!arg.startsWith('--inspect')) {\n      return arg;\n    }\n    let debugOption;\n    let debugHost = '127.0.0.1';\n    let debugPort = '9229';\n    let match;\n    if ((match = arg.match(/^(--inspect(-brk)?)$/)) !== null) {\n      // e.g. --inspect\n      debugOption = match[1];\n    } else if ((match = arg.match(/^(--inspect(-brk|-port)?)=([^:]+)$/)) !== null) {\n      debugOption = match[1];\n      if (/^\\d+$/.test(match[3])) {\n        // e.g. --inspect=1234\n        debugPort = match[3];\n      } else {\n        // e.g. --inspect=localhost\n        debugHost = match[3];\n      }\n    } else if ((match = arg.match(/^(--inspect(-brk|-port)?)=([^:]+):(\\d+)$/)) !== null) {\n      // e.g. --inspect=localhost:1234\n      debugOption = match[1];\n      debugHost = match[3];\n      debugPort = match[4];\n    }\n\n    if (debugOption && debugPort !== '0') {\n      return `${debugOption}=${debugHost}:${parseInt(debugPort) + 1}`;\n    }\n    return arg;\n  });\n}\n\n/**\n * @param {Command} startCommand\n * @returns {Command[]}\n * @api private\n */\n\nfunction getCommandAndParents(startCommand) {\n  const result = [];\n  for (let command = startCommand; command; command = command.parent) {\n    result.push(command);\n  }\n  return result;\n}\n\nexports.Command = Command;\n\n\n//# sourceURL=webpack://electron/./node_modules/commander/lib/command.js?");
+const EventEmitter = (__webpack_require__(2361).EventEmitter);
+const childProcess = __webpack_require__(2081);
+const path = __webpack_require__(1017);
+const fs = __webpack_require__(7147);
+const process = __webpack_require__(7282);
+
+const { Argument, humanReadableArgName } = __webpack_require__(8998);
+const { CommanderError } = __webpack_require__(8056);
+const { Help } = __webpack_require__(8917);
+const { Option, splitOptionFlags, DualOptions } = __webpack_require__(5790);
+const { suggestSimilar } = __webpack_require__(1812);
+
+// @ts-check
+
+class Command extends EventEmitter {
+  /**
+   * Initialize a new `Command`.
+   *
+   * @param {string} [name]
+   */
+
+  constructor(name) {
+    super();
+    /** @type {Command[]} */
+    this.commands = [];
+    /** @type {Option[]} */
+    this.options = [];
+    this.parent = null;
+    this._allowUnknownOption = false;
+    this._allowExcessArguments = true;
+    /** @type {Argument[]} */
+    this._args = [];
+    /** @type {string[]} */
+    this.args = []; // cli args with options removed
+    this.rawArgs = [];
+    this.processedArgs = []; // like .args but after custom processing and collecting variadic
+    this._scriptPath = null;
+    this._name = name || '';
+    this._optionValues = {};
+    this._optionValueSources = {}; // default, env, cli etc
+    this._storeOptionsAsProperties = false;
+    this._actionHandler = null;
+    this._executableHandler = false;
+    this._executableFile = null; // custom name for executable
+    this._executableDir = null; // custom search directory for subcommands
+    this._defaultCommandName = null;
+    this._exitCallback = null;
+    this._aliases = [];
+    this._combineFlagAndOptionalValue = true;
+    this._description = '';
+    this._summary = '';
+    this._argsDescription = undefined; // legacy
+    this._enablePositionalOptions = false;
+    this._passThroughOptions = false;
+    this._lifeCycleHooks = {}; // a hash of arrays
+    /** @type {boolean | string} */
+    this._showHelpAfterError = false;
+    this._showSuggestionAfterError = true;
+
+    // see .configureOutput() for docs
+    this._outputConfiguration = {
+      writeOut: (str) => process.stdout.write(str),
+      writeErr: (str) => process.stderr.write(str),
+      getOutHelpWidth: () => process.stdout.isTTY ? process.stdout.columns : undefined,
+      getErrHelpWidth: () => process.stderr.isTTY ? process.stderr.columns : undefined,
+      outputError: (str, write) => write(str)
+    };
+
+    this._hidden = false;
+    this._hasHelpOption = true;
+    this._helpFlags = '-h, --help';
+    this._helpDescription = 'display help for command';
+    this._helpShortFlag = '-h';
+    this._helpLongFlag = '--help';
+    this._addImplicitHelpCommand = undefined; // Deliberately undefined, not decided whether true or false
+    this._helpCommandName = 'help';
+    this._helpCommandnameAndArgs = 'help [command]';
+    this._helpCommandDescription = 'display help for command';
+    this._helpConfiguration = {};
+  }
+
+  /**
+   * Copy settings that are useful to have in common across root command and subcommands.
+   *
+   * (Used internally when adding a command using `.command()` so subcommands inherit parent settings.)
+   *
+   * @param {Command} sourceCommand
+   * @return {Command} `this` command for chaining
+   */
+  copyInheritedSettings(sourceCommand) {
+    this._outputConfiguration = sourceCommand._outputConfiguration;
+    this._hasHelpOption = sourceCommand._hasHelpOption;
+    this._helpFlags = sourceCommand._helpFlags;
+    this._helpDescription = sourceCommand._helpDescription;
+    this._helpShortFlag = sourceCommand._helpShortFlag;
+    this._helpLongFlag = sourceCommand._helpLongFlag;
+    this._helpCommandName = sourceCommand._helpCommandName;
+    this._helpCommandnameAndArgs = sourceCommand._helpCommandnameAndArgs;
+    this._helpCommandDescription = sourceCommand._helpCommandDescription;
+    this._helpConfiguration = sourceCommand._helpConfiguration;
+    this._exitCallback = sourceCommand._exitCallback;
+    this._storeOptionsAsProperties = sourceCommand._storeOptionsAsProperties;
+    this._combineFlagAndOptionalValue = sourceCommand._combineFlagAndOptionalValue;
+    this._allowExcessArguments = sourceCommand._allowExcessArguments;
+    this._enablePositionalOptions = sourceCommand._enablePositionalOptions;
+    this._showHelpAfterError = sourceCommand._showHelpAfterError;
+    this._showSuggestionAfterError = sourceCommand._showSuggestionAfterError;
+
+    return this;
+  }
+
+  /**
+   * Define a command.
+   *
+   * There are two styles of command: pay attention to where to put the description.
+   *
+   * @example
+   * // Command implemented using action handler (description is supplied separately to `.command`)
+   * program
+   *   .command('clone <source> [destination]')
+   *   .description('clone a repository into a newly created directory')
+   *   .action((source, destination) => {
+   *     console.log('clone command called');
+   *   });
+   *
+   * // Command implemented using separate executable file (description is second parameter to `.command`)
+   * program
+   *   .command('start <service>', 'start named service')
+   *   .command('stop [service]', 'stop named service, or all if no name supplied');
+   *
+   * @param {string} nameAndArgs - command name and arguments, args are `<required>` or `[optional]` and last may also be `variadic...`
+   * @param {Object|string} [actionOptsOrExecDesc] - configuration options (for action), or description (for executable)
+   * @param {Object} [execOpts] - configuration options (for executable)
+   * @return {Command} returns new command for action handler, or `this` for executable command
+   */
+
+  command(nameAndArgs, actionOptsOrExecDesc, execOpts) {
+    let desc = actionOptsOrExecDesc;
+    let opts = execOpts;
+    if (typeof desc === 'object' && desc !== null) {
+      opts = desc;
+      desc = null;
+    }
+    opts = opts || {};
+    const [, name, args] = nameAndArgs.match(/([^ ]+) *(.*)/);
+
+    const cmd = this.createCommand(name);
+    if (desc) {
+      cmd.description(desc);
+      cmd._executableHandler = true;
+    }
+    if (opts.isDefault) this._defaultCommandName = cmd._name;
+    cmd._hidden = !!(opts.noHelp || opts.hidden); // noHelp is deprecated old name for hidden
+    cmd._executableFile = opts.executableFile || null; // Custom name for executable file, set missing to null to match constructor
+    if (args) cmd.arguments(args);
+    this.commands.push(cmd);
+    cmd.parent = this;
+    cmd.copyInheritedSettings(this);
+
+    if (desc) return this;
+    return cmd;
+  }
+
+  /**
+   * Factory routine to create a new unattached command.
+   *
+   * See .command() for creating an attached subcommand, which uses this routine to
+   * create the command. You can override createCommand to customise subcommands.
+   *
+   * @param {string} [name]
+   * @return {Command} new command
+   */
+
+  createCommand(name) {
+    return new Command(name);
+  }
+
+  /**
+   * You can customise the help with a subclass of Help by overriding createHelp,
+   * or by overriding Help properties using configureHelp().
+   *
+   * @return {Help}
+   */
+
+  createHelp() {
+    return Object.assign(new Help(), this.configureHelp());
+  }
+
+  /**
+   * You can customise the help by overriding Help properties using configureHelp(),
+   * or with a subclass of Help by overriding createHelp().
+   *
+   * @param {Object} [configuration] - configuration options
+   * @return {Command|Object} `this` command for chaining, or stored configuration
+   */
+
+  configureHelp(configuration) {
+    if (configuration === undefined) return this._helpConfiguration;
+
+    this._helpConfiguration = configuration;
+    return this;
+  }
+
+  /**
+   * The default output goes to stdout and stderr. You can customise this for special
+   * applications. You can also customise the display of errors by overriding outputError.
+   *
+   * The configuration properties are all functions:
+   *
+   *     // functions to change where being written, stdout and stderr
+   *     writeOut(str)
+   *     writeErr(str)
+   *     // matching functions to specify width for wrapping help
+   *     getOutHelpWidth()
+   *     getErrHelpWidth()
+   *     // functions based on what is being written out
+   *     outputError(str, write) // used for displaying errors, and not used for displaying help
+   *
+   * @param {Object} [configuration] - configuration options
+   * @return {Command|Object} `this` command for chaining, or stored configuration
+   */
+
+  configureOutput(configuration) {
+    if (configuration === undefined) return this._outputConfiguration;
+
+    Object.assign(this._outputConfiguration, configuration);
+    return this;
+  }
+
+  /**
+   * Display the help or a custom message after an error occurs.
+   *
+   * @param {boolean|string} [displayHelp]
+   * @return {Command} `this` command for chaining
+   */
+  showHelpAfterError(displayHelp = true) {
+    if (typeof displayHelp !== 'string') displayHelp = !!displayHelp;
+    this._showHelpAfterError = displayHelp;
+    return this;
+  }
+
+  /**
+   * Display suggestion of similar commands for unknown commands, or options for unknown options.
+   *
+   * @param {boolean} [displaySuggestion]
+   * @return {Command} `this` command for chaining
+   */
+  showSuggestionAfterError(displaySuggestion = true) {
+    this._showSuggestionAfterError = !!displaySuggestion;
+    return this;
+  }
+
+  /**
+   * Add a prepared subcommand.
+   *
+   * See .command() for creating an attached subcommand which inherits settings from its parent.
+   *
+   * @param {Command} cmd - new subcommand
+   * @param {Object} [opts] - configuration options
+   * @return {Command} `this` command for chaining
+   */
+
+  addCommand(cmd, opts) {
+    if (!cmd._name) {
+      throw new Error(`Command passed to .addCommand() must have a name
+- specify the name in Command constructor or using .name()`);
+    }
+
+    opts = opts || {};
+    if (opts.isDefault) this._defaultCommandName = cmd._name;
+    if (opts.noHelp || opts.hidden) cmd._hidden = true; // modifying passed command due to existing implementation
+
+    this.commands.push(cmd);
+    cmd.parent = this;
+    return this;
+  }
+
+  /**
+   * Factory routine to create a new unattached argument.
+   *
+   * See .argument() for creating an attached argument, which uses this routine to
+   * create the argument. You can override createArgument to return a custom argument.
+   *
+   * @param {string} name
+   * @param {string} [description]
+   * @return {Argument} new argument
+   */
+
+  createArgument(name, description) {
+    return new Argument(name, description);
+  }
+
+  /**
+   * Define argument syntax for command.
+   *
+   * The default is that the argument is required, and you can explicitly
+   * indicate this with <> around the name. Put [] around the name for an optional argument.
+   *
+   * @example
+   * program.argument('<input-file>');
+   * program.argument('[output-file]');
+   *
+   * @param {string} name
+   * @param {string} [description]
+   * @param {Function|*} [fn] - custom argument processing function
+   * @param {*} [defaultValue]
+   * @return {Command} `this` command for chaining
+   */
+  argument(name, description, fn, defaultValue) {
+    const argument = this.createArgument(name, description);
+    if (typeof fn === 'function') {
+      argument.default(defaultValue).argParser(fn);
+    } else {
+      argument.default(fn);
+    }
+    this.addArgument(argument);
+    return this;
+  }
+
+  /**
+   * Define argument syntax for command, adding multiple at once (without descriptions).
+   *
+   * See also .argument().
+   *
+   * @example
+   * program.arguments('<cmd> [env]');
+   *
+   * @param {string} names
+   * @return {Command} `this` command for chaining
+   */
+
+  arguments(names) {
+    names.split(/ +/).forEach((detail) => {
+      this.argument(detail);
+    });
+    return this;
+  }
+
+  /**
+   * Define argument syntax for command, adding a prepared argument.
+   *
+   * @param {Argument} argument
+   * @return {Command} `this` command for chaining
+   */
+  addArgument(argument) {
+    const previousArgument = this._args.slice(-1)[0];
+    if (previousArgument && previousArgument.variadic) {
+      throw new Error(`only the last argument can be variadic '${previousArgument.name()}'`);
+    }
+    if (argument.required && argument.defaultValue !== undefined && argument.parseArg === undefined) {
+      throw new Error(`a default value for a required argument is never used: '${argument.name()}'`);
+    }
+    this._args.push(argument);
+    return this;
+  }
+
+  /**
+   * Override default decision whether to add implicit help command.
+   *
+   *    addHelpCommand() // force on
+   *    addHelpCommand(false); // force off
+   *    addHelpCommand('help [cmd]', 'display help for [cmd]'); // force on with custom details
+   *
+   * @return {Command} `this` command for chaining
+   */
+
+  addHelpCommand(enableOrNameAndArgs, description) {
+    if (enableOrNameAndArgs === false) {
+      this._addImplicitHelpCommand = false;
+    } else {
+      this._addImplicitHelpCommand = true;
+      if (typeof enableOrNameAndArgs === 'string') {
+        this._helpCommandName = enableOrNameAndArgs.split(' ')[0];
+        this._helpCommandnameAndArgs = enableOrNameAndArgs;
+      }
+      this._helpCommandDescription = description || this._helpCommandDescription;
+    }
+    return this;
+  }
+
+  /**
+   * @return {boolean}
+   * @api private
+   */
+
+  _hasImplicitHelpCommand() {
+    if (this._addImplicitHelpCommand === undefined) {
+      return this.commands.length && !this._actionHandler && !this._findCommand('help');
+    }
+    return this._addImplicitHelpCommand;
+  }
+
+  /**
+   * Add hook for life cycle event.
+   *
+   * @param {string} event
+   * @param {Function} listener
+   * @return {Command} `this` command for chaining
+   */
+
+  hook(event, listener) {
+    const allowedValues = ['preSubcommand', 'preAction', 'postAction'];
+    if (!allowedValues.includes(event)) {
+      throw new Error(`Unexpected value for event passed to hook : '${event}'.
+Expecting one of '${allowedValues.join("', '")}'`);
+    }
+    if (this._lifeCycleHooks[event]) {
+      this._lifeCycleHooks[event].push(listener);
+    } else {
+      this._lifeCycleHooks[event] = [listener];
+    }
+    return this;
+  }
+
+  /**
+   * Register callback to use as replacement for calling process.exit.
+   *
+   * @param {Function} [fn] optional callback which will be passed a CommanderError, defaults to throwing
+   * @return {Command} `this` command for chaining
+   */
+
+  exitOverride(fn) {
+    if (fn) {
+      this._exitCallback = fn;
+    } else {
+      this._exitCallback = (err) => {
+        if (err.code !== 'commander.executeSubCommandAsync') {
+          throw err;
+        } else {
+          // Async callback from spawn events, not useful to throw.
+        }
+      };
+    }
+    return this;
+  }
+
+  /**
+   * Call process.exit, and _exitCallback if defined.
+   *
+   * @param {number} exitCode exit code for using with process.exit
+   * @param {string} code an id string representing the error
+   * @param {string} message human-readable description of the error
+   * @return never
+   * @api private
+   */
+
+  _exit(exitCode, code, message) {
+    if (this._exitCallback) {
+      this._exitCallback(new CommanderError(exitCode, code, message));
+      // Expecting this line is not reached.
+    }
+    process.exit(exitCode);
+  }
+
+  /**
+   * Register callback `fn` for the command.
+   *
+   * @example
+   * program
+   *   .command('serve')
+   *   .description('start service')
+   *   .action(function() {
+   *      // do work here
+   *   });
+   *
+   * @param {Function} fn
+   * @return {Command} `this` command for chaining
+   */
+
+  action(fn) {
+    const listener = (args) => {
+      // The .action callback takes an extra parameter which is the command or options.
+      const expectedArgsCount = this._args.length;
+      const actionArgs = args.slice(0, expectedArgsCount);
+      if (this._storeOptionsAsProperties) {
+        actionArgs[expectedArgsCount] = this; // backwards compatible "options"
+      } else {
+        actionArgs[expectedArgsCount] = this.opts();
+      }
+      actionArgs.push(this);
+
+      return fn.apply(this, actionArgs);
+    };
+    this._actionHandler = listener;
+    return this;
+  }
+
+  /**
+   * Factory routine to create a new unattached option.
+   *
+   * See .option() for creating an attached option, which uses this routine to
+   * create the option. You can override createOption to return a custom option.
+   *
+   * @param {string} flags
+   * @param {string} [description]
+   * @return {Option} new option
+   */
+
+  createOption(flags, description) {
+    return new Option(flags, description);
+  }
+
+  /**
+   * Add an option.
+   *
+   * @param {Option} option
+   * @return {Command} `this` command for chaining
+   */
+  addOption(option) {
+    const oname = option.name();
+    const name = option.attributeName();
+
+    // store default value
+    if (option.negate) {
+      // --no-foo is special and defaults foo to true, unless a --foo option is already defined
+      const positiveLongFlag = option.long.replace(/^--no-/, '--');
+      if (!this._findOption(positiveLongFlag)) {
+        this.setOptionValueWithSource(name, option.defaultValue === undefined ? true : option.defaultValue, 'default');
+      }
+    } else if (option.defaultValue !== undefined) {
+      this.setOptionValueWithSource(name, option.defaultValue, 'default');
+    }
+
+    // register the option
+    this.options.push(option);
+
+    // handler for cli and env supplied values
+    const handleOptionValue = (val, invalidValueMessage, valueSource) => {
+      // val is null for optional option used without an optional-argument.
+      // val is undefined for boolean and negated option.
+      if (val == null && option.presetArg !== undefined) {
+        val = option.presetArg;
+      }
+
+      // custom processing
+      const oldValue = this.getOptionValue(name);
+      if (val !== null && option.parseArg) {
+        try {
+          val = option.parseArg(val, oldValue);
+        } catch (err) {
+          if (err.code === 'commander.invalidArgument') {
+            const message = `${invalidValueMessage} ${err.message}`;
+            this.error(message, { exitCode: err.exitCode, code: err.code });
+          }
+          throw err;
+        }
+      } else if (val !== null && option.variadic) {
+        val = option._concatValue(val, oldValue);
+      }
+
+      // Fill-in appropriate missing values. Long winded but easy to follow.
+      if (val == null) {
+        if (option.negate) {
+          val = false;
+        } else if (option.isBoolean() || option.optional) {
+          val = true;
+        } else {
+          val = ''; // not normal, parseArg might have failed or be a mock function for testing
+        }
+      }
+      this.setOptionValueWithSource(name, val, valueSource);
+    };
+
+    this.on('option:' + oname, (val) => {
+      const invalidValueMessage = `error: option '${option.flags}' argument '${val}' is invalid.`;
+      handleOptionValue(val, invalidValueMessage, 'cli');
+    });
+
+    if (option.envVar) {
+      this.on('optionEnv:' + oname, (val) => {
+        const invalidValueMessage = `error: option '${option.flags}' value '${val}' from env '${option.envVar}' is invalid.`;
+        handleOptionValue(val, invalidValueMessage, 'env');
+      });
+    }
+
+    return this;
+  }
+
+  /**
+   * Internal implementation shared by .option() and .requiredOption()
+   *
+   * @api private
+   */
+  _optionEx(config, flags, description, fn, defaultValue) {
+    if (typeof flags === 'object' && flags instanceof Option) {
+      throw new Error('To add an Option object use addOption() instead of option() or requiredOption()');
+    }
+    const option = this.createOption(flags, description);
+    option.makeOptionMandatory(!!config.mandatory);
+    if (typeof fn === 'function') {
+      option.default(defaultValue).argParser(fn);
+    } else if (fn instanceof RegExp) {
+      // deprecated
+      const regex = fn;
+      fn = (val, def) => {
+        const m = regex.exec(val);
+        return m ? m[0] : def;
+      };
+      option.default(defaultValue).argParser(fn);
+    } else {
+      option.default(fn);
+    }
+
+    return this.addOption(option);
+  }
+
+  /**
+   * Define option with `flags`, `description` and optional
+   * coercion `fn`.
+   *
+   * The `flags` string contains the short and/or long flags,
+   * separated by comma, a pipe or space. The following are all valid
+   * all will output this way when `--help` is used.
+   *
+   *     "-p, --pepper"
+   *     "-p|--pepper"
+   *     "-p --pepper"
+   *
+   * @example
+   * // simple boolean defaulting to undefined
+   * program.option('-p, --pepper', 'add pepper');
+   *
+   * program.pepper
+   * // => undefined
+   *
+   * --pepper
+   * program.pepper
+   * // => true
+   *
+   * // simple boolean defaulting to true (unless non-negated option is also defined)
+   * program.option('-C, --no-cheese', 'remove cheese');
+   *
+   * program.cheese
+   * // => true
+   *
+   * --no-cheese
+   * program.cheese
+   * // => false
+   *
+   * // required argument
+   * program.option('-C, --chdir <path>', 'change the working directory');
+   *
+   * --chdir /tmp
+   * program.chdir
+   * // => "/tmp"
+   *
+   * // optional argument
+   * program.option('-c, --cheese [type]', 'add cheese [marble]');
+   *
+   * @param {string} flags
+   * @param {string} [description]
+   * @param {Function|*} [fn] - custom option processing function or default value
+   * @param {*} [defaultValue]
+   * @return {Command} `this` command for chaining
+   */
+
+  option(flags, description, fn, defaultValue) {
+    return this._optionEx({}, flags, description, fn, defaultValue);
+  }
+
+  /**
+  * Add a required option which must have a value after parsing. This usually means
+  * the option must be specified on the command line. (Otherwise the same as .option().)
+  *
+  * The `flags` string contains the short and/or long flags, separated by comma, a pipe or space.
+  *
+  * @param {string} flags
+  * @param {string} [description]
+  * @param {Function|*} [fn] - custom option processing function or default value
+  * @param {*} [defaultValue]
+  * @return {Command} `this` command for chaining
+  */
+
+  requiredOption(flags, description, fn, defaultValue) {
+    return this._optionEx({ mandatory: true }, flags, description, fn, defaultValue);
+  }
+
+  /**
+   * Alter parsing of short flags with optional values.
+   *
+   * @example
+   * // for `.option('-f,--flag [value]'):
+   * program.combineFlagAndOptionalValue(true);  // `-f80` is treated like `--flag=80`, this is the default behaviour
+   * program.combineFlagAndOptionalValue(false) // `-fb` is treated like `-f -b`
+   *
+   * @param {Boolean} [combine=true] - if `true` or omitted, an optional value can be specified directly after the flag.
+   */
+  combineFlagAndOptionalValue(combine = true) {
+    this._combineFlagAndOptionalValue = !!combine;
+    return this;
+  }
+
+  /**
+   * Allow unknown options on the command line.
+   *
+   * @param {Boolean} [allowUnknown=true] - if `true` or omitted, no error will be thrown
+   * for unknown options.
+   */
+  allowUnknownOption(allowUnknown = true) {
+    this._allowUnknownOption = !!allowUnknown;
+    return this;
+  }
+
+  /**
+   * Allow excess command-arguments on the command line. Pass false to make excess arguments an error.
+   *
+   * @param {Boolean} [allowExcess=true] - if `true` or omitted, no error will be thrown
+   * for excess arguments.
+   */
+  allowExcessArguments(allowExcess = true) {
+    this._allowExcessArguments = !!allowExcess;
+    return this;
+  }
+
+  /**
+   * Enable positional options. Positional means global options are specified before subcommands which lets
+   * subcommands reuse the same option names, and also enables subcommands to turn on passThroughOptions.
+   * The default behaviour is non-positional and global options may appear anywhere on the command line.
+   *
+   * @param {Boolean} [positional=true]
+   */
+  enablePositionalOptions(positional = true) {
+    this._enablePositionalOptions = !!positional;
+    return this;
+  }
+
+  /**
+   * Pass through options that come after command-arguments rather than treat them as command-options,
+   * so actual command-options come before command-arguments. Turning this on for a subcommand requires
+   * positional options to have been enabled on the program (parent commands).
+   * The default behaviour is non-positional and options may appear before or after command-arguments.
+   *
+   * @param {Boolean} [passThrough=true]
+   * for unknown options.
+   */
+  passThroughOptions(passThrough = true) {
+    this._passThroughOptions = !!passThrough;
+    if (!!this.parent && passThrough && !this.parent._enablePositionalOptions) {
+      throw new Error('passThroughOptions can not be used without turning on enablePositionalOptions for parent command(s)');
+    }
+    return this;
+  }
+
+  /**
+    * Whether to store option values as properties on command object,
+    * or store separately (specify false). In both cases the option values can be accessed using .opts().
+    *
+    * @param {boolean} [storeAsProperties=true]
+    * @return {Command} `this` command for chaining
+    */
+
+  storeOptionsAsProperties(storeAsProperties = true) {
+    this._storeOptionsAsProperties = !!storeAsProperties;
+    if (this.options.length) {
+      throw new Error('call .storeOptionsAsProperties() before adding options');
+    }
+    return this;
+  }
+
+  /**
+   * Retrieve option value.
+   *
+   * @param {string} key
+   * @return {Object} value
+   */
+
+  getOptionValue(key) {
+    if (this._storeOptionsAsProperties) {
+      return this[key];
+    }
+    return this._optionValues[key];
+  }
+
+  /**
+   * Store option value.
+   *
+   * @param {string} key
+   * @param {Object} value
+   * @return {Command} `this` command for chaining
+   */
+
+  setOptionValue(key, value) {
+    return this.setOptionValueWithSource(key, value, undefined);
+  }
+
+  /**
+    * Store option value and where the value came from.
+    *
+    * @param {string} key
+    * @param {Object} value
+    * @param {string} source - expected values are default/config/env/cli/implied
+    * @return {Command} `this` command for chaining
+    */
+
+  setOptionValueWithSource(key, value, source) {
+    if (this._storeOptionsAsProperties) {
+      this[key] = value;
+    } else {
+      this._optionValues[key] = value;
+    }
+    this._optionValueSources[key] = source;
+    return this;
+  }
+
+  /**
+    * Get source of option value.
+    * Expected values are default | config | env | cli | implied
+    *
+    * @param {string} key
+    * @return {string}
+    */
+
+  getOptionValueSource(key) {
+    return this._optionValueSources[key];
+  }
+
+  /**
+    * Get source of option value. See also .optsWithGlobals().
+    * Expected values are default | config | env | cli | implied
+    *
+    * @param {string} key
+    * @return {string}
+    */
+
+  getOptionValueSourceWithGlobals(key) {
+    // global overwrites local, like optsWithGlobals
+    let source;
+    getCommandAndParents(this).forEach((cmd) => {
+      if (cmd.getOptionValueSource(key) !== undefined) {
+        source = cmd.getOptionValueSource(key);
+      }
+    });
+    return source;
+  }
+
+  /**
+   * Get user arguments from implied or explicit arguments.
+   * Side-effects: set _scriptPath if args included script. Used for default program name, and subcommand searches.
+   *
+   * @api private
+   */
+
+  _prepareUserArgs(argv, parseOptions) {
+    if (argv !== undefined && !Array.isArray(argv)) {
+      throw new Error('first parameter to parse must be array or undefined');
+    }
+    parseOptions = parseOptions || {};
+
+    // Default to using process.argv
+    if (argv === undefined) {
+      argv = process.argv;
+      // @ts-ignore: unknown property
+      if (process.versions && process.versions.electron) {
+        parseOptions.from = 'electron';
+      }
+    }
+    this.rawArgs = argv.slice();
+
+    // make it a little easier for callers by supporting various argv conventions
+    let userArgs;
+    switch (parseOptions.from) {
+      case undefined:
+      case 'node':
+        this._scriptPath = argv[1];
+        userArgs = argv.slice(2);
+        break;
+      case 'electron':
+        // @ts-ignore: unknown property
+        if (process.defaultApp) {
+          this._scriptPath = argv[1];
+          userArgs = argv.slice(2);
+        } else {
+          userArgs = argv.slice(1);
+        }
+        break;
+      case 'user':
+        userArgs = argv.slice(0);
+        break;
+      default:
+        throw new Error(`unexpected parse option { from: '${parseOptions.from}' }`);
+    }
+
+    // Find default name for program from arguments.
+    if (!this._name && this._scriptPath) this.nameFromFilename(this._scriptPath);
+    this._name = this._name || 'program';
+
+    return userArgs;
+  }
+
+  /**
+   * Parse `argv`, setting options and invoking commands when defined.
+   *
+   * The default expectation is that the arguments are from node and have the application as argv[0]
+   * and the script being run in argv[1], with user parameters after that.
+   *
+   * @example
+   * program.parse(process.argv);
+   * program.parse(); // implicitly use process.argv and auto-detect node vs electron conventions
+   * program.parse(my-args, { from: 'user' }); // just user supplied arguments, nothing special about argv[0]
+   *
+   * @param {string[]} [argv] - optional, defaults to process.argv
+   * @param {Object} [parseOptions] - optionally specify style of options with from: node/user/electron
+   * @param {string} [parseOptions.from] - where the args are from: 'node', 'user', 'electron'
+   * @return {Command} `this` command for chaining
+   */
+
+  parse(argv, parseOptions) {
+    const userArgs = this._prepareUserArgs(argv, parseOptions);
+    this._parseCommand([], userArgs);
+
+    return this;
+  }
+
+  /**
+   * Parse `argv`, setting options and invoking commands when defined.
+   *
+   * Use parseAsync instead of parse if any of your action handlers are async. Returns a Promise.
+   *
+   * The default expectation is that the arguments are from node and have the application as argv[0]
+   * and the script being run in argv[1], with user parameters after that.
+   *
+   * @example
+   * await program.parseAsync(process.argv);
+   * await program.parseAsync(); // implicitly use process.argv and auto-detect node vs electron conventions
+   * await program.parseAsync(my-args, { from: 'user' }); // just user supplied arguments, nothing special about argv[0]
+   *
+   * @param {string[]} [argv]
+   * @param {Object} [parseOptions]
+   * @param {string} parseOptions.from - where the args are from: 'node', 'user', 'electron'
+   * @return {Promise}
+   */
+
+  async parseAsync(argv, parseOptions) {
+    const userArgs = this._prepareUserArgs(argv, parseOptions);
+    await this._parseCommand([], userArgs);
+
+    return this;
+  }
+
+  /**
+   * Execute a sub-command executable.
+   *
+   * @api private
+   */
+
+  _executeSubCommand(subcommand, args) {
+    args = args.slice();
+    let launchWithNode = false; // Use node for source targets so do not need to get permissions correct, and on Windows.
+    const sourceExt = ['.js', '.ts', '.tsx', '.mjs', '.cjs'];
+
+    function findFile(baseDir, baseName) {
+      // Look for specified file
+      const localBin = path.resolve(baseDir, baseName);
+      if (fs.existsSync(localBin)) return localBin;
+
+      // Stop looking if candidate already has an expected extension.
+      if (sourceExt.includes(path.extname(baseName))) return undefined;
+
+      // Try all the extensions.
+      const foundExt = sourceExt.find(ext => fs.existsSync(`${localBin}${ext}`));
+      if (foundExt) return `${localBin}${foundExt}`;
+
+      return undefined;
+    }
+
+    // Not checking for help first. Unlikely to have mandatory and executable, and can't robustly test for help flags in external command.
+    this._checkForMissingMandatoryOptions();
+    this._checkForConflictingOptions();
+
+    // executableFile and executableDir might be full path, or just a name
+    let executableFile = subcommand._executableFile || `${this._name}-${subcommand._name}`;
+    let executableDir = this._executableDir || '';
+    if (this._scriptPath) {
+      let resolvedScriptPath; // resolve possible symlink for installed npm binary
+      try {
+        resolvedScriptPath = fs.realpathSync(this._scriptPath);
+      } catch (err) {
+        resolvedScriptPath = this._scriptPath;
+      }
+      executableDir = path.resolve(path.dirname(resolvedScriptPath), executableDir);
+    }
+
+    // Look for a local file in preference to a command in PATH.
+    if (executableDir) {
+      let localFile = findFile(executableDir, executableFile);
+
+      // Legacy search using prefix of script name instead of command name
+      if (!localFile && !subcommand._executableFile && this._scriptPath) {
+        const legacyName = path.basename(this._scriptPath, path.extname(this._scriptPath));
+        if (legacyName !== this._name) {
+          localFile = findFile(executableDir, `${legacyName}-${subcommand._name}`);
+        }
+      }
+      executableFile = localFile || executableFile;
+    }
+
+    launchWithNode = sourceExt.includes(path.extname(executableFile));
+
+    let proc;
+    if (process.platform !== 'win32') {
+      if (launchWithNode) {
+        args.unshift(executableFile);
+        // add executable arguments to spawn
+        args = incrementNodeInspectorPort(process.execArgv).concat(args);
+
+        proc = childProcess.spawn(process.argv[0], args, { stdio: 'inherit' });
+      } else {
+        proc = childProcess.spawn(executableFile, args, { stdio: 'inherit' });
+      }
+    } else {
+      args.unshift(executableFile);
+      // add executable arguments to spawn
+      args = incrementNodeInspectorPort(process.execArgv).concat(args);
+      proc = childProcess.spawn(process.execPath, args, { stdio: 'inherit' });
+    }
+
+    if (!proc.killed) { // testing mainly to avoid leak warnings during unit tests with mocked spawn
+      const signals = ['SIGUSR1', 'SIGUSR2', 'SIGTERM', 'SIGINT', 'SIGHUP'];
+      signals.forEach((signal) => {
+        // @ts-ignore
+        process.on(signal, () => {
+          if (proc.killed === false && proc.exitCode === null) {
+            proc.kill(signal);
+          }
+        });
+      });
+    }
+
+    // By default terminate process when spawned process terminates.
+    // Suppressing the exit if exitCallback defined is a bit messy and of limited use, but does allow process to stay running!
+    const exitCallback = this._exitCallback;
+    if (!exitCallback) {
+      proc.on('close', process.exit.bind(process));
+    } else {
+      proc.on('close', () => {
+        exitCallback(new CommanderError(process.exitCode || 0, 'commander.executeSubCommandAsync', '(close)'));
+      });
+    }
+    proc.on('error', (err) => {
+      // @ts-ignore
+      if (err.code === 'ENOENT') {
+        const executableDirMessage = executableDir
+          ? `searched for local subcommand relative to directory '${executableDir}'`
+          : 'no directory for search for local subcommand, use .executableDir() to supply a custom directory';
+        const executableMissing = `'${executableFile}' does not exist
+ - if '${subcommand._name}' is not meant to be an executable command, remove description parameter from '.command()' and use '.description()' instead
+ - if the default executable name is not suitable, use the executableFile option to supply a custom name or path
+ - ${executableDirMessage}`;
+        throw new Error(executableMissing);
+      // @ts-ignore
+      } else if (err.code === 'EACCES') {
+        throw new Error(`'${executableFile}' not executable`);
+      }
+      if (!exitCallback) {
+        process.exit(1);
+      } else {
+        const wrappedError = new CommanderError(1, 'commander.executeSubCommandAsync', '(error)');
+        wrappedError.nestedError = err;
+        exitCallback(wrappedError);
+      }
+    });
+
+    // Store the reference to the child process
+    this.runningCommand = proc;
+  }
+
+  /**
+   * @api private
+   */
+
+  _dispatchSubcommand(commandName, operands, unknown) {
+    const subCommand = this._findCommand(commandName);
+    if (!subCommand) this.help({ error: true });
+
+    let hookResult;
+    hookResult = this._chainOrCallSubCommandHook(hookResult, subCommand, 'preSubcommand');
+    hookResult = this._chainOrCall(hookResult, () => {
+      if (subCommand._executableHandler) {
+        this._executeSubCommand(subCommand, operands.concat(unknown));
+      } else {
+        return subCommand._parseCommand(operands, unknown);
+      }
+    });
+    return hookResult;
+  }
+
+  /**
+   * Check this.args against expected this._args.
+   *
+   * @api private
+   */
+
+  _checkNumberOfArguments() {
+    // too few
+    this._args.forEach((arg, i) => {
+      if (arg.required && this.args[i] == null) {
+        this.missingArgument(arg.name());
+      }
+    });
+    // too many
+    if (this._args.length > 0 && this._args[this._args.length - 1].variadic) {
+      return;
+    }
+    if (this.args.length > this._args.length) {
+      this._excessArguments(this.args);
+    }
+  }
+
+  /**
+   * Process this.args using this._args and save as this.processedArgs!
+   *
+   * @api private
+   */
+
+  _processArguments() {
+    const myParseArg = (argument, value, previous) => {
+      // Extra processing for nice error message on parsing failure.
+      let parsedValue = value;
+      if (value !== null && argument.parseArg) {
+        try {
+          parsedValue = argument.parseArg(value, previous);
+        } catch (err) {
+          if (err.code === 'commander.invalidArgument') {
+            const message = `error: command-argument value '${value}' is invalid for argument '${argument.name()}'. ${err.message}`;
+            this.error(message, { exitCode: err.exitCode, code: err.code });
+          }
+          throw err;
+        }
+      }
+      return parsedValue;
+    };
+
+    this._checkNumberOfArguments();
+
+    const processedArgs = [];
+    this._args.forEach((declaredArg, index) => {
+      let value = declaredArg.defaultValue;
+      if (declaredArg.variadic) {
+        // Collect together remaining arguments for passing together as an array.
+        if (index < this.args.length) {
+          value = this.args.slice(index);
+          if (declaredArg.parseArg) {
+            value = value.reduce((processed, v) => {
+              return myParseArg(declaredArg, v, processed);
+            }, declaredArg.defaultValue);
+          }
+        } else if (value === undefined) {
+          value = [];
+        }
+      } else if (index < this.args.length) {
+        value = this.args[index];
+        if (declaredArg.parseArg) {
+          value = myParseArg(declaredArg, value, declaredArg.defaultValue);
+        }
+      }
+      processedArgs[index] = value;
+    });
+    this.processedArgs = processedArgs;
+  }
+
+  /**
+   * Once we have a promise we chain, but call synchronously until then.
+   *
+   * @param {Promise|undefined} promise
+   * @param {Function} fn
+   * @return {Promise|undefined}
+   * @api private
+   */
+
+  _chainOrCall(promise, fn) {
+    // thenable
+    if (promise && promise.then && typeof promise.then === 'function') {
+      // already have a promise, chain callback
+      return promise.then(() => fn());
+    }
+    // callback might return a promise
+    return fn();
+  }
+
+  /**
+   *
+   * @param {Promise|undefined} promise
+   * @param {string} event
+   * @return {Promise|undefined}
+   * @api private
+   */
+
+  _chainOrCallHooks(promise, event) {
+    let result = promise;
+    const hooks = [];
+    getCommandAndParents(this)
+      .reverse()
+      .filter(cmd => cmd._lifeCycleHooks[event] !== undefined)
+      .forEach(hookedCommand => {
+        hookedCommand._lifeCycleHooks[event].forEach((callback) => {
+          hooks.push({ hookedCommand, callback });
+        });
+      });
+    if (event === 'postAction') {
+      hooks.reverse();
+    }
+
+    hooks.forEach((hookDetail) => {
+      result = this._chainOrCall(result, () => {
+        return hookDetail.callback(hookDetail.hookedCommand, this);
+      });
+    });
+    return result;
+  }
+
+  /**
+   *
+   * @param {Promise|undefined} promise
+   * @param {Command} subCommand
+   * @param {string} event
+   * @return {Promise|undefined}
+   * @api private
+   */
+
+  _chainOrCallSubCommandHook(promise, subCommand, event) {
+    let result = promise;
+    if (this._lifeCycleHooks[event] !== undefined) {
+      this._lifeCycleHooks[event].forEach((hook) => {
+        result = this._chainOrCall(result, () => {
+          return hook(this, subCommand);
+        });
+      });
+    }
+    return result;
+  }
+
+  /**
+   * Process arguments in context of this command.
+   * Returns action result, in case it is a promise.
+   *
+   * @api private
+   */
+
+  _parseCommand(operands, unknown) {
+    const parsed = this.parseOptions(unknown);
+    this._parseOptionsEnv(); // after cli, so parseArg not called on both cli and env
+    this._parseOptionsImplied();
+    operands = operands.concat(parsed.operands);
+    unknown = parsed.unknown;
+    this.args = operands.concat(unknown);
+
+    if (operands && this._findCommand(operands[0])) {
+      return this._dispatchSubcommand(operands[0], operands.slice(1), unknown);
+    }
+    if (this._hasImplicitHelpCommand() && operands[0] === this._helpCommandName) {
+      if (operands.length === 1) {
+        this.help();
+      }
+      return this._dispatchSubcommand(operands[1], [], [this._helpLongFlag]);
+    }
+    if (this._defaultCommandName) {
+      outputHelpIfRequested(this, unknown); // Run the help for default command from parent rather than passing to default command
+      return this._dispatchSubcommand(this._defaultCommandName, operands, unknown);
+    }
+    if (this.commands.length && this.args.length === 0 && !this._actionHandler && !this._defaultCommandName) {
+      // probably missing subcommand and no handler, user needs help (and exit)
+      this.help({ error: true });
+    }
+
+    outputHelpIfRequested(this, parsed.unknown);
+    this._checkForMissingMandatoryOptions();
+    this._checkForConflictingOptions();
+
+    // We do not always call this check to avoid masking a "better" error, like unknown command.
+    const checkForUnknownOptions = () => {
+      if (parsed.unknown.length > 0) {
+        this.unknownOption(parsed.unknown[0]);
+      }
+    };
+
+    const commandEvent = `command:${this.name()}`;
+    if (this._actionHandler) {
+      checkForUnknownOptions();
+      this._processArguments();
+
+      let actionResult;
+      actionResult = this._chainOrCallHooks(actionResult, 'preAction');
+      actionResult = this._chainOrCall(actionResult, () => this._actionHandler(this.processedArgs));
+      if (this.parent) {
+        actionResult = this._chainOrCall(actionResult, () => {
+          this.parent.emit(commandEvent, operands, unknown); // legacy
+        });
+      }
+      actionResult = this._chainOrCallHooks(actionResult, 'postAction');
+      return actionResult;
+    }
+    if (this.parent && this.parent.listenerCount(commandEvent)) {
+      checkForUnknownOptions();
+      this._processArguments();
+      this.parent.emit(commandEvent, operands, unknown); // legacy
+    } else if (operands.length) {
+      if (this._findCommand('*')) { // legacy default command
+        return this._dispatchSubcommand('*', operands, unknown);
+      }
+      if (this.listenerCount('command:*')) {
+        // skip option check, emit event for possible misspelling suggestion
+        this.emit('command:*', operands, unknown);
+      } else if (this.commands.length) {
+        this.unknownCommand();
+      } else {
+        checkForUnknownOptions();
+        this._processArguments();
+      }
+    } else if (this.commands.length) {
+      checkForUnknownOptions();
+      // This command has subcommands and nothing hooked up at this level, so display help (and exit).
+      this.help({ error: true });
+    } else {
+      checkForUnknownOptions();
+      this._processArguments();
+      // fall through for caller to handle after calling .parse()
+    }
+  }
+
+  /**
+   * Find matching command.
+   *
+   * @api private
+   */
+  _findCommand(name) {
+    if (!name) return undefined;
+    return this.commands.find(cmd => cmd._name === name || cmd._aliases.includes(name));
+  }
+
+  /**
+   * Return an option matching `arg` if any.
+   *
+   * @param {string} arg
+   * @return {Option}
+   * @api private
+   */
+
+  _findOption(arg) {
+    return this.options.find(option => option.is(arg));
+  }
+
+  /**
+   * Display an error message if a mandatory option does not have a value.
+   * Called after checking for help flags in leaf subcommand.
+   *
+   * @api private
+   */
+
+  _checkForMissingMandatoryOptions() {
+    // Walk up hierarchy so can call in subcommand after checking for displaying help.
+    for (let cmd = this; cmd; cmd = cmd.parent) {
+      cmd.options.forEach((anOption) => {
+        if (anOption.mandatory && (cmd.getOptionValue(anOption.attributeName()) === undefined)) {
+          cmd.missingMandatoryOptionValue(anOption);
+        }
+      });
+    }
+  }
+
+  /**
+   * Display an error message if conflicting options are used together in this.
+   *
+   * @api private
+   */
+  _checkForConflictingLocalOptions() {
+    const definedNonDefaultOptions = this.options.filter(
+      (option) => {
+        const optionKey = option.attributeName();
+        if (this.getOptionValue(optionKey) === undefined) {
+          return false;
+        }
+        return this.getOptionValueSource(optionKey) !== 'default';
+      }
+    );
+
+    const optionsWithConflicting = definedNonDefaultOptions.filter(
+      (option) => option.conflictsWith.length > 0
+    );
+
+    optionsWithConflicting.forEach((option) => {
+      const conflictingAndDefined = definedNonDefaultOptions.find((defined) =>
+        option.conflictsWith.includes(defined.attributeName())
+      );
+      if (conflictingAndDefined) {
+        this._conflictingOption(option, conflictingAndDefined);
+      }
+    });
+  }
+
+  /**
+   * Display an error message if conflicting options are used together.
+   * Called after checking for help flags in leaf subcommand.
+   *
+   * @api private
+   */
+  _checkForConflictingOptions() {
+    // Walk up hierarchy so can call in subcommand after checking for displaying help.
+    for (let cmd = this; cmd; cmd = cmd.parent) {
+      cmd._checkForConflictingLocalOptions();
+    }
+  }
+
+  /**
+   * Parse options from `argv` removing known options,
+   * and return argv split into operands and unknown arguments.
+   *
+   * Examples:
+   *
+   *     argv => operands, unknown
+   *     --known kkk op => [op], []
+   *     op --known kkk => [op], []
+   *     sub --unknown uuu op => [sub], [--unknown uuu op]
+   *     sub -- --unknown uuu op => [sub --unknown uuu op], []
+   *
+   * @param {String[]} argv
+   * @return {{operands: String[], unknown: String[]}}
+   */
+
+  parseOptions(argv) {
+    const operands = []; // operands, not options or values
+    const unknown = []; // first unknown option and remaining unknown args
+    let dest = operands;
+    const args = argv.slice();
+
+    function maybeOption(arg) {
+      return arg.length > 1 && arg[0] === '-';
+    }
+
+    // parse options
+    let activeVariadicOption = null;
+    while (args.length) {
+      const arg = args.shift();
+
+      // literal
+      if (arg === '--') {
+        if (dest === unknown) dest.push(arg);
+        dest.push(...args);
+        break;
+      }
+
+      if (activeVariadicOption && !maybeOption(arg)) {
+        this.emit(`option:${activeVariadicOption.name()}`, arg);
+        continue;
+      }
+      activeVariadicOption = null;
+
+      if (maybeOption(arg)) {
+        const option = this._findOption(arg);
+        // recognised option, call listener to assign value with possible custom processing
+        if (option) {
+          if (option.required) {
+            const value = args.shift();
+            if (value === undefined) this.optionMissingArgument(option);
+            this.emit(`option:${option.name()}`, value);
+          } else if (option.optional) {
+            let value = null;
+            // historical behaviour is optional value is following arg unless an option
+            if (args.length > 0 && !maybeOption(args[0])) {
+              value = args.shift();
+            }
+            this.emit(`option:${option.name()}`, value);
+          } else { // boolean flag
+            this.emit(`option:${option.name()}`);
+          }
+          activeVariadicOption = option.variadic ? option : null;
+          continue;
+        }
+      }
+
+      // Look for combo options following single dash, eat first one if known.
+      if (arg.length > 2 && arg[0] === '-' && arg[1] !== '-') {
+        const option = this._findOption(`-${arg[1]}`);
+        if (option) {
+          if (option.required || (option.optional && this._combineFlagAndOptionalValue)) {
+            // option with value following in same argument
+            this.emit(`option:${option.name()}`, arg.slice(2));
+          } else {
+            // boolean option, emit and put back remainder of arg for further processing
+            this.emit(`option:${option.name()}`);
+            args.unshift(`-${arg.slice(2)}`);
+          }
+          continue;
+        }
+      }
+
+      // Look for known long flag with value, like --foo=bar
+      if (/^--[^=]+=/.test(arg)) {
+        const index = arg.indexOf('=');
+        const option = this._findOption(arg.slice(0, index));
+        if (option && (option.required || option.optional)) {
+          this.emit(`option:${option.name()}`, arg.slice(index + 1));
+          continue;
+        }
+      }
+
+      // Not a recognised option by this command.
+      // Might be a command-argument, or subcommand option, or unknown option, or help command or option.
+
+      // An unknown option means further arguments also classified as unknown so can be reprocessed by subcommands.
+      if (maybeOption(arg)) {
+        dest = unknown;
+      }
+
+      // If using positionalOptions, stop processing our options at subcommand.
+      if ((this._enablePositionalOptions || this._passThroughOptions) && operands.length === 0 && unknown.length === 0) {
+        if (this._findCommand(arg)) {
+          operands.push(arg);
+          if (args.length > 0) unknown.push(...args);
+          break;
+        } else if (arg === this._helpCommandName && this._hasImplicitHelpCommand()) {
+          operands.push(arg);
+          if (args.length > 0) operands.push(...args);
+          break;
+        } else if (this._defaultCommandName) {
+          unknown.push(arg);
+          if (args.length > 0) unknown.push(...args);
+          break;
+        }
+      }
+
+      // If using passThroughOptions, stop processing options at first command-argument.
+      if (this._passThroughOptions) {
+        dest.push(arg);
+        if (args.length > 0) dest.push(...args);
+        break;
+      }
+
+      // add arg
+      dest.push(arg);
+    }
+
+    return { operands, unknown };
+  }
+
+  /**
+   * Return an object containing local option values as key-value pairs.
+   *
+   * @return {Object}
+   */
+  opts() {
+    if (this._storeOptionsAsProperties) {
+      // Preserve original behaviour so backwards compatible when still using properties
+      const result = {};
+      const len = this.options.length;
+
+      for (let i = 0; i < len; i++) {
+        const key = this.options[i].attributeName();
+        result[key] = key === this._versionOptionName ? this._version : this[key];
+      }
+      return result;
+    }
+
+    return this._optionValues;
+  }
+
+  /**
+   * Return an object containing merged local and global option values as key-value pairs.
+   *
+   * @return {Object}
+   */
+  optsWithGlobals() {
+    // globals overwrite locals
+    return getCommandAndParents(this).reduce(
+      (combinedOptions, cmd) => Object.assign(combinedOptions, cmd.opts()),
+      {}
+    );
+  }
+
+  /**
+   * Display error message and exit (or call exitOverride).
+   *
+   * @param {string} message
+   * @param {Object} [errorOptions]
+   * @param {string} [errorOptions.code] - an id string representing the error
+   * @param {number} [errorOptions.exitCode] - used with process.exit
+   */
+  error(message, errorOptions) {
+    // output handling
+    this._outputConfiguration.outputError(`${message}\n`, this._outputConfiguration.writeErr);
+    if (typeof this._showHelpAfterError === 'string') {
+      this._outputConfiguration.writeErr(`${this._showHelpAfterError}\n`);
+    } else if (this._showHelpAfterError) {
+      this._outputConfiguration.writeErr('\n');
+      this.outputHelp({ error: true });
+    }
+
+    // exit handling
+    const config = errorOptions || {};
+    const exitCode = config.exitCode || 1;
+    const code = config.code || 'commander.error';
+    this._exit(exitCode, code, message);
+  }
+
+  /**
+   * Apply any option related environment variables, if option does
+   * not have a value from cli or client code.
+   *
+   * @api private
+   */
+  _parseOptionsEnv() {
+    this.options.forEach((option) => {
+      if (option.envVar && option.envVar in process.env) {
+        const optionKey = option.attributeName();
+        // Priority check. Do not overwrite cli or options from unknown source (client-code).
+        if (this.getOptionValue(optionKey) === undefined || ['default', 'config', 'env'].includes(this.getOptionValueSource(optionKey))) {
+          if (option.required || option.optional) { // option can take a value
+            // keep very simple, optional always takes value
+            this.emit(`optionEnv:${option.name()}`, process.env[option.envVar]);
+          } else { // boolean
+            // keep very simple, only care that envVar defined and not the value
+            this.emit(`optionEnv:${option.name()}`);
+          }
+        }
+      }
+    });
+  }
+
+  /**
+   * Apply any implied option values, if option is undefined or default value.
+   *
+   * @api private
+   */
+  _parseOptionsImplied() {
+    const dualHelper = new DualOptions(this.options);
+    const hasCustomOptionValue = (optionKey) => {
+      return this.getOptionValue(optionKey) !== undefined && !['default', 'implied'].includes(this.getOptionValueSource(optionKey));
+    };
+    this.options
+      .filter(option => (option.implied !== undefined) &&
+        hasCustomOptionValue(option.attributeName()) &&
+        dualHelper.valueFromOption(this.getOptionValue(option.attributeName()), option))
+      .forEach((option) => {
+        Object.keys(option.implied)
+          .filter(impliedKey => !hasCustomOptionValue(impliedKey))
+          .forEach(impliedKey => {
+            this.setOptionValueWithSource(impliedKey, option.implied[impliedKey], 'implied');
+          });
+      });
+  }
+
+  /**
+   * Argument `name` is missing.
+   *
+   * @param {string} name
+   * @api private
+   */
+
+  missingArgument(name) {
+    const message = `error: missing required argument '${name}'`;
+    this.error(message, { code: 'commander.missingArgument' });
+  }
+
+  /**
+   * `Option` is missing an argument.
+   *
+   * @param {Option} option
+   * @api private
+   */
+
+  optionMissingArgument(option) {
+    const message = `error: option '${option.flags}' argument missing`;
+    this.error(message, { code: 'commander.optionMissingArgument' });
+  }
+
+  /**
+   * `Option` does not have a value, and is a mandatory option.
+   *
+   * @param {Option} option
+   * @api private
+   */
+
+  missingMandatoryOptionValue(option) {
+    const message = `error: required option '${option.flags}' not specified`;
+    this.error(message, { code: 'commander.missingMandatoryOptionValue' });
+  }
+
+  /**
+   * `Option` conflicts with another option.
+   *
+   * @param {Option} option
+   * @param {Option} conflictingOption
+   * @api private
+   */
+  _conflictingOption(option, conflictingOption) {
+    // The calling code does not know whether a negated option is the source of the
+    // value, so do some work to take an educated guess.
+    const findBestOptionFromValue = (option) => {
+      const optionKey = option.attributeName();
+      const optionValue = this.getOptionValue(optionKey);
+      const negativeOption = this.options.find(target => target.negate && optionKey === target.attributeName());
+      const positiveOption = this.options.find(target => !target.negate && optionKey === target.attributeName());
+      if (negativeOption && (
+        (negativeOption.presetArg === undefined && optionValue === false) ||
+        (negativeOption.presetArg !== undefined && optionValue === negativeOption.presetArg)
+      )) {
+        return negativeOption;
+      }
+      return positiveOption || option;
+    };
+
+    const getErrorMessage = (option) => {
+      const bestOption = findBestOptionFromValue(option);
+      const optionKey = bestOption.attributeName();
+      const source = this.getOptionValueSource(optionKey);
+      if (source === 'env') {
+        return `environment variable '${bestOption.envVar}'`;
+      }
+      return `option '${bestOption.flags}'`;
+    };
+
+    const message = `error: ${getErrorMessage(option)} cannot be used with ${getErrorMessage(conflictingOption)}`;
+    this.error(message, { code: 'commander.conflictingOption' });
+  }
+
+  /**
+   * Unknown option `flag`.
+   *
+   * @param {string} flag
+   * @api private
+   */
+
+  unknownOption(flag) {
+    if (this._allowUnknownOption) return;
+    let suggestion = '';
+
+    if (flag.startsWith('--') && this._showSuggestionAfterError) {
+      // Looping to pick up the global options too
+      let candidateFlags = [];
+      let command = this;
+      do {
+        const moreFlags = command.createHelp().visibleOptions(command)
+          .filter(option => option.long)
+          .map(option => option.long);
+        candidateFlags = candidateFlags.concat(moreFlags);
+        command = command.parent;
+      } while (command && !command._enablePositionalOptions);
+      suggestion = suggestSimilar(flag, candidateFlags);
+    }
+
+    const message = `error: unknown option '${flag}'${suggestion}`;
+    this.error(message, { code: 'commander.unknownOption' });
+  }
+
+  /**
+   * Excess arguments, more than expected.
+   *
+   * @param {string[]} receivedArgs
+   * @api private
+   */
+
+  _excessArguments(receivedArgs) {
+    if (this._allowExcessArguments) return;
+
+    const expected = this._args.length;
+    const s = (expected === 1) ? '' : 's';
+    const forSubcommand = this.parent ? ` for '${this.name()}'` : '';
+    const message = `error: too many arguments${forSubcommand}. Expected ${expected} argument${s} but got ${receivedArgs.length}.`;
+    this.error(message, { code: 'commander.excessArguments' });
+  }
+
+  /**
+   * Unknown command.
+   *
+   * @api private
+   */
+
+  unknownCommand() {
+    const unknownName = this.args[0];
+    let suggestion = '';
+
+    if (this._showSuggestionAfterError) {
+      const candidateNames = [];
+      this.createHelp().visibleCommands(this).forEach((command) => {
+        candidateNames.push(command.name());
+        // just visible alias
+        if (command.alias()) candidateNames.push(command.alias());
+      });
+      suggestion = suggestSimilar(unknownName, candidateNames);
+    }
+
+    const message = `error: unknown command '${unknownName}'${suggestion}`;
+    this.error(message, { code: 'commander.unknownCommand' });
+  }
+
+  /**
+   * Set the program version to `str`.
+   *
+   * This method auto-registers the "-V, --version" flag
+   * which will print the version number when passed.
+   *
+   * You can optionally supply the  flags and description to override the defaults.
+   *
+   * @param {string} str
+   * @param {string} [flags]
+   * @param {string} [description]
+   * @return {this | string} `this` command for chaining, or version string if no arguments
+   */
+
+  version(str, flags, description) {
+    if (str === undefined) return this._version;
+    this._version = str;
+    flags = flags || '-V, --version';
+    description = description || 'output the version number';
+    const versionOption = this.createOption(flags, description);
+    this._versionOptionName = versionOption.attributeName();
+    this.options.push(versionOption);
+    this.on('option:' + versionOption.name(), () => {
+      this._outputConfiguration.writeOut(`${str}\n`);
+      this._exit(0, 'commander.version', str);
+    });
+    return this;
+  }
+
+  /**
+   * Set the description.
+   *
+   * @param {string} [str]
+   * @param {Object} [argsDescription]
+   * @return {string|Command}
+   */
+  description(str, argsDescription) {
+    if (str === undefined && argsDescription === undefined) return this._description;
+    this._description = str;
+    if (argsDescription) {
+      this._argsDescription = argsDescription;
+    }
+    return this;
+  }
+
+  /**
+   * Set the summary. Used when listed as subcommand of parent.
+   *
+   * @param {string} [str]
+   * @return {string|Command}
+   */
+  summary(str) {
+    if (str === undefined) return this._summary;
+    this._summary = str;
+    return this;
+  }
+
+  /**
+   * Set an alias for the command.
+   *
+   * You may call more than once to add multiple aliases. Only the first alias is shown in the auto-generated help.
+   *
+   * @param {string} [alias]
+   * @return {string|Command}
+   */
+
+  alias(alias) {
+    if (alias === undefined) return this._aliases[0]; // just return first, for backwards compatibility
+
+    /** @type {Command} */
+    let command = this;
+    if (this.commands.length !== 0 && this.commands[this.commands.length - 1]._executableHandler) {
+      // assume adding alias for last added executable subcommand, rather than this
+      command = this.commands[this.commands.length - 1];
+    }
+
+    if (alias === command._name) throw new Error('Command alias can\'t be the same as its name');
+
+    command._aliases.push(alias);
+    return this;
+  }
+
+  /**
+   * Set aliases for the command.
+   *
+   * Only the first alias is shown in the auto-generated help.
+   *
+   * @param {string[]} [aliases]
+   * @return {string[]|Command}
+   */
+
+  aliases(aliases) {
+    // Getter for the array of aliases is the main reason for having aliases() in addition to alias().
+    if (aliases === undefined) return this._aliases;
+
+    aliases.forEach((alias) => this.alias(alias));
+    return this;
+  }
+
+  /**
+   * Set / get the command usage `str`.
+   *
+   * @param {string} [str]
+   * @return {String|Command}
+   */
+
+  usage(str) {
+    if (str === undefined) {
+      if (this._usage) return this._usage;
+
+      const args = this._args.map((arg) => {
+        return humanReadableArgName(arg);
+      });
+      return [].concat(
+        (this.options.length || this._hasHelpOption ? '[options]' : []),
+        (this.commands.length ? '[command]' : []),
+        (this._args.length ? args : [])
+      ).join(' ');
+    }
+
+    this._usage = str;
+    return this;
+  }
+
+  /**
+   * Get or set the name of the command.
+   *
+   * @param {string} [str]
+   * @return {string|Command}
+   */
+
+  name(str) {
+    if (str === undefined) return this._name;
+    this._name = str;
+    return this;
+  }
+
+  /**
+   * Set the name of the command from script filename, such as process.argv[1],
+   * or require.main.filename, or __filename.
+   *
+   * (Used internally and public although not documented in README.)
+   *
+   * @example
+   * program.nameFromFilename(require.main.filename);
+   *
+   * @param {string} filename
+   * @return {Command}
+   */
+
+  nameFromFilename(filename) {
+    this._name = path.basename(filename, path.extname(filename));
+
+    return this;
+  }
+
+  /**
+   * Get or set the directory for searching for executable subcommands of this command.
+   *
+   * @example
+   * program.executableDir(__dirname);
+   * // or
+   * program.executableDir('subcommands');
+   *
+   * @param {string} [path]
+   * @return {string|Command}
+   */
+
+  executableDir(path) {
+    if (path === undefined) return this._executableDir;
+    this._executableDir = path;
+    return this;
+  }
+
+  /**
+   * Return program help documentation.
+   *
+   * @param {{ error: boolean }} [contextOptions] - pass {error:true} to wrap for stderr instead of stdout
+   * @return {string}
+   */
+
+  helpInformation(contextOptions) {
+    const helper = this.createHelp();
+    if (helper.helpWidth === undefined) {
+      helper.helpWidth = (contextOptions && contextOptions.error) ? this._outputConfiguration.getErrHelpWidth() : this._outputConfiguration.getOutHelpWidth();
+    }
+    return helper.formatHelp(this, helper);
+  }
+
+  /**
+   * @api private
+   */
+
+  _getHelpContext(contextOptions) {
+    contextOptions = contextOptions || {};
+    const context = { error: !!contextOptions.error };
+    let write;
+    if (context.error) {
+      write = (arg) => this._outputConfiguration.writeErr(arg);
+    } else {
+      write = (arg) => this._outputConfiguration.writeOut(arg);
+    }
+    context.write = contextOptions.write || write;
+    context.command = this;
+    return context;
+  }
+
+  /**
+   * Output help information for this command.
+   *
+   * Outputs built-in help, and custom text added using `.addHelpText()`.
+   *
+   * @param {{ error: boolean } | Function} [contextOptions] - pass {error:true} to write to stderr instead of stdout
+   */
+
+  outputHelp(contextOptions) {
+    let deprecatedCallback;
+    if (typeof contextOptions === 'function') {
+      deprecatedCallback = contextOptions;
+      contextOptions = undefined;
+    }
+    const context = this._getHelpContext(contextOptions);
+
+    getCommandAndParents(this).reverse().forEach(command => command.emit('beforeAllHelp', context));
+    this.emit('beforeHelp', context);
+
+    let helpInformation = this.helpInformation(context);
+    if (deprecatedCallback) {
+      helpInformation = deprecatedCallback(helpInformation);
+      if (typeof helpInformation !== 'string' && !Buffer.isBuffer(helpInformation)) {
+        throw new Error('outputHelp callback must return a string or a Buffer');
+      }
+    }
+    context.write(helpInformation);
+
+    this.emit(this._helpLongFlag); // deprecated
+    this.emit('afterHelp', context);
+    getCommandAndParents(this).forEach(command => command.emit('afterAllHelp', context));
+  }
+
+  /**
+   * You can pass in flags and a description to override the help
+   * flags and help description for your command. Pass in false to
+   * disable the built-in help option.
+   *
+   * @param {string | boolean} [flags]
+   * @param {string} [description]
+   * @return {Command} `this` command for chaining
+   */
+
+  helpOption(flags, description) {
+    if (typeof flags === 'boolean') {
+      this._hasHelpOption = flags;
+      return this;
+    }
+    this._helpFlags = flags || this._helpFlags;
+    this._helpDescription = description || this._helpDescription;
+
+    const helpFlags = splitOptionFlags(this._helpFlags);
+    this._helpShortFlag = helpFlags.shortFlag;
+    this._helpLongFlag = helpFlags.longFlag;
+
+    return this;
+  }
+
+  /**
+   * Output help information and exit.
+   *
+   * Outputs built-in help, and custom text added using `.addHelpText()`.
+   *
+   * @param {{ error: boolean }} [contextOptions] - pass {error:true} to write to stderr instead of stdout
+   */
+
+  help(contextOptions) {
+    this.outputHelp(contextOptions);
+    let exitCode = process.exitCode || 0;
+    if (exitCode === 0 && contextOptions && typeof contextOptions !== 'function' && contextOptions.error) {
+      exitCode = 1;
+    }
+    // message: do not have all displayed text available so only passing placeholder.
+    this._exit(exitCode, 'commander.help', '(outputHelp)');
+  }
+
+  /**
+   * Add additional text to be displayed with the built-in help.
+   *
+   * Position is 'before' or 'after' to affect just this command,
+   * and 'beforeAll' or 'afterAll' to affect this command and all its subcommands.
+   *
+   * @param {string} position - before or after built-in help
+   * @param {string | Function} text - string to add, or a function returning a string
+   * @return {Command} `this` command for chaining
+   */
+  addHelpText(position, text) {
+    const allowedValues = ['beforeAll', 'before', 'after', 'afterAll'];
+    if (!allowedValues.includes(position)) {
+      throw new Error(`Unexpected value for position to addHelpText.
+Expecting one of '${allowedValues.join("', '")}'`);
+    }
+    const helpEvent = `${position}Help`;
+    this.on(helpEvent, (context) => {
+      let helpStr;
+      if (typeof text === 'function') {
+        helpStr = text({ error: context.error, command: context.command });
+      } else {
+        helpStr = text;
+      }
+      // Ignore falsy value when nothing to output.
+      if (helpStr) {
+        context.write(`${helpStr}\n`);
+      }
+    });
+    return this;
+  }
+}
+
+/**
+ * Output help information if help flags specified
+ *
+ * @param {Command} cmd - command to output help for
+ * @param {Array} args - array of options to search for help flags
+ * @api private
+ */
+
+function outputHelpIfRequested(cmd, args) {
+  const helpOption = cmd._hasHelpOption && args.find(arg => arg === cmd._helpLongFlag || arg === cmd._helpShortFlag);
+  if (helpOption) {
+    cmd.outputHelp();
+    // (Do not have all displayed text available so only passing placeholder.)
+    cmd._exit(0, 'commander.helpDisplayed', '(outputHelp)');
+  }
+}
+
+/**
+ * Scan arguments and increment port number for inspect calls (to avoid conflicts when spawning new command).
+ *
+ * @param {string[]} args - array of arguments from node.execArgv
+ * @returns {string[]}
+ * @api private
+ */
+
+function incrementNodeInspectorPort(args) {
+  // Testing for these options:
+  //  --inspect[=[host:]port]
+  //  --inspect-brk[=[host:]port]
+  //  --inspect-port=[host:]port
+  return args.map((arg) => {
+    if (!arg.startsWith('--inspect')) {
+      return arg;
+    }
+    let debugOption;
+    let debugHost = '127.0.0.1';
+    let debugPort = '9229';
+    let match;
+    if ((match = arg.match(/^(--inspect(-brk)?)$/)) !== null) {
+      // e.g. --inspect
+      debugOption = match[1];
+    } else if ((match = arg.match(/^(--inspect(-brk|-port)?)=([^:]+)$/)) !== null) {
+      debugOption = match[1];
+      if (/^\d+$/.test(match[3])) {
+        // e.g. --inspect=1234
+        debugPort = match[3];
+      } else {
+        // e.g. --inspect=localhost
+        debugHost = match[3];
+      }
+    } else if ((match = arg.match(/^(--inspect(-brk|-port)?)=([^:]+):(\d+)$/)) !== null) {
+      // e.g. --inspect=localhost:1234
+      debugOption = match[1];
+      debugHost = match[3];
+      debugPort = match[4];
+    }
+
+    if (debugOption && debugPort !== '0') {
+      return `${debugOption}=${debugHost}:${parseInt(debugPort) + 1}`;
+    }
+    return arg;
+  });
+}
+
+/**
+ * @param {Command} startCommand
+ * @returns {Command[]}
+ * @api private
+ */
+
+function getCommandAndParents(startCommand) {
+  const result = [];
+  for (let command = startCommand; command; command = command.parent) {
+    result.push(command);
+  }
+  return result;
+}
+
+exports.Command = Command;
+
 
 /***/ }),
 
-/***/ "./node_modules/commander/lib/error.js":
-/*!*********************************************!*\
-  !*** ./node_modules/commander/lib/error.js ***!
-  \*********************************************/
+/***/ 8056:
 /***/ ((__unused_webpack_module, exports) => {
 
-eval("// @ts-check\n\n/**\n * CommanderError class\n * @class\n */\nclass CommanderError extends Error {\n  /**\n   * Constructs the CommanderError class\n   * @param {number} exitCode suggested exit code which could be used with process.exit\n   * @param {string} code an id string representing the error\n   * @param {string} message human-readable description of the error\n   * @constructor\n   */\n  constructor(exitCode, code, message) {\n    super(message);\n    // properly capture stack trace in Node.js\n    Error.captureStackTrace(this, this.constructor);\n    this.name = this.constructor.name;\n    this.code = code;\n    this.exitCode = exitCode;\n    this.nestedError = undefined;\n  }\n}\n\n/**\n * InvalidArgumentError class\n * @class\n */\nclass InvalidArgumentError extends CommanderError {\n  /**\n   * Constructs the InvalidArgumentError class\n   * @param {string} [message] explanation of why argument is invalid\n   * @constructor\n   */\n  constructor(message) {\n    super(1, 'commander.invalidArgument', message);\n    // properly capture stack trace in Node.js\n    Error.captureStackTrace(this, this.constructor);\n    this.name = this.constructor.name;\n  }\n}\n\nexports.CommanderError = CommanderError;\nexports.InvalidArgumentError = InvalidArgumentError;\n\n\n//# sourceURL=webpack://electron/./node_modules/commander/lib/error.js?");
+// @ts-check
+
+/**
+ * CommanderError class
+ * @class
+ */
+class CommanderError extends Error {
+  /**
+   * Constructs the CommanderError class
+   * @param {number} exitCode suggested exit code which could be used with process.exit
+   * @param {string} code an id string representing the error
+   * @param {string} message human-readable description of the error
+   * @constructor
+   */
+  constructor(exitCode, code, message) {
+    super(message);
+    // properly capture stack trace in Node.js
+    Error.captureStackTrace(this, this.constructor);
+    this.name = this.constructor.name;
+    this.code = code;
+    this.exitCode = exitCode;
+    this.nestedError = undefined;
+  }
+}
+
+/**
+ * InvalidArgumentError class
+ * @class
+ */
+class InvalidArgumentError extends CommanderError {
+  /**
+   * Constructs the InvalidArgumentError class
+   * @param {string} [message] explanation of why argument is invalid
+   * @constructor
+   */
+  constructor(message) {
+    super(1, 'commander.invalidArgument', message);
+    // properly capture stack trace in Node.js
+    Error.captureStackTrace(this, this.constructor);
+    this.name = this.constructor.name;
+  }
+}
+
+exports.CommanderError = CommanderError;
+exports.InvalidArgumentError = InvalidArgumentError;
+
 
 /***/ }),
 
-/***/ "./node_modules/commander/lib/help.js":
-/*!********************************************!*\
-  !*** ./node_modules/commander/lib/help.js ***!
-  \********************************************/
+/***/ 8917:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("const { humanReadableArgName } = __webpack_require__(/*! ./argument.js */ \"./node_modules/commander/lib/argument.js\");\n\n/**\n * TypeScript import types for JSDoc, used by Visual Studio Code IntelliSense and `npm run typescript-checkJS`\n * https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html#import-types\n * @typedef { import(\"./argument.js\").Argument } Argument\n * @typedef { import(\"./command.js\").Command } Command\n * @typedef { import(\"./option.js\").Option } Option\n */\n\n// @ts-check\n\n// Although this is a class, methods are static in style to allow override using subclass or just functions.\nclass Help {\n  constructor() {\n    this.helpWidth = undefined;\n    this.sortSubcommands = false;\n    this.sortOptions = false;\n    this.showGlobalOptions = false;\n  }\n\n  /**\n   * Get an array of the visible subcommands. Includes a placeholder for the implicit help command, if there is one.\n   *\n   * @param {Command} cmd\n   * @returns {Command[]}\n   */\n\n  visibleCommands(cmd) {\n    const visibleCommands = cmd.commands.filter(cmd => !cmd._hidden);\n    if (cmd._hasImplicitHelpCommand()) {\n      // Create a command matching the implicit help command.\n      const [, helpName, helpArgs] = cmd._helpCommandnameAndArgs.match(/([^ ]+) *(.*)/);\n      const helpCommand = cmd.createCommand(helpName)\n        .helpOption(false);\n      helpCommand.description(cmd._helpCommandDescription);\n      if (helpArgs) helpCommand.arguments(helpArgs);\n      visibleCommands.push(helpCommand);\n    }\n    if (this.sortSubcommands) {\n      visibleCommands.sort((a, b) => {\n        // @ts-ignore: overloaded return type\n        return a.name().localeCompare(b.name());\n      });\n    }\n    return visibleCommands;\n  }\n\n  /**\n   * Compare options for sort.\n   *\n   * @param {Option} a\n   * @param {Option} b\n   * @returns number\n   */\n  compareOptions(a, b) {\n    const getSortKey = (option) => {\n      // WYSIWYG for order displayed in help. Short used for comparison if present. No special handling for negated.\n      return option.short ? option.short.replace(/^-/, '') : option.long.replace(/^--/, '');\n    };\n    return getSortKey(a).localeCompare(getSortKey(b));\n  }\n\n  /**\n   * Get an array of the visible options. Includes a placeholder for the implicit help option, if there is one.\n   *\n   * @param {Command} cmd\n   * @returns {Option[]}\n   */\n\n  visibleOptions(cmd) {\n    const visibleOptions = cmd.options.filter((option) => !option.hidden);\n    // Implicit help\n    const showShortHelpFlag = cmd._hasHelpOption && cmd._helpShortFlag && !cmd._findOption(cmd._helpShortFlag);\n    const showLongHelpFlag = cmd._hasHelpOption && !cmd._findOption(cmd._helpLongFlag);\n    if (showShortHelpFlag || showLongHelpFlag) {\n      let helpOption;\n      if (!showShortHelpFlag) {\n        helpOption = cmd.createOption(cmd._helpLongFlag, cmd._helpDescription);\n      } else if (!showLongHelpFlag) {\n        helpOption = cmd.createOption(cmd._helpShortFlag, cmd._helpDescription);\n      } else {\n        helpOption = cmd.createOption(cmd._helpFlags, cmd._helpDescription);\n      }\n      visibleOptions.push(helpOption);\n    }\n    if (this.sortOptions) {\n      visibleOptions.sort(this.compareOptions);\n    }\n    return visibleOptions;\n  }\n\n  /**\n   * Get an array of the visible global options. (Not including help.)\n   *\n   * @param {Command} cmd\n   * @returns {Option[]}\n   */\n\n  visibleGlobalOptions(cmd) {\n    if (!this.showGlobalOptions) return [];\n\n    const globalOptions = [];\n    for (let parentCmd = cmd.parent; parentCmd; parentCmd = parentCmd.parent) {\n      const visibleOptions = parentCmd.options.filter((option) => !option.hidden);\n      globalOptions.push(...visibleOptions);\n    }\n    if (this.sortOptions) {\n      globalOptions.sort(this.compareOptions);\n    }\n    return globalOptions;\n  }\n\n  /**\n   * Get an array of the arguments if any have a description.\n   *\n   * @param {Command} cmd\n   * @returns {Argument[]}\n   */\n\n  visibleArguments(cmd) {\n    // Side effect! Apply the legacy descriptions before the arguments are displayed.\n    if (cmd._argsDescription) {\n      cmd._args.forEach(argument => {\n        argument.description = argument.description || cmd._argsDescription[argument.name()] || '';\n      });\n    }\n\n    // If there are any arguments with a description then return all the arguments.\n    if (cmd._args.find(argument => argument.description)) {\n      return cmd._args;\n    }\n    return [];\n  }\n\n  /**\n   * Get the command term to show in the list of subcommands.\n   *\n   * @param {Command} cmd\n   * @returns {string}\n   */\n\n  subcommandTerm(cmd) {\n    // Legacy. Ignores custom usage string, and nested commands.\n    const args = cmd._args.map(arg => humanReadableArgName(arg)).join(' ');\n    return cmd._name +\n      (cmd._aliases[0] ? '|' + cmd._aliases[0] : '') +\n      (cmd.options.length ? ' [options]' : '') + // simplistic check for non-help option\n      (args ? ' ' + args : '');\n  }\n\n  /**\n   * Get the option term to show in the list of options.\n   *\n   * @param {Option} option\n   * @returns {string}\n   */\n\n  optionTerm(option) {\n    return option.flags;\n  }\n\n  /**\n   * Get the argument term to show in the list of arguments.\n   *\n   * @param {Argument} argument\n   * @returns {string}\n   */\n\n  argumentTerm(argument) {\n    return argument.name();\n  }\n\n  /**\n   * Get the longest command term length.\n   *\n   * @param {Command} cmd\n   * @param {Help} helper\n   * @returns {number}\n   */\n\n  longestSubcommandTermLength(cmd, helper) {\n    return helper.visibleCommands(cmd).reduce((max, command) => {\n      return Math.max(max, helper.subcommandTerm(command).length);\n    }, 0);\n  }\n\n  /**\n   * Get the longest option term length.\n   *\n   * @param {Command} cmd\n   * @param {Help} helper\n   * @returns {number}\n   */\n\n  longestOptionTermLength(cmd, helper) {\n    return helper.visibleOptions(cmd).reduce((max, option) => {\n      return Math.max(max, helper.optionTerm(option).length);\n    }, 0);\n  }\n\n  /**\n   * Get the longest global option term length.\n   *\n   * @param {Command} cmd\n   * @param {Help} helper\n   * @returns {number}\n   */\n\n  longestGlobalOptionTermLength(cmd, helper) {\n    return helper.visibleGlobalOptions(cmd).reduce((max, option) => {\n      return Math.max(max, helper.optionTerm(option).length);\n    }, 0);\n  }\n\n  /**\n   * Get the longest argument term length.\n   *\n   * @param {Command} cmd\n   * @param {Help} helper\n   * @returns {number}\n   */\n\n  longestArgumentTermLength(cmd, helper) {\n    return helper.visibleArguments(cmd).reduce((max, argument) => {\n      return Math.max(max, helper.argumentTerm(argument).length);\n    }, 0);\n  }\n\n  /**\n   * Get the command usage to be displayed at the top of the built-in help.\n   *\n   * @param {Command} cmd\n   * @returns {string}\n   */\n\n  commandUsage(cmd) {\n    // Usage\n    let cmdName = cmd._name;\n    if (cmd._aliases[0]) {\n      cmdName = cmdName + '|' + cmd._aliases[0];\n    }\n    let parentCmdNames = '';\n    for (let parentCmd = cmd.parent; parentCmd; parentCmd = parentCmd.parent) {\n      parentCmdNames = parentCmd.name() + ' ' + parentCmdNames;\n    }\n    return parentCmdNames + cmdName + ' ' + cmd.usage();\n  }\n\n  /**\n   * Get the description for the command.\n   *\n   * @param {Command} cmd\n   * @returns {string}\n   */\n\n  commandDescription(cmd) {\n    // @ts-ignore: overloaded return type\n    return cmd.description();\n  }\n\n  /**\n   * Get the subcommand summary to show in the list of subcommands.\n   * (Fallback to description for backwards compatibility.)\n   *\n   * @param {Command} cmd\n   * @returns {string}\n   */\n\n  subcommandDescription(cmd) {\n    // @ts-ignore: overloaded return type\n    return cmd.summary() || cmd.description();\n  }\n\n  /**\n   * Get the option description to show in the list of options.\n   *\n   * @param {Option} option\n   * @return {string}\n   */\n\n  optionDescription(option) {\n    const extraInfo = [];\n\n    if (option.argChoices) {\n      extraInfo.push(\n        // use stringify to match the display of the default value\n        `choices: ${option.argChoices.map((choice) => JSON.stringify(choice)).join(', ')}`);\n    }\n    if (option.defaultValue !== undefined) {\n      // default for boolean and negated more for programmer than end user,\n      // but show true/false for boolean option as may be for hand-rolled env or config processing.\n      const showDefault = option.required || option.optional ||\n        (option.isBoolean() && typeof option.defaultValue === 'boolean');\n      if (showDefault) {\n        extraInfo.push(`default: ${option.defaultValueDescription || JSON.stringify(option.defaultValue)}`);\n      }\n    }\n    // preset for boolean and negated are more for programmer than end user\n    if (option.presetArg !== undefined && option.optional) {\n      extraInfo.push(`preset: ${JSON.stringify(option.presetArg)}`);\n    }\n    if (option.envVar !== undefined) {\n      extraInfo.push(`env: ${option.envVar}`);\n    }\n    if (extraInfo.length > 0) {\n      return `${option.description} (${extraInfo.join(', ')})`;\n    }\n\n    return option.description;\n  }\n\n  /**\n   * Get the argument description to show in the list of arguments.\n   *\n   * @param {Argument} argument\n   * @return {string}\n   */\n\n  argumentDescription(argument) {\n    const extraInfo = [];\n    if (argument.argChoices) {\n      extraInfo.push(\n        // use stringify to match the display of the default value\n        `choices: ${argument.argChoices.map((choice) => JSON.stringify(choice)).join(', ')}`);\n    }\n    if (argument.defaultValue !== undefined) {\n      extraInfo.push(`default: ${argument.defaultValueDescription || JSON.stringify(argument.defaultValue)}`);\n    }\n    if (extraInfo.length > 0) {\n      const extraDescripton = `(${extraInfo.join(', ')})`;\n      if (argument.description) {\n        return `${argument.description} ${extraDescripton}`;\n      }\n      return extraDescripton;\n    }\n    return argument.description;\n  }\n\n  /**\n   * Generate the built-in help text.\n   *\n   * @param {Command} cmd\n   * @param {Help} helper\n   * @returns {string}\n   */\n\n  formatHelp(cmd, helper) {\n    const termWidth = helper.padWidth(cmd, helper);\n    const helpWidth = helper.helpWidth || 80;\n    const itemIndentWidth = 2;\n    const itemSeparatorWidth = 2; // between term and description\n    function formatItem(term, description) {\n      if (description) {\n        const fullText = `${term.padEnd(termWidth + itemSeparatorWidth)}${description}`;\n        return helper.wrap(fullText, helpWidth - itemIndentWidth, termWidth + itemSeparatorWidth);\n      }\n      return term;\n    }\n    function formatList(textArray) {\n      return textArray.join('\\n').replace(/^/gm, ' '.repeat(itemIndentWidth));\n    }\n\n    // Usage\n    let output = [`Usage: ${helper.commandUsage(cmd)}`, ''];\n\n    // Description\n    const commandDescription = helper.commandDescription(cmd);\n    if (commandDescription.length > 0) {\n      output = output.concat([helper.wrap(commandDescription, helpWidth, 0), '']);\n    }\n\n    // Arguments\n    const argumentList = helper.visibleArguments(cmd).map((argument) => {\n      return formatItem(helper.argumentTerm(argument), helper.argumentDescription(argument));\n    });\n    if (argumentList.length > 0) {\n      output = output.concat(['Arguments:', formatList(argumentList), '']);\n    }\n\n    // Options\n    const optionList = helper.visibleOptions(cmd).map((option) => {\n      return formatItem(helper.optionTerm(option), helper.optionDescription(option));\n    });\n    if (optionList.length > 0) {\n      output = output.concat(['Options:', formatList(optionList), '']);\n    }\n\n    if (this.showGlobalOptions) {\n      const globalOptionList = helper.visibleGlobalOptions(cmd).map((option) => {\n        return formatItem(helper.optionTerm(option), helper.optionDescription(option));\n      });\n      if (globalOptionList.length > 0) {\n        output = output.concat(['Global Options:', formatList(globalOptionList), '']);\n      }\n    }\n\n    // Commands\n    const commandList = helper.visibleCommands(cmd).map((cmd) => {\n      return formatItem(helper.subcommandTerm(cmd), helper.subcommandDescription(cmd));\n    });\n    if (commandList.length > 0) {\n      output = output.concat(['Commands:', formatList(commandList), '']);\n    }\n\n    return output.join('\\n');\n  }\n\n  /**\n   * Calculate the pad width from the maximum term length.\n   *\n   * @param {Command} cmd\n   * @param {Help} helper\n   * @returns {number}\n   */\n\n  padWidth(cmd, helper) {\n    return Math.max(\n      helper.longestOptionTermLength(cmd, helper),\n      helper.longestGlobalOptionTermLength(cmd, helper),\n      helper.longestSubcommandTermLength(cmd, helper),\n      helper.longestArgumentTermLength(cmd, helper)\n    );\n  }\n\n  /**\n   * Wrap the given string to width characters per line, with lines after the first indented.\n   * Do not wrap if insufficient room for wrapping (minColumnWidth), or string is manually formatted.\n   *\n   * @param {string} str\n   * @param {number} width\n   * @param {number} indent\n   * @param {number} [minColumnWidth=40]\n   * @return {string}\n   *\n   */\n\n  wrap(str, width, indent, minColumnWidth = 40) {\n    // Full \\s characters, minus the linefeeds.\n    const indents = ' \\\\f\\\\t\\\\v\\u00a0\\u1680\\u2000-\\u200a\\u202f\\u205f\\u3000\\ufeff';\n    // Detect manually wrapped and indented strings by searching for line break followed by spaces.\n    const manualIndent = new RegExp(`[\\\\n][${indents}]+`);\n    if (str.match(manualIndent)) return str;\n    // Do not wrap if not enough room for a wrapped column of text (as could end up with a word per line).\n    const columnWidth = width - indent;\n    if (columnWidth < minColumnWidth) return str;\n\n    const leadingStr = str.slice(0, indent);\n    const columnText = str.slice(indent).replace('\\r\\n', '\\n');\n    const indentString = ' '.repeat(indent);\n    const zeroWidthSpace = '\\u200B';\n    const breaks = `\\\\s${zeroWidthSpace}`;\n    // Match line end (so empty lines don't collapse),\n    // or as much text as will fit in column, or excess text up to first break.\n    const regex = new RegExp(`\\n|.{1,${columnWidth - 1}}([${breaks}]|$)|[^${breaks}]+?([${breaks}]|$)`, 'g');\n    const lines = columnText.match(regex) || [];\n    return leadingStr + lines.map((line, i) => {\n      if (line === '\\n') return ''; // preserve empty lines\n      return ((i > 0) ? indentString : '') + line.trimEnd();\n    }).join('\\n');\n  }\n}\n\nexports.Help = Help;\n\n\n//# sourceURL=webpack://electron/./node_modules/commander/lib/help.js?");
+const { humanReadableArgName } = __webpack_require__(8998);
+
+/**
+ * TypeScript import types for JSDoc, used by Visual Studio Code IntelliSense and `npm run typescript-checkJS`
+ * https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html#import-types
+ * @typedef { import("./argument.js").Argument } Argument
+ * @typedef { import("./command.js").Command } Command
+ * @typedef { import("./option.js").Option } Option
+ */
+
+// @ts-check
+
+// Although this is a class, methods are static in style to allow override using subclass or just functions.
+class Help {
+  constructor() {
+    this.helpWidth = undefined;
+    this.sortSubcommands = false;
+    this.sortOptions = false;
+    this.showGlobalOptions = false;
+  }
+
+  /**
+   * Get an array of the visible subcommands. Includes a placeholder for the implicit help command, if there is one.
+   *
+   * @param {Command} cmd
+   * @returns {Command[]}
+   */
+
+  visibleCommands(cmd) {
+    const visibleCommands = cmd.commands.filter(cmd => !cmd._hidden);
+    if (cmd._hasImplicitHelpCommand()) {
+      // Create a command matching the implicit help command.
+      const [, helpName, helpArgs] = cmd._helpCommandnameAndArgs.match(/([^ ]+) *(.*)/);
+      const helpCommand = cmd.createCommand(helpName)
+        .helpOption(false);
+      helpCommand.description(cmd._helpCommandDescription);
+      if (helpArgs) helpCommand.arguments(helpArgs);
+      visibleCommands.push(helpCommand);
+    }
+    if (this.sortSubcommands) {
+      visibleCommands.sort((a, b) => {
+        // @ts-ignore: overloaded return type
+        return a.name().localeCompare(b.name());
+      });
+    }
+    return visibleCommands;
+  }
+
+  /**
+   * Compare options for sort.
+   *
+   * @param {Option} a
+   * @param {Option} b
+   * @returns number
+   */
+  compareOptions(a, b) {
+    const getSortKey = (option) => {
+      // WYSIWYG for order displayed in help. Short used for comparison if present. No special handling for negated.
+      return option.short ? option.short.replace(/^-/, '') : option.long.replace(/^--/, '');
+    };
+    return getSortKey(a).localeCompare(getSortKey(b));
+  }
+
+  /**
+   * Get an array of the visible options. Includes a placeholder for the implicit help option, if there is one.
+   *
+   * @param {Command} cmd
+   * @returns {Option[]}
+   */
+
+  visibleOptions(cmd) {
+    const visibleOptions = cmd.options.filter((option) => !option.hidden);
+    // Implicit help
+    const showShortHelpFlag = cmd._hasHelpOption && cmd._helpShortFlag && !cmd._findOption(cmd._helpShortFlag);
+    const showLongHelpFlag = cmd._hasHelpOption && !cmd._findOption(cmd._helpLongFlag);
+    if (showShortHelpFlag || showLongHelpFlag) {
+      let helpOption;
+      if (!showShortHelpFlag) {
+        helpOption = cmd.createOption(cmd._helpLongFlag, cmd._helpDescription);
+      } else if (!showLongHelpFlag) {
+        helpOption = cmd.createOption(cmd._helpShortFlag, cmd._helpDescription);
+      } else {
+        helpOption = cmd.createOption(cmd._helpFlags, cmd._helpDescription);
+      }
+      visibleOptions.push(helpOption);
+    }
+    if (this.sortOptions) {
+      visibleOptions.sort(this.compareOptions);
+    }
+    return visibleOptions;
+  }
+
+  /**
+   * Get an array of the visible global options. (Not including help.)
+   *
+   * @param {Command} cmd
+   * @returns {Option[]}
+   */
+
+  visibleGlobalOptions(cmd) {
+    if (!this.showGlobalOptions) return [];
+
+    const globalOptions = [];
+    for (let parentCmd = cmd.parent; parentCmd; parentCmd = parentCmd.parent) {
+      const visibleOptions = parentCmd.options.filter((option) => !option.hidden);
+      globalOptions.push(...visibleOptions);
+    }
+    if (this.sortOptions) {
+      globalOptions.sort(this.compareOptions);
+    }
+    return globalOptions;
+  }
+
+  /**
+   * Get an array of the arguments if any have a description.
+   *
+   * @param {Command} cmd
+   * @returns {Argument[]}
+   */
+
+  visibleArguments(cmd) {
+    // Side effect! Apply the legacy descriptions before the arguments are displayed.
+    if (cmd._argsDescription) {
+      cmd._args.forEach(argument => {
+        argument.description = argument.description || cmd._argsDescription[argument.name()] || '';
+      });
+    }
+
+    // If there are any arguments with a description then return all the arguments.
+    if (cmd._args.find(argument => argument.description)) {
+      return cmd._args;
+    }
+    return [];
+  }
+
+  /**
+   * Get the command term to show in the list of subcommands.
+   *
+   * @param {Command} cmd
+   * @returns {string}
+   */
+
+  subcommandTerm(cmd) {
+    // Legacy. Ignores custom usage string, and nested commands.
+    const args = cmd._args.map(arg => humanReadableArgName(arg)).join(' ');
+    return cmd._name +
+      (cmd._aliases[0] ? '|' + cmd._aliases[0] : '') +
+      (cmd.options.length ? ' [options]' : '') + // simplistic check for non-help option
+      (args ? ' ' + args : '');
+  }
+
+  /**
+   * Get the option term to show in the list of options.
+   *
+   * @param {Option} option
+   * @returns {string}
+   */
+
+  optionTerm(option) {
+    return option.flags;
+  }
+
+  /**
+   * Get the argument term to show in the list of arguments.
+   *
+   * @param {Argument} argument
+   * @returns {string}
+   */
+
+  argumentTerm(argument) {
+    return argument.name();
+  }
+
+  /**
+   * Get the longest command term length.
+   *
+   * @param {Command} cmd
+   * @param {Help} helper
+   * @returns {number}
+   */
+
+  longestSubcommandTermLength(cmd, helper) {
+    return helper.visibleCommands(cmd).reduce((max, command) => {
+      return Math.max(max, helper.subcommandTerm(command).length);
+    }, 0);
+  }
+
+  /**
+   * Get the longest option term length.
+   *
+   * @param {Command} cmd
+   * @param {Help} helper
+   * @returns {number}
+   */
+
+  longestOptionTermLength(cmd, helper) {
+    return helper.visibleOptions(cmd).reduce((max, option) => {
+      return Math.max(max, helper.optionTerm(option).length);
+    }, 0);
+  }
+
+  /**
+   * Get the longest global option term length.
+   *
+   * @param {Command} cmd
+   * @param {Help} helper
+   * @returns {number}
+   */
+
+  longestGlobalOptionTermLength(cmd, helper) {
+    return helper.visibleGlobalOptions(cmd).reduce((max, option) => {
+      return Math.max(max, helper.optionTerm(option).length);
+    }, 0);
+  }
+
+  /**
+   * Get the longest argument term length.
+   *
+   * @param {Command} cmd
+   * @param {Help} helper
+   * @returns {number}
+   */
+
+  longestArgumentTermLength(cmd, helper) {
+    return helper.visibleArguments(cmd).reduce((max, argument) => {
+      return Math.max(max, helper.argumentTerm(argument).length);
+    }, 0);
+  }
+
+  /**
+   * Get the command usage to be displayed at the top of the built-in help.
+   *
+   * @param {Command} cmd
+   * @returns {string}
+   */
+
+  commandUsage(cmd) {
+    // Usage
+    let cmdName = cmd._name;
+    if (cmd._aliases[0]) {
+      cmdName = cmdName + '|' + cmd._aliases[0];
+    }
+    let parentCmdNames = '';
+    for (let parentCmd = cmd.parent; parentCmd; parentCmd = parentCmd.parent) {
+      parentCmdNames = parentCmd.name() + ' ' + parentCmdNames;
+    }
+    return parentCmdNames + cmdName + ' ' + cmd.usage();
+  }
+
+  /**
+   * Get the description for the command.
+   *
+   * @param {Command} cmd
+   * @returns {string}
+   */
+
+  commandDescription(cmd) {
+    // @ts-ignore: overloaded return type
+    return cmd.description();
+  }
+
+  /**
+   * Get the subcommand summary to show in the list of subcommands.
+   * (Fallback to description for backwards compatibility.)
+   *
+   * @param {Command} cmd
+   * @returns {string}
+   */
+
+  subcommandDescription(cmd) {
+    // @ts-ignore: overloaded return type
+    return cmd.summary() || cmd.description();
+  }
+
+  /**
+   * Get the option description to show in the list of options.
+   *
+   * @param {Option} option
+   * @return {string}
+   */
+
+  optionDescription(option) {
+    const extraInfo = [];
+
+    if (option.argChoices) {
+      extraInfo.push(
+        // use stringify to match the display of the default value
+        `choices: ${option.argChoices.map((choice) => JSON.stringify(choice)).join(', ')}`);
+    }
+    if (option.defaultValue !== undefined) {
+      // default for boolean and negated more for programmer than end user,
+      // but show true/false for boolean option as may be for hand-rolled env or config processing.
+      const showDefault = option.required || option.optional ||
+        (option.isBoolean() && typeof option.defaultValue === 'boolean');
+      if (showDefault) {
+        extraInfo.push(`default: ${option.defaultValueDescription || JSON.stringify(option.defaultValue)}`);
+      }
+    }
+    // preset for boolean and negated are more for programmer than end user
+    if (option.presetArg !== undefined && option.optional) {
+      extraInfo.push(`preset: ${JSON.stringify(option.presetArg)}`);
+    }
+    if (option.envVar !== undefined) {
+      extraInfo.push(`env: ${option.envVar}`);
+    }
+    if (extraInfo.length > 0) {
+      return `${option.description} (${extraInfo.join(', ')})`;
+    }
+
+    return option.description;
+  }
+
+  /**
+   * Get the argument description to show in the list of arguments.
+   *
+   * @param {Argument} argument
+   * @return {string}
+   */
+
+  argumentDescription(argument) {
+    const extraInfo = [];
+    if (argument.argChoices) {
+      extraInfo.push(
+        // use stringify to match the display of the default value
+        `choices: ${argument.argChoices.map((choice) => JSON.stringify(choice)).join(', ')}`);
+    }
+    if (argument.defaultValue !== undefined) {
+      extraInfo.push(`default: ${argument.defaultValueDescription || JSON.stringify(argument.defaultValue)}`);
+    }
+    if (extraInfo.length > 0) {
+      const extraDescripton = `(${extraInfo.join(', ')})`;
+      if (argument.description) {
+        return `${argument.description} ${extraDescripton}`;
+      }
+      return extraDescripton;
+    }
+    return argument.description;
+  }
+
+  /**
+   * Generate the built-in help text.
+   *
+   * @param {Command} cmd
+   * @param {Help} helper
+   * @returns {string}
+   */
+
+  formatHelp(cmd, helper) {
+    const termWidth = helper.padWidth(cmd, helper);
+    const helpWidth = helper.helpWidth || 80;
+    const itemIndentWidth = 2;
+    const itemSeparatorWidth = 2; // between term and description
+    function formatItem(term, description) {
+      if (description) {
+        const fullText = `${term.padEnd(termWidth + itemSeparatorWidth)}${description}`;
+        return helper.wrap(fullText, helpWidth - itemIndentWidth, termWidth + itemSeparatorWidth);
+      }
+      return term;
+    }
+    function formatList(textArray) {
+      return textArray.join('\n').replace(/^/gm, ' '.repeat(itemIndentWidth));
+    }
+
+    // Usage
+    let output = [`Usage: ${helper.commandUsage(cmd)}`, ''];
+
+    // Description
+    const commandDescription = helper.commandDescription(cmd);
+    if (commandDescription.length > 0) {
+      output = output.concat([helper.wrap(commandDescription, helpWidth, 0), '']);
+    }
+
+    // Arguments
+    const argumentList = helper.visibleArguments(cmd).map((argument) => {
+      return formatItem(helper.argumentTerm(argument), helper.argumentDescription(argument));
+    });
+    if (argumentList.length > 0) {
+      output = output.concat(['Arguments:', formatList(argumentList), '']);
+    }
+
+    // Options
+    const optionList = helper.visibleOptions(cmd).map((option) => {
+      return formatItem(helper.optionTerm(option), helper.optionDescription(option));
+    });
+    if (optionList.length > 0) {
+      output = output.concat(['Options:', formatList(optionList), '']);
+    }
+
+    if (this.showGlobalOptions) {
+      const globalOptionList = helper.visibleGlobalOptions(cmd).map((option) => {
+        return formatItem(helper.optionTerm(option), helper.optionDescription(option));
+      });
+      if (globalOptionList.length > 0) {
+        output = output.concat(['Global Options:', formatList(globalOptionList), '']);
+      }
+    }
+
+    // Commands
+    const commandList = helper.visibleCommands(cmd).map((cmd) => {
+      return formatItem(helper.subcommandTerm(cmd), helper.subcommandDescription(cmd));
+    });
+    if (commandList.length > 0) {
+      output = output.concat(['Commands:', formatList(commandList), '']);
+    }
+
+    return output.join('\n');
+  }
+
+  /**
+   * Calculate the pad width from the maximum term length.
+   *
+   * @param {Command} cmd
+   * @param {Help} helper
+   * @returns {number}
+   */
+
+  padWidth(cmd, helper) {
+    return Math.max(
+      helper.longestOptionTermLength(cmd, helper),
+      helper.longestGlobalOptionTermLength(cmd, helper),
+      helper.longestSubcommandTermLength(cmd, helper),
+      helper.longestArgumentTermLength(cmd, helper)
+    );
+  }
+
+  /**
+   * Wrap the given string to width characters per line, with lines after the first indented.
+   * Do not wrap if insufficient room for wrapping (minColumnWidth), or string is manually formatted.
+   *
+   * @param {string} str
+   * @param {number} width
+   * @param {number} indent
+   * @param {number} [minColumnWidth=40]
+   * @return {string}
+   *
+   */
+
+  wrap(str, width, indent, minColumnWidth = 40) {
+    // Full \s characters, minus the linefeeds.
+    const indents = ' \\f\\t\\v\u00a0\u1680\u2000-\u200a\u202f\u205f\u3000\ufeff';
+    // Detect manually wrapped and indented strings by searching for line break followed by spaces.
+    const manualIndent = new RegExp(`[\\n][${indents}]+`);
+    if (str.match(manualIndent)) return str;
+    // Do not wrap if not enough room for a wrapped column of text (as could end up with a word per line).
+    const columnWidth = width - indent;
+    if (columnWidth < minColumnWidth) return str;
+
+    const leadingStr = str.slice(0, indent);
+    const columnText = str.slice(indent).replace('\r\n', '\n');
+    const indentString = ' '.repeat(indent);
+    const zeroWidthSpace = '\u200B';
+    const breaks = `\\s${zeroWidthSpace}`;
+    // Match line end (so empty lines don't collapse),
+    // or as much text as will fit in column, or excess text up to first break.
+    const regex = new RegExp(`\n|.{1,${columnWidth - 1}}([${breaks}]|$)|[^${breaks}]+?([${breaks}]|$)`, 'g');
+    const lines = columnText.match(regex) || [];
+    return leadingStr + lines.map((line, i) => {
+      if (line === '\n') return ''; // preserve empty lines
+      return ((i > 0) ? indentString : '') + line.trimEnd();
+    }).join('\n');
+  }
+}
+
+exports.Help = Help;
+
 
 /***/ }),
 
-/***/ "./node_modules/commander/lib/option.js":
-/*!**********************************************!*\
-  !*** ./node_modules/commander/lib/option.js ***!
-  \**********************************************/
+/***/ 5790:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("const { InvalidArgumentError } = __webpack_require__(/*! ./error.js */ \"./node_modules/commander/lib/error.js\");\n\n// @ts-check\n\nclass Option {\n  /**\n   * Initialize a new `Option` with the given `flags` and `description`.\n   *\n   * @param {string} flags\n   * @param {string} [description]\n   */\n\n  constructor(flags, description) {\n    this.flags = flags;\n    this.description = description || '';\n\n    this.required = flags.includes('<'); // A value must be supplied when the option is specified.\n    this.optional = flags.includes('['); // A value is optional when the option is specified.\n    // variadic test ignores <value,...> et al which might be used to describe custom splitting of single argument\n    this.variadic = /\\w\\.\\.\\.[>\\]]$/.test(flags); // The option can take multiple values.\n    this.mandatory = false; // The option must have a value after parsing, which usually means it must be specified on command line.\n    const optionFlags = splitOptionFlags(flags);\n    this.short = optionFlags.shortFlag;\n    this.long = optionFlags.longFlag;\n    this.negate = false;\n    if (this.long) {\n      this.negate = this.long.startsWith('--no-');\n    }\n    this.defaultValue = undefined;\n    this.defaultValueDescription = undefined;\n    this.presetArg = undefined;\n    this.envVar = undefined;\n    this.parseArg = undefined;\n    this.hidden = false;\n    this.argChoices = undefined;\n    this.conflictsWith = [];\n    this.implied = undefined;\n  }\n\n  /**\n   * Set the default value, and optionally supply the description to be displayed in the help.\n   *\n   * @param {any} value\n   * @param {string} [description]\n   * @return {Option}\n   */\n\n  default(value, description) {\n    this.defaultValue = value;\n    this.defaultValueDescription = description;\n    return this;\n  }\n\n  /**\n   * Preset to use when option used without option-argument, especially optional but also boolean and negated.\n   * The custom processing (parseArg) is called.\n   *\n   * @example\n   * new Option('--color').default('GREYSCALE').preset('RGB');\n   * new Option('--donate [amount]').preset('20').argParser(parseFloat);\n   *\n   * @param {any} arg\n   * @return {Option}\n   */\n\n  preset(arg) {\n    this.presetArg = arg;\n    return this;\n  }\n\n  /**\n   * Add option name(s) that conflict with this option.\n   * An error will be displayed if conflicting options are found during parsing.\n   *\n   * @example\n   * new Option('--rgb').conflicts('cmyk');\n   * new Option('--js').conflicts(['ts', 'jsx']);\n   *\n   * @param {string | string[]} names\n   * @return {Option}\n   */\n\n  conflicts(names) {\n    this.conflictsWith = this.conflictsWith.concat(names);\n    return this;\n  }\n\n  /**\n   * Specify implied option values for when this option is set and the implied options are not.\n   *\n   * The custom processing (parseArg) is not called on the implied values.\n   *\n   * @example\n   * program\n   *   .addOption(new Option('--log', 'write logging information to file'))\n   *   .addOption(new Option('--trace', 'log extra details').implies({ log: 'trace.txt' }));\n   *\n   * @param {Object} impliedOptionValues\n   * @return {Option}\n   */\n  implies(impliedOptionValues) {\n    let newImplied = impliedOptionValues;\n    if (typeof impliedOptionValues === 'string') {\n      // string is not documented, but easy mistake and we can do what user probably intended.\n      newImplied = { [impliedOptionValues]: true };\n    }\n    this.implied = Object.assign(this.implied || {}, newImplied);\n    return this;\n  }\n\n  /**\n   * Set environment variable to check for option value.\n   *\n   * An environment variable is only used if when processed the current option value is\n   * undefined, or the source of the current value is 'default' or 'config' or 'env'.\n   *\n   * @param {string} name\n   * @return {Option}\n   */\n\n  env(name) {\n    this.envVar = name;\n    return this;\n  }\n\n  /**\n   * Set the custom handler for processing CLI option arguments into option values.\n   *\n   * @param {Function} [fn]\n   * @return {Option}\n   */\n\n  argParser(fn) {\n    this.parseArg = fn;\n    return this;\n  }\n\n  /**\n   * Whether the option is mandatory and must have a value after parsing.\n   *\n   * @param {boolean} [mandatory=true]\n   * @return {Option}\n   */\n\n  makeOptionMandatory(mandatory = true) {\n    this.mandatory = !!mandatory;\n    return this;\n  }\n\n  /**\n   * Hide option in help.\n   *\n   * @param {boolean} [hide=true]\n   * @return {Option}\n   */\n\n  hideHelp(hide = true) {\n    this.hidden = !!hide;\n    return this;\n  }\n\n  /**\n   * @api private\n   */\n\n  _concatValue(value, previous) {\n    if (previous === this.defaultValue || !Array.isArray(previous)) {\n      return [value];\n    }\n\n    return previous.concat(value);\n  }\n\n  /**\n   * Only allow option value to be one of choices.\n   *\n   * @param {string[]} values\n   * @return {Option}\n   */\n\n  choices(values) {\n    this.argChoices = values.slice();\n    this.parseArg = (arg, previous) => {\n      if (!this.argChoices.includes(arg)) {\n        throw new InvalidArgumentError(`Allowed choices are ${this.argChoices.join(', ')}.`);\n      }\n      if (this.variadic) {\n        return this._concatValue(arg, previous);\n      }\n      return arg;\n    };\n    return this;\n  }\n\n  /**\n   * Return option name.\n   *\n   * @return {string}\n   */\n\n  name() {\n    if (this.long) {\n      return this.long.replace(/^--/, '');\n    }\n    return this.short.replace(/^-/, '');\n  }\n\n  /**\n   * Return option name, in a camelcase format that can be used\n   * as a object attribute key.\n   *\n   * @return {string}\n   * @api private\n   */\n\n  attributeName() {\n    return camelcase(this.name().replace(/^no-/, ''));\n  }\n\n  /**\n   * Check if `arg` matches the short or long flag.\n   *\n   * @param {string} arg\n   * @return {boolean}\n   * @api private\n   */\n\n  is(arg) {\n    return this.short === arg || this.long === arg;\n  }\n\n  /**\n   * Return whether a boolean option.\n   *\n   * Options are one of boolean, negated, required argument, or optional argument.\n   *\n   * @return {boolean}\n   * @api private\n   */\n\n  isBoolean() {\n    return !this.required && !this.optional && !this.negate;\n  }\n}\n\n/**\n * This class is to make it easier to work with dual options, without changing the existing\n * implementation. We support separate dual options for separate positive and negative options,\n * like `--build` and `--no-build`, which share a single option value. This works nicely for some\n * use cases, but is tricky for others where we want separate behaviours despite\n * the single shared option value.\n */\nclass DualOptions {\n  /**\n   * @param {Option[]} options\n   */\n  constructor(options) {\n    this.positiveOptions = new Map();\n    this.negativeOptions = new Map();\n    this.dualOptions = new Set();\n    options.forEach(option => {\n      if (option.negate) {\n        this.negativeOptions.set(option.attributeName(), option);\n      } else {\n        this.positiveOptions.set(option.attributeName(), option);\n      }\n    });\n    this.negativeOptions.forEach((value, key) => {\n      if (this.positiveOptions.has(key)) {\n        this.dualOptions.add(key);\n      }\n    });\n  }\n\n  /**\n   * Did the value come from the option, and not from possible matching dual option?\n   *\n   * @param {any} value\n   * @param {Option} option\n   * @returns {boolean}\n   */\n  valueFromOption(value, option) {\n    const optionKey = option.attributeName();\n    if (!this.dualOptions.has(optionKey)) return true;\n\n    // Use the value to deduce if (probably) came from the option.\n    const preset = this.negativeOptions.get(optionKey).presetArg;\n    const negativeValue = (preset !== undefined) ? preset : false;\n    return option.negate === (negativeValue === value);\n  }\n}\n\n/**\n * Convert string from kebab-case to camelCase.\n *\n * @param {string} str\n * @return {string}\n * @api private\n */\n\nfunction camelcase(str) {\n  return str.split('-').reduce((str, word) => {\n    return str + word[0].toUpperCase() + word.slice(1);\n  });\n}\n\n/**\n * Split the short and long flag out of something like '-m,--mixed <value>'\n *\n * @api private\n */\n\nfunction splitOptionFlags(flags) {\n  let shortFlag;\n  let longFlag;\n  // Use original very loose parsing to maintain backwards compatibility for now,\n  // which allowed for example unintended `-sw, --short-word` [sic].\n  const flagParts = flags.split(/[ |,]+/);\n  if (flagParts.length > 1 && !/^[[<]/.test(flagParts[1])) shortFlag = flagParts.shift();\n  longFlag = flagParts.shift();\n  // Add support for lone short flag without significantly changing parsing!\n  if (!shortFlag && /^-[^-]$/.test(longFlag)) {\n    shortFlag = longFlag;\n    longFlag = undefined;\n  }\n  return { shortFlag, longFlag };\n}\n\nexports.Option = Option;\nexports.splitOptionFlags = splitOptionFlags;\nexports.DualOptions = DualOptions;\n\n\n//# sourceURL=webpack://electron/./node_modules/commander/lib/option.js?");
+const { InvalidArgumentError } = __webpack_require__(8056);
+
+// @ts-check
+
+class Option {
+  /**
+   * Initialize a new `Option` with the given `flags` and `description`.
+   *
+   * @param {string} flags
+   * @param {string} [description]
+   */
+
+  constructor(flags, description) {
+    this.flags = flags;
+    this.description = description || '';
+
+    this.required = flags.includes('<'); // A value must be supplied when the option is specified.
+    this.optional = flags.includes('['); // A value is optional when the option is specified.
+    // variadic test ignores <value,...> et al which might be used to describe custom splitting of single argument
+    this.variadic = /\w\.\.\.[>\]]$/.test(flags); // The option can take multiple values.
+    this.mandatory = false; // The option must have a value after parsing, which usually means it must be specified on command line.
+    const optionFlags = splitOptionFlags(flags);
+    this.short = optionFlags.shortFlag;
+    this.long = optionFlags.longFlag;
+    this.negate = false;
+    if (this.long) {
+      this.negate = this.long.startsWith('--no-');
+    }
+    this.defaultValue = undefined;
+    this.defaultValueDescription = undefined;
+    this.presetArg = undefined;
+    this.envVar = undefined;
+    this.parseArg = undefined;
+    this.hidden = false;
+    this.argChoices = undefined;
+    this.conflictsWith = [];
+    this.implied = undefined;
+  }
+
+  /**
+   * Set the default value, and optionally supply the description to be displayed in the help.
+   *
+   * @param {any} value
+   * @param {string} [description]
+   * @return {Option}
+   */
+
+  default(value, description) {
+    this.defaultValue = value;
+    this.defaultValueDescription = description;
+    return this;
+  }
+
+  /**
+   * Preset to use when option used without option-argument, especially optional but also boolean and negated.
+   * The custom processing (parseArg) is called.
+   *
+   * @example
+   * new Option('--color').default('GREYSCALE').preset('RGB');
+   * new Option('--donate [amount]').preset('20').argParser(parseFloat);
+   *
+   * @param {any} arg
+   * @return {Option}
+   */
+
+  preset(arg) {
+    this.presetArg = arg;
+    return this;
+  }
+
+  /**
+   * Add option name(s) that conflict with this option.
+   * An error will be displayed if conflicting options are found during parsing.
+   *
+   * @example
+   * new Option('--rgb').conflicts('cmyk');
+   * new Option('--js').conflicts(['ts', 'jsx']);
+   *
+   * @param {string | string[]} names
+   * @return {Option}
+   */
+
+  conflicts(names) {
+    this.conflictsWith = this.conflictsWith.concat(names);
+    return this;
+  }
+
+  /**
+   * Specify implied option values for when this option is set and the implied options are not.
+   *
+   * The custom processing (parseArg) is not called on the implied values.
+   *
+   * @example
+   * program
+   *   .addOption(new Option('--log', 'write logging information to file'))
+   *   .addOption(new Option('--trace', 'log extra details').implies({ log: 'trace.txt' }));
+   *
+   * @param {Object} impliedOptionValues
+   * @return {Option}
+   */
+  implies(impliedOptionValues) {
+    let newImplied = impliedOptionValues;
+    if (typeof impliedOptionValues === 'string') {
+      // string is not documented, but easy mistake and we can do what user probably intended.
+      newImplied = { [impliedOptionValues]: true };
+    }
+    this.implied = Object.assign(this.implied || {}, newImplied);
+    return this;
+  }
+
+  /**
+   * Set environment variable to check for option value.
+   *
+   * An environment variable is only used if when processed the current option value is
+   * undefined, or the source of the current value is 'default' or 'config' or 'env'.
+   *
+   * @param {string} name
+   * @return {Option}
+   */
+
+  env(name) {
+    this.envVar = name;
+    return this;
+  }
+
+  /**
+   * Set the custom handler for processing CLI option arguments into option values.
+   *
+   * @param {Function} [fn]
+   * @return {Option}
+   */
+
+  argParser(fn) {
+    this.parseArg = fn;
+    return this;
+  }
+
+  /**
+   * Whether the option is mandatory and must have a value after parsing.
+   *
+   * @param {boolean} [mandatory=true]
+   * @return {Option}
+   */
+
+  makeOptionMandatory(mandatory = true) {
+    this.mandatory = !!mandatory;
+    return this;
+  }
+
+  /**
+   * Hide option in help.
+   *
+   * @param {boolean} [hide=true]
+   * @return {Option}
+   */
+
+  hideHelp(hide = true) {
+    this.hidden = !!hide;
+    return this;
+  }
+
+  /**
+   * @api private
+   */
+
+  _concatValue(value, previous) {
+    if (previous === this.defaultValue || !Array.isArray(previous)) {
+      return [value];
+    }
+
+    return previous.concat(value);
+  }
+
+  /**
+   * Only allow option value to be one of choices.
+   *
+   * @param {string[]} values
+   * @return {Option}
+   */
+
+  choices(values) {
+    this.argChoices = values.slice();
+    this.parseArg = (arg, previous) => {
+      if (!this.argChoices.includes(arg)) {
+        throw new InvalidArgumentError(`Allowed choices are ${this.argChoices.join(', ')}.`);
+      }
+      if (this.variadic) {
+        return this._concatValue(arg, previous);
+      }
+      return arg;
+    };
+    return this;
+  }
+
+  /**
+   * Return option name.
+   *
+   * @return {string}
+   */
+
+  name() {
+    if (this.long) {
+      return this.long.replace(/^--/, '');
+    }
+    return this.short.replace(/^-/, '');
+  }
+
+  /**
+   * Return option name, in a camelcase format that can be used
+   * as a object attribute key.
+   *
+   * @return {string}
+   * @api private
+   */
+
+  attributeName() {
+    return camelcase(this.name().replace(/^no-/, ''));
+  }
+
+  /**
+   * Check if `arg` matches the short or long flag.
+   *
+   * @param {string} arg
+   * @return {boolean}
+   * @api private
+   */
+
+  is(arg) {
+    return this.short === arg || this.long === arg;
+  }
+
+  /**
+   * Return whether a boolean option.
+   *
+   * Options are one of boolean, negated, required argument, or optional argument.
+   *
+   * @return {boolean}
+   * @api private
+   */
+
+  isBoolean() {
+    return !this.required && !this.optional && !this.negate;
+  }
+}
+
+/**
+ * This class is to make it easier to work with dual options, without changing the existing
+ * implementation. We support separate dual options for separate positive and negative options,
+ * like `--build` and `--no-build`, which share a single option value. This works nicely for some
+ * use cases, but is tricky for others where we want separate behaviours despite
+ * the single shared option value.
+ */
+class DualOptions {
+  /**
+   * @param {Option[]} options
+   */
+  constructor(options) {
+    this.positiveOptions = new Map();
+    this.negativeOptions = new Map();
+    this.dualOptions = new Set();
+    options.forEach(option => {
+      if (option.negate) {
+        this.negativeOptions.set(option.attributeName(), option);
+      } else {
+        this.positiveOptions.set(option.attributeName(), option);
+      }
+    });
+    this.negativeOptions.forEach((value, key) => {
+      if (this.positiveOptions.has(key)) {
+        this.dualOptions.add(key);
+      }
+    });
+  }
+
+  /**
+   * Did the value come from the option, and not from possible matching dual option?
+   *
+   * @param {any} value
+   * @param {Option} option
+   * @returns {boolean}
+   */
+  valueFromOption(value, option) {
+    const optionKey = option.attributeName();
+    if (!this.dualOptions.has(optionKey)) return true;
+
+    // Use the value to deduce if (probably) came from the option.
+    const preset = this.negativeOptions.get(optionKey).presetArg;
+    const negativeValue = (preset !== undefined) ? preset : false;
+    return option.negate === (negativeValue === value);
+  }
+}
+
+/**
+ * Convert string from kebab-case to camelCase.
+ *
+ * @param {string} str
+ * @return {string}
+ * @api private
+ */
+
+function camelcase(str) {
+  return str.split('-').reduce((str, word) => {
+    return str + word[0].toUpperCase() + word.slice(1);
+  });
+}
+
+/**
+ * Split the short and long flag out of something like '-m,--mixed <value>'
+ *
+ * @api private
+ */
+
+function splitOptionFlags(flags) {
+  let shortFlag;
+  let longFlag;
+  // Use original very loose parsing to maintain backwards compatibility for now,
+  // which allowed for example unintended `-sw, --short-word` [sic].
+  const flagParts = flags.split(/[ |,]+/);
+  if (flagParts.length > 1 && !/^[[<]/.test(flagParts[1])) shortFlag = flagParts.shift();
+  longFlag = flagParts.shift();
+  // Add support for lone short flag without significantly changing parsing!
+  if (!shortFlag && /^-[^-]$/.test(longFlag)) {
+    shortFlag = longFlag;
+    longFlag = undefined;
+  }
+  return { shortFlag, longFlag };
+}
+
+exports.Option = Option;
+exports.splitOptionFlags = splitOptionFlags;
+exports.DualOptions = DualOptions;
+
 
 /***/ }),
 
-/***/ "./node_modules/commander/lib/suggestSimilar.js":
-/*!******************************************************!*\
-  !*** ./node_modules/commander/lib/suggestSimilar.js ***!
-  \******************************************************/
+/***/ 1812:
 /***/ ((__unused_webpack_module, exports) => {
 
-eval("const maxDistance = 3;\n\nfunction editDistance(a, b) {\n  // https://en.wikipedia.org/wiki/Damerau–Levenshtein_distance\n  // Calculating optimal string alignment distance, no substring is edited more than once.\n  // (Simple implementation.)\n\n  // Quick early exit, return worst case.\n  if (Math.abs(a.length - b.length) > maxDistance) return Math.max(a.length, b.length);\n\n  // distance between prefix substrings of a and b\n  const d = [];\n\n  // pure deletions turn a into empty string\n  for (let i = 0; i <= a.length; i++) {\n    d[i] = [i];\n  }\n  // pure insertions turn empty string into b\n  for (let j = 0; j <= b.length; j++) {\n    d[0][j] = j;\n  }\n\n  // fill matrix\n  for (let j = 1; j <= b.length; j++) {\n    for (let i = 1; i <= a.length; i++) {\n      let cost = 1;\n      if (a[i - 1] === b[j - 1]) {\n        cost = 0;\n      } else {\n        cost = 1;\n      }\n      d[i][j] = Math.min(\n        d[i - 1][j] + 1, // deletion\n        d[i][j - 1] + 1, // insertion\n        d[i - 1][j - 1] + cost // substitution\n      );\n      // transposition\n      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {\n        d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);\n      }\n    }\n  }\n\n  return d[a.length][b.length];\n}\n\n/**\n * Find close matches, restricted to same number of edits.\n *\n * @param {string} word\n * @param {string[]} candidates\n * @returns {string}\n */\n\nfunction suggestSimilar(word, candidates) {\n  if (!candidates || candidates.length === 0) return '';\n  // remove possible duplicates\n  candidates = Array.from(new Set(candidates));\n\n  const searchingOptions = word.startsWith('--');\n  if (searchingOptions) {\n    word = word.slice(2);\n    candidates = candidates.map(candidate => candidate.slice(2));\n  }\n\n  let similar = [];\n  let bestDistance = maxDistance;\n  const minSimilarity = 0.4;\n  candidates.forEach((candidate) => {\n    if (candidate.length <= 1) return; // no one character guesses\n\n    const distance = editDistance(word, candidate);\n    const length = Math.max(word.length, candidate.length);\n    const similarity = (length - distance) / length;\n    if (similarity > minSimilarity) {\n      if (distance < bestDistance) {\n        // better edit distance, throw away previous worse matches\n        bestDistance = distance;\n        similar = [candidate];\n      } else if (distance === bestDistance) {\n        similar.push(candidate);\n      }\n    }\n  });\n\n  similar.sort((a, b) => a.localeCompare(b));\n  if (searchingOptions) {\n    similar = similar.map(candidate => `--${candidate}`);\n  }\n\n  if (similar.length > 1) {\n    return `\\n(Did you mean one of ${similar.join(', ')}?)`;\n  }\n  if (similar.length === 1) {\n    return `\\n(Did you mean ${similar[0]}?)`;\n  }\n  return '';\n}\n\nexports.suggestSimilar = suggestSimilar;\n\n\n//# sourceURL=webpack://electron/./node_modules/commander/lib/suggestSimilar.js?");
+const maxDistance = 3;
+
+function editDistance(a, b) {
+  // https://en.wikipedia.org/wiki/Damerau–Levenshtein_distance
+  // Calculating optimal string alignment distance, no substring is edited more than once.
+  // (Simple implementation.)
+
+  // Quick early exit, return worst case.
+  if (Math.abs(a.length - b.length) > maxDistance) return Math.max(a.length, b.length);
+
+  // distance between prefix substrings of a and b
+  const d = [];
+
+  // pure deletions turn a into empty string
+  for (let i = 0; i <= a.length; i++) {
+    d[i] = [i];
+  }
+  // pure insertions turn empty string into b
+  for (let j = 0; j <= b.length; j++) {
+    d[0][j] = j;
+  }
+
+  // fill matrix
+  for (let j = 1; j <= b.length; j++) {
+    for (let i = 1; i <= a.length; i++) {
+      let cost = 1;
+      if (a[i - 1] === b[j - 1]) {
+        cost = 0;
+      } else {
+        cost = 1;
+      }
+      d[i][j] = Math.min(
+        d[i - 1][j] + 1, // deletion
+        d[i][j - 1] + 1, // insertion
+        d[i - 1][j - 1] + cost // substitution
+      );
+      // transposition
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+      }
+    }
+  }
+
+  return d[a.length][b.length];
+}
+
+/**
+ * Find close matches, restricted to same number of edits.
+ *
+ * @param {string} word
+ * @param {string[]} candidates
+ * @returns {string}
+ */
+
+function suggestSimilar(word, candidates) {
+  if (!candidates || candidates.length === 0) return '';
+  // remove possible duplicates
+  candidates = Array.from(new Set(candidates));
+
+  const searchingOptions = word.startsWith('--');
+  if (searchingOptions) {
+    word = word.slice(2);
+    candidates = candidates.map(candidate => candidate.slice(2));
+  }
+
+  let similar = [];
+  let bestDistance = maxDistance;
+  const minSimilarity = 0.4;
+  candidates.forEach((candidate) => {
+    if (candidate.length <= 1) return; // no one character guesses
+
+    const distance = editDistance(word, candidate);
+    const length = Math.max(word.length, candidate.length);
+    const similarity = (length - distance) / length;
+    if (similarity > minSimilarity) {
+      if (distance < bestDistance) {
+        // better edit distance, throw away previous worse matches
+        bestDistance = distance;
+        similar = [candidate];
+      } else if (distance === bestDistance) {
+        similar.push(candidate);
+      }
+    }
+  });
+
+  similar.sort((a, b) => a.localeCompare(b));
+  if (searchingOptions) {
+    similar = similar.map(candidate => `--${candidate}`);
+  }
+
+  if (similar.length > 1) {
+    return `\n(Did you mean one of ${similar.join(', ')}?)`;
+  }
+  if (similar.length === 1) {
+    return `\n(Did you mean ${similar[0]}?)`;
+  }
+  return '';
+}
+
+exports.suggestSimilar = suggestSimilar;
+
 
 /***/ }),
 
-/***/ "./node_modules/flatted/cjs/index.js":
-/*!*******************************************!*\
-  !*** ./node_modules/flatted/cjs/index.js ***!
-  \*******************************************/
+/***/ 939:
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
-eval("\n/*! (c) 2020 Andrea Giammarchi */\n\nconst {parse: $parse, stringify: $stringify} = JSON;\nconst {keys} = Object;\n\nconst Primitive = String;   // it could be Number\nconst primitive = 'string'; // it could be 'number'\n\nconst ignore = {};\nconst object = 'object';\n\nconst noop = (_, value) => value;\n\nconst primitives = value => (\n  value instanceof Primitive ? Primitive(value) : value\n);\n\nconst Primitives = (_, value) => (\n  typeof value === primitive ? new Primitive(value) : value\n);\n\nconst revive = (input, parsed, output, $) => {\n  const lazy = [];\n  for (let ke = keys(output), {length} = ke, y = 0; y < length; y++) {\n    const k = ke[y];\n    const value = output[k];\n    if (value instanceof Primitive) {\n      const tmp = input[value];\n      if (typeof tmp === object && !parsed.has(tmp)) {\n        parsed.add(tmp);\n        output[k] = ignore;\n        lazy.push({k, a: [input, parsed, tmp, $]});\n      }\n      else\n        output[k] = $.call(output, k, tmp);\n    }\n    else if (output[k] !== ignore)\n      output[k] = $.call(output, k, value);\n  }\n  for (let {length} = lazy, i = 0; i < length; i++) {\n    const {k, a} = lazy[i];\n    output[k] = $.call(output, k, revive.apply(null, a));\n  }\n  return output;\n};\n\nconst set = (known, input, value) => {\n  const index = Primitive(input.push(value) - 1);\n  known.set(value, index);\n  return index;\n};\n\nconst parse = (text, reviver) => {\n  const input = $parse(text, Primitives).map(primitives);\n  const value = input[0];\n  const $ = reviver || noop;\n  const tmp = typeof value === object && value ?\n              revive(input, new Set, value, $) :\n              value;\n  return $.call({'': tmp}, '', tmp);\n};\nexports.parse = parse;\n\nconst stringify = (value, replacer, space) => {\n  const $ = replacer && typeof replacer === object ?\n            (k, v) => (k === '' || -1 < replacer.indexOf(k) ? v : void 0) :\n            (replacer || noop);\n  const known = new Map;\n  const input = [];\n  const output = [];\n  let i = +set(known, input, $.call({'': value}, '', value));\n  let firstRun = !i;\n  while (i < input.length) {\n    firstRun = true;\n    output[i] = $stringify(input[i++], replace, space);\n  }\n  return '[' + output.join(',') + ']';\n  function replace(key, value) {\n    if (firstRun) {\n      firstRun = !firstRun;\n      return value;\n    }\n    const after = $.call(this, key, value);\n    switch (typeof after) {\n      case object:\n        if (after === null) return after;\n      case primitive:\n        return known.get(after) || set(known, input, after);\n    }\n    return after;\n  }\n};\nexports.stringify = stringify;\n\nconst toJSON = any => $parse(stringify(any));\nexports.toJSON = toJSON;\nconst fromJSON = any => parse($stringify(any));\nexports.fromJSON = fromJSON;\n\n\n//# sourceURL=webpack://electron/./node_modules/flatted/cjs/index.js?");
+
+/*! (c) 2020 Andrea Giammarchi */
+
+const {parse: $parse, stringify: $stringify} = JSON;
+const {keys} = Object;
+
+const Primitive = String;   // it could be Number
+const primitive = 'string'; // it could be 'number'
+
+const ignore = {};
+const object = 'object';
+
+const noop = (_, value) => value;
+
+const primitives = value => (
+  value instanceof Primitive ? Primitive(value) : value
+);
+
+const Primitives = (_, value) => (
+  typeof value === primitive ? new Primitive(value) : value
+);
+
+const revive = (input, parsed, output, $) => {
+  const lazy = [];
+  for (let ke = keys(output), {length} = ke, y = 0; y < length; y++) {
+    const k = ke[y];
+    const value = output[k];
+    if (value instanceof Primitive) {
+      const tmp = input[value];
+      if (typeof tmp === object && !parsed.has(tmp)) {
+        parsed.add(tmp);
+        output[k] = ignore;
+        lazy.push({k, a: [input, parsed, tmp, $]});
+      }
+      else
+        output[k] = $.call(output, k, tmp);
+    }
+    else if (output[k] !== ignore)
+      output[k] = $.call(output, k, value);
+  }
+  for (let {length} = lazy, i = 0; i < length; i++) {
+    const {k, a} = lazy[i];
+    output[k] = $.call(output, k, revive.apply(null, a));
+  }
+  return output;
+};
+
+const set = (known, input, value) => {
+  const index = Primitive(input.push(value) - 1);
+  known.set(value, index);
+  return index;
+};
+
+const parse = (text, reviver) => {
+  const input = $parse(text, Primitives).map(primitives);
+  const value = input[0];
+  const $ = reviver || noop;
+  const tmp = typeof value === object && value ?
+              revive(input, new Set, value, $) :
+              value;
+  return $.call({'': tmp}, '', tmp);
+};
+exports.parse = parse;
+
+const stringify = (value, replacer, space) => {
+  const $ = replacer && typeof replacer === object ?
+            (k, v) => (k === '' || -1 < replacer.indexOf(k) ? v : void 0) :
+            (replacer || noop);
+  const known = new Map;
+  const input = [];
+  const output = [];
+  let i = +set(known, input, $.call({'': value}, '', value));
+  let firstRun = !i;
+  while (i < input.length) {
+    firstRun = true;
+    output[i] = $stringify(input[i++], replace, space);
+  }
+  return '[' + output.join(',') + ']';
+  function replace(key, value) {
+    if (firstRun) {
+      firstRun = !firstRun;
+      return value;
+    }
+    const after = $.call(this, key, value);
+    switch (typeof after) {
+      case object:
+        if (after === null) return after;
+      case primitive:
+        return known.get(after) || set(known, input, after);
+    }
+    return after;
+  }
+};
+exports.stringify = stringify;
+
+const toJSON = any => $parse(stringify(any));
+exports.toJSON = toJSON;
+const fromJSON = any => parse($stringify(any));
+exports.fromJSON = fromJSON;
+
 
 /***/ }),
 
-/***/ "./capacitor.config.json":
-/*!*******************************!*\
-  !*** ./capacitor.config.json ***!
-  \*******************************/
+/***/ 2844:
 /***/ ((module) => {
 
 "use strict";
-eval("module.exports = JSON.parse('{\"appId\":\"io.vmxy.demo\",\"appName\":\"VMXY\",\"bundledWebRuntime\":true,\"npmClient\":\"yarn\",\"webDir\":\"dist\",\"plugins\":{\"SplashScreen\":{\"launchShowDuration\":1000,\"launchAutoHide\":true,\"backgroundColor\":\"#ffffffff\",\"androidSplashResourceName\":\"splash\",\"androidScaleType\":\"CENTER_CROP\",\"androidSpinnerStyle\":\"large\",\"iosSpinnerStyle\":\"small\",\"spinnerColor\":\"#999999\",\"showSpinner\":true,\"splashFullScreen\":true,\"splashImmersive\":true}},\"windowsAndroidStudioPath\":\"d:\\\\\\\\pf\\\\\\\\Android Studio\\\\\\\\bin\\\\\\\\studio64.exe\",\"cordova\":{},\"hideLogs\":false,\"overrideUserAgent\":\"\",\"appendUserAgent\":\"\",\"backgroundColor\":\"#ffffffff\",\"android\":{\"overrideUserAgent\":\"\",\"appendUserAgent\":\"\",\"backgroundColor\":\"#ffffffff\",\"allowMixedContent\":true,\"captureInput\":true,\"webContentsDebuggingEnabled\":true,\"hideLogs\":false,\"minSdkVersion\":21,\"targetSdkVersion\":29,\"compileSdkVersion\":29},\"ios\":{\"overrideUserAgent\":\"\",\"appendUserAgent\":\"\",\"backgroundColor\":\"#ffffffff\",\"contentInset\":\"always\",\"cordovaSwiftVersion\":\"4.2\",\"minVersion\":\"11.3\",\"cordovaLinkerFlags\":[\"-ObjC\"],\"allowsLinkPreview\":false,\"hideLogs\":false},\"electron\":{\"overrideUserAgent\":\"\",\"appendUserAgent\":\"\"},\"server\":{}}');\n\n//# sourceURL=webpack://electron/./capacitor.config.json?");
+module.exports = JSON.parse('{"appId":"io.vmxy.demo","appName":"VMXY","bundledWebRuntime":true,"npmClient":"yarn","webDir":"dist","plugins":{"SplashScreen":{"launchShowDuration":1000,"launchAutoHide":true,"backgroundColor":"#ffffffff","androidSplashResourceName":"splash","androidScaleType":"CENTER_CROP","androidSpinnerStyle":"large","iosSpinnerStyle":"small","spinnerColor":"#999999","showSpinner":true,"splashFullScreen":true,"splashImmersive":true}},"windowsAndroidStudioPath":"d:\\\\pf\\\\Android Studio\\\\bin\\\\studio64.exe","cordova":{},"hideLogs":false,"overrideUserAgent":"","appendUserAgent":"","backgroundColor":"#ffffffff","android":{"overrideUserAgent":"","appendUserAgent":"","backgroundColor":"#ffffffff","allowMixedContent":true,"captureInput":true,"webContentsDebuggingEnabled":true,"hideLogs":false,"minSdkVersion":21,"targetSdkVersion":29,"compileSdkVersion":29},"ios":{"overrideUserAgent":"","appendUserAgent":"","backgroundColor":"#ffffffff","contentInset":"always","cordovaSwiftVersion":"4.2","minVersion":"11.3","cordovaLinkerFlags":["-ObjC"],"allowsLinkPreview":false,"hideLogs":false},"electron":{"overrideUserAgent":"","appendUserAgent":""},"server":{}}');
 
 /***/ }),
 
-/***/ "./package.json":
-/*!**********************!*\
-  !*** ./package.json ***!
-  \**********************/
+/***/ 4147:
 /***/ ((module) => {
 
 "use strict";
-eval("module.exports = JSON.parse('{\"name\":\"electron\",\"version\":\"1.0.0\",\"description\":\"A minimal Electron application\",\"main\":\"app/electron/electron.js\",\"scripts\":{\"start\":\"electron .\",\"dev\":\"ts-node ./build/dev-runner.js\",\"build\":\"ts-node ./build/build.js && electron-builder\"},\"repository\":\"\",\"keywords\":[\"Electron\",\"quick\",\"start\",\"tutorial\",\"demo\"],\"author\":\"GitHub\",\"license\":\"CC0-1.0\",\"dependencies\":{},\"devDependencies\":{\"electron\":\"^25.1.0\",\"eventemitter3\":\"^5.0.1\",\"electron-updater\":\"^5.3.0\",\"@capacitor/electron\":\"^2.5.0\",\"commander\":\"^10.0.1\",\"log4js\":\"^6.3.0\",\"lru-cache\":\"^9.1.2\",\"md5\":\"^2.3.0\",\"node-machine-id\":\"^1.1.12\",\"@types/node\":\"^14.11.8\",\"cfonts\":\"^2.8.6\",\"chalk\":\"^4.1.0\",\"copy-webpack-plugin\":\"^6.2.1\",\"del\":\"^6.0.0\",\"electron-builder\":\"^23.6.0\",\"multispinner\":\"^0.2.1\",\"node-loader\":\"^1.0.2\",\"npm-run-all\":\"^4.1.5\",\"prettier\":\"^2.8.8\",\"ts-loader\":\"^9.4.3\",\"tslint\":\"^6.1.3\",\"tslint-config-prettier\":\"^1.18.0\",\"typescript\":\"^5.1.3\",\"webpack\":\"^5.86.0\",\"webpack-cli\":\"^5.1.4\",\"webpack-merge\":\"^5.2.0\"}}');\n\n//# sourceURL=webpack://electron/./package.json?");
+module.exports = JSON.parse('{"name":"electron","version":"1.0.0","description":"A minimal Electron application","main":"app/electron/electron.js","scripts":{"start":"electron .","dev":"ts-node ./build/dev-runner.js","build":"ts-node ./build/build.js && electron-builder"},"repository":"","keywords":["Electron","quick","start","tutorial","demo"],"author":"GitHub","license":"CC0-1.0","dependencies":{},"devDependencies":{"electron":"^25.1.0","eventemitter3":"^5.0.1","electron-updater":"^5.3.0","@capacitor/electron":"^2.5.0","commander":"^10.0.1","log4js":"^6.3.0","lru-cache":"^9.1.2","md5":"^2.3.0","node-machine-id":"^1.1.12","@types/node":"^14.11.8","cfonts":"^2.8.6","chalk":"^4.1.0","copy-webpack-plugin":"^6.2.1","del":"^6.0.0","electron-builder":"^23.6.0","multispinner":"^0.2.1","node-loader":"^1.0.2","npm-run-all":"^4.1.5","prettier":"^2.8.8","ts-loader":"^9.4.3","tslint":"^6.1.3","tslint-config-prettier":"^1.18.0","typescript":"^5.1.3","webpack":"^5.86.0","webpack-cli":"^5.1.4","webpack-merge":"^5.2.0"}}');
 
 /***/ })
 
@@ -1317,7 +14153,7 @@ eval("module.exports = JSON.parse('{\"name\":\"electron\",\"version\":\"1.0.0\",
 /******/ 	// module cache are used so entry inlining is disabled
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = "./src/main.ts");
+/******/ 	var __webpack_exports__ = __webpack_require__(__webpack_require__.s = 8519);
 /******/ 	module.exports = __webpack_exports__;
 /******/ 	
 /******/ })()
