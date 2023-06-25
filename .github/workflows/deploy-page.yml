@@ -37,7 +37,7 @@ jobs:
         id: version
         uses: ashley-taylor/read-json-property-action@v1.0
         with:
-          path: ./package.json
+          path: ./build/electron/package.json
           property: version
 
       - name: Build Page
@@ -66,15 +66,15 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest] #windows-latest
     needs: build
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
       - name: 读取当前版本号
         id: version
         uses: ashley-taylor/read-json-property-action@v1.0
         with:
-          path: ./package.json
+          path: ./build/electron/package.json
           property: version
-
-      - name: Checkout
-        uses: actions/checkout@v3
 
       - run: cd ../
       - name: Download build
