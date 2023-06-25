@@ -33,13 +33,20 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: npm i -g yarn asar
 
+      - name: 读取当前版本号
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./package.json
+          property: version
+
       - name: Build Page
         run: |
-          echo ${{ github.ref_name }}
+          echo "version ${{ steps.version.outputs.value }} "
           rm -rf node_modules && yarn install
           yarn build:page
-          asar pack ./dist app-${{github.ref_name}}.asar
-          mv app-${{github.ref_name}}.asar ./dist
+          asar pack ./dist app-${{steps.version.outputs.value}}.asar
+          mv app-${{steps.version.outputs.value}}.asar ./dist
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         #uses: actions/upload-artifact@v3
@@ -59,6 +66,13 @@ jobs:
         os: [macos-latest, ubuntu-latest, windows-latest] #windows-latest
     needs: build
     steps:
+      - name: 读取当前版本号
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./package.json
+          property: version
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -71,6 +85,8 @@ jobs:
       - name: Build Macos and Linux
         if: runner.os == 'Linux' || runner.os == 'macos'
         run: |
+          export APP_VERSION=${{ steps.version.outputs.value }}
+          export APP_UPDATE_URL=https://ai-peer.github.io/${{ env.Project_Name }}/apps
           cd ../
           cp -r ${{ env.Project_Name }} project
           mv -f ./github-pages ./app
@@ -105,7 +121,7 @@ jobs:
           cp -f build-app/latest-linux.yml artifact/
           cp -f build-app/*.AppImage artifact/
           cp -f build-app/*.snap artifact/
-          cp -f app/app-${{github.ref_name}}.asar artifact/
+          cp -f app/app-*.asar artifact/
 
       - name: Build Windows
         if: runner.os == 'windows'
