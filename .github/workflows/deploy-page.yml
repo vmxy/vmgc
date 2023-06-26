@@ -104,7 +104,7 @@ jobs:
           yarn install
           yarn build
           ls
-          cd build-app && ls && cd ../
+          cd build-app && ls -ls && cd ../
           mkdir artifact
 
       - name: Copy macos
@@ -148,7 +148,9 @@ jobs:
           mkdir artifact
           copy build-app\latest.yml artifact\
           copy build-app\*.exe artifact\
-          copy build-app\*.exe.blockmap artifact\
+          copy build-app\*.blockmap artifact\
+          copy build-app\*.zip artifact\
+          copy build-app\*.appx artifact\
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
