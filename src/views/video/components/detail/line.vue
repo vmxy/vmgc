@@ -81,11 +81,11 @@
 
 <script setup lang="ts">
 import { ref, watch, getCurrentInstance, computed, Ref, onMounted } from "vue";
-import { useThemeStore, useAppStore, useVideoStore } from "@/store";
+import { useAppStore, useVideoStore } from "@/store";
 import { sessionStg } from "@/utils";
 import { useRouter } from "vue-router";
 const ssr = import.meta.env.SSR;
-const theme = useThemeStore();
+const UseServerHost = globalThis.WWW_HOST || globalThis.env?.innerIP || "";
 const app = useAppStore();
 const video = useVideoStore();
 const router = useRouter();
@@ -155,6 +155,11 @@ function onSort(bool: boolean = true) {
 }
 async function showQRCode() {
   let text = globalThis.location?.href || "";
+  if (text.startsWith("http://127.0.0.1") || text.startsWith("http://localhost")) {
+    if (UseServerHost) {
+      text = text.replace(/^http:\/\/[a-z0-9\.]+:/g, `http://${UseServerHost}:`);
+    }
+  }
   refQRCode.value.show(text);
 }
 function openPlay(url: string) {

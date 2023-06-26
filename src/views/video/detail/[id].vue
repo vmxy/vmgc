@@ -30,7 +30,6 @@ onMounted(() => {
 async function fetchDetail(id: string) {
   globalThis.$loadingBar?.start();
   let { data } = await service.fetchVideoDetail(id);
-  console.info("detail===", data);
   globalThis.$loadingBar?.finish();
   if (!data) {
     video.deleteFav(id);

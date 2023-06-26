@@ -38,7 +38,9 @@ const loading = ref(true);
 const playUrl = ref("");
 const videoRef = ref<HTMLElement>();
 const isDestroy = ref(false);
-const inIframe = !!globalThis.env ? false : import.meta.env.VITE_VIDEO_IF == "Y";
+const PlayerURL = globalThis.VIDEO_URL || (globalThis.env ? "/xplayer.html" : import.meta.env.VITE_VIDEO_URL) || "";
+console.info("=PlayerURL", PlayerURL);
+const inIframe = !!PlayerURL;
 let player;
 
 function changePlayUrl(url) {
@@ -112,8 +114,8 @@ function onLoad() {
 }
 
 function getVideoPlayUrl(id: string) {
-  let url = globalThis.VIDEO_URL || import.meta.env.VITE_VIDEO_URL;
-  return `${url}?id=${encodeURIComponent(id)}`;
+  //let url = globalThis.VIDEO_URL || import.meta.env.VITE_VIDEO_URL;
+  return `${PlayerURL}?id=${encodeURIComponent(id)}`;
 }
 onMounted(() => {
   if (!props.res.url) return;

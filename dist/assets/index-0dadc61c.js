@@ -1,1 +1,0 @@
-import{g as s,z as t,o as c,e as a,f as o}from"./index-aab0ccf2.js";const n={class:"h-full"},r=["src"],d=s({__name:"index",setup(l){const e=t("https://cn.vitejs.dev/");return(_,f)=>(c(),a("div",n,[o("iframe",{class:"wh-full",src:e.value},null,8,r)]))}});export{d as default};

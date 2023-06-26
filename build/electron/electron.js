@@ -13845,7 +13845,7 @@ var CapacitorSplashScreen = (function () {
             this.splashOptions = Object.assign(this.splashOptions, capacitor_config_json_1.default.plugins.SplashScreen || {});
         }
         catch (e) {
-            logger_1.default.error(e.message);
+            logger_1.default.error("splashOptions=============", e);
         }
         var start = Date.now();
         electron_1.ipcMain.on("showCapacitorSplashScreen", function (event, options) {
@@ -14033,10 +14033,13 @@ var server = http_1.default.createServer(function (req, res) {
         console.warn("deny host request", host);
         return;
     }
-    var _path = req.url || "";
-    _path = _path.replace(/^\/[^\/]+/, "").replace(/\?.*$/, "");
+    var info = new URL("http://" + host + req.url);
+    var _path = info.pathname;
+    if (!(/^\/(js|styles?|css|imgs?|images?|assets)\//i.test(_path) || /\.html?$/i.test(_path))) {
+        _path = _path.replace(/^\/[^\/]+/, "");
+    }
     _path = _path == "/" ? "/index.html" : _path;
-    var suff = _path.replace(/[?].*$/, "").replace(/app-v(\d+\.){2}\d+\/?/, "");
+    var suff = _path.replace(/app-v(\d+\.){2}\d+\/?/, "");
     var lastIdx = suff.lastIndexOf(".");
     suff = lastIdx > suff.length - 6 ? suff.substring(lastIdx) : "";
     _path = (0, util_1.getStaticResource)(_path);
@@ -14397,7 +14400,7 @@ function default_1(win, options) {
         }
     });
     win.on('error', function (error) {
-        logger_1.default.error('error', error.messsage);
+        logger_1.default.error('error====>', error.messsage);
     });
     var appTray = new electron_1.Tray(options.icon || '');
     var contextMenu = electron_1.Menu.buildFromTemplate(trayMenuTemplate);

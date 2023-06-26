@@ -78,8 +78,6 @@ interface ImportMetaEnv {
   readonly VITE_BASE_URL: string;
   /** 是否启用tab标签栏 */
   readonly VITE_TABS: "Y" | "N";
-  /**video是否运行在iframe里 */
-  readonly VITE_VIDEO_IF: "Y" | "N";
   /** 视频播放地址 */
   readonly VITE_VIDEO_URL: string;
 
