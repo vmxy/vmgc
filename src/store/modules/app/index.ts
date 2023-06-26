@@ -42,7 +42,7 @@ export const useAppStore = defineStore("app-store", {
       disableMainXScroll: false,
       reloadFlag: true,
       settingDrawerVisible: false,
-      siderCollapse: false,
+      siderCollapse: true,
       mixSiderFixed: false,
       lang: localStg.get("lang") || (langList[language] ? language : "zh-CN"),
       langs: langList,

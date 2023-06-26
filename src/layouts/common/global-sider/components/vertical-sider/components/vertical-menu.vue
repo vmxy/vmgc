@@ -1,5 +1,5 @@
 <template>
-  <n-scrollbar class="flex-1-hidden">
+  <n-scrollbar :size="1" ref="refScrollbar" class="flex-1-hidden">
     <n-menu
       :value="activeKey"
       :collapsed="app.siderCollapse"
@@ -22,9 +22,10 @@ import type { MenuOption } from "naive-ui";
 import { useAppStore, useRouteStore, useThemeStore } from "@/store";
 import { useRouterPush } from "@/composables";
 import { getActiveKeyPathsOfMenus, translateMenuLabel } from "@/utils/router/menu";
+import { onMounted } from "vue";
 
 defineOptions({ name: "VerticalMenu" });
-
+const refScrollbar = ref<any>();
 const route = useRoute();
 const app = useAppStore();
 const theme = useThemeStore();
@@ -46,7 +47,19 @@ function handleUpdateMenu(_key: string, item: MenuOption) {
 function handleUpdateExpandedKeys(keys: string[]) {
   expandedKeys.value = keys;
 }
-
+function setMaxHeightToScroll() {
+  if (!refScrollbar.value) return;
+  let height = screen.availHeight - 56;
+  let ele = refScrollbar.value.$el.nextElementSibling;//.parentElement.querySelector(" .n-scrollbar "); 
+  console.info("=======setMaxHeightToScroll", refScrollbar.value.$el, ele, height);
+  ele.style["max-height"] = height + "px";
+}
+onMounted(() => {
+  setMaxHeightToScroll();
+});
+globalThis.addEventListener("resize", () => {
+  setMaxHeightToScroll();
+});
 watch(
   () => route.name,
   () => {

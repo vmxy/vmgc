@@ -78,7 +78,7 @@ const defaultThemeSetting: Theme.Setting = {
     collapsedWidth: 64,
     mixWidth: 80,
     mixCollapsedWidth: 48,
-    mixChildMenuWidth: 200,
+    mixChildMenuWidth: 160,
   },
   menu: {
     horizontalPosition: "flex-start",

@@ -1,5 +1,5 @@
 <template>
-  <dark-mode-container class="flex h-full" :inverted="theme.sider.inverted" @mouseleave="resetFirstDegreeMenus">
+  <dark-mode-container class="flex h-full vertical-mix-sider" :inverted="theme.sider.inverted" @mouseleave="resetFirstDegreeMenus">
     <div class="flex-1-hidden flex-col-stretch h-full">
       <global-logo :show-title="false" :style="{ height: theme.header.height + 'px' }" />
       <n-scrollbar class="flex-1-hidden">
