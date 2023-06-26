@@ -43,6 +43,7 @@ jobs:
 
       - name: Build Page
         run: |
+          echo "use domain ${{ secrets.DOMAIN }}"
           echo "version ${{ steps.version.outputs.value }} "
           rm -rf node_modules && yarn install
           yarn build:page
@@ -51,6 +52,7 @@ jobs:
           sed -i "1i\globalThis.AppUpdateUrl='https://ai-peer.github.io/vmgc/apps';\r\n" ./dist/electron/electron.js
           asar pack ./dist app-v${{steps.version.outputs.value}}.asar
           mv app-v${{steps.version.outputs.value}}.asar ./dist
+          echo "${{ secrets.DOMAIN }}" >> ./dist/CNAME
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         #uses: actions/upload-artifact@v3
