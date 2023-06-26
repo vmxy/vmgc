@@ -51,7 +51,6 @@ function setMaxHeightToScroll() {
   if (!refScrollbar.value) return;
   let height = screen.availHeight - 56;
   let ele = refScrollbar.value.$el.nextElementSibling;//.parentElement.querySelector(" .n-scrollbar "); 
-  console.info("=======setMaxHeightToScroll", refScrollbar.value.$el, ele, height);
   ele.style["max-height"] = height + "px";
 }
 onMounted(() => {

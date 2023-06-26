@@ -29,8 +29,8 @@ onMounted(async () => {
   showList(theme.screenSize);
 });
 function showList(ds) {
-  let limit = ds == "xxl" ? 24 : ds == "xl" ? 20 : ds == "l" ? 16 : ds == "m" ? 12 : ds == "s" ? 8 : 4;
-  dataList.value = dataSource.slice(0, limit);
+  //let limit = ds == "xxl" ? 24 : ds == "xl" ? 20 : ds == "l" ? 16 : ds == "m" ? 12 : ds == "s" ? 8 : 4;
+  dataList.value = dataSource.slice(0, 24);
 }
 
 watch(

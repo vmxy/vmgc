@@ -62,10 +62,11 @@
           :options="items"
           @update:value="openView"
         /-->
-        <n-scrollbar class="max-h-220px">
+        <n-scrollbar class="max-h-220px" :id="'id-' + line.id" ref="refScroll">
           <g-a
             v-for="item in line.items"
             v-if="line.id == selectLineId"
+            :id="'res-' + item.id"
             button
             :disabled="selectResId == item.id"
             :href="`/video/xplay/${item.id}`"
@@ -135,6 +136,15 @@ async function getInitLineId() {
 function onUpdateTab(lineId: string) {
   loading.value = false;
   selectLineId.value = lineId;
+
+  setTimeout(() => {
+    let scroll = proxy.$refs["refScroll"] as any;
+    let ele = globalThis.document.querySelector("#res-" + selectResId.value) as HTMLElement;
+    if (scroll && ele) {
+      let s = scroll[0];
+      s.scrollTo({ top: ele.offsetTop });
+    }
+  }, 100);
   /*   let lines = detail.value.lines;
   let selectList = lines.find((v) => v.id == lineId) || lines[0];
   let list = (selectList?.items || []).map((v) => ({
