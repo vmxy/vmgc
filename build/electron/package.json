@@ -58,7 +58,7 @@
           ]
         },
         {
-          "target": "zip",
+          "target": "appx",
           "arch": [
             "x64",
             "ia32"
