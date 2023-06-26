@@ -1,21 +1,20 @@
 {
-  "name": "tvshow",
+  "name": "iuku",
   "version": "1.0.0",
   "author": "vmxy",
   "main": "app/electron/electron.js",
   "scripts": {
     "build": "electron-builder"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "electron-updater": "^5.3.0",
     "electron": "^25.1.0",
     "electron-builder": "^23.6.0"
   },
   "build": {
-    "productName": "tvshow",
-    "appId": "io.vmxy.tvshow",
+    "productName": "iuku",
+    "appId": "io.vmxy.iuku",
     "copyright": "vmxy",
     "directories": {
       "output": "build-app"
@@ -53,6 +52,20 @@
       "target": [
         {
           "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        },
+        {
+          "target": "appx",
           "arch": [
             "x64",
             "ia32"

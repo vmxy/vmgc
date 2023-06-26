@@ -5,7 +5,7 @@ on:
       - dev
 env:
   Project_Name: vmgc
-  App_Name: tvshow
+  App_Name: iuku
 
 permissions:
   contents: read
