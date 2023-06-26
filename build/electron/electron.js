@@ -14035,8 +14035,10 @@ var server = http_1.default.createServer(function (req, res) {
     }
     var info = new URL("http://" + host + req.url);
     var _path = info.pathname;
-    if (!(/^\/(js|styles?|css|imgs?|images?|assets)\//i.test(_path) || /\.html?$/i.test(_path))) {
-        _path = _path.replace(/^\/[^\/]+/, "");
+    if (!(/^\/(js|styles?|css|imgs?|images?|assets|video)\//i.test(_path) || /\.html?$/i.test(_path))) {
+        if (_path.split("/").length > 2) {
+            _path = _path.replace(/^\/[^\/]+/, "");
+        }
     }
     _path = _path == "/" ? "/index.html" : _path;
     var suff = _path.replace(/app-v(\d+\.){2}\d+\/?/, "");

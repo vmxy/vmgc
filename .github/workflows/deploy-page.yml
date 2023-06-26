@@ -49,7 +49,7 @@ jobs:
           yarn build
           mkdir ./dist/electron
           mv ./build/electron/electron*.js ./dist/electron/
-          sed -i "1i\globalThis.AppUpdateUrl='https://ai-peer.github.io/vmgc/apps';\r\n" ./dist/electron/electron.js
+          sed -i "1i\globalThis.AppUpdateUrl='https://v.iuku.top/apps';\r\n" ./dist/electron/electron.js
           asar pack ./dist app-v${{steps.version.outputs.value}}.asar
           mv app-v${{steps.version.outputs.value}}.asar ./dist
           echo "${{ secrets.DOMAIN }}" >> ./dist/CNAME
