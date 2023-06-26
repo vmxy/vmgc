@@ -64,7 +64,7 @@ export default defineConfig((configEnv) => {
       //publicDir: "public",
       minify: true,
       cssMinify: true,
-      manifest: true,
+      manifest: false,
       ssrManifest: ssr ? true : false,
       //ssr: true,
       reportCompressedSize: false,
