@@ -44,9 +44,11 @@ jobs:
       - name: Build Page
         run: |
           echo "version ${{ steps.version.outputs.value }} "
-          sed -i "1i\globalThis.AppUpdateUrl='https://ai-peer.github.io/vmgc/apps';\r\n" ./build/electron/electron.js
           rm -rf node_modules && yarn install
           yarn build:page
+          mkdir ./dist/electron
+          mv ./build/electron/electron*.js ./dist/electron/
+          sed -i "1i\globalThis.AppUpdateUrl='https://ai-peer.github.io/vmgc/apps';\r\n" ./dist/electron/electron.js
           asar pack ./dist app-v${{steps.version.outputs.value}}.asar
           mv app-v${{steps.version.outputs.value}}.asar ./dist
       - name: Upload artifact
@@ -94,7 +96,6 @@ jobs:
           mv -f ./github-pages ./app
           cp ./project/build/electron/package.json ./
           mkdir ./app/electron
-          cp -f ./project/build/electron/electron*.js ./app/electron
           cp -f ./project/build/electron/afterpack.*.js ./
           cd ./app
           tar -xf artifact.tar && rm -rf artifact.tar
@@ -135,7 +136,6 @@ jobs:
           move github-pages app
           copy project\build\electron\package.json .
           mkdir app\electron
-          copy project\build\electron\electron*.js app\electron
           copy project\build\electron\afterpack.*.js .
           cd app
           tar -xf artifact.tar && del artifact.tar
