@@ -1,12 +1,16 @@
 import { Fav, FavModel } from "./fav";
 import { Played, PlayedModel } from "./played";
-import { Model } from "@ai-lion/liondb";
+const ssr = import.meta.env.SSR;
 
 class ModelExport {
   fav: FavModel;
   played: PlayedModel;
   constructor() {
-    Model.onReady(() => this.init());
+    if (!ssr) {
+      import("@ai-lion/liondb").then(({ Model }) => {
+        Model.onReady(() => this.init());
+      });
+    }
   }
   private init() {
     this.fav = new FavModel();

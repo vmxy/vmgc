@@ -2,7 +2,7 @@
   <div class="v-detail-info">
     <n-grid cols="10" :collapsed="false" responsive="screen" :item-responsive="true" x-gap="10" y-gap="20">
       <n-gi span="10 xs:10 s:0" class="text-align-center">
-        <g-image class="info-logo" :src="detail.logo" :alt="detail.desc" />
+        <g-image :lazy="false" class="info-logo" :src="detail.logo" :alt="detail.desc" />
       </n-gi>
       <n-gi span="10 xs:10 s:8">
         <n-grid cols="10">

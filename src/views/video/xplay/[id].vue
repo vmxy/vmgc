@@ -24,9 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed, Ref, getCurrentInstance } from "vue";
+import { onMounted, ref, computed, Ref, getCurrentInstance, useSSRContext } from "vue";
 import * as service from "@/service";
-import { useTitle } from "@vueuse/core";
 import { VRec, VHot, VLine } from "../components";
 import { useAppStore, useVideoStore } from "@/store";
 
@@ -37,7 +36,7 @@ const id = computed(() => {
   let id = proxy.$route.params.id;
   return id instanceof Array ? id[0] : id;
 });
-const res: Ref<NVideo.Res> = ref(app.inSSR ? proxy.$root.$attrs.detail : <any>{ id: "", lines: [] });
+const res: Ref<NVideo.Res> = ref(app.inSSR ? useSSRContext()?.detail || {} : <any>{ id: "", lines: [] });
 const urls: Ref<string[]> = ref([]);
 const hasFav = ref(false);
 async function toggleFav(data) {

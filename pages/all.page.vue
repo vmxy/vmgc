@@ -45,8 +45,8 @@ if (!ssr) {
     subscribeStore();
     const theme = useThemeStore();
     page.value.theme = theme;
-    const { useGlobalEvents } = await import("@/composables");
-    useGlobalEvents();
+    //const { useGlobalEvents } = await import("@/composables");
+    //useGlobalEvents();
   })();
 }
 </script>

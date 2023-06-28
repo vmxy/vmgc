@@ -1,1 +1,0 @@
-import{j as s,r as o,o as t,a as c,f as a}from"./chunk-b8a590ba.js";const n={class:"h-full"},r=["src"],d=s({__name:"index",setup(l){const e=o("https://www.naiveui.com/zh-CN/os-theme/docs/introduction");return(i,_)=>(t(),c("div",n,[a("iframe",{class:"wh-full",src:e.value},null,8,r)]))}});export{d as default};

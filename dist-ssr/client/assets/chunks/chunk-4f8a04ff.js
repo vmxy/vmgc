@@ -1,1 +1,0 @@
-import{o as s,a as o,b as t,d as c}from"./chunk-b8a590ba.js";import{_ as r}from"./chunk-c27b6911.js";const a={},n={class:"h-full"};function d(_,l){const e=c.NCard;return s(),o("div",n,[t(e,{title:"当前页面只有super才能看到",class:"h-full shadow-sm rounded-16px"})])}const p=r(a,[["render",d]]);export{p as default};

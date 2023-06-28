@@ -1,5 +1,6 @@
 <template>
-  <img v-lazyimg="formatImageUrl(src)" :alt="alt" ref="refImg" referrerPolicy="no-referrer" />
+  <img v-if="lazy" v-lazyimg="formatImageUrl(src)" :alt="alt" referrerPolicy="no-referrer" />
+  <img v-else :src="src" :alt="alt" ref="refImg" referrerPolicy="no-referrer" />
 </template>
 
 <script setup lang="ts">
@@ -13,6 +14,10 @@ const props = defineProps({
   alt: {
     type: String,
   },
+  lazy: {
+    type: Boolean,
+    default: true
+  }
 });
 
 const refImg = ref<HTMLImageElement>();
@@ -41,8 +46,8 @@ function onLoadError(ev) {
 }
 onMounted(() => {
   if (!refImg.value) return;
-  //refImg.value.onabort = onLoadError;
-  //refImg.value.onerror = onLoadError;
+  refImg.value.onabort = onLoadError;
+  refImg.value.onerror = onLoadError;
 });
 </script>
 

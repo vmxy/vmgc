@@ -1,14 +1,14 @@
 <template>
   <div>
-    <v-info :detail="detail"></v-info>
-    <v-line :detail="detail"></v-line>
-    <v-rec :id="detail.id"></v-rec>
+    <v-info v-if="detail" :detail="detail"></v-info>
+    <v-line v-if="detail" :detail="detail"></v-line>
+    <v-rec :id="detail?.id"></v-rec>
     <v-hot></v-hot>
   </div>
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance, computed } from "vue";
+import { getCurrentInstance, computed, useSSRContext } from "vue";
 import { ref, onMounted, Ref, watch } from "vue";
 import * as service from "@/service";
 import { VHot, VRec, VInfo, VLine } from "../components";
@@ -22,7 +22,9 @@ const id = computed(() => {
   let id = proxy.$route.params.id;
   return id instanceof Array ? id[0] : id || "";
 });
-const detail: Ref<NVideo.VideoDetail> = ref(app.inSSR ? proxy.$root.$attrs.detail : Object.assign({ id: id.value })); // proxy.$root.$attrs.detail
+const detail: Ref<NVideo.VideoDetail> = ref(
+  app.inSSR ? useSSRContext()?.detail || {} : Object.assign({ id: id.value }),
+); // proxy.$root.$attrs.detail
 
 onMounted(() => {
   fetchDetail(id.value);

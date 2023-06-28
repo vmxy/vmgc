@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, Ref, onMounted } from "vue";
+import { ref, computed, Ref, onMounted, useSSRContext } from "vue";
 import { useAppStore } from "@/store";
 import { VOption } from "../";
 import * as service from "@/service";
@@ -65,8 +65,9 @@ const props = defineProps({
 const route = useRoute();
 const router = useRouter();
 const app = useAppStore();
+const ssrData = useSSRContext()?.useSSRContext || {};
 const page = ref({ pageNo: parseInt(route.query.pageNo as string) || 1, pageCount: 0, total: 0, pageSize: 24 });
-const dataList: Ref<NVideo.VideoInfo[]> = ref([]);
+const dataList: Ref<NVideo.VideoInfo[]> = ref(ssrData.list || []);
 const loading = ref(true);
 const maxShowPage = ref(app.screenWidth <= 420 ? 6 : 10);
 const query = ref({

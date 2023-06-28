@@ -1,8 +1,11 @@
 import { defineConfig, loadEnv } from "vite";
 import { createViteProxy, getRootPath, getSrcPath, setupVitePlugins, viteDefine } from "./build";
 import { getServiceEnvConfig } from "./.env-config";
+import {dependencies} from "./package.json";
+let dependencieKeys = Object.keys(dependencies);
 
 export default defineConfig((configEnv) => {
+  console.info("====configEnv.mode", configEnv.mode);
   const viteEnv = loadEnv(configEnv.mode, process.cwd()) as unknown as ImportMetaEnv;
   const ssr = viteEnv.VITE_SSR == "Y";
   const rootPath = getRootPath();
@@ -18,7 +21,7 @@ export default defineConfig((configEnv) => {
         "~": rootPath,
         "@": srcPath,
         "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js",
-        "naive-ui": "naive-ui/dist",
+        "naive-ui": "naive-ui/dist"
       },
     },
     define: viteDefine,
@@ -47,12 +50,14 @@ export default defineConfig((configEnv) => {
         "vditor",
         "wangeditor",
         "xgplayer",
+        "@ai-lion/liondb"
       ],
     },
     ssr: {
       //external: ["naive-ui"],
-      //format: "cjs"
-      //noExternal: [/vue/, /vue-.*/, "pinia", "naive-ui"],
+      //target: "node",
+      //format: "esm",
+      noExternal: [], //打包进去
     },
     legacy: {
       //buildSsrCjsExternalHeuristics: true
@@ -62,7 +67,7 @@ export default defineConfig((configEnv) => {
       //target: "modules",
       outDir: ssr ? "dist-ssr" : "dist",
       //publicDir: "public",
-      minify: true,
+      minify: ssr ? false : true,
       cssMinify: true,
       manifest: false,
       ssrManifest: ssr ? true : false,
@@ -85,11 +90,13 @@ export default defineConfig((configEnv) => {
         ignoreTryCatch: false,
         //ignoreGlobal: true,
         transformMixedEsModules: true,
-        esmExternals: true,
+        //esmExternals: false,
         //defaultIsModuleExports: false,
         sourceMap: false,
         //include: [/node_modules/],
+        //include: ["@ai-lion/liondb", /node_modules/],
         //extensions: [".js", ".cjs", ".mjs"],
+        //dynamicRequireTargets: ["@ai-lion/liondb", "prebuilds"]
       },
       /*    modulePreload: {
         polyfill: true,

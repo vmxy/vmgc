@@ -138,6 +138,7 @@ function onUpdateTab(lineId: string) {
   selectLineId.value = lineId;
 
   setTimeout(() => {
+    if (ssr) return;
     let scroll = proxy.$refs["refScroll"] as any;
     let ele = globalThis.document.querySelector("#res-" + selectResId.value) as HTMLElement;
     if (scroll && ele) {

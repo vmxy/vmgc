@@ -13,13 +13,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, getCurrentInstance } from "vue";
+import { ref, onMounted, watch, getCurrentInstance, useSSRContext } from "vue";
 import * as service from "@/service";
 import { useThemeStore, useAppStore } from "@/store";
 const { proxy } = getCurrentInstance();
 const app = useAppStore();
 const theme = useThemeStore();
-const dataList = ref(app.inSSR ? (proxy.$root.$attrs.hot as any) : ([] as NVideo.VideoInfo[]));
+const dataList = ref(app.inSSR ? useSSRContext()?.hot || [] : ([] as NVideo.VideoInfo[]));
 let dataSource = [];
 
 onMounted(async () => {

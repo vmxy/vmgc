@@ -1,1 +1,0 @@
-import{_ as e}from"./exception-base.vue_vue_type_script_setup_true_lang-d76412b9.js";import{_ as c}from"./_plugin-vue_export-helper-c27b6911.js";import{o as t,h as n}from"./index-a4a25dc6.js";const r={};function _(s,a){const o=e;return t(),n(o,{type:"500"})}const i=c(r,[["render",_]]);export{i as default};

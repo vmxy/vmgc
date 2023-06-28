@@ -1,7 +1,20 @@
-import { Model } from "@ai-lion/liondb";
-console.info("app name", import.meta.env.VITE_APP_NAME);
-Model.setApp(import.meta.env.VITE_APP_NAME);
+const ssr = import.meta.env.SSR;
+globalThis.ssr = ssr;
+console.info("=====================ssr", ssr);
 import { Buffer } from "buffer";
+globalThis.Buffer = Buffer;
+globalThis.wait = async (ttl: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), ttl);
+  });
+};
+if (!ssr) {
+  import("@ai-lion/liondb").then(({ Model }) => {
+    console.info("app name", import.meta.env.VITE_APP_NAME);
+    Model.setApp(import.meta.env.VITE_APP_NAME);
+  });
+}
+
 import * as vue from "vue";
 //import AppLoading from "./components/common/app-loading.vue";
 import { setupDirectives } from "./directives";
@@ -9,18 +22,10 @@ import { setupRouter } from "./router";
 import { setupAssets } from "./plugins";
 import { setupStore } from "./store";
 import { setupI18n } from "./locales";
-const ssr = import.meta.env.SSR;
-globalThis.ssr = ssr;
-console.info("=====================ssr", ssr);
-globalThis.Buffer = Buffer;
-globalThis.wait = async (ttl: number) => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(), ttl);
-  });
-};
-export function createApp(opts: { Page: any; context?: any }) {
+
+export function createApp(opts: { Page: any }) {
   console.info("============createApp", "ssr=" + ssr);
-  const { Page, context } = opts;
+  const { Page } = opts;
   // import assets: js、css
   setupAssets();
 
@@ -29,7 +34,7 @@ export function createApp(opts: { Page: any; context?: any }) {
   //appLoading.mount("#appLoading");
 
   //const app = vue.createApp(App);
-  const app = ssr ? vue.createSSRApp(Page, context) : vue.createApp(Page, context);
+  const app = ssr ? vue.createSSRApp(Page) : vue.createApp(Page);
 
   // store plugin: pinia
   setupStore(app);

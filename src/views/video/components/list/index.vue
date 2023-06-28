@@ -1,7 +1,7 @@
 <template>
   <n-card class="mt-16px min-h-200px" :title="$t('menu.' + props.id)">
     <template #header>
-      <router-link :to="`/video/${props.id}`">{{ $t('menu.' + props.id) }}</router-link>
+      <router-link :to="`/video/${props.id}`">{{ $t("menu." + props.id) }}</router-link>
     </template>
     <n-grid cols="xs:2 s:4 m:5 l:6 xl:7 2xl:12" responsive="screen" x-gap="3 x:6 s:9 m:12" y-gap="3 x:6 s:9 m:12">
       <n-gi span="1" v-for="item in dataList" :key="item.id">
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, Ref, onMounted, defineComponent, getCurrentInstance } from "vue";
+import { ref, computed, Ref, onMounted, defineComponent, getCurrentInstance, useSSRContext } from "vue";
 import { useVideoStore, useTabStore, useAppStore } from "@/store";
 import * as service from "@/service";
 
@@ -40,7 +40,7 @@ const page = ref({ pageNo: 1, pageCount: 0, total: 0, pageSize: 24 });
 const dataList: Ref<NVideo.VideoInfo[]> = ref([]);
 if (app.inSSR) {
   //服务端渲染
-  let homeData: any = proxy.root.attrs.homeData || {};
+  let homeData: any = useSSRContext()?.homeData || {};
   switch (props.id) {
     case "tv":
       if (homeData.tv) dataList.value = homeData.tv;

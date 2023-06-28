@@ -54,7 +54,7 @@ async function render(pageContext) {
   }
   const { app, router } = createApp({
     Page: Page,
-    context: context,
+    //context: context,
   });
   router.push(pageContext.urlPathname);
   await router.isReady();
@@ -82,7 +82,7 @@ async function render(pageContext) {
       <body>
         <div id="appLoading" style="position: fixed;width: 100%;height: 100%; left: 0;top: 0; z-index: 9999;background:#fff;">
           <div style="display: flex;flex-wrap: wrap; justify-content: center;align-items: center; width:100%; height: 100%; text-align: center;">
-              <img src="/loading.gif" />
+              <img src="/loading.gif" width="100px"/>
           </div>
         </div>
         <div id="app">

@@ -1,4 +1,4 @@
-import { Column, IsNotEmpty, Model, Schema } from "@ai-lion/liondb";
+import { Model, Schema } from "@ai-lion/liondb";
 
 export class Played extends Schema {
   constructor(data) {

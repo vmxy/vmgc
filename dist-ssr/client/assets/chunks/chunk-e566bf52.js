@@ -1,1 +1,0 @@
-import{j as s,r as o,o as a,a as t,f as c}from"./chunk-b8a590ba.js";const r={class:"h-full"},n=["src"],d=s({__name:"index",setup(l){const e=o("https://docs.soybean.pro/");return(_,f)=>(a(),t("div",r,[c("iframe",{class:"wh-full",src:e.value},null,8,n)]))}});export{d as default};

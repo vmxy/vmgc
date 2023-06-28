@@ -1,6 +1,7 @@
 import UAParser from "ua-parser-js";
 import { useAuthStore } from "@/store";
 import { isArray, isString } from "@/utils";
+import { useSSRContext } from "vue";
 
 interface AppInfo {
   /** 项目名称 */
@@ -14,14 +15,24 @@ interface AppInfo {
 /** 项目信息 */
 export function useAppInfo(): AppInfo {
   const { VITE_APP_NAME: name, VITE_APP_TITLE: title, VITE_APP_DESC: desc } = import.meta.env;
-
-  return {
+  let info = {
     name,
     title,
     desc,
   };
+  if (ssr) {
+    const ctx = useSSRContext();
+    ["name", "title", "desc"].forEach((key) => {
+      info[key] = getEnv(key, ctx) || info[key];
+    });
+  }
+  return info;
 }
-
+function getEnv(name, ctx?: { [key: string]: any }) {
+  let env = globalThis.__env || {};
+  let val = env[name] || ctx[name];
+  return val;
+}
 /** 获取设备信息 */
 export function useDeviceInfo() {
   const parser = new UAParser();

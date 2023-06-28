@@ -2,7 +2,7 @@ import type { PluginOption } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import unocss from "@unocss/vite";
-import progress from "vite-plugin-progress";
+//import progress from "vite-plugin-progress";
 //import pageRoute from '@soybeanjs/vite-plugin-vue-page-route';
 import unplugin from "./unplugin";
 import mock from "./mock";
@@ -13,6 +13,7 @@ import { pageRoute } from "@ai-lion/vite-plugin-vue-page-route";
 import ssr from "vite-plugin-ssr/plugin";
 import { viteStaticCopy } from "vite-plugin-static-copy"; //引入插件
 import os from "os";
+
 /**
  * vite插件
  * @param viteEnv - 环境变量配置
@@ -85,6 +86,10 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
             dest: "./",
             rename: "404.md",
           },
+          {
+            src: "node_modules/@ai-lion/liondb/dist/prebuilds",
+            dest: "./",
+          },
         ],
       }),
     );
@@ -99,7 +104,7 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
           //partial: true,
           //disableAutoRun: false,
         },
-        includeAssetsImportedByServer: true,
+        includeAssetsImportedByServer: false,
         //disableAutoFullBuild: false
       }),
     );

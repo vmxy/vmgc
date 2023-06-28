@@ -1,1 +1,0 @@
-import{o as s,e as o,l as t,k as c}from"./index-a4a25dc6.js";import{_ as r}from"./_plugin-vue_export-helper-c27b6911.js";const n={},a={class:"h-full"};function _(d,l){const e=c.NCard;return s(),o("div",a,[t(e,{title:"当前页面只有super才能看到",class:"h-full shadow-sm rounded-16px"})])}const p=r(n,[["render",_]]);export{p as default};
