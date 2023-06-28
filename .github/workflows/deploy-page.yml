@@ -47,6 +47,8 @@ jobs:
           export VITE_APP_TITLE=${{ vars.APP_TITLE }}
           export VITE_APP_CODE=${{ vars.APP_CODE }}
           export VITE_APP_ORG=${{ vars.APP_ORG }}
+          export VITE_APP_UPDATE_URL=${{ vars.APP_UPDATE_URL }}
+
 
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
 
@@ -61,6 +63,9 @@ jobs:
           fi
           if [ $VITE_APP_ORG ];then
             sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/_builds/package.json
+          fi
+          if [ $VITE_APP_UPDATE_URL ];then
+            sed -i 's/APP_UPDATE_URL/${{ vars.APP_UPDATE_URL }}/g' ./dist/_builds/package.json
           fi
 
           mkdir ./dist/electron
@@ -226,8 +231,8 @@ jobs:
           cp Windows/* github-pages/apps
           mv github-pages/*.asar github-pages/apps
           echo "============show github-pages=============="
-          cd github-pages && ls -lh
           rm -rf github-pages/_builds
+          cd github-pages && ls -lh
           
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1

@@ -22,7 +22,7 @@
     "publish": [
       {
         "provider": "generic",
-        "url": "https://ai-peer.github.io/vmgc/apps"
+        "url": "APP_UPDATE_URL"
       }
     ],
     "afterPack": "./afterpack.locales.js",
