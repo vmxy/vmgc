@@ -5,7 +5,6 @@ on:
       - dev
 env:
   Project_Name: vmgc
-  App_Name: iuku
 
 permissions:
   contents: read
@@ -51,18 +50,19 @@ jobs:
 
           rm -rf node_modules && yarn install
           yarn build
-          mkdir ./dist/electron
-          cp ./build/electron/* ./dist/electron/
-          sed -i "1i\globalThis.AppUpdateUrl='${{ vars.APP_UPDATE_URL }}';\r\n" ./dist/electron/electron.js
-
+          mkdir ./dist/__vars
+          mv ./build/electron/package.json ./dist/_builds
+          mv ./build/electron/afterpack*.js ./dist/_builds
           if [ $VITE_APP_CODE ];then
-            sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./dist/electron/package.json
+            sed -i 's/vmgc/$VITE_APP_CODE/g' ./dist/_builds/package.json
           fi
           if [ $VITE_APP_ORG ];then
-            sed -i 's/vmxy/${{ vars.VITE_APP_ORG }}/g' ./dist/electron/package.json
+            sed -i 's/vmxy/$VITE_APP_ORG/g' ./dist/_builds/package.json
           fi
-          
 
+          mkdir ./dist/electron
+          mv ./build/electron/electron*.js ./dist/electron/
+          sed -i "1i\globalThis.AppUpdateUrl='${{ vars.APP_UPDATE_URL }}';\r\n" ./dist/electron/electron.js
           asar pack ./dist app-v${{steps.version.outputs.value}}.asar
           mv app-v${{steps.version.outputs.value}}.asar ./dist
       - name: Upload artifact
@@ -107,12 +107,16 @@ jobs:
           cd ../
           cp -r ${{ env.Project_Name }} project
           mv -f ./github-pages ./app
-          cd app && ls -lh && cd ..
-          cp ./app/electron/package.json ./
-          cp -f ./app/electron/afterpack.*.js ./
+
           cd ./app
           tar -xf artifact.tar && rm -rf artifact.tar
+          ls -lh
           cd ../
+
+          cp ./_builds/package.json ./
+          mkdir ./app/electron
+          cp -f ./project/build/electron/afterpack.*.js ./
+          
           pwd
           yarn install
           yarn build
@@ -146,8 +150,9 @@ jobs:
           cd ../
           xcopy ${{ env.Project_Name }} project /E/I
           move github-pages app
-          copy app\electron\package.json .
-          copy app\electron\afterpack.*.js .
+          copy project\build\electron\package.json .
+          mkdir app\electron
+          copy project\build\electron\afterpack.*.js .
           cd app
           tar -xf artifact.tar && del artifact.tar
           cd ..
