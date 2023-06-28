@@ -45,6 +45,7 @@ jobs:
           echo "version ${{ steps.version.outputs.value }} "
           export VITE_API_SERVER=${{ vars.API_SERVER }}
           export VITE_APP_TITLE=${{ vars.APP_TITLE }}
+          export VITE_APP_DESC=${{ vars.APP_DESC }}
           export VITE_APP_CODE=${{ vars.APP_CODE }}
           export VITE_APP_ORG="${{ vars.APP_ORG }}"
           export VITE_APP_UPDATE_URL="${{ vars.APP_UPDATE_URL }}"
