@@ -113,7 +113,7 @@ jobs:
           ls -lh
           cd ../
 
-          cp ./_builds/package.json ./
+          cp ./app/_builds/package.json ./
           cp -f ./project/build/electron/afterpack.*.js ./
           
           pwd
