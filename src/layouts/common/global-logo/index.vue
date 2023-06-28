@@ -1,6 +1,6 @@
 <template>
   <router-link :to="routeHomePath" class="flex-center w-full nowrap-hidden">
-    <system-logo class="text-32px text-primary" />
+    <system-logo class="text-48px text-primary" />
     <h2 v-show="!app.isMobile" class="pl-8px text-16px font-bold text-primary transition duration-300 ease-in-out">
       {{ appInfo.title }}
     </h2>

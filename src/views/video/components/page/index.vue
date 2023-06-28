@@ -6,8 +6,8 @@
         <template #header> </template>
         <n-grid
           v-if="dataList.length > 0"
-          cols="xs:2 s:4 m:5 l:6 xl:7 2xl:12"
-          responsive="screen"
+          cols="240:1 320:2 480:3 640:4 960:5 1024:6 1440:7 2048:12 "
+          responsive="self"
           x-gap="3 x:6 s:9 m:12"
           y-gap="3 x:6 s:9 m:12"
         >

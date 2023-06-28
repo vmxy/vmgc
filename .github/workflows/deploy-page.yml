@@ -62,7 +62,7 @@ jobs:
           mv ./build/electron/afterpack*.js ./dist/_builds
      
           if [ $VITE_APP_TITLE ];then
-            replace-in-files --string='%VITE_APP_TIELE%' --replacement='${{vars.APP_TITLE}}'  ./dist/index.html
+            replace-in-files --string='%VITE_APP_TITLE%' --replacement='${{vars.APP_TITLE}}'  ./dist/index.html
           fi
           if [ $VITE_APP_DESC ];then
             replace-in-files --string='%VITE_APP_DESC%' --replacement='${{vars.APP_DESC}}'  ./dist/index.html

@@ -97,7 +97,7 @@ const defaultThemeSetting: Theme.Setting = {
     animateModeList: themeAnimateModeOptions,
   },
   config: {
-    breakpoints: { xs: 480, s: 640, m: 1024, l: 1280, xl: 1536, xxl: 1920 },
+    breakpoints: { xs: 420, s: 480, m: 1024, l: 1280, xl: 1536, xxl: 1920 },
   },
 };
 
