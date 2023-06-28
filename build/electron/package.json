@@ -1,5 +1,5 @@
 {
-  "name": "iuku",
+  "name": "vmgc",
   "version": "2.0.1",
   "author": "vmxy",
   "main": "app/electron/electron.js",
@@ -13,8 +13,8 @@
     "electron-builder": "^23.6.0"
   },
   "build": {
-    "productName": "iuku",
-    "appId": "io.vmxy.iuku",
+    "productName": "vmgc",
+    "appId": "io.vmxy.vmgc",
     "copyright": "vmxy",
     "directories": {
       "output": "build-app"
