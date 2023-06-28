@@ -54,10 +54,10 @@ jobs:
           mv ./build/electron/package.json ./dist/_builds
           mv ./build/electron/afterpack*.js ./dist/_builds
           if [ $VITE_APP_CODE ];then
-            sed -i 's/vmgc/$VITE_APP_CODE/g' ./dist/_builds/package.json
+            sed -i 's/vmgc/${{ vars.VITE_APP_CODE }}/g' ./dist/_builds/package.json
           fi
           if [ $VITE_APP_ORG ];then
-            sed -i 's/vmxy/$VITE_APP_ORG/g' ./dist/_builds/package.json
+            sed -i 's/vmxy/${{ vars.VITE_APP_ORG }}/g' ./dist/_builds/package.json
           fi
 
           mkdir ./dist/electron
