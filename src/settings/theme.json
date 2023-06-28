@@ -34,7 +34,7 @@
       "label": "主体滚动"
     }
   ],
-  "themeColor": "#1890ff",
+  "themeColor": "red",
   "themeColorList": [
     "#1890ff",
     "#409EFF",
