@@ -1,6 +1,6 @@
 <template>
   <dark-mode-container class="global-header flex-y-center h-full" :inverted="theme.header.inverted">
-    <global-logo v-if="app.inSSR || showLogo" class="h-full ml-5px" :style="{ width: theme.sider.width + 'px' }" />
+    <global-logo v-if="app.inSSR || showLogo" class="h-full ml-10px" :style="{ width: theme.sider.width + 'px' }" />
     <div :class="showQuickMenu ? 'w-128px' : 'w-85%'" style="max-width: calc(100% - 60px);">
       <header-menu v-if="showHeaderMenu" />
       <div v-else class="flex-1-hidden flex-y-center h-full mr-4">
@@ -70,7 +70,7 @@ const app = useAppStore();
 const theme = useThemeStore();
 const { isMobile, isSmallScreen } = useBasicLayout();
 
-const showButton = import.meta.env.PROD && import.meta.env.VITE_VERCEL !== "Y";
+const showButton = import.meta.env.PROD && import.meta.env.VITE_VERCEL == "Y";
 const showQuickMenu = computed(() => {
   return !app.inSSR && !app.isMobile;
 });

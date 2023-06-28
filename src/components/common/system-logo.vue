@@ -1,6 +1,7 @@
 <template>
-  <icon-local-logo-fill v-if="fill" />
-  <icon-local-logo v-else />
+  <!--icon-local-logo-fill v-if="fill" />
+  <icon-local-logo v-else /-->
+  <img src="/logo.png" style="max-width: 32px;margin-left: 5px;"/>
 </template>
 
 <script lang="ts" setup>
