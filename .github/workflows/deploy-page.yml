@@ -69,8 +69,9 @@ jobs:
           mkdir ./dist/electron
           mv ./build/electron/electron*.js ./dist/electron/
           if [ $VITE_APP_UPDATE_URL ];then
-            sed -i 's/APP_UPDATE_URL/${VITE_APP_UPDATE_URL//\//\\\/}/g' ./dist/_builds/package.json
+            sed -i 's/APP_UPDATE_URL/${VITE_APP_UPDATE_URL//\//\/}/g' ./dist/_builds/package.json
           fi
+
           asar pack ./dist app-v${{steps.version.outputs.value}}.asar
           mv app-v${{steps.version.outputs.value}}.asar ./dist
       - name: Upload artifact
