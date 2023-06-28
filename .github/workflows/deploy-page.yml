@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
-      - run: npm i -g yarn asar
+      - run: npm i -g yarn asar replace-in-files-cli
 
       - name: 读取当前版本号
         id: version
@@ -71,9 +71,8 @@ jobs:
           mv ./build/electron/electron*.js ./dist/electron/
           if [ $VITE_APP_UPDATE_URL ];then
             echo "replace VITE_APP_UPDATE_URL"
-            sed -i "s/APP_UPDATE_URL/${VITE_APP_UPDATE_URL//\//\/}/g" ./dist/_builds/package.json
+            replace-in-files --string='APP_UPDATE_URL' --replacement='${{vars.APP_UPDATE_URL}}'  ./dist/_builds/package.json
           fi
-
           asar pack ./dist app-v${{steps.version.outputs.value}}.asar
           mv app-v${{steps.version.outputs.value}}.asar ./dist
       - name: Upload artifact
