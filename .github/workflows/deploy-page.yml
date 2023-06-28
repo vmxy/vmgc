@@ -46,9 +46,10 @@ jobs:
           export VITE_API_SERVER=${{ vars.API_SERVER }}
           export VITE_APP_TITLE=${{ vars.APP_TITLE }}
           export VITE_APP_CODE=${{ vars.APP_CODE }}
-          export VITE_APP_ORG=${{ vars.APP_ORG }}
-          export VITE_APP_UPDATE_URL=${{ vars.APP_UPDATE_URL }}
+          export VITE_APP_ORG="${{ vars.APP_ORG }}"
+          export VITE_APP_UPDATE_URL="${{ vars.APP_UPDATE_URL }}"
 
+          echo "====VITE_APP_UPDATE_URL ${VITE_APP_UPDATE_URL//\//\\\/} "
 
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
 
@@ -65,7 +66,7 @@ jobs:
             sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/_builds/package.json
           fi
           if [ $VITE_APP_UPDATE_URL ];then
-            sed -i 's/APP_UPDATE_URL/${ ${{ vars.APP_UPDATE_URL }}//\//\\\/}/g' ./dist/_builds/package.json
+            sed -i 's/APP_UPDATE_URL/${VITE_APP_UPDATE_URL//\//\\\/}/g' ./dist/_builds/package.json
           fi
 
           mkdir ./dist/electron
