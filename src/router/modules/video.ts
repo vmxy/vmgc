@@ -14,6 +14,20 @@ const video: AuthRoute.Route[] = [
     },
   },
   {
+    name: "video_fav",
+    path: "/video/fav",
+    component: "self",
+    meta: {
+      title: "收藏",
+      requiresAuth: false,
+      keepAlive: false,
+      singleLayout: "basic",
+      icon: "mdi:heart",
+      order: 7,
+      i18nTitle: "menu.fav",
+    },
+  },
+  {
     name: "video_movie",
     path: "/video/movie",
     component: "self",
@@ -95,20 +109,6 @@ const video: AuthRoute.Route[] = [
       icon: "mdi:video-vintage",
       order: 7,
       i18nTitle: "menu.doc",
-    },
-  },
-  {
-    name: "video_fav",
-    path: "/video/fav",
-    component: "self",
-    meta: {
-      title: "收藏",
-      requiresAuth: false,
-      keepAlive: false,
-      singleLayout: "basic",
-      icon: "mdi:heart",
-      order: 7,
-      i18nTitle: "menu.fav",
     },
   },
   {
