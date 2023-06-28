@@ -1,6 +1,6 @@
 <template>
-  <router-link :to="routeHomePath" class="flex-center w-full nowrap-hidden">
-    <system-logo class="text-32px text-primary" />
+  <router-link :to="routeHomePath" class="flex-center w-full nowrap-hidden min-w-32px">
+    <system-logo class="text-32px text-primary min-w-32px" /> 
     <h2 v-show="!app.isMobile" class="pl-8px text-16px font-bold text-primary transition duration-300 ease-in-out">
       {{ appInfo.title }}
     </h2>
@@ -9,7 +9,6 @@
 
 <script setup lang="ts">
 import { routePath } from "@/router";
-import { t } from "@/locales";
 import { useAppStore } from "@/store";
 import { useAppInfo } from "@/composables"
 

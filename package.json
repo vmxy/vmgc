@@ -35,7 +35,6 @@
   "scripts": {
     "start": "cross-env VITE_SERVICE_ENV=prod NODE_ENV=production node server.js",
     "ssr": "cross-env VITE_SERVICE_ENV=dev VITE_SSR=Y vite",
-    "start:ssr": "cross-env VITE_SERVICE_ENV=prod NODE_ENV=production VITE_SSR=Y vite",
     "dev": "cross-env VITE_SERVICE_ENV=dev vite",
     "dev:test": "cross-env VITE_SERVICE_ENV=test vite",
     "dev:prod": "cross-env VITE_SERVICE_ENV=prod vite",
