@@ -113,7 +113,7 @@ jobs:
         run: |
           export APP_UPDATE_URL=${{ vars.APP_UPDATE_URL }}
           cd ../
-          cp -r ${{ env.Project_Name }} project
+          # cp -r ${{ env.Project_Name }} project
           mv -f ./github-pages ./app
 
           cd ./app
