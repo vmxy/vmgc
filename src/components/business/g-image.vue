@@ -28,7 +28,7 @@ function getSourceUrl(url: string) {
   return url;
 }
 function formatImageUrl(url: string) {
-  if (!url) return "/logo.png";
+  if (!url) return "/box.png";
   url = getSourceUrl(url);
   return url;
 }
@@ -42,7 +42,7 @@ function onLoadError(ev) {
   if (isLoadError) return;
   isLoadError = true;
   //let url = proxyImageUrl(props.src);
-  refImg.value.src = "/logo.png";
+  refImg.value.src = "/box.png";
 }
 onMounted(() => {
   if (!refImg.value) return;
