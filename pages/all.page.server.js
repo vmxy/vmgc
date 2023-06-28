@@ -9,7 +9,7 @@ import routes from "@/router/modules/video";
 import { transformAuthRouteToMenu } from "@/utils/router/menu";
 
 const CachePageData = createCache({ ttl: 5 * 60 * 1000 });
-const API_SERVER = process.env.API_SERVER || "";
+const API_SERVER = process.env.VITE_API_SERVER || "";
 const Menus = transformAuthRouteToMenu(routes);
 
 Object.defineProperties(import.meta.env, {
@@ -135,6 +135,7 @@ async function search(q, pageNo) {
 }
 
 async function getHome() {
+  console.info("get home", API_SERVER);
   let data =
     CachePageData.get("home") ||
     (await axios(`${API_SERVER}/api/v/xhome`, { responseType: "json" }) //
