@@ -50,7 +50,7 @@ jobs:
 
           rm -rf node_modules && yarn install
           yarn build
-          mkdir ./dist/__vars
+          mkdir ./dist/_builds
           mv ./build/electron/package.json ./dist/_builds
           mv ./build/electron/afterpack*.js ./dist/_builds
           if [ $VITE_APP_CODE ];then
