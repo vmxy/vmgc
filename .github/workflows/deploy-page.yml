@@ -69,6 +69,7 @@ jobs:
           mkdir ./dist/electron
           mv ./build/electron/electron*.js ./dist/electron/
           if [ $VITE_APP_UPDATE_URL ];then
+            echo "replace VITE_APP_UPDATE_URL"
             sed -i "s/APP_UPDATE_URL/${VITE_APP_UPDATE_URL//\//\/}/g" ./dist/_builds/package.json
           fi
 
