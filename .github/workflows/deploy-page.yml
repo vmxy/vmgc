@@ -107,6 +107,7 @@ jobs:
           cd ../
           cp -r ${{ env.Project_Name }} project
           mv -f ./github-pages ./app
+          cd app && ls -lh && cd ..
           cp ./app/electron/package.json ./
           cp -f ./app/electron/afterpack.*.js ./
           cd ./app
