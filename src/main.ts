@@ -10,8 +10,7 @@ globalThis.wait = async (ttl: number) => {
 };
 if (!ssr) {
   import("@ai-lion/liondb").then(({ Model }) => {
-    console.info("app name", import.meta.env.VITE_APP_NAME);
-    Model.setApp(import.meta.env.VITE_APP_NAME);
+    Model.setApp("app");
   });
 }
 

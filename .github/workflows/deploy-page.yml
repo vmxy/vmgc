@@ -45,6 +45,8 @@ jobs:
         run: |
           echo "version ${{ steps.version.outputs.value }} "
           export VITE_API_SERVER=${{ vars.API_SERVER }}
+          export VITE_APP_NAME=${{ vars.APP_NAME }}
+
 
           rm -rf node_modules && yarn install
           yarn build
