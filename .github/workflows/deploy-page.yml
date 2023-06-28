@@ -53,6 +53,7 @@ jobs:
           mkdir ./dist/_builds
           mv ./build/electron/package.json ./dist/_builds
           mv ./build/electron/afterpack*.js ./dist/_builds
+          echo "VITE_APP_CODE $VITE_APP_CODE  ${{vars.VITE_APP_CODE }}"
           if [ $VITE_APP_CODE ];then
             sed -i 's/vmgc/${{ vars.VITE_APP_CODE }}/g' ./dist/_builds/package.json
           fi
