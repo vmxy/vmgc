@@ -114,7 +114,6 @@ jobs:
           cd ../
 
           cp ./_builds/package.json ./
-          mkdir ./app/electron
           cp -f ./project/build/electron/afterpack.*.js ./
           
           pwd
