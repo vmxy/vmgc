@@ -48,18 +48,14 @@ jobs:
           export VITE_APP_CODE=${{ vars.APP_CODE }}
           export VITE_APP_ORG=${{ vars.APP_ORG }}
 
+          echo "VITE_APP_CODE $VITE_APP_CODE  ${{vars.VITE_APP_CODE }}"
+
           rm -rf node_modules && yarn install
           yarn build
           mkdir ./dist/_builds
           mv ./build/electron/package.json ./dist/_builds
           mv ./build/electron/afterpack*.js ./dist/_builds
-          echo "VITE_APP_CODE $VITE_APP_CODE  ${{vars.VITE_APP_CODE }}"
-          if [ $VITE_APP_CODE ];then
-            sed -i 's/vmgc/${{ vars.VITE_APP_CODE }}/g' ./dist/_builds/package.json
-          fi
-          if [ $VITE_APP_ORG ];then
-            sed -i 's/vmxy/${{ vars.VITE_APP_ORG }}/g' ./dist/_builds/package.json
-          fi
+     
 
           mkdir ./dist/electron
           mv ./build/electron/electron*.js ./dist/electron/
