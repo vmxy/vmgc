@@ -66,11 +66,15 @@ async function render(pageContext) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=false">
     <script type="text/javascript">
-      function __defindProperty(target, field, value){
-        Object.defineProperty(target, field, {value: value, writable: false});
-      }
-      const API_SERVER="${API_SERVER}";
-      __defindProperty(window, "API_SERVER", API_SERVER);
+      
+      (()=>{
+        function __defindProperty(target, field, value){
+          Object.defineProperty(target, field, {value: value, writable: false});
+        }
+        const API_SERVER="${API_SERVER}";
+        if(API_SERVER) __defindProperty(window, "API_SERVER", API_SERVER);
+      })();
+     
     </script>
   `;
   //const appLoadingHtml = await renderToString(appLoading); //${dangerouslySkipEscape(appHtml)}
@@ -135,7 +139,6 @@ async function search(q, pageNo) {
 }
 
 async function getHome() {
-  console.info("get home", API_SERVER);
   let data =
     CachePageData.get("home") ||
     (await axios(`${API_SERVER}/api/v/xhome`, { responseType: "json" }) //

@@ -21,7 +21,8 @@ export default defineConfig((configEnv) => {
         "~": rootPath,
         "@": srcPath,
         "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js",
-        "naive-ui": "naive-ui/dist"
+        "naive-ui": "naive-ui/dist",
+        "@ai-lion/liondb": "@ai-lion/liondb/dist/browser.js"
       },
     },
     define: viteDefine,
@@ -57,7 +58,7 @@ export default defineConfig((configEnv) => {
       //external: ["naive-ui"],
       //target: "node",
       //format: "esm",
-      noExternal: [], //打包进去
+      noExternal: ["@ai-lion/liondb"], //打包进去
     },
     legacy: {
       //buildSsrCjsExternalHeuristics: true
@@ -96,7 +97,7 @@ export default defineConfig((configEnv) => {
         //include: [/node_modules/],
         //include: ["@ai-lion/liondb", /node_modules/],
         //extensions: [".js", ".cjs", ".mjs"],
-        //dynamicRequireTargets: ["@ai-lion/liondb", "prebuilds"]
+        dynamicRequireTargets: ["@ai-lion/liondb"]
       },
       /*    modulePreload: {
         polyfill: true,
