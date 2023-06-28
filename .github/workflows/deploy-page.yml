@@ -65,7 +65,7 @@ jobs:
             sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/_builds/package.json
           fi
           if [ $VITE_APP_UPDATE_URL ];then
-            sed -i 's/APP_UPDATE_URL/${VITE_APP_UPDATE_URL//\//\\\/}/g' ./dist/_builds/package.json
+            sed -i 's/APP_UPDATE_URL/${ ${{ vars.APP_UPDATE_URL }}//\//\\\/}/g' ./dist/_builds/package.json
           fi
 
           mkdir ./dist/electron
