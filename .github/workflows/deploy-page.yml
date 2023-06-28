@@ -61,6 +61,12 @@ jobs:
           mv ./build/electron/package.json ./dist/_builds
           mv ./build/electron/afterpack*.js ./dist/_builds
      
+          if [ $VITE_APP_TITLE ];then
+            replace-in-files --string='%VITE_APP_TIELE%' --replacement='${{vars.APP_TITLE}}'  ./dist/index.html
+          fi
+          if [ $VITE_APP_DESC ];then
+            replace-in-files --string='%VITE_APP_DESC%' --replacement='${{vars.APP_DESC}}'  ./dist/index.html
+          fi
           if [ $VITE_APP_CODE ];then
             sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./dist/_builds/package.json
           fi
