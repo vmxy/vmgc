@@ -110,13 +110,13 @@ jobs:
 
           cd ./app
           tar -xf artifact.tar && rm -rf artifact.tar
-          ls -lh
+          cd _builds && ls -lh && cd ..
           cd ../
 
           cp ./app/_builds/package.json ./
           cp -f ./project/build/electron/afterpack.*.js ./
           
-          pwd
+          pwd && ls -lh
           yarn install
           yarn build
           ls
