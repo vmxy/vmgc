@@ -31,7 +31,6 @@ const app = useAppStore();
 const theme = useThemeStore();
 const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
-console.info("===routeStore.menus", routeStore.menus);
 const menus = computed(() => (ssr ? useSSRContext()?.menus || [] : translateMenuLabel(routeStore.menus as any[])));
 
 const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name) as string);

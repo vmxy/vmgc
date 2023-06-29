@@ -34,17 +34,17 @@ const apis: MockMethod[] = [
     },
   },
   {
-    url: "/mock/v/top",
+    url: "/mock/v/hot",
     method: "get",
-    response: (options: Service.MockOption): Service.MockServiceResult<{ list: NVideo.VideoInfo[]; page: Page }> => {
-      const { type, pageNo } = options.query as NVideo.QueryTop;
+    response: (options: Service.MockOption): Service.MockServiceResult<{ list: NVideo.VideoInfo[] }> => {
+      const { id, pageNo } = options.query;
       const pageSize = 24;
-      const start = ((parseInt(pageNo + "") || 1) - 1) * pageSize;
+      const start = ((parseInt(pageNo) || 1) - 1) * pageSize;
       return {
         code: 200,
         message: "ok",
         data: {
-          list: videoModel.slice(start, start + pageSize).map((v) => {
+          list: videoModel.slice(start, start + 12).map((v) => {
             return {
               id: v.id,
               title: v.title,
@@ -53,13 +53,29 @@ const apis: MockMethod[] = [
               desc: v.desc,
             };
           }),
-          page: {
-            total: videoModel.length,
-            pageSize: pageSize,
-            pageNo: 1,
-            totalPage: Math.ceil(videoModel.length / pageSize),
-            //pageCount: Math.floor((videoModel.length - 1) / pageSize) + 1,
-          },
+        },
+      };
+    },
+  },
+  {
+    url: "/mock/v/rec/:id",
+    method: "get",
+    response: (options: Service.MockOption): Service.MockServiceResult<{ list: NVideo.VideoInfo[] }> => {
+      const { id } = options.query;
+      const start = 1;
+      return {
+        code: 200,
+        message: "ok",
+        data: {
+          list: videoModel.slice(start, start + 12).map((v) => {
+            return {
+              id: v.id,
+              title: v.title,
+              logo: v.logo,
+              quality: v.lines[0].items.length,
+              desc: v.desc,
+            };
+          }),
         },
       };
     },
@@ -92,7 +108,7 @@ const apis: MockMethod[] = [
     },
   },
   {
-    url: "/mock/v/detail",
+    url: "/mock/v/detail/:id",
     method: "get",
     response: (options: Service.MockOption): Service.MockServiceResult<NVideo.VideoDetail | undefined> => {
       const { id, pageNo } = options.query;
@@ -102,6 +118,26 @@ const apis: MockMethod[] = [
         code: 200,
         message: "ok",
         data: videoModel.find((v) => v.id == id) || videoModel[0],
+      };
+    },
+  },
+  {
+    url: "/mock/v/res/:id",
+    method: "get",
+    response: (options: Service.MockOption): Service.MockServiceResult<any> => {
+      const { id, pageNo } = options.query;
+      const pageSize = 24;
+      const start = ((parseInt(pageNo) || 1) - 1) * pageSize;
+      let data = Object.assign({}, videoModel[0]);
+      return {
+        code: 200,
+        message: "ok",
+        data: {
+          ...data,
+          id: id,
+          vid: data.id,
+          url: "https://m3u.haiwaikan.com/xm3u8/9df98f18a3f5614ef85b0e5369de07a316877bb3ee411965cb32065413c5dae79921f11e97d0da21.m3u8",
+        },
       };
     },
   },

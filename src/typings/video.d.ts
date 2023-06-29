@@ -38,6 +38,7 @@ declare namespace NVideo {
     quality: number;
     desc: string;
   }
+  
   interface VideoDetail {
     id: string;
     /** 标题 */
