@@ -90,6 +90,7 @@ jobs:
         with:
           # Upload entire repository
           path: "./dist"
+          retention-days: 1
           
 
   # Deployment job
@@ -196,6 +197,7 @@ jobs:
           # Upload entire repository
           name: ${{ runner.os }}
           path: "../artifact"
+          retention-days: 1
 
   merge-artifact:
     environment:
@@ -251,6 +253,7 @@ jobs:
         with:
           # Upload entire repository
           path: "./github-pages"
+          retention-days: 1
 
   # Deployment job
   deploy:
