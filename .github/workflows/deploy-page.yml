@@ -59,9 +59,9 @@ jobs:
 
           rm -rf node_modules && yarn install
           yarn build
-          mkdir ./dist/_builds
-          mv ./build/electron/package.json ./dist/_builds
-          mv ./build/electron/afterpack*.js ./dist/_builds
+          mkdir ./dist/tmps
+          mv ./build/electron/package.json ./dist/tmps
+          mv ./build/electron/afterpack*.js ./dist/tmps
      
           if [ $VITE_APP_TITLE ];then
             replace-in-files --string='%VITE_APP_TITLE%' --replacement='${{vars.APP_TITLE}}'  ./dist/index.html
@@ -70,14 +70,14 @@ jobs:
             replace-in-files --string='%VITE_APP_DESC%' --replacement='${{vars.APP_DESC}}'  ./dist/index.html
           fi
           if [ $VITE_APP_CODE ];then
-            sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./dist/_builds/package.json
+            sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./dist/tmps/package.json
           fi
           if [ $VITE_APP_ORG ];then
-            sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/_builds/package.json
+            sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/tmps/package.json
           fi
           if [ $VITE_APP_UPDATE_URL ];then
             echo "replace VITE_APP_UPDATE_URL"
-            replace-in-files --string='APP_UPDATE_URL' --replacement='${{vars.APP_UPDATE_URL}}'  ./dist/_builds/package.json
+            replace-in-files --string='APP_UPDATE_URL' --replacement='${{vars.APP_UPDATE_URL}}'  ./dist/tmps/package.json
           fi
 
           mkdir ./dist/electron
@@ -131,12 +131,12 @@ jobs:
           mv -f ./github-pages ./app
           cd ./app
           tar -xf artifact.tar && rm -rf artifact.tar
-          cd _builds && ls -lh && cd ..
+          cd tmps && ls -lh && cd ..
           cd ../
 
-          cp ./app/_builds/package.json ./
-          cp -f ./app/_builds/afterpack.*.js ./
-          rm -rf ./app/_builds
+          cp ./app/tmps/package.json ./
+          cp -f ./app/tmps/afterpack.*.js ./
+          rm -rf ./app/tmps
           
           pwd && ls -lh
           yarn install
@@ -176,9 +176,9 @@ jobs:
           tar -xf artifact.tar && del artifact.tar
           cd ..
 
-          copy app\_builds\package.json .
-          copy app\_builds\afterpack.*.js .
-          rmdir /S/Q app\_builds
+          copy app\tmps\package.json .
+          copy app\tmps\afterpack.*.js .
+          rmdir /S/Q app\tmps
 
           pwd
           ls
@@ -246,7 +246,7 @@ jobs:
           cp Windows/* github-pages/apps
           mv github-pages/*.asar github-pages/apps
           echo "============show github-pages=============="
-          rm -rf github-pages/_builds
+          rm -rf github-pages/tmps
           cd github-pages && ls -lh
           
       - name: Upload pages artifact
