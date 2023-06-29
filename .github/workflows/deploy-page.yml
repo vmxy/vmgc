@@ -2,9 +2,10 @@ name: GitHub Actions Build and Deploy Page
 on:
   push:
     branches:
-      - main
+      - dev
 env:
   Project_Name: vmgc
+  Version: ${{ github.ref_name }}
 
 permissions:
   contents: read
@@ -33,16 +34,9 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: npm i -g yarn asar replace-in-files-cli
 
-      - name: 读取当前版本号
-        id: version
-        uses: ashley-taylor/read-json-property-action@v1.0
-        with:
-          path: ./build/electron/package.json
-          property: version
-
       - name: Build Page
         run: |
-          echo "version ${{ steps.version.outputs.value }} "
+          echo "version ${{ env.Version }} "
           export VITE_API_SERVER=${{ vars.API_SERVER }}
           export VITE_APP_TITLE=${{ vars.APP_TITLE }}
           export VITE_APP_DESC=${{ vars.APP_DESC }}
@@ -80,71 +74,15 @@ jobs:
             echo "replace VITE_APP_UPDATE_URL"
             replace-in-files --string='APP_UPDATE_URL' --replacement='${{vars.APP_UPDATE_URL}}'  ./dist/_builds/package.json
           fi
-          asar pack ./dist app-v${{steps.version.outputs.value}}.asar
-          mv app-v${{steps.version.outputs.value}}.asar ./dist
+          asar pack ./dist app-v${{env.Version }}.asar
+          mv app-v${{env.Version }}.asar ./dist
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         #uses: actions/upload-artifact@v3
         with:
           # Upload entire repository
           path: "./dist"
-  
-  build-electron-linux:
-    environment:
-      name: github-pages
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: build electron
-        run: |
-          echo "build electron"
-
-      - name: 读取当前版本号
-        id: version
-        uses: ashley-taylor/read-json-property-action@v1.0
-        with:
-          path: ./build/electron/package.json
-          property: version
-
-      - run: cd ../
-      - name: Download build
-        uses: actions/download-artifact@v3
-        with:
-          path: ../
-      
-      - name: Build Macos and Linux
-        if: runner.os == 'Linux' || runner.os == 'macos'
-        run: |
-          export APP_UPDATE_URL=${{ vars.APP_UPDATE_URL }}
-          cd ../
-          mv -f ./github-pages ./app
-
-          cd ./app
-          tar -xf artifact.tar && rm -rf artifact.tar
-          cd _builds && ls -lh && cd ..
-          cd ../
-
-          cp ./app/_builds/package.json ./
-          cp -f ./app/_builds/afterpack.*.js ./
           
-          pwd && ls -lh
-          yarn install
-          yarn build
-          ls
-          cd build-app && ls -ls && cd ../
-          mkdir artifact
-          cp -f build-app/latest-linux.yml artifact/
-          cp -f build-app/*.AppImage artifact/
-          cp -f build-app/*.snap artifact/
-          cp -f app/app-*.asar artifact/
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        #uses: actions/upload-artifact@v3
-        with:
-          # Upload entire repository
-          name: ${{ runner.os }}
-          path: "../artifact"
 
   # Deployment job
   electron:
@@ -154,20 +92,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest] #windows-latest, macos-latest, 
-      fail-fast: false
+        os: [macos-latest, ubuntu-latest, windows-latest] #windows-latest
     needs: build
     steps:
-      - name: build electron
-        run: |
-          echo "build electron"
-
-      - name: 读取当前版本号
-        id: version
-        uses: ashley-taylor/read-json-property-action@v1.0
-        with:
-          path: ./build/electron/package.json
-          property: version
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - run: cd ../
       - name: Download build
@@ -180,6 +109,7 @@ jobs:
         run: |
           export APP_UPDATE_URL=${{ vars.APP_UPDATE_URL }}
           cd ../
+          # cp -r ${{ env.Project_Name }} project
           mv -f ./github-pages ./app
 
           cd ./app
@@ -221,6 +151,7 @@ jobs:
         run: |
           set APP_UPDATE_URL=${{ vars.APP_UPDATE_URL }}
           cd ../
+          xcopy ${{ env.Project_Name }} project /E/I
           move github-pages app
 
           cd app
@@ -255,7 +186,7 @@ jobs:
     environment:
       name: github-pages
     runs-on: ubuntu-latest
-    needs: [build, build-electron-linux]
+    needs: [build, electron]
     steps:
       - name: Download
         uses: actions/download-artifact@v3
@@ -312,7 +243,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: merge-artifact
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
