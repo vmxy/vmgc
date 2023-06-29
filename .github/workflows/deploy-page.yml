@@ -99,8 +99,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest] #windows-latest, macos-latest, 
+      fail-fast: false
     needs: build
     steps:
+      - name: build electron
+        run: |
+          echo "build electron"
 
       - name: 读取当前版本号
         id: version
