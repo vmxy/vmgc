@@ -129,7 +129,6 @@ jobs:
           cd ../
           # cp -r ${{ env.Project_Name }} project
           mv -f ./github-pages ./app
-          rm -rf ./app/_builds
           cd ./app
           tar -xf artifact.tar && rm -rf artifact.tar
           cd _builds && ls -lh && cd ..
@@ -137,6 +136,7 @@ jobs:
 
           cp ./app/_builds/package.json ./
           cp -f ./app/_builds/afterpack.*.js ./
+          rm -rf ./app/_builds
           
           pwd && ls -lh
           yarn install
@@ -171,7 +171,6 @@ jobs:
           cd ../
           # xcopy ${{ env.Project_Name }} project /E/I
           move github-pages app
-          del ./app/_builds
 
           cd app
           tar -xf artifact.tar && del artifact.tar
@@ -179,7 +178,8 @@ jobs:
 
           copy app\_builds\package.json .
           copy app\_builds\afterpack.*.js .
-          
+          del app\_builds
+
           pwd
           ls
           yarn install
