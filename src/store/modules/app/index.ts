@@ -25,7 +25,6 @@ interface AppState {
   lang: string;
   /** 支持语言列表 */
   langs: { label: string; key: string }[];
-  isLogin: boolean;
   inSSR: boolean;
   /** 是否是手机 */
   isMobile: boolean;
@@ -46,7 +45,6 @@ export const useAppStore = defineStore("app-store", {
       mixSiderFixed: false,
       lang: localStg.get("lang") || (langList[language] ? language : "zh-CN"),
       langs: langList,
-      isLogin: Boolean(localStg.get("token")),
       inSSR: ssr,
       isMobile: ssr ? false : globalThis.innerWidth <= 640,
       screenWidth: ssr ? 1024 : globalThis.innerWidth,

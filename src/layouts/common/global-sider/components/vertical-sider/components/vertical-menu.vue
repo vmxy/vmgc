@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, getCurrentInstance } from "vue";
+import { computed, ref, watch, useSSRContext } from "vue";
 import { useRoute } from "vue-router";
 import type { MenuOption } from "naive-ui";
 import { useAppStore, useRouteStore, useThemeStore } from "@/store";
@@ -31,10 +31,8 @@ const app = useAppStore();
 const theme = useThemeStore();
 const routeStore = useRouteStore();
 const { routerPush } = useRouterPush();
-
-const menus = computed(() =>
-  ssr ? (getCurrentInstance().root.attrs.menus as any[]) : translateMenuLabel(routeStore.menus as any[]),
-);
+console.info("===routeStore.menus", routeStore.menus);
+const menus = computed(() => (ssr ? useSSRContext()?.menus || [] : translateMenuLabel(routeStore.menus as any[])));
 
 const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name) as string);
 const expandedKeys = ref<string[]>([]);
@@ -50,7 +48,7 @@ function handleUpdateExpandedKeys(keys: string[]) {
 function setMaxHeightToScroll() {
   if (!refScrollbar.value) return;
   let height = screen.availHeight - 56;
-  let ele = refScrollbar.value.$el.nextElementSibling;//.parentElement.querySelector(" .n-scrollbar "); 
+  let ele = refScrollbar.value.$el.nextElementSibling; //.parentElement.querySelector(" .n-scrollbar ");
   ele.style["max-height"] = height + "px";
 }
 onMounted(() => {

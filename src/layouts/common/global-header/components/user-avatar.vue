@@ -11,11 +11,13 @@
 import type { DropdownOption } from "naive-ui";
 import { useAuthStore, useThemeStore } from "@/store";
 import { useIconRender } from "@/composables";
+import { useRouter } from "vue-router";
 
 defineOptions({ name: "UserAvatar" });
 
 const auth = useAuthStore();
 const theme = useThemeStore();
+const router = useRouter();
 const { iconRender } = useIconRender();
 
 const options: DropdownOption[] = [
@@ -47,6 +49,8 @@ function handleDropdown(optionKey: string) {
       negativeText: "取消",
       onPositiveClick: () => {
         auth.resetAuthStore();
+        setTimeout(() => location.reload(), 100);
+        router.push("/");
       },
     });
   }

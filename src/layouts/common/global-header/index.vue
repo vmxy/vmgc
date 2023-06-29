@@ -28,14 +28,14 @@
       <toggle-lang />
       <system-message />
       <setting-button v-if="showButton" />
-      <user-avatar v-if="app.isLogin" />
+      <user-avatar v-if="auth.isLogin" />
     </div>
   </dark-mode-container>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useThemeStore, useAppStore } from "@/store";
+import { useThemeStore, useAppStore, useAuthStore } from "@/store";
 import { useBasicLayout } from "@/composables";
 import GlobalLogo from "../global-logo/index.vue";
 import GlobalSearch from "../global-search/index.vue";
@@ -68,6 +68,7 @@ interface Props {
 defineProps<Props>();
 const app = useAppStore();
 const theme = useThemeStore();
+const auth = useAuthStore();
 const { isMobile, isSmallScreen } = useBasicLayout();
 
 const showButton = import.meta.env.PROD && import.meta.env.VITE_VERCEL == "Y";

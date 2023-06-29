@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, getCurrentInstance } from "vue";
+import { computed, useSSRContext } from "vue";
 import { useThemeStore, useAppStore } from "@/store";
 import { VerticalMixSider, VerticalSider } from "./components";
 
@@ -22,7 +22,7 @@ defineOptions({ name: "GlobalSider" });
 const theme = useThemeStore();
 const app = useAppStore();
 const isVerticalMix = computed(() => theme.layout.mode === "vertical-mix");
-const menus: App.GlobalMenuOption[] = (getCurrentInstance().root.attrs.menus as any[]) || [];
+const menus: App.GlobalMenuOption[] = ssr ? useSSRContext()?.menus : []; //  (getCurrentInstance().root.attrs.menus as any[]) || [];
 </script>
 
 <style scoped>

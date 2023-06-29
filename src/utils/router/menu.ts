@@ -8,6 +8,7 @@ import { t } from "@/locales";
  */
 export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalMenuOption[] {
   const globalMenu: App.GlobalMenuOption[] = [];
+  const isLogin = !!localStg.get("token");
   routes.forEach((route) => {
     const { name, path, meta } = route;
     const routeName = name as string;
@@ -28,7 +29,7 @@ export function transformAuthRouteToMenu(routes: AuthRoute.Route[]): App.GlobalM
       children: menuChildren,
     });
 
-    if (!hideInMenu(route)) {
+    if (isLogin || !hideInMenu(route)) {
       globalMenu.push(menuItem);
     }
   });

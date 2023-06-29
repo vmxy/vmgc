@@ -84,6 +84,7 @@ export const useRouteStore = defineStore("route-store", {
      */
     handleAuthRoute(routes: AuthRoute.Route[]) {
       (this.menus as App.GlobalMenuOption[]) = transformAuthRouteToMenu(routes);
+
       this.searchMenus = transformAuthRouteToSearchMenus(routes);
 
       const vueRoutes = transformAuthRouteToVueRoutes(routes);
@@ -146,7 +147,7 @@ export const useRouteStore = defineStore("route-store", {
     },
     /** 初始化权限路由 */
     async initAuthRoute() {
-      console.info("initAuthRoute===", this.authRouteMode);
+      console.info("initAuthRoute  mode=", this.authRouteMode);
       if (this.authRouteMode === "dynamic") {
         await this.initDynamicRoute();
       } else {
