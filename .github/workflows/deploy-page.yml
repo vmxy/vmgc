@@ -21,13 +21,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps: 
-      - name: Checkout
-        id: project
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false # otherwise,  the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
-  
+      
       - name: Setup node
         uses: actions/setup-node@v3
         with:
@@ -56,6 +50,8 @@ jobs:
           echo "====VITE_APP_UPDATE_URL ${VITE_APP_UPDATE_URL//\//\/} "
 
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
+
+          sed -i 's/#registry=/registry=/g' ./.npmrc
 
           rm -rf node_modules && yarn install
           yarn build
@@ -125,7 +121,6 @@ jobs:
         run: |
           export APP_UPDATE_URL=${{ vars.APP_UPDATE_URL }}
           cd ../
-          # cp -r ${{ env.Project_Name }} project
           mv -f ./github-pages ./app
 
           cd ./app
@@ -167,7 +162,6 @@ jobs:
         run: |
           set APP_UPDATE_URL=${{ vars.APP_UPDATE_URL }}
           cd ../
-          xcopy ${{ env.Project_Name }} project /E/I
           move github-pages app
 
           cd app
