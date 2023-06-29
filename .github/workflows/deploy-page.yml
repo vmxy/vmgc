@@ -178,7 +178,7 @@ jobs:
 
           copy app\_builds\package.json .
           copy app\_builds\afterpack.*.js .
-          del app\_builds
+          rmdir /S/Q app\_builds
 
           pwd
           ls
