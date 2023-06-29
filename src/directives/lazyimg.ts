@@ -2,7 +2,6 @@
  * 图片懒加载
  */
 // 导入默认图片
-import defaultImg from "~/public/box.png";
 // 引入监听是否进入视口
 import type { App, Directive } from "vue";
 import { useIntersectionObserver } from "@vueuse/core";
@@ -22,7 +21,7 @@ export default function setupLazyimgDirective(app: App) {
           if (isIntersecting) {
             // 图片加载失败显示默认图片
             el.onerror = function () {
-              el.src = defaultImg;
+              el.src = "/box.png";
             };
             // 这里显示传过来的图片数据
             el.src = binding.value;

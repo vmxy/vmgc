@@ -1,20 +1,15 @@
 name: GitHub Actions Build and Deploy Page
 on:
   push:
-    tags:
+    tags: 
       - "v*"
-    branches:
-      - main
 env:
   Project_Name: vmgc
-  Version: ${{ github.ref_name }}
 
 permissions:
-  actions: write
-  contents: write
+  contents: read
   pages: write
   id-token: write
-  statuses: write
 
 concurrency:
   group: "pages"
@@ -29,7 +24,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           persist-credentials: false # otherwise,  the token used is the GITHUB_TOKEN, instead of your personal access token.
-          fetch-depth: 0 # otherwise, there  would be errors pushing refs to the destination repository.
+          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
   
       - name: Setup node
         uses: actions/setup-node@v3
@@ -38,9 +33,16 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: npm i -g yarn asar replace-in-files-cli
 
+      - name: 读取当前版本号
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./build/electron/package.json
+          property: version
+
       - name: Build Page
         run: |
-          echo "version ${{ env.Version }} "
+          echo "version ${{ steps.version.outputs.value }} "
           export VITE_API_SERVER=${{ vars.API_SERVER }}
           export VITE_APP_TITLE=${{ vars.APP_TITLE }}
           export VITE_APP_DESC=${{ vars.APP_DESC }}
@@ -78,8 +80,8 @@ jobs:
             echo "replace VITE_APP_UPDATE_URL"
             replace-in-files --string='APP_UPDATE_URL' --replacement='${{vars.APP_UPDATE_URL}}'  ./dist/_builds/package.json
           fi
-          asar pack ./dist app-v${{env.Version }}.asar
-          mv app-v${{env.Version }}.asar ./dist
+          asar pack ./dist app-v${{steps.version.outputs.value}}.asar
+          mv app-v${{steps.version.outputs.value}}.asar ./dist
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         #uses: actions/upload-artifact@v3
@@ -101,6 +103,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: 读取当前版本号
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./build/electron/package.json
+          property: version
 
       - run: cd ../
       - name: Download build
