@@ -129,7 +129,7 @@ jobs:
           cd ../
           # cp -r ${{ env.Project_Name }} project
           mv -f ./github-pages ./app
-
+          rm -rf ./app/_builds
           cd ./app
           tar -xf artifact.tar && rm -rf artifact.tar
           cd _builds && ls -lh && cd ..
@@ -171,6 +171,7 @@ jobs:
           cd ../
           # xcopy ${{ env.Project_Name }} project /E/I
           move github-pages app
+          del ./app/_builds
 
           cd app
           tar -xf artifact.tar && del artifact.tar

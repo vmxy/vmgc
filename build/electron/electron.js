@@ -14487,7 +14487,7 @@ function check() {
                 case 0:
                     updateUrl = AppUpdateUrl || "";
                     localVersion = (0, util_1.getLatestVersion)();
-                    logger_1.default.info("App", localVersion, AppUpdateUrl, globalThis.AppUpdateUrl);
+                    logger_1.default.info("App", localVersion, AppUpdateUrl, globalThis.APP_UPDATE_URL);
                     if (!updateUrl)
                         return [2];
                     return [4, (0, electron_fetch_1.default)(updateUrl + "/latest.yml")
