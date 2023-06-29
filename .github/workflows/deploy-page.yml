@@ -88,7 +88,63 @@ jobs:
         with:
           # Upload entire repository
           path: "./dist"
+  
+  build-electron-linux:
+    environment:
+      name: github-pages
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: build electron
+        run: |
+          echo "build electron"
+
+      - name: 读取当前版本号
+        id: version
+        uses: ashley-taylor/read-json-property-action@v1.0
+        with:
+          path: ./build/electron/package.json
+          property: version
+
+      - run: cd ../
+      - name: Download build
+        uses: actions/download-artifact@v3
+        with:
+          path: ../
+      
+      - name: Build Macos and Linux
+        if: runner.os == 'Linux' || runner.os == 'macos'
+        run: |
+          export APP_UPDATE_URL=${{ vars.APP_UPDATE_URL }}
+          cd ../
+          mv -f ./github-pages ./app
+
+          cd ./app
+          tar -xf artifact.tar && rm -rf artifact.tar
+          cd _builds && ls -lh && cd ..
+          cd ../
+
+          cp ./app/_builds/package.json ./
+          cp -f ./app/_builds/afterpack.*.js ./
           
+          pwd && ls -lh
+          yarn install
+          yarn build
+          ls
+          cd build-app && ls -ls && cd ../
+          mkdir artifact
+          cp -f build-app/latest-linux.yml artifact/
+          cp -f build-app/*.AppImage artifact/
+          cp -f build-app/*.snap artifact/
+          cp -f app/app-*.asar artifact/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        #uses: actions/upload-artifact@v3
+        with:
+          # Upload entire repository
+          name: ${{ runner.os }}
+          path: "../artifact"
 
   # Deployment job
   electron:
@@ -199,7 +255,7 @@ jobs:
     environment:
       name: github-pages
     runs-on: ubuntu-latest
-    needs: [build, electron]
+    needs: [build, build-electron-linux]
     steps:
       - name: Download
         uses: actions/download-artifact@v3
