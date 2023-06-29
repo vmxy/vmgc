@@ -17,7 +17,7 @@ export class PlayedModel extends Model<Played> {
       indexs: [],
       SchemaClass: Played,
     });
-    console.info("create table", this.table);
+    //console.info("create table", this.table);
   }
   async hasPlayed(id: string) {
     let v = await this.get(id);

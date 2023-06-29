@@ -33,7 +33,7 @@ export class FavModel extends Model<Fav> {
       indexs: [],
       SchemaClass: Fav,
     });
-    console.info("create table", this.table);
+    //console.info("create table", this.table);
   }
 
   async insert(data: Fav): Promise<Fav> {

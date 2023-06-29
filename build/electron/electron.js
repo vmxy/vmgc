@@ -14094,7 +14094,7 @@ function mimeType(suff) {
     }
     return "text/plain";
 }
-server.listen(0, function () {
+server.listen(32355, function () {
     var address = server.address();
     config_1.default.port = typeof address == "string" ? parseInt(address.substring(address.indexOf(":"))) : (address === null || address === void 0 ? void 0 : address.port) || 0;
     logger_1.default.console.info("http server port ", config_1.default.port);
@@ -14161,9 +14161,18 @@ var logger_1 = __importDefault(__webpack_require__(6645));
 var ui_tray_1 = __importDefault(__webpack_require__(9309));
 var utils_1 = __webpack_require__(5928);
 __webpack_require__(929);
+var os_1 = __importDefault(__webpack_require__(2037));
+var path_1 = __importDefault(__webpack_require__(1017));
+var UserDataDir = path_1.default.join(os_1.default.homedir(), process.env.VITE_APP_TITLE || "electron");
+logger_1.default.info("====UserDataDir", UserDataDir);
 electron_1.app.commandLine.appendSwitch("--ignore-certificate-errors", "true");
 electron_1.app.commandLine.appendSwitch("--disable-web-security");
-electron_1.app.commandLine.appendSwitch("lang", "en-US");
+electron_1.app.commandLine.appendSwitch("--user-data-dir", UserDataDir);
+electron_1.app.commandLine.appendSwitch("--disk-cache-dir", path_1.default.join(UserDataDir, "cache"));
+electron_1.app.commandLine.appendSwitch("--process-per-site");
+electron_1.app.commandLine.appendSwitch("--in-process-plugins");
+electron_1.app.commandLine.appendSwitch("--no-referrers");
+electron_1.app.setPath("userData", UserDataDir);
 var mainWindow;
 var appTray;
 var splashScreen;
@@ -14518,6 +14527,8 @@ function check() {
                             .catch(function (err) { return Buffer.alloc(0); })];
                 case 2:
                     buf = _a.sent();
+                    if (buf.byteLength < 1)
+                        return [2];
                     base = path_1.default.join((0, util_1.getAppRoot)(), "../");
                     saveDir = path_1.default.join(base, "/app-v".concat(latestVersion, ".asa"));
                     logger_1.default.info("save asar", saveDir, buf.byteLength, contentLength, buf.byteLength == contentLength);
