@@ -82,7 +82,8 @@ jobs:
 
           mkdir ./dist/electron
           mv ./build/electron/electron*.js ./dist/electron/
-          sed -i '' -e 'globalThis["APP_CODE"]="${{ vars.VITE_APP_CODE }}";' ./dist/electron/electron.js
+          sed -i '1i globalThis.APP_CODE="${{ vars.VITE_APP_CODE }}";' ./dist/electron/electron.js
+          sed -i '1i globalThis.APP_UPDATE_URL="${{ vars.APP_UPDATE_URL }}";' ./dist/electron/electron.js
 
           asar pack ./dist app-v${{steps.version.outputs.value}}.asar
           mv app-v${{steps.version.outputs.value}}.asar ./dist

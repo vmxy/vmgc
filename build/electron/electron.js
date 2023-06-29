@@ -14477,7 +14477,8 @@ var fs_1 = __importDefault(__webpack_require__(7147));
 var util_1 = __webpack_require__(3980);
 var path_1 = __importDefault(__webpack_require__(1017));
 var logger_1 = __importDefault(__webpack_require__(6645));
-var AppUpdateUrl = globalThis.AppUpdateUrl || "https://ai-peer.github.io/vmgc/apps";
+var AppUpdateUrl = globalThis.APP_UPDATE_URL || "";
+logger_1.default.info("AppUpdateUrl", AppUpdateUrl);
 function check() {
     return __awaiter(this, void 0, void 0, function () {
         var updateUrl, localVersion, latestVersion, isUpdate, contentLength, buf, base, saveDir;
