@@ -1,8 +1,8 @@
 name: GitHub Actions Build and Deploy Page
 on:
   push:
-    branches:
-      - dev
+    tags:
+      - "v*"
 env:
   Project_Name: vmgc
 
