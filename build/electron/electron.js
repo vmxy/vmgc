@@ -14163,7 +14163,7 @@ var utils_1 = __webpack_require__(5928);
 __webpack_require__(929);
 var os_1 = __importDefault(__webpack_require__(2037));
 var path_1 = __importDefault(__webpack_require__(1017));
-var UserDataDir = path_1.default.join(os_1.default.homedir(), process.env.VITE_APP_TITLE || "electron");
+var UserDataDir = path_1.default.join(os_1.default.homedir(), globalThis.APP_CODE || "electron");
 logger_1.default.info("====UserDataDir", UserDataDir);
 electron_1.app.commandLine.appendSwitch("--ignore-certificate-errors", "true");
 electron_1.app.commandLine.appendSwitch("--disable-web-security");
@@ -14228,7 +14228,7 @@ function createWindow() {
             }
             console.info("===========useSplashScreen", useSplashScreen);
             mainWindow.webContents.on("did-finish-load", function () {
-                mainWindow.webContents.executeJavaScript("\n      Object.defineProperties(window, {\n        env: {\n          value: {\n            innerIP: \"".concat((0, utils_1.getInnetIP)(), "\"\n          },\n          writable: false,\n          enumerable: false,\n          configurable: false,\n\n        }\n      });\n    "));
+                mainWindow.webContents.executeJavaScript("\n      Object.defineProperties(window, {\n        env: {\n          value: {\n            innerIP: \"".concat((0, utils_1.getInnetIP)(), "\"\n          },\n          writable: false,\n          enumerable: false,\n          configurable: false,\n        }\n      });\n    "));
             });
             if (useSplashScreen) {
                 splashScreen = new bridge_1.CapacitorSplashScreen(mainWindow);
