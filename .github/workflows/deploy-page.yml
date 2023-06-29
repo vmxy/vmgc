@@ -10,9 +10,11 @@ env:
   Version: ${{ github.ref_name }}
 
 permissions:
-  contents: read
+  actions: write
+  contents: write
   pages: write
   id-token: write
+  statuses: write
 
 concurrency:
   group: "pages"
