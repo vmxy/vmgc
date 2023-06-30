@@ -64,6 +64,7 @@ jobs:
           mkdir ./dist/ssr
           zip -r ssr.zip ./dist-ssr
           mv ssr.zip ./dist/caches
+          mkdir ./dist/ssr && mv -r dist-ssr/* ./dist/ssr
           mv ./build/electron/package.json ./dist/caches
           mv ./build/electron/afterpack*.js ./dist/caches
      
