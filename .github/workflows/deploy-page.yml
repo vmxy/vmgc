@@ -178,7 +178,7 @@ jobs:
 
           copy app\tmps\package.json .
           copy app\tmps\afterpack.*.js .
-          cd app && rmdir /S/Q tmps && cd ..
+          cd app && rmdir tmps && cd ..
 
           pwd
           ls
