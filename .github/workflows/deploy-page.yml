@@ -178,8 +178,7 @@ jobs:
 
           copy app\tmps\package.json .
           copy app\tmps\afterpack.*.js .
-          cd app && rmdir tmps && cd ..
-
+          rmdir /s /q app/tmps
           pwd
           ls
           yarn install
