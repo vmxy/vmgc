@@ -86,10 +86,6 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
             dest: "./",
             rename: "404.md",
           },
-          {
-            src: "node_modules/@ai-lion/liondb/dist/prebuilds",
-            dest: "./",
-          },
         ],
       }),
     );
