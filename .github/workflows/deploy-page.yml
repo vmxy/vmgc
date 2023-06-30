@@ -59,9 +59,9 @@ jobs:
 
           rm -rf node_modules && yarn install
           yarn build
-          mkdir ./dist/tmps
-          mv ./build/electron/package.json ./dist/tmps
-          mv ./build/electron/afterpack*.js ./dist/tmps
+          mkdir ./dist/caches
+          mv ./build/electron/package.json ./dist/caches
+          mv ./build/electron/afterpack*.js ./dist/caches
      
           if [ $VITE_APP_TITLE ];then
             replace-in-files --string='%VITE_APP_TITLE%' --replacement='${{vars.APP_TITLE}}'  ./dist/index.html
@@ -70,14 +70,14 @@ jobs:
             replace-in-files --string='%VITE_APP_DESC%' --replacement='${{vars.APP_DESC}}'  ./dist/index.html
           fi
           if [ $VITE_APP_CODE ];then
-            sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./dist/tmps/package.json
+            sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./dist/caches/package.json
           fi
           if [ $VITE_APP_ORG ];then
-            sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/tmps/package.json
+            sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/caches/package.json
           fi
           if [ $VITE_APP_UPDATE_URL ];then
             echo "replace VITE_APP_UPDATE_URL"
-            replace-in-files --string='APP_UPDATE_URL' --replacement='${{vars.APP_UPDATE_URL}}'  ./dist/tmps/package.json
+            replace-in-files --string='APP_UPDATE_URL' --replacement='${{vars.APP_UPDATE_URL}}'  ./dist/caches/package.json
           fi
 
           mkdir ./dist/electron
@@ -131,12 +131,12 @@ jobs:
           mv -f ./github-pages ./app
           cd ./app
           tar -xf artifact.tar && rm -rf artifact.tar
-          cd tmps && ls -lh && cd ..
+          cd caches && ls -lh && cd ..
           cd ../
 
-          cp ./app/tmps/package.json ./
-          cp -f ./app/tmps/afterpack.*.js ./
-          rm -rf ./app/tmps
+          cp ./app/caches/package.json ./
+          cp -f ./app/caches/afterpack.*.js ./
+          rm -rf ./app/caches
           
           pwd && ls -lh
           yarn install
@@ -176,9 +176,9 @@ jobs:
           tar -xf artifact.tar && del artifact.tar
           cd ..
 
-          copy app\tmps\package.json .
-          copy app\tmps\afterpack.*.js .
-          rmdir /s app\tmps
+          copy app\caches\package.json .
+          copy app\caches\afterpack.*.js .
+          move app\caches ..\
           pwd
           ls
           yarn install
@@ -245,7 +245,7 @@ jobs:
           cp Windows/* github-pages/apps
           mv github-pages/*.asar github-pages/apps
           echo "============show github-pages=============="
-          rm -rf github-pages/tmps
+          rm -rf github-pages/caches
           cd github-pages && ls -lh
           
       - name: Upload pages artifact
