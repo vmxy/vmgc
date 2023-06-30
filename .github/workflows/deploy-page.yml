@@ -62,7 +62,7 @@ jobs:
           yarn build:ssr
           mkdir ./dist/caches
           mkdir ./dist/ssr
-          mv -r ./dist-ssr/* ./dist/ssr
+          mv -f ./dist-ssr/* ./dist/ssr
           mv ./build/electron/package.json ./dist/caches
           mv ./build/electron/afterpack*.js ./dist/caches
      
