@@ -62,7 +62,8 @@ jobs:
           yarn build:ssr
           mkdir ./dist/caches
           mkdir ./dist/ssr
-          mv -f ./dist-ssr/* ./dist/ssr
+          zip ssr.zip ./dist-ssr
+          mv ssr.zip ./dist/caches
           mv ./build/electron/package.json ./dist/caches
           mv ./build/electron/afterpack*.js ./dist/caches
      
@@ -136,9 +137,8 @@ jobs:
           tar -xf artifact.tar && rm -rf artifact.tar
           cd caches && ls -lh && cd ..
           cd ../
-          mv ./app/ssr ./
-          zip ssr.zip ./ssr
 
+          cp ./app/caches/ssr.zip ./
           cp ./app/caches/package.json ./
           cp -f ./app/caches/afterpack.*.js ./
           rm -rf ./app/caches
@@ -181,8 +181,6 @@ jobs:
           cd app
           tar -xf artifact.tar && del artifact.tar
           cd ..
-
-          move app\ssr .\
 
           copy app\caches\package.json .
           copy app\caches\afterpack.*.js .
