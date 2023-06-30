@@ -63,7 +63,7 @@ jobs:
           mkdir ./dist/caches
           mkdir ./dist/ssr
           zip -r ./dist/ssr.zip ./dist-ssr
-          mkdir ./dist/ssr && mv -r dist-ssr/* ./dist/ssr
+          mv -f dist-ssr/* ./dist/ssr/
           mv ./build/electron/package.json ./dist/caches
           mv ./build/electron/afterpack*.js ./dist/caches
      
@@ -91,6 +91,8 @@ jobs:
 
           asar pack ./dist app-v${{steps.version.outputs.value}}.asar
           mv app-v${{steps.version.outputs.value}}.asar ./dist
+
+          cd dist && ls -lh
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         #uses: actions/upload-artifact@v3
@@ -167,7 +169,7 @@ jobs:
           cp -f build-app/*.AppImage artifact/
           cp -f build-app/*.snap artifact/
           cp -f app/app-*.asar artifact/
-
+          
       - name: Build Windows
         if: runner.os == 'windows'
         run: |
