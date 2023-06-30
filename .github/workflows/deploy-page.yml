@@ -3,6 +3,8 @@ on:
   push:
     tags: 
       - "v*"
+    branches:
+      - main
 env:
   Project_Name: vmgc
 
@@ -57,7 +59,10 @@ jobs:
 
           rm -rf node_modules && yarn install
           yarn build
+          yarn build:ssr
           mkdir ./dist/caches
+          make ./dist/ssr
+          mv -r ./dist-ssr/* ./dist/ssr
           mv ./build/electron/package.json ./dist/caches
           mv ./build/electron/afterpack*.js ./dist/caches
      
@@ -131,6 +136,8 @@ jobs:
           tar -xf artifact.tar && rm -rf artifact.tar
           cd caches && ls -lh && cd ..
           cd ../
+          mv ./app/ssr ./
+          zip ssr.zip ./ssr
 
           cp ./app/caches/package.json ./
           cp -f ./app/caches/afterpack.*.js ./
@@ -161,6 +168,7 @@ jobs:
           cp -f build-app/*.AppImage artifact/
           cp -f build-app/*.snap artifact/
           cp -f app/app-*.asar artifact/
+          cp -f ssr.zip artifact/
 
       - name: Build Windows
         if: runner.os == 'windows'
@@ -174,11 +182,13 @@ jobs:
           tar -xf artifact.tar && del artifact.tar
           cd ..
 
+          move app\ssr .\
+
           copy app\caches\package.json .
           copy app\caches\afterpack.*.js .
-          move app\caches ..\
-          pwd
-          ls
+          move app\caches .\
+          
+
           yarn install
           yarn build
 
