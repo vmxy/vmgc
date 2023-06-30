@@ -62,8 +62,7 @@ jobs:
           yarn build:ssr
           mkdir ./dist/caches
           mkdir ./dist/ssr
-          zip -r ssr.zip ./dist-ssr
-          mv ssr.zip ./dist/caches
+          zip -r ./dist/ssr.zip ./dist-ssr
           mkdir ./dist/ssr && mv -r dist-ssr/* ./dist/ssr
           mv ./build/electron/package.json ./dist/caches
           mv ./build/electron/afterpack*.js ./dist/caches
@@ -139,7 +138,6 @@ jobs:
           cd caches && ls -lh && cd ..
           cd ../
 
-          cp ./app/caches/ssr.zip ./
           cp ./app/caches/package.json ./
           cp -f ./app/caches/afterpack.*.js ./
           rm -rf ./app/caches
@@ -169,7 +167,6 @@ jobs:
           cp -f build-app/*.AppImage artifact/
           cp -f build-app/*.snap artifact/
           cp -f app/app-*.asar artifact/
-          cp -f ssr.zip artifact/
 
       - name: Build Windows
         if: runner.os == 'windows'
