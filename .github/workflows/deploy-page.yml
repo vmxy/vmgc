@@ -53,9 +53,9 @@ jobs:
           export VITE_APP_UPDATE_URL="${{ vars.APP_UPDATE_URL }}"
           
 
-          echo "====VITE_APP_UPDATE_URL ${VITE_APP_UPDATE_URL//\//\/} "
-
+          echo "pwd===" && pwd
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
+
 
           rm -rf node_modules && yarn install
           yarn build
