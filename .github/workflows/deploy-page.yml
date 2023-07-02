@@ -61,7 +61,7 @@ jobs:
           yarn build
           yarn build:ssr
           mkdir ./dist/caches
-          mkdir ./dist/ssr && cp package.json ./dist/ssr
+          mkdir ./dist/ssr
           zip -r ./dist/ssr.zip ./dist-ssr
           mv -f dist-ssr/* ./dist/ssr/
           mv ./build/electron/package.json ./dist/caches

@@ -6,12 +6,12 @@
   "author": {
     "name": "vmgc",
     "email": "xxx@gm.com",
-    "url": "https://github.com/ai-peer/vmgc"
+    "url": "https://github.com/vmxy/vmgc"
   },
   "license": "MIT",
-  "homepage": "https://github.com/ai-peer/vmgc",
+  "homepage": "https://github.com/vmxy/vmgc",
   "repository": {
-    "url": "https://github.com/ai-peer/vmgc.git"
+    "url": "https://github.com/vmxy/vmgc.git"
   },
   "keywords": [
     "Vue",
