@@ -51,10 +51,6 @@ jobs:
           export VITE_APP_CODE=${{ vars.APP_CODE }}
           export VITE_APP_ORG="${{ vars.APP_ORG }}"
           export VITE_APP_UPDATE_URL="${{ vars.APP_UPDATE_URL }}"
-          
-          mkdir /app
-          mv -f /home/runner/work/${{ env.Project_Name }}/${{ env.Project_Name }}/**/* /app/
-          cd /app
 
           echo "pwd===" && pwd
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
