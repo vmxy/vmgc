@@ -10,7 +10,7 @@ export default function setupLazyimgDirective(app: App) {
   app.directive("lazyimg", {
     mounted: async (el, binding) => {
       if (ssr) return;
-      await wait(10);
+      await wait(30);
       // el:img dom对象
       // binding.value  图片url地址
       // 使用 vueuse/core 提供的监听 api 对图片 dom 进行监听 正式进入视口才加载
