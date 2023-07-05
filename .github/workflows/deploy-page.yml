@@ -58,11 +58,7 @@ jobs:
 
           rm -rf node_modules && yarn install
           yarn build
-          yarn build:ssr
           mkdir ./dist/caches
-          mkdir ./dist/ssr
-          zip -r ./dist/ssr.zip ./dist-ssr
-          mv -f dist-ssr/* ./dist/ssr/
           mv ./build/electron/package.json ./dist/caches
           mv ./build/electron/afterpack*.js ./dist/caches
      
