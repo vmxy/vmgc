@@ -10,8 +10,11 @@ const AppTitle = import.meta.env.VITE_APP_TITLE;
  */
 export function createRouterGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {
-    // 开始 loadingBar
-    ssr || globalThis.$loadingBar?.start();
+    if (!ssr) {
+      // 开始 loadingBar
+      globalThis.$loadingBar?.start();
+      globalThis.parent?.postMessage({ event: "router", data: { url: to.fullPath } }, "*");
+    }
     // 页面跳转权限处理
     await createPermissionGuard(to, from, next);
   });
