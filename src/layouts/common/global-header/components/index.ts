@@ -11,6 +11,7 @@ import ToggleLang from "./toggle-lang.vue";
 import GlobalRefresh from "./global-refresh.vue";
 import UserLogin from "./user-login.vue";
 import GlobalGoback from "./global-goback.vue";
+import GlobalDownload from "./global-download.vue";
 
 export {
   MenuCollapse,
@@ -26,4 +27,5 @@ export {
   GlobalRefresh,
   UserLogin,
   GlobalGoback,
+  GlobalDownload
 };

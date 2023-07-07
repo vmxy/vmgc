@@ -70,6 +70,8 @@ interface ImportMetaEnv {
   readonly VITE_VERCEL?: "Y" | "N";
 
   /*******  附加 start  ****/
+  /** 网站地址 */
+  readonly VITE_APP_URL: string;
   /** api接口地址 */
   readonly VITE_API_SERVER: string;
   /** 项目基本地址 */

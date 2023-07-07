@@ -86,7 +86,7 @@ import { useAppStore, useVideoStore } from "@/store";
 import { sessionStg } from "@/utils";
 import { useRouter } from "vue-router";
 const ssr = import.meta.env.SSR;
-const UseServerHost = globalThis.WWW_HOST || globalThis.env?.innerIP || "";
+const UseServerHost = import.meta.env.VITE_APP_URL || globalThis.env?.innerIP || globalThis.location.host;
 const app = useAppStore();
 const video = useVideoStore();
 const router = useRouter();

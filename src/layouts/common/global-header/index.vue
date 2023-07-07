@@ -27,6 +27,7 @@
       <theme-mode />
       <toggle-lang />
       <system-message />
+      <global-download />
       <setting-button v-if="showButton" />
       <user-avatar v-if="auth.isLogin" />
     </div>
@@ -51,7 +52,8 @@ import {
   UserAvatar,
   ToggleLang,
   GlobalRefresh,
-  GlobalGoback
+  GlobalGoback,
+  GlobalDownload
 } from "./components";
 
 defineOptions({ name: "GlobalHeader" });

@@ -4,6 +4,7 @@ import { LAYOUT_SCROLL_EL_ID } from "@soybeanjs/vue-materials";
 import { langList } from "@/locales/lang";
 import { localStg } from "@/utils";
 import { useTitle } from "@vueuse/core";
+import pkg from "~/package.json";
 
 interface AppState {
   /** 滚动元素的id */
@@ -30,6 +31,8 @@ interface AppState {
   isMobile: boolean;
 
   screenWidth: number;
+  /** 下载安装包 */
+  apps: { label: string; key: string }[];
 }
 const ssr = import.meta.env.SSR;
 const language = globalThis.navigator?.language || "zh-CN";
@@ -48,6 +51,11 @@ export const useAppStore = defineStore("app-store", {
       inSSR: ssr,
       isMobile: ssr ? false : globalThis.innerWidth <= 640,
       screenWidth: ssr ? 1024 : globalThis.innerWidth,
+      apps: [
+        { label: "Windows", key: `/apps/${pkg.name}-v${pkg.version}.exe` },
+        { label: "Mac", key: `/apps/${pkg.name}-v${pkg.version}.dmg` },
+        { label: "Linux", key: `/apps/${pkg.name}-v${pkg.version}.AppImage` },
+      ],
     };
   },
   actions: {

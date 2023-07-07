@@ -51,10 +51,11 @@ jobs:
           export VITE_APP_CODE=${{ vars.APP_CODE }}
           export VITE_APP_ORG="${{ vars.APP_ORG }}"
           export VITE_APP_UPDATE_URL="${{ vars.APP_UPDATE_URL }}"
+          export VITE_APP_URL="${{ vars.APP_URL }}"
 
           echo "pwd===" && pwd
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
-
+          sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./package.json
 
           rm -rf node_modules && yarn install
           yarn build
