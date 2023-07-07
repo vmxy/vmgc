@@ -7,11 +7,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useI18n } from "vue-i18n";
 import { useAppStore } from "@/store";
 import { onMounted, computed } from "vue";
 
-const { locale } = useI18n();
 const app = useAppStore();
 const os = computed(() => {
   var ua = globalThis.navigator?.userAgent,
@@ -20,15 +18,16 @@ const os = computed(() => {
   if (/linux/i.test(platform) || /linux/i.test(ua)) return "Linux";
   return "Windows";
 });
-function download(filename) {
-   var element = document.createElement("a");
-   console.info("filename", filename);
-   element.setAttribute("href", filename);
-   element.setAttribute("download", filename);
-   element.style.display = "none";
-   document.body.appendChild(element);
-   element.click();
-   document.body.removeChild(element);
+function download(url: string) {
+  let element = document.createElement("a");
+  let filename = url.replace(/^.*\//g, "");
+  console.info("filename", url);
+  element.setAttribute("href", url);
+  element.setAttribute("download", filename);
+  element.style.display = "none";
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
 }
 
 onMounted(() => {
