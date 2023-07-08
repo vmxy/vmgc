@@ -167,11 +167,14 @@ function onSort(bool: boolean = true) {
 async function showQRCode() {
   let text = globalThis.location?.href || "";
   if (text.startsWith("http://127.0.0.1") || text.startsWith("http://localhost")) {
-    let server = /^https?:/i.test(UseServerHost)
-      ? UseServerHost
-      : "http://" + UseServerHost.replace(/^https?:\/\//i, "");
-    if (UseServerHost) {
-      text = text.replace(/^http:\/\/[a-z0-9\.]+:/g, `${server}:`);
+    const APPURL = import.meta.env.VITE_APP_URL || "";
+    if (APPURL) {
+      let server = /^https?:/i.test(APPURL) ? APPURL : "https://" + APPURL;
+      text = text.replace(/^http:\/\/[a-z0-9\.]+:\d+/g, `${server}`);
+    } else {
+      let server = globalThis.env?.innerIP || globalThis.location.host;
+      server = /^https?:/i.test(APPURL) ? APPURL : "http://" + APPURL;
+      text = text.replace(/^http:\/\/[a-z0-9\.]+:\d+/g, `${server}`);
     }
   }
   refQRCode.value.show(text);
