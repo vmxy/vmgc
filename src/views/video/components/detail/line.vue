@@ -167,8 +167,11 @@ function onSort(bool: boolean = true) {
 async function showQRCode() {
   let text = globalThis.location?.href || "";
   if (text.startsWith("http://127.0.0.1") || text.startsWith("http://localhost")) {
+    let server = /^https?:/i.test(UseServerHost)
+      ? UseServerHost
+      : "http://" + UseServerHost.replace(/^https?:\/\//i, "");
     if (UseServerHost) {
-      text = text.replace(/^http:\/\/[a-z0-9\.]+:/g, `http://${UseServerHost}:`);
+      text = text.replace(/^http:\/\/[a-z0-9\.]+:/g, `${UseServerHost}:`);
     }
   }
   refQRCode.value.show(text);
