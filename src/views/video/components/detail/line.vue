@@ -171,7 +171,7 @@ async function showQRCode() {
       ? UseServerHost
       : "http://" + UseServerHost.replace(/^https?:\/\//i, "");
     if (UseServerHost) {
-      text = text.replace(/^http:\/\/[a-z0-9\.]+:/g, `${UseServerHost}:`);
+      text = text.replace(/^http:\/\/[a-z0-9\.]+:/g, `${server}:`);
     }
   }
   refQRCode.value.show(text);
