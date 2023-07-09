@@ -174,7 +174,7 @@ async function showQRCode() {
     } else {
       let server = globalThis.env?.innerIP || globalThis.location.host;
       server = /^https?:/i.test(APPURL) ? APPURL : "http://" + APPURL;
-      text = text.replace(/^http:\/\/[a-z0-9\.]+:\d+/g, `${server}`);
+      text = text.replace(/^http:\/\/[a-z0-9\.]+:/g, `${server}`);
     }
   }
   refQRCode.value.show(text);
