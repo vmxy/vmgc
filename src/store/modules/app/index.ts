@@ -141,7 +141,7 @@ export const useAppStore = defineStore("app-store", {
     },
     setTitle(title: string) {
       let AppTitle = import.meta.env.VITE_APP_TITLE;
-      let ntitle = AppTitle + " - " + title;
+      let ntitle = title + " - " + AppTitle;
       useTitle(ntitle);
       if (globalThis.window != globalThis.parent) {
         globalThis.parent.postMessage({ router: "env", data: { title: ntitle } }, "*");
