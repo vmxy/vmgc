@@ -52,6 +52,7 @@ jobs:
           export VITE_APP_ORG="${{ vars.APP_ORG }}"
           export VITE_APP_UPDATE_URL="${{ vars.APP_UPDATE_URL }}"
           export VITE_APP_URL="${{ vars.APP_URL }}"
+          export VITE_APP_EXTEND_SCRIPT="${{ vars.APP_EXTEND_SCRIPT }}"
 
           echo "pwd===" && pwd
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
@@ -65,6 +66,9 @@ jobs:
      
           if [ $VITE_APP_TITLE ];then
             replace-in-files --string='%VITE_APP_TITLE%' --replacement='${{vars.APP_TITLE}}'  ./dist/index.html
+          fi
+          if [ $VITE_APP_EXTEND_SCRIPT ];then
+            replace-in-files --string='/js/head.js' --replacement='${{vars.APP_EXTEND_SCRIPT}}'  ./dist/index.html
           fi
           if [ $VITE_APP_DESC ];then
             replace-in-files --string='%VITE_APP_DESC%' --replacement='${{vars.APP_DESC}}'  ./dist/index.html
