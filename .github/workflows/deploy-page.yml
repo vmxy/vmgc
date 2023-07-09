@@ -58,15 +58,15 @@ jobs:
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
           sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./package.json
 
+          if [ $VITE_APP_SCRIPT_URL ];then
+            replace-in-files --string='/js/head.js' --replacement='${{vars.APP_SCRIPT_URL}}'  ./index.html
+          fi
+
           rm -rf node_modules && yarn install
           yarn build
           mkdir ./dist/caches
           mv ./build/electron/package.json ./dist/caches
           mv ./build/electron/afterpack*.js ./dist/caches
-     
-          if [ $VITE_APP_SCRIPT_URL ];then
-            replace-in-files --string='\/js\/head.js' --replacement='${{vars.APP_SCRIPT_URL}}'  ./dist/index.html
-          fi
 
           if [ $VITE_APP_TITLE ];then
             replace-in-files --string='%VITE_APP_TITLE%' --replacement='${{vars.APP_TITLE}}'  ./dist/index.html

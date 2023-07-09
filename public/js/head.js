@@ -12,5 +12,5 @@ function trycatch(handle) {
 }
 
 trycatch(async() => {
-
+  console.info("page head======");
 });
