@@ -21,7 +21,11 @@ export function createRouterGuard(router: Router) {
   router.afterEach((to) => {
     // 设置document title
     let subTitle = to.meta.i18nTitle ? t(to.meta.i18nTitle) : to.meta.title;
-    useTitle(AppTitle + " - " + subTitle);
+    let ntitle = subTitle + " - " + AppTitle;
+    useTitle(ntitle);
+    if (globalThis.window != globalThis.parent) {
+      globalThis.parent.postMessage({ event: "env", data: { title: ntitle } }, "*");
+    }
     // 结束 loadingBar
     ssr || globalThis.$loadingBar?.finish();
     if (!ssr) {
