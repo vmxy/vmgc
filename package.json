@@ -138,8 +138,8 @@
     }
   },
   "simple-git-hooks": {
-    "commit-msg": "yarn git:commit",
-    "pre-commit": ""
+    "commit-msg": "",
+    "pre-commit": "yarn git:commit"
   },
   "imports": {
     "~/*": "./*",
