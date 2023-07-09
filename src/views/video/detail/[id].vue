@@ -12,7 +12,6 @@ import { getCurrentInstance, computed, useSSRContext } from "vue";
 import { ref, onMounted, Ref, watch } from "vue";
 import * as service from "@/service";
 import { VHot, VRec, VInfo, VLine } from "../components";
-import { useTitle } from "@vueuse/core";
 import { useAppStore, useVideoStore } from "@/store";
 
 const app = useAppStore();

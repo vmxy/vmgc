@@ -13,7 +13,6 @@ import { ref, onMounted, Ref, watch } from "vue";
 import * as service from "@/service";
 import VInfo from "./info.vue";
 import VLine from "./line.vue";
-import { useTitle } from "@vueuse/core";
 import { VHot, VRec } from "../";
 import { useAppStore } from "@/store";
 

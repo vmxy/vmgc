@@ -141,7 +141,11 @@ export const useAppStore = defineStore("app-store", {
     },
     setTitle(title: string) {
       let AppTitle = import.meta.env.VITE_APP_TITLE;
-      useTitle(AppTitle + " - " + title);
+      let ntitle = AppTitle + " - " + title;
+      useTitle(ntitle);
+      if (globalThis.window != globalThis.parent) {
+        globalThis.parent.postMessage({ router: "env", data: { title: ntitle } }, "*");
+      }
     },
   },
 });
