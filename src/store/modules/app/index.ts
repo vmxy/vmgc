@@ -144,7 +144,7 @@ export const useAppStore = defineStore("app-store", {
       let ntitle = title + " - " + AppTitle;
       useTitle(ntitle);
       if (globalThis.window != globalThis.parent) {
-        globalThis.parent.postMessage({ router: "env", data: { title: ntitle } }, "*");
+        globalThis.parent.postMessage({ event: "env", data: { title: ntitle } }, "*");
       }
     },
   },
