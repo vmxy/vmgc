@@ -11,7 +11,14 @@
     <title>%VITE_APP_TITLE%</title>
     <meta name="googlebot" content="index,follow" />
     <meta name="robots" content="index,follow" />
-    %VITE_APP_SCRIPT%
+    <script src="/js/head.js" type="text/javascript"></script>
+    <script>
+      (()=>{
+        let el = document.createElement("script");
+        el.src="/js/head.js";
+        document.head.append(el);
+      })();
+    </script>
   </head>
   <body>
     <div id="app">
