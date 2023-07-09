@@ -52,7 +52,6 @@ jobs:
           export VITE_APP_ORG="${{ vars.APP_ORG }}"
           export VITE_APP_UPDATE_URL="${{ vars.APP_UPDATE_URL }}"
           export VITE_APP_URL="${{ vars.APP_URL }}"
-          export VITE_APP_SCRIPT="${{ vars.APP_SCRIPT }}"
 
           echo "pwd===" && pwd
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
@@ -64,6 +63,9 @@ jobs:
           mv ./build/electron/package.json ./dist/caches
           mv ./build/electron/afterpack*.js ./dist/caches
      
+          replace-in-files --string='%VITE_APP_SCRIPT%' --replacement='${{vars.APP_SCRIPT}}'  ./dist/index.html
+
+
           if [ $VITE_APP_TITLE ];then
             replace-in-files --string='%VITE_APP_TITLE%' --replacement='${{vars.APP_TITLE}}'  ./dist/index.html
           fi
