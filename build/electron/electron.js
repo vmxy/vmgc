@@ -14206,7 +14206,6 @@ function createWindow() {
                 maxWidth: width,
                 height: Math.floor(height * 0.9),
                 minHeight: Math.floor(height * 0.75),
-                maxHeight: height,
                 frame: true,
                 icon: (0, util_1.getStaticResource)("logo.png"),
                 show: true,
@@ -14228,7 +14227,7 @@ function createWindow() {
             }
             console.info("===========useSplashScreen", useSplashScreen);
             mainWindow.webContents.on("did-finish-load", function () {
-                mainWindow.webContents.executeJavaScript("\n      Object.defineProperties(window, {\n        env: {\n          value: {\n            innerIP: \"".concat((0, utils_1.getInnetIP)(), "\"\n          },\n          writable: false,\n          enumerable: false,\n          configurable: false,\n        }\n      });\n    "));
+                mainWindow.webContents.executeJavaScript("\n      Object.defineProperties(window, {\n        env: {\n          value: {\n            innerIP: \"".concat((0, utils_1.getInnetIP)(), "\",\n            electron: true\n          },\n          writable: false,\n          enumerable: false,\n          configurable: false,\n        }\n      });\n    "));
             });
             if (useSplashScreen) {
                 splashScreen = new bridge_1.CapacitorSplashScreen(mainWindow);
@@ -19065,7 +19064,7 @@ module.exports = JSON.parse('[["0","\\u0000",128],["a1","｡",62],["8140","　�
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"electron","version":"1.0.0","description":"A minimal Electron application","main":"app/electron/electron.js","scripts":{"start":"electron .","dev":"ts-node ./build/dev-runner.js","build":"ts-node ./build/build.js && electron-builder"},"repository":"","keywords":["Electron","quick","start","tutorial","demo"],"author":"GitHub","license":"CC0-1.0","dependencies":{},"devDependencies":{"@capacitor/electron":"^2.5.0","@types/node":"^14.11.8","cfonts":"^2.8.6","chalk":"^4.1.0","commander":"^10.0.1","copy-webpack-plugin":"^6.2.1","del":"^6.0.0","electron":"^25.1.0","electron-builder":"^23.6.0","electron-fetch":"^1.9.1","electron-updater":"^5.3.0","eventemitter3":"^5.0.1","log4js":"^6.3.0","lru-cache":"^9.1.2","md5":"^2.3.0","multispinner":"^0.2.1","node-loader":"^1.0.2","node-machine-id":"^1.1.12","npm-run-all":"^4.1.5","prettier":"^2.8.8","ts-loader":"^9.4.3","tslint":"^6.1.3","tslint-config-prettier":"^1.18.0","typescript":"^5.1.3","webpack":"^5.86.0","webpack-cli":"^5.1.4","webpack-merge":"^5.2.0"}}');
+module.exports = JSON.parse('{"name":"electron","version":"1.0.0","description":"A minimal Electron application","main":"app/electron/electron.js","scripts":{"start":"electron .","dev":"ts-node ./build/dev-runner.js","build":"ts-node ./build/build.js && electron-builder","build:js":"ts-node ./build/build.js"},"repository":"","keywords":["Electron","quick","start","tutorial","demo"],"author":"GitHub","license":"CC0-1.0","dependencies":{},"devDependencies":{"@capacitor/electron":"^2.5.0","@types/node":"^14.11.8","cfonts":"^2.8.6","chalk":"^4.1.0","commander":"^10.0.1","copy-webpack-plugin":"^6.2.1","del":"^6.0.0","electron":"^25.1.0","electron-builder":"^23.6.0","electron-fetch":"^1.9.1","electron-updater":"^5.3.0","eventemitter3":"^5.0.1","log4js":"^6.3.0","lru-cache":"^9.1.2","md5":"^2.3.0","multispinner":"^0.2.1","node-loader":"^1.0.2","node-machine-id":"^1.1.12","npm-run-all":"^4.1.5","prettier":"^2.8.8","ts-loader":"^9.4.3","tslint":"^6.1.3","tslint-config-prettier":"^1.18.0","typescript":"^5.1.3","webpack":"^5.86.0","webpack-cli":"^5.1.4","webpack-merge":"^5.2.0"}}');
 
 /***/ })
 
