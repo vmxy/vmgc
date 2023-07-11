@@ -39,7 +39,6 @@ const playUrl = ref("");
 const videoRef = ref<HTMLElement>();
 const isDestroy = ref(false);
 const PlayerURL = globalThis.VIDEO_URL || (globalThis.env ? "/xplayer.html" : import.meta.env.VITE_VIDEO_URL) || "";
-console.info("=PlayerURL", PlayerURL);
 const inIframe = !!PlayerURL;
 let player;
 
