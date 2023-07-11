@@ -93,17 +93,6 @@ jobs:
           asar pack ./dist app-v${{steps.version.outputs.value}}.asar
           mv app-v${{steps.version.outputs.value}}.asar ./dist
 
-          # build more page
-          mkdir ./dist/video
-          cp ./dist/index.html ./dist/home
-          cp ./dist/index.html ./dist/video/fav
-          cp ./dist/index.html ./dist/video/movie
-          cp ./dist/index.html ./dist/video/tv
-          cp ./dist/index.html ./dist/video/anime
-          cp ./dist/index.html ./dist/video/sport
-          cp ./dist/index.html ./dist/video/doc
-          cp ./dist/index.html ./dist/video/variety
-
           cd dist && ls -lh
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
