@@ -4,7 +4,9 @@
       <n-gi span="20 m:13">
         <g-player :res="res"></g-player>
         <div>
-          <p class="text-28px" style="display: inline-block; margin-right: 30px">{{ res.title }}</p>
+          <h1 class="text-28px" style="display: inline-block; margin-right: 30px">
+            <g-a :href="'/video/detail/' + res.vid">{{ res.title }}</g-a>
+          </h1>
           <n-button @click="toggleFav(res)">
             <template #icon> <icon-mdi-heart :style="{ color: hasFav ? '#ff0000' : '#ffffff' }" /> </template>
           </n-button>

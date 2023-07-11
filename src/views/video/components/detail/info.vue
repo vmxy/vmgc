@@ -7,7 +7,7 @@
       <n-gi span="10 xs:10 s:8">
         <n-grid cols="10">
           <n-gi span="10">
-            <h1 class="text-36px">{{ detail.title }}</h1>
+            <h1 class="text-36px"><g-a :href="'/video/detail/'+detail.id">{{ detail.title }}</g-a> </h1>
           </n-gi>
           <n-gi span="10">
             <n-space>
