@@ -39,7 +39,7 @@ const isDestroy = ref(false);
 const PlayerURL = globalThis.VIDEO_URL || (globalThis.env ? "/xplayer.html" : import.meta.env.VITE_VIDEO_URL) || "";
 const inIframe = !!PlayerURL;
 let player;
-
+let hevent: Event;
 //initScript();
 const destroy = () => {
   if (!player) return;
@@ -72,6 +72,7 @@ function createIframe(url: string) {
   return el;
 }
 function delIframe() {
+  hevent?.destroy();
   let el = document.querySelector("#ifa-video");
   el.remove();
 }
@@ -136,8 +137,7 @@ function playInIframe(url: string) {
 function onLoad(el) {
   loading.value = false;
   el = el || window.event.target;
-  console.info("el", el);
-  new Event(el);
+  hevent = new Event(el);
 }
 
 function getVideoPlayUrl(id: string) {

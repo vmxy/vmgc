@@ -27,13 +27,18 @@ const EventLists = new Set([
   "v_resize",
 ]);
 export default class Event {
+  private state = "open";
   constructor(readonly ele: HTMLElement) {
     this.init(ele);
   }
   init(ele: HTMLElement) {
     if (!ele) return;
     console.info("======================= init event =========================");
-    window.addEventListener("message", (ev) => {
+    const onMessage = (ev) => {
+      if (this.state == "destroy") {
+        window.removeEventListener("message", onMessage);
+        return;
+      }
       if (!ele || !ele.style) return;
       let { event, data } = ev.data;
       if (EventLists.has(event)) {
@@ -50,6 +55,10 @@ export default class Event {
             break;
         }
       }
-    });
+    };
+    window.addEventListener("message", onMessage);
+  }
+  destroy() {
+    this.state = "destroy";
   }
 }
