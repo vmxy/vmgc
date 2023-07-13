@@ -41,12 +41,21 @@ const inIframe = !!PlayerURL;
 let player;
 let hevent: Event;
 //initScript();
-const destroy = () => {
-  if (!player) return;
-  isDestroy.value = true;
-  player.destroy();
-  //videoRef.value.querySelector("div").innerHTML = "";
-  player = undefined;
+const destroy = async () => {
+  if (player) {
+    isDestroy.value = true;
+    player.destroy();
+    //videoRef.value.querySelector("div").innerHTML = "";
+    player = undefined;
+  }
+
+  hevent?.destroy();
+  let el = document.querySelector("#ifa-video") as HTMLIFrameElement;
+  if (el) {
+    el?.contentWindow?.postMessage({ event: "close", data: {} });
+    await wait(20);
+    el.remove();
+  }
 };
 
 function createIframe(url: string) {
@@ -70,12 +79,6 @@ function createIframe(url: string) {
   el.onload = () => onLoad(el);
   videoRef.value.appendChild(el);
   return el;
-}
-function delIframe() {
-  hevent?.destroy();
-  let el = document.querySelector("#ifa-video") as HTMLIFrameElement;
-  el?.contentWindow?.postMessage({ event: "close", data: {} });
-  setTimeout(() => el.remove(), 100);
 }
 async function playInMe(urls: string[]) {
   if (ssr) return;
@@ -131,8 +134,8 @@ async function playInMe(urls: string[]) {
     sessionStorage.setItem(Key, player.currentTime);
   });
 }
-function playInIframe(url: string) {
-  delIframe();
+async function playInIframe(url: string) {
+  await destroy();
   let el = createIframe(url);
 }
 function onLoad(el) {
@@ -191,6 +194,7 @@ onUnmounted(() => {
 
 @media screen and (min-width: 640px) {
   .player {
+    min-height: 425px;
     height: 425px;
   }
 }
