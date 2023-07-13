@@ -34,6 +34,7 @@ export default class Event {
     if (!ele) return;
     console.info("======================= init event =========================");
     window.addEventListener("message", (ev) => {
+      if (!ele || !ele.style) return;
       let { event, data } = ev.data;
       if (EventLists.has(event)) {
         event = event.replace(/^v_/, "");
