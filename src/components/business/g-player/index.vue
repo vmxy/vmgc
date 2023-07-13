@@ -1,6 +1,6 @@
 <template>
   <n-spin :show="loading" size="large">
-    <div v-if="inIframe" ref="videoRef" class="player">
+    <div v-if="inIframe" ref="videoRef" class="player" style="height: 100%;">
       <iframe
         id="ifa-video"
         :src="playUrl"
