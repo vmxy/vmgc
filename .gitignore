@@ -15,7 +15,7 @@ dist.zip
 coverage
 *.local
 stats.html
-
+.env.development
 /cypress/videos/
 /cypress/screenshots/
 

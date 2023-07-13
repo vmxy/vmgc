@@ -1,8 +1,7 @@
 <template>
   <n-spin :show="loading" size="large">
-    <div>
+    <div v-if="inIframe" ref="videoRef" class="player">
       <iframe
-        v-if="inIframe"
         id="ifa-video"
         :src="playUrl"
         width="100%"
@@ -10,11 +9,10 @@
         style="overflow: hidden"
         allowfullscreen
         class="player"
-        ref="videoRef"
         @load="onLoad"
       ></iframe>
-      <div v-else ref="videoRef" class="player"></div>
     </div>
+    <div v-else ref="videoRef" class="player"></div>
   </n-spin>
 </template>
 
@@ -42,9 +40,6 @@ const PlayerURL = globalThis.VIDEO_URL || (globalThis.env ? "/xplayer.html" : im
 const inIframe = !!PlayerURL;
 let player;
 
-function changePlayUrl(url) {
-  playUrl.value = url;
-}
 //initScript();
 const destroy = () => {
   if (!player) return;
@@ -53,7 +48,34 @@ const destroy = () => {
   //videoRef.value.querySelector("div").innerHTML = "";
   player = undefined;
 };
-async function init(urls: string[]) {
+
+function createIframe(url: string) {
+  let el = document.createElement("iframe") as HTMLIFrameElement;
+  /*  id="ifa-video"
+          :src="playUrl"
+          width="100%"
+          scrolling="no"
+          style="overflow: hidden"
+          allowfullscreen
+          class="player"
+          ref="videoRef"
+          @load="onLoad" */
+  el.id = "ifa-video";
+  el.src = url;
+  el.width = "100%";
+  el.scrolling = "no";
+  Object.assign(el.style, { overflow: "hidden" });
+  el.allowFullscreen = true;
+  el.className = "player";
+  el.onload = () => onLoad(el);
+  videoRef.value.appendChild(el);
+  return el;
+}
+function delIframe() {
+  let el = document.querySelector("#ifa-video");
+  el.remove();
+}
+async function playInMe(urls: string[]) {
   if (ssr) return;
   console.info("init=============", urls);
   if (!urls || urls.length < 1) return;
@@ -107,9 +129,15 @@ async function init(urls: string[]) {
     sessionStorage.setItem(Key, player.currentTime);
   });
 }
-function onLoad() {
+function playInIframe(url: string) {
+  delIframe();
+  let el = createIframe(url);
+}
+function onLoad(el) {
   loading.value = false;
-  new Event(videoRef.value);
+  el = el || window.event.target;
+  console.info("el", el);
+  new Event(el);
 }
 
 function getVideoPlayUrl(id: string) {
@@ -119,20 +147,20 @@ function getVideoPlayUrl(id: string) {
 onMounted(() => {
   if (!props.res.url) return;
   if (inIframe) {
-    changePlayUrl(getVideoPlayUrl(props.res.url));
+    playInIframe(getVideoPlayUrl(props.res.url));
   } else {
     initScript(() => {
-      init([props.res.url]);
+      playInMe([props.res.url]);
     });
   }
 });
 watch(props.res, (res) => {
   if (!res.url) return;
   if (inIframe) {
-    changePlayUrl(getVideoPlayUrl(res.url));
+    playInIframe(getVideoPlayUrl(res.url));
   } else {
     initScript(() => {
-      init([res.url]);
+      playInMe([res.url]);
     });
   }
 });
@@ -156,7 +184,8 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .player {
-  min-height: 200px;
+  min-height: 225px;
+  background-color: #000;
 }
 
 @media screen and (min-width: 640px) {
