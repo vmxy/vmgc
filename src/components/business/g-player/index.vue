@@ -1,6 +1,6 @@
 <template>
   <n-spin :show="loading" size="large">
-    <div v-if="inIframe" ref="videoRef" class="player" style="height: 100%;">
+    <div v-if="inIframe" ref="videoRef" class="player" style="height: 100%">
       <iframe
         id="ifa-video"
         :src="playUrl"
@@ -73,8 +73,9 @@ function createIframe(url: string) {
 }
 function delIframe() {
   hevent?.destroy();
-  let el = document.querySelector("#ifa-video");
-  el.remove();
+  let el = document.querySelector("#ifa-video") as HTMLIFrameElement;
+  el?.contentWindow?.postMessage({ event: "close", data: {} });
+  setTimeout(() => el.remove(), 100);
 }
 async function playInMe(urls: string[]) {
   if (ssr) return;
