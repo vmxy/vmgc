@@ -52,7 +52,7 @@ const destroy = async () => {
   hevent?.destroy();
   let el = document.querySelector("#ifa-video") as HTMLIFrameElement;
   if (el) {
-    el?.contentWindow?.postMessage({ event: "close", data: {} });
+    el?.contentWindow?.postMessage({ event: "close", data: {} }, "*");
     await wait(20);
     el.remove();
   }

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">vmgc</string>
+    <string name="title_activity_main">vmgc</string>
+    <string name="package_name">io.vmxy.vmgc</string>
+    <string name="custom_url_scheme">io.vmxy.vmgc</string>
+</resources>
