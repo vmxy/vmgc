@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "add:android": "npx cap add android & npx cap sync android"
+    "add:android": "npx cap add android & npx cap sync android",
+    "sync:android": "npx cap sync android"
   },
   "author": "",
   "license": "ISC",
