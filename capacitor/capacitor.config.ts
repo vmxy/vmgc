@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: "vmgc",
   webDir: "../dist",
   server: {
-    androidScheme: "https",
+    androidScheme: "http",
   },
   android: {
     overrideUserAgent: "",
