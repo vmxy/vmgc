@@ -33,7 +33,6 @@ export default class Event {
   }
   init(ele: HTMLElement) {
     if (!ele) return;
-    console.info("======================= init event =========================");
     const onMessage = (ev) => {
       if (this.state == "destroy") {
         window.removeEventListener("message", onMessage);

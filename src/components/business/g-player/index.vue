@@ -135,8 +135,9 @@ async function playInMe(urls: string[]) {
   });
 }
 async function playInIframe(url: string) {
-  await destroy();
-  let el = createIframe(url);
+  //let el = createIframe(url);
+  console.info("playInIframe", url);
+  playUrl.value = url;
 }
 function onLoad(el) {
   loading.value = false;
