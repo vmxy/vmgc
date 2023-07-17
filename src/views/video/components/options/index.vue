@@ -5,7 +5,7 @@
       :model="props"
       label-placement="left"
       label-align="right"
-      label-width="50"
+      label-width="60"
       require-mark-placement="right-hanging"
       size="medium"
       :show-feedback="false"

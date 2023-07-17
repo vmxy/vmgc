@@ -23,7 +23,7 @@
               ref="formRef"
               label-placement="left"
               label-align="right"
-              label-width="80"
+              label-width="90"
               require-mark-placement="right-hanging"
               size="medium"
               :show-feedback="false"
@@ -120,6 +120,9 @@ watch(props.detail, async (newVal) => {
   }
   :deep(.n-form-item .n-form-item-blank) {
     flex-wrap: wrap; 
+  }
+  :deep(.n-form-item-label){
+    padding-right: 0px;
   }
   .actions {
     :deep(svg.inline-block) {

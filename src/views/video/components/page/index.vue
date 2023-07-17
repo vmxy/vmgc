@@ -69,7 +69,7 @@ const ssrData = useSSRContext()?.useSSRContext || {};
 const page = ref({ pageNo: parseInt(route.query.pageNo as string) || 1, pageCount: 0, total: 0, pageSize: 24 });
 const dataList: Ref<NVideo.VideoInfo[]> = ref(ssrData.list || []);
 const loading = ref(true);
-const maxShowPage = ref(app.screenWidth <= 420 ? 6 : 10);
+const maxShowPage = ref(app.screenWidth <= 420 ? 6 : 12);
 const query = ref({
   class: (route.query.class as string) || "all",
   type: (route.query.type as string) || "all",

@@ -37,7 +37,7 @@
     </template>
   </admin-layout>
   <global-tab-app v-if="app.inApp" />
-  <n-back-top :key="theme.scrollMode" :listen-to="`#${app.scrollElId}`" class="z-100" />
+  <n-back-top v-if="!app.isMobile" :key="theme.scrollMode" :listen-to="`#${app.scrollElId}`" class="z-100" />
   <setting-drawer />
 </template>
 
