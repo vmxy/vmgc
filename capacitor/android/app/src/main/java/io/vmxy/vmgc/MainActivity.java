@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.Toast;
+import io.vmxy.vmgc.core.WebViewClient;
 
 import com.getcapacitor.BridgeActivity;
 
@@ -20,13 +19,15 @@ public class MainActivity extends BridgeActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	  Log.i("info", "--==============demo==");
 		this.injectJS();
 	}
 	public void injectJS(){
 		WebView wv = this.getWebView();
 		WebSettings wvSettings = wv.getSettings();
 		wvSettings.setJavaScriptEnabled(true);
+		wv.setWebViewClient(new WebViewClient(this.getBridge()));
+
+
 		wv.evaluateJavascript("window.env={ANDROID: true};console.info('env=======================>>', JSON.stringify(window.env))", new ValueCallback<String>() {
 			@Override
 			public void onReceiveValue(String s) {
