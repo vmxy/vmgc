@@ -1,6 +1,6 @@
 const ssr = import.meta.env.SSR;
 globalThis.ssr = ssr;
-globalThis.env = {ANDROID: true};
+//globalThis.env = {ANDROID: true};
 console.info("=====================ssr", ssr);
 import { Buffer } from "buffer";
 globalThis.Buffer = Buffer;
