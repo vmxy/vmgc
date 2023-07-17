@@ -59,7 +59,7 @@ export const useAppStore = defineStore("app-store", {
         { label: "Mac", key: `/apps/${pkg.name}-v${pkg.version}.dmg` },
         { label: "Linux", key: `/apps/${pkg.name}-v${pkg.version}.AppImage` },
       ],
-      inApp: !!globalThis.env?.ANDROID,
+      inApp: !!globalThis.env?.ANDROID || !!globalThis.env?.IOS || !!globalThis.env?.ELECTRON,
       inElectron: !!globalThis.env?.ELECTRON,
       headerStyle: "",
     };

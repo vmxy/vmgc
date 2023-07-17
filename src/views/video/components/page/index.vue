@@ -28,6 +28,7 @@
       :page-slot="maxShowPage"
       :item-count="page.total"
       :page-size="page.pageSize"
+      :show-quick-jumper="false"
       class="mt-10px"
       @update:page="onUpdatePage"
     >

@@ -14227,7 +14227,7 @@ function createWindow() {
             }
             console.info("===========useSplashScreen", useSplashScreen);
             mainWindow.webContents.on("did-finish-load", function () {
-                mainWindow.webContents.executeJavaScript("\n      Object.defineProperties(window, {\n        env: {\n          value: {\n            innerIP: \"".concat((0, utils_1.getInnetIP)(), "\",\n            electron: true\n          },\n          writable: false,\n          enumerable: false,\n          configurable: false,\n        }\n      });\n    "));
+                mainWindow.webContents.executeJavaScript("\n      Object.defineProperties(window, {\n        env: {\n          value: {\n            innerIP: \"".concat((0, utils_1.getInnetIP)(), "\",\n            ELECTRON: true\n          },\n          writable: false,\n          enumerable: false,\n          configurable: false,\n        }\n      });\n    "));
             });
             if (useSplashScreen) {
                 splashScreen = new bridge_1.CapacitorSplashScreen(mainWindow);
