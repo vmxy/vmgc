@@ -6,7 +6,7 @@
         <template #header> </template>
         <n-grid
           v-if="dataList.length > 0"
-          cols="240:1 320:2 480:3 640:4 960:5 1024:6 1440:7 2048:12 "
+          cols="240:1 280:2 480:3 640:4 960:5 1024:6 1440:7 2048:12 "
           responsive="self"
           x-gap="3 x:6 s:9 m:12"
           y-gap="3 x:6 s:9 m:12"
@@ -150,5 +150,15 @@ onKeyStroke("ArrowRight", () => {
 <style scoped lang="scss">
 .module-page {
   min-height: 500px;
+}
+@media screen and (max-width: 480px) {
+  :deep(.n-pagination) {
+    justify-content: space-around;
+    width: 100%;
+  }
+}
+@media screen and (min-width: 480px) {
+  :deep(.n-pagination) {
+  }
 }
 </style>

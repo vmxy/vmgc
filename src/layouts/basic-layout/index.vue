@@ -21,7 +21,9 @@
     @click-mobile-sider-mask="app.setSiderCollapse(true)"
   >
     <template #header>
-      <global-header v-bind="headerProps" />
+      <global-header-search v-if="headerMode == 'search'" v-bind="headerProps" />
+      <global-header-home v-else-if="headerMode == 'fav'" v-bind="headerProps" />
+      <global-header-home v-else v-bind="headerProps" />
     </template>
     <template #tab>
       <global-tab v-if="!app.inSSR && enableTabs" :show="!app.isMobile && enableTabs" />
@@ -31,9 +33,10 @@
     </template>
     <global-content />
     <template #footer>
-      <global-footer />
+      <global-footer v-if="!app.isMobile" />
     </template>
   </admin-layout>
+  <global-tab-app v-if="app.inApp" />
   <n-back-top :key="theme.scrollMode" :listen-to="`#${app.scrollElId}`" class="z-100" />
   <setting-drawer />
 </template>
@@ -42,7 +45,17 @@
 import { AdminLayout } from "@soybeanjs/vue-materials";
 import { useAppStore, useThemeStore } from "@/store";
 import { useBasicLayout } from "@/composables";
-import { GlobalContent, GlobalFooter, GlobalHeader, GlobalSider, GlobalTab, SettingDrawer } from "../common";
+import {
+  GlobalContent,
+  GlobalFooter,
+  GlobalHeaderHome,
+  GlobalHeaderSearch,
+  GlobalHeaderFav,
+  GlobalSider,
+  GlobalTab,
+  SettingDrawer,
+  GlobalTabApp,
+} from "../common";
 import { onKeyStroke } from "@vueuse/core";
 
 defineOptions({ name: "BasicLayout" });
@@ -50,8 +63,8 @@ const ssr = import.meta.env.SSR;
 const app = useAppStore();
 const theme = useThemeStore();
 const enableTabs = import.meta.env.VITE_TABS == "Y";
-
-const { mode, isMobile, headerProps, siderVisible, siderWidth, siderCollapsedWidth } = useBasicLayout();
+const inApp = globalThis.env && (globalThis.env.ANDROID || globalThis.env.IOS);
+const { mode, headerMode, isMobile, headerProps, siderVisible, siderWidth, siderCollapsedWidth } = useBasicLayout();
 
 if (!ssr) {
   //移动端, 设置为horizontal模式

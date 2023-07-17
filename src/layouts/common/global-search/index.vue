@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!app.isMobile" class="w-full mt-12px mr-5px">
+  <div v-if="(app.inApp && app.isMobile) || !app.isMobile" class="w-full mt-12px mr-5px">
     <n-input v-model:value="query.q" placeholder="请输入" :min="1" :max="12" @keydown.enter.native="handleSearch" />
   </div>
   <div>
@@ -31,7 +31,7 @@ const query = ref({
   q: searchStore.q || route.query.q?.toString() || "",
 });
 function handleSearch() {
-  if (app.isMobile) {
+  if (app.isMobile && !app.inApp) {
     // toggle();
     searchStore.setShow();
   } else {

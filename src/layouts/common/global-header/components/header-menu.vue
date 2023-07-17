@@ -30,12 +30,16 @@ const app = useAppStore();
 const theme = useThemeStore();
 const { routerPush } = useRouterPush();
 
-const menus = computed(() =>
-  translateMenuLabel(routeStore.menus as any[]).map((v) => {
+const menus = computed(() => {
+  let menus = routeStore.menus;
+  if(app.inApp){
+    menus = menus.filter(v=> v.routePath != "/video/fav");
+  }
+  return translateMenuLabel(menus as any[]).map((v) => {
     if (app.isMobile) delete v.icon;
     return v;
-  }),
-);
+  });
+});
 const activeKey = computed(() => (route.meta?.activeMenu ? route.meta.activeMenu : route.name) as string);
 
 function handleUpdateMenu(_key: string, item: MenuOption) {

@@ -1,5 +1,5 @@
 import { effectScope, onScopeDispose, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useEventListener } from "@vueuse/core";
 import { useI18n } from "vue-i18n";
 import { useTabStore, useThemeStore } from "@/store";
@@ -17,6 +17,7 @@ export function useGlobalEvents() {
     theme.cacheThemeSettings();
     tab.cacheTabRoutes();
   });
+  
 
   if (!ssr) {
     scope.run(() => {

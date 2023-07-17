@@ -33,6 +33,9 @@ interface AppState {
   screenWidth: number;
   /** 下载安装包 */
   apps: { label: string; key: string }[];
+  inApp: boolean;
+  inElectron: boolean;
+  headerStyle: string;
 }
 const ssr = import.meta.env.SSR;
 const language = globalThis.navigator?.language || "zh-CN";
@@ -56,6 +59,9 @@ export const useAppStore = defineStore("app-store", {
         { label: "Mac", key: `/apps/${pkg.name}-v${pkg.version}.dmg` },
         { label: "Linux", key: `/apps/${pkg.name}-v${pkg.version}.AppImage` },
       ],
+      inApp: !!globalThis.env?.ANDROID,
+      inElectron: !!globalThis.env?.ELECTRON,
+      headerStyle: "",
     };
   },
   actions: {
@@ -146,6 +152,6 @@ export const useAppStore = defineStore("app-store", {
       if (globalThis.window != globalThis.parent) {
         globalThis.parent.postMessage({ event: "env", data: { title: ntitle } }, "*");
       }
-    },
+    }
   },
 });

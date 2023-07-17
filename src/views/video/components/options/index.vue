@@ -5,7 +5,7 @@
       :model="props"
       label-placement="left"
       label-align="right"
-      label-width="90"
+      label-width="50"
       require-mark-placement="right-hanging"
       size="medium"
       :show-feedback="false"
@@ -17,7 +17,8 @@
               :type="query.class == item.value ? 'primary' : 'tertiary'"
               secondary
               tag="a"
-              class="mr-10px"
+              size="small"
+              class="mr-5px"
               v-for="item in classs"
               :inverted="theme.header.inverted"
               @click="onChangeClass(item.value)"
@@ -37,7 +38,8 @@
                 :type="query.type == item.value ? 'primary' : 'tertiary'"
                 secondary
                 tag="a"
-                class="mr-10px"
+                size="small"
+                class="mr-5px"
                 v-for="item in types"
                 :inverted="theme.header.inverted"
                 @click="onChangeType(item.value)"
@@ -57,7 +59,8 @@
               :type="query.year == item.value ? 'primary' : 'tertiary'"
               secondary
               tag="a"
-              class="mr-10px"
+              size="small"
+              class="mr-5px"
               v-for="item in video.years"
               :inverted="theme.header.inverted"
               @click="onChangeYear(item.value)"
@@ -127,8 +130,12 @@ function onChangeYear(value) {
     white-space: nowrap;
   }
 
+  .option-label{
+    font-size: 0.2rem;
+  }
   :deep(.n-form-item-label) {
-    font-size: 20px;
+    font-size: 1rem;
+    padding: 0;
   }
 
   :deep(.n-divider) {

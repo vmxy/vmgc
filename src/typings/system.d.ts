@@ -237,6 +237,8 @@ declare namespace App {
     showHeaderMenu: boolean;
     /** 显示菜单折叠按钮 */
     showMenuCollapse: boolean;
+    /** header显示模式 */
+    mode: "home" | "search" | "fav" | "setting";
   }
 
   /** 菜单项配置 */

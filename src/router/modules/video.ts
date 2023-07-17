@@ -6,7 +6,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "首页",
       requiresAuth: false,
-      keepAlive: false,
+      keepAlive: true,
       singleLayout: "basic",
       icon: "mdi:home",
       order: 1,
@@ -20,7 +20,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "收藏",
       requiresAuth: false,
-      keepAlive: false,
+      keepAlive: true,
       singleLayout: "basic",
       icon: "mdi:heart",
       order: 2,
@@ -133,7 +133,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "搜索",
       requiresAuth: false,
-      keepAlive: false,
+      keepAlive: true,
       singleLayout: "basic",
       //icon: "mdi:video-vintage",
       //order: 8,

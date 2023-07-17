@@ -1,11 +1,12 @@
 const ssr = import.meta.env.SSR;
 globalThis.ssr = ssr;
+globalThis.env = {ANDROID: true};
 console.info("=====================ssr", ssr);
 import { Buffer } from "buffer";
 globalThis.Buffer = Buffer;
 globalThis.wait = async (ttl: number) => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(), ttl);
+    setTimeout(() => resolve(undefined), ttl);
   });
 };
 if (!ssr) {
