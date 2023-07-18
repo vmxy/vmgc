@@ -137,6 +137,11 @@ async function playInMe(urls: string[]) {
 async function playInIframe(url: string) {
   //let el = createIframe(url);
   console.info("playInIframe", url);
+  let el = document.querySelector("#ifa-video") as HTMLIFrameElement;
+  if (playUrl.value && el) {
+    el?.contentWindow?.postMessage({ event: "close", data: {} }, "*");
+    await wait(50);
+  }
   playUrl.value = url;
 }
 function onLoad(el) {
