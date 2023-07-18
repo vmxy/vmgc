@@ -71,6 +71,7 @@
             :disabled="selectResId == item.id"
             :href="`/video/xplay/${item.id}`"
             :type="playeds[item.id] ? 'red' : ''"
+            @click.capture="openPlayer"
           >
             {{ item.label }}
           </g-a>
@@ -115,6 +116,12 @@ const isSingleLine = computed(() => app.screenWidth < 1024);
   let width = el?.offsetWidth || 480;
   return width >= 1024;
 }); */
+function openPlayer(ev: Event) {
+  let el = document.querySelector("#ifa-video") as HTMLIFrameElement;
+  if (el) {
+    el?.contentWindow?.postMessage({ event: "close", data: {} }, "*");
+  }
+}
 function isPlay(resId: string) {
   let is = sessionStg.get(("playid-" + resId) as any) == "1";
   //let is = await video.hasPlayed(resId);
