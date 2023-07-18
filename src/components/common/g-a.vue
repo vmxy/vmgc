@@ -21,7 +21,7 @@ const props = defineProps({
   },
   button: {
     type: Boolean,
-    default: false
+    default: false,
   },
   rel: {
     type: Boolean,
@@ -35,9 +35,16 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  onClick: {
+    type: Function,
+  },
 });
 const router = useRouter();
 function onOpen(ev: Event) {
+  if (props.onClick) {
+    props.onClick(ev);
+    return;
+  }
   ev.preventDefault();
   ev.stopPropagation();
   if (props.disabled) return;

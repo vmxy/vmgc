@@ -50,35 +50,14 @@ const destroy = async () => {
   }
 
   hevent?.destroy();
+  notifyClose();
+};
+async function notifyClose() {
   let el = document.querySelector("#ifa-video") as HTMLIFrameElement;
   if (el) {
     el?.contentWindow?.postMessage({ event: "close", data: {} }, "*");
-    await wait(20);
-    el.remove();
+    await wait(100);
   }
-};
-
-function createIframe(url: string) {
-  let el = document.createElement("iframe") as HTMLIFrameElement;
-  /*  id="ifa-video"
-          :src="playUrl"
-          width="100%"
-          scrolling="no"
-          style="overflow: hidden"
-          allowfullscreen
-          class="player"
-          ref="videoRef"
-          @load="onLoad" */
-  el.id = "ifa-video";
-  el.src = url;
-  el.width = "100%";
-  el.scrolling = "no";
-  Object.assign(el.style, { overflow: "hidden" });
-  el.allowFullscreen = true;
-  el.className = "player";
-  el.onload = () => onLoad(el);
-  videoRef.value.appendChild(el);
-  return el;
 }
 async function playInMe(urls: string[]) {
   if (ssr) return;
@@ -137,11 +116,7 @@ async function playInMe(urls: string[]) {
 async function playInIframe(url: string) {
   //let el = createIframe(url);
   console.info("playInIframe", url);
-  let el = document.querySelector("#ifa-video") as HTMLIFrameElement;
-  if (playUrl.value && el) {
-    el?.contentWindow?.postMessage({ event: "close", data: {} }, "*");
-    await wait(50);
-  }
+  await notifyClose();
   playUrl.value = url;
 }
 function onLoad(el) {
