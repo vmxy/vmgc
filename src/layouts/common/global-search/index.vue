@@ -20,6 +20,9 @@ import { useThemeStore, useAppStore, useSearchStore } from "@/store";
 import { SearchModal } from "./components";
 import { ref, getCurrentInstance, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useBasicLayout } from "@/composables";
+const { mode, headerMode } = useBasicLayout();
+
 defineOptions({ name: "GlobalSearch" });
 
 const theme = useThemeStore();

@@ -1,20 +1,27 @@
 package io.vmxy.vmgc.core;
 
+import android.graphics.Bitmap;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeWebViewClient;
-import java.util.Map;
 import java.util.Queue;
-import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class WebViewClient extends BridgeWebViewClient {
+	private SwipeRefreshLayout swipeRefreshLayout;
 	private Queue<WebResourceResponse> responseList = new LinkedBlockingQueue<>(2048);
-	public WebViewClient(Bridge bridge) {
-		super(bridge);
+	private View view;
 
+	public WebViewClient(Bridge bridge, SwipeRefreshLayout swipeRefreshLayout) {
+		super(bridge);
+		this.view = bridge.getWebView().getRootView();
+		this.swipeRefreshLayout = swipeRefreshLayout;
 	}
 
  /*   @Override
@@ -34,20 +41,19 @@ public class WebViewClient extends BridgeWebViewClient {
 		//Logger.info("==============res", request.getUrl(), responseList.size());
 		return response;
 	}
+
 	@Override
-	public void onPageFinished(WebView view, String url) {
-		view.loadUrl("javascript:" + "window.env={ANDROID: true};console.info('env<===>>"+url+"', JSON.stringify(window.env))" );
-		super.onPageFinished(view, url);
+	public void onPageStarted(WebView view, String url, Bitmap favicon) {
+		super.onPageStarted(view, url, favicon);
+		view.loadUrl("javascript:" + "window.env={ANDROID: true};");
 	}
 
-	public void closeAll(){
-		Logger.info("===================close response", responseList.size());
-		for(WebResourceResponse res = responseList.poll(); res!=null; res = responseList.poll() ){
-			try{
-				if(res.getData() != null)res.getData().close();
-			}catch(Throwable err){
-				err.printStackTrace();
-			}
-		}
+	@Override
+	public void onPageFinished(WebView view, String url) {
+		super.onPageFinished(view, url);
+		view.loadUrl("javascript:" + "window.env={ANDROID: true};");
+		if (swipeRefreshLayout != null)
+			swipeRefreshLayout.setRefreshing(false);
 	}
+
 }
