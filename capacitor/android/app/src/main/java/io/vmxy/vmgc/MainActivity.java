@@ -81,7 +81,6 @@ public class MainActivity extends BridgeActivity {
 					new Handler().post(new Runnable() {
 						@Override
 						public void run() {
-							Log.i("info", "==========refresh===" + MainActivity.this.webview.getUrl());
 							//webview.reload();
 							webview.evaluateJavascript("(()=>{var app = window.app;  app && app.reloadPage() })();", new ValueCallback<String>() {
 								@Override
@@ -102,10 +101,7 @@ public class MainActivity extends BridgeActivity {
 					public void onReceiveValue(String s) {
 						try {
 							s = s.replaceAll("[.][0-9]+$", "");
-							Log.i("info", "=========>result1=" + s);
 							moveY = Integer.parseInt(s);
-							Log.i("info", "=========>result2=" + moveY);
-
 						} catch (Exception err) {
 						}
 					}
@@ -113,7 +109,7 @@ public class MainActivity extends BridgeActivity {
 				return false;
 			}
 		});
-		webview.setOnKeyListener(new View.OnKeyListener() {
+		/*webview.setOnKeyListener(new View.OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_UP && webview.canGoForward()) {
@@ -122,13 +118,18 @@ public class MainActivity extends BridgeActivity {
 				}
 				return true;
 			}
-		});
+		});*/
 	}
 
 
 	@Override
 	public void onBackPressed() {
-		this.webview.goBack();
+		Log.i("info", "=========back=======");
+		if(webview.canGoBack()){
+			this.webview.goBack();
+		}else{
+			this.webview.reload();
+		}
 	}
 
 	public WebView getWebview() {
