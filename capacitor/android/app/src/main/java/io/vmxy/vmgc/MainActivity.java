@@ -22,9 +22,14 @@ import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import io.vmxy.vmgc.core.WebViewClient;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeActivity;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +62,7 @@ public class MainActivity extends BridgeActivity {
 		webview.setWebViewClient(new WebViewClient(bridge, swipeRefreshLayout));
 		// 透明状态栏
 		this.injectJS();
+		updateVersionToZip();
 	}
 
 	public void injectJS() {
@@ -217,4 +223,30 @@ public class MainActivity extends BridgeActivity {
 		return allchildren;
 	}
 
+	private void updateVersionToZip(){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象
+					Request request = new Request.Builder()
+						.url("https://v.iuku.xyz/apps/latest.yml")//请求接口。如果需要传参拼接到接口后面。
+						.build();//创建Request 对象
+					Response response = null;
+					response = client.newCall(request).execute();//得到Response 对象
+					if (response.isSuccessful() && response.code() == 200) {
+						String text = response.body().string();
+						Log.d("kwwl","res=="+text);
+						String[] lines = text.split("\r\n");
+						String version = lines[0];
+						version = version.replaceAll("version:\s+", "");
+						Log.i("info", "==========version "+ version);
+						//此时的代码执行在子线程，修改UI的操作请使用handler跳转到UI线程。
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
 }

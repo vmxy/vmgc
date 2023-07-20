@@ -255,6 +255,7 @@ jobs:
           cp macOS/* github-pages/apps
           cp Windows/* github-pages/apps
           mv github-pages/*.asar github-pages/apps
+          mv github-pages/*.zip github-pages/apps
           echo "============show github-pages=============="
           rm -rf github-pages/caches
           cd github-pages && ls -lh
