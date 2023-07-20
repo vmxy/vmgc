@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,19 +23,30 @@ import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import io.vmxy.vmgc.core.WebViewClient;
+import io.vmxy.vmgc.utils.Download;
+import io.vmxy.vmgc.utils.FileUtil;
+import io.vmxy.vmgc.utils.NumberUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeActivity;
+import com.liulishuo.filedownloader.FileDownloader;
+import com.liulishuo.filedownloader.connection.FileDownloadUrlConnection;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends BridgeActivity {
+	String APP_UPDATE_URL;
 	SwipeRefreshLayout swipeRefreshLayout;
 	WebView webview;
 	private int startX;
@@ -46,8 +58,10 @@ public class MainActivity extends BridgeActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		APP_UPDATE_URL = getResources().getString(R.string.APP_UPDATE_URL);
 		Bridge bridge = getBridge();
-		Log.i("info", "===============>bridge url="+ bridge.getAppUrl()+"->"+bridge.getServerBasePath());
+		bridge.setServerBasePath(getAPPsPath()+File.separator+getLatestApp());
+		Log.i("info", "===============>bridge url2=" + bridge.getAppUrl() + "->" + bridge.getServerBasePath());
 		//this.setContentView(R.layout.activity_main);
 		//Log.i("info", "test==contentview="+this.content)
 		//setContentView(R.layout.activity_main);
@@ -58,6 +72,7 @@ public class MainActivity extends BridgeActivity {
 			//window.getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_VISIBLE);//View.SYSTEM_UI_FLAG_FULLSCREEN
 
 		}
+
 		Log.i("info", "===============>webview=" + (webview != null) + "->" + (swipeRefreshLayout != null));
 		webview.setWebViewClient(new WebViewClient(bridge, swipeRefreshLayout));
 		// 透明状态栏
@@ -149,7 +164,7 @@ public class MainActivity extends BridgeActivity {
 		}
 	}
 
-	public void  onConfigurationChanged(Configuration config) {
+	public void onConfigurationChanged(Configuration config) {
 		super.onConfigurationChanged(config);
 		int orientation = config.orientation;
 		Window window = getWindow();
@@ -160,17 +175,17 @@ public class MainActivity extends BridgeActivity {
 			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 			window.setStatusBarColor(Color.TRANSPARENT);*/
 		}
-		if(orientation == 2){//横屏
+		if (orientation == 2) {//横屏
 			window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 			window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 			//window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-			if ( (window.getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN)
+			if ((window.getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN)
 				== WindowManager.LayoutParams.FLAG_FULLSCREEN) {
 				// 是全屏
 				//window.getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_VISIBLE);//View.SYSTEM_UI_FLAG_FULLSCREEN
 
 			}
-		}else{
+		} else {
 			window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 			window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 			window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
@@ -223,24 +238,91 @@ public class MainActivity extends BridgeActivity {
 		return allchildren;
 	}
 
-	private void updateVersionToZip(){
+	private String getAPPsPath() {
+		File dir = getCacheDir();
+		String baseDir = dir.getParent() + File.separator + "apps";
+		File apps = new File(baseDir);
+		if (!apps.exists()) {
+			apps.mkdirs();
+		}
+		return baseDir;
+	}
+	private String getLatestApp(){
+		String baseDir = getAPPsPath();
+		File dir = new File(baseDir);
+		String[] list = dir.list(new FilenameFilter() {
+			@Override
+			public boolean accept(File parent, String name) {
+				boolean isStart = name.startsWith("app-");
+				return isStart && !name.endsWith(".zip.temp");
+			}
+		});
+		Log.i("info", "=============apps has="+list.length);
+		for(String v : list){
+			Log.i("info", "==============app version="+v);
+		}
+		if(list.length < 1) return "";
+		Arrays.sort(list, new Comparator<String>() {
+			@Override
+			public int compare(String s, String t) {
+				s = NumberUtil.toVersion(s);
+				t = NumberUtil.toVersion(t);
+				if (NumberUtil.isLarge(s, t)) return 1;
+				return 0;
+			}
+		});
+		File app = new File(baseDir+File.separator+list[0].replaceAll("[.](zip|asar)$", ""));
+		if(!app.exists()){
+			FileUtil.unZipFile(new File(baseDir+File.separator+list[0]), baseDir);
+			File rename = new File(baseDir+File.separator+"dist");
+			File newdir = new File(baseDir+File.separator+list[0].replaceAll("[.](zip|asar)", ""));
+			rename.renameTo(newdir);
+			Log.i("info", "unzip============"+new File(baseDir).list().length);
+		}
+		return list[0];
+	}
+	private boolean checkUpdate(String latestVersion) {
+		String  localLatest = getLatestApp();
+		localLatest = NumberUtil.toVersion(localLatest);
+		Log.i("info", "check update===========>" + latestVersion + "->" + localLatest + "->" + NumberUtil.isLarge(latestVersion, localLatest));
+		return NumberUtil.isLarge(latestVersion, localLatest);
+	}
+
+	private void updateVersionToZip() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
 					OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象
 					Request request = new Request.Builder()
-						.url("https://v.iuku.xyz/apps/latest.yml")//请求接口。如果需要传参拼接到接口后面。
+						.url(APP_UPDATE_URL + "/latest.yml")//请求接口。如果需要传参拼接到接口后面。
 						.build();//创建Request 对象
 					Response response = null;
 					response = client.newCall(request).execute();//得到Response 对象
 					if (response.isSuccessful() && response.code() == 200) {
 						String text = response.body().string();
-						Log.d("kwwl","res=="+text);
-						String[] lines = text.split("\r\n");
-						String version = lines[0];
+						String[] lines = text.split("[\r\n]");
+						String version = lines[0].trim();
 						version = version.replaceAll("version:\s+", "");
-						Log.i("info", "==========version "+ version);
+
+						if (!checkUpdate(version)) return;
+						String name = "app-v" + version + ".zip";
+						String downloadUrl = APP_UPDATE_URL + "/" + name;
+						String baseDir = getAPPsPath();
+						Log.i("info", "==========version " + version + ">->" + baseDir);
+						Log.i("info", "======>dl=>" + downloadUrl + ">");
+
+						FileDownloader.setupOnApplicationOnCreate(getApplication())
+							.connectionCreator(new FileDownloadUrlConnection.Creator())
+							.commit();
+
+						Download dl = new Download(baseDir);
+						dl.download(downloadUrl, new Handler.Callback() {
+							@Override
+							public boolean handleMessage(@NonNull Message message) {
+								return true;
+							}
+						});
 						//此时的代码执行在子线程，修改UI的操作请使用handler跳转到UI线程。
 					}
 				} catch (Exception e) {
