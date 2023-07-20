@@ -23,6 +23,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import io.vmxy.vmgc.core.WebViewClient;
 
+import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeActivity;
 
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ public class MainActivity extends BridgeActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Bridge bridge = getBridge();
+		Log.i("info", "===============>bridge url="+ bridge.getAppUrl()+"->"+bridge.getServerBasePath());
 		//this.setContentView(R.layout.activity_main);
 		//Log.i("info", "test==contentview="+this.content)
 		//setContentView(R.layout.activity_main);
@@ -51,7 +54,7 @@ public class MainActivity extends BridgeActivity {
 
 		}
 		Log.i("info", "===============>webview=" + (webview != null) + "->" + (swipeRefreshLayout != null));
-		webview.setWebViewClient(new WebViewClient(this.getBridge(), swipeRefreshLayout));
+		webview.setWebViewClient(new WebViewClient(bridge, swipeRefreshLayout));
 		// 透明状态栏
 		this.injectJS();
 	}

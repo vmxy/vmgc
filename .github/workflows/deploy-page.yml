@@ -91,7 +91,10 @@ jobs:
           sed -i '1i globalThis.APP_UPDATE_URL="${{ vars.APP_UPDATE_URL }}";' ./dist/electron/electron.js
 
           asar pack ./dist app-v${{steps.version.outputs.value}}.asar
+          zip -r app-v${{steps.version.outputs.value}}.zip ./dist
+          
           mv app-v${{steps.version.outputs.value}}.asar ./dist
+          mv app-v${{steps.version.outputs.value}}.zip ./dist
 
           cd dist && ls -lh
       - name: Upload artifact
