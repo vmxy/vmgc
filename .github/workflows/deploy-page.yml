@@ -173,6 +173,7 @@ jobs:
           cp -f build-app/*.AppImage artifact/
           cp -f build-app/*.snap artifact/
           cp -f app/app-*.asar artifact/
+          cp -f app/app-*.zip artifact/
           
       - name: Build Windows
         if: runner.os == 'windows'

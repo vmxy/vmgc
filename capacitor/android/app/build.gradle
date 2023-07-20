@@ -41,6 +41,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
 	  implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+		implementation "net.lingala.zip4j:zip4j:2.10.0"
 }
 
 apply from: 'capacitor.build.gradle'
