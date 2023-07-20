@@ -1,15 +1,18 @@
 package io.vmxy.vmgc;
 
 import android.content.pm.ApplicationInfo;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.DragEvent;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.webkit.ValueCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -42,17 +45,22 @@ public class MainActivity extends BridgeActivity {
 		//setContentView(R.layout.activity_main);
 		webview = findViewById(R.id.webview);
 		swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			Window window = getWindow();
+			//window.getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_VISIBLE);//View.SYSTEM_UI_FLAG_FULLSCREEN
 
+		}
 		Log.i("info", "===============>webview=" + (webview != null) + "->" + (swipeRefreshLayout != null));
 		webview.setWebViewClient(new WebViewClient(this.getBridge(), swipeRefreshLayout));
+		// 透明状态栏
 		this.injectJS();
 	}
 
 	public void injectJS() {
 		WebSettings wvSettings = webview.getSettings();
 		wvSettings.setJavaScriptEnabled(true);
-		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-			if (0 != (getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)){
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			if (0 != (getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
 				webview.setWebContentsDebuggingEnabled(true);
 			}
 		}
@@ -125,11 +133,56 @@ public class MainActivity extends BridgeActivity {
 	@Override
 	public void onBackPressed() {
 		Log.i("info", "=========back=======");
-		if(webview.canGoBack()){
+		if (webview.canGoBack()) {
 			this.webview.goBack();
-		}else{
+		} else {
 			this.webview.reload();
 		}
+	}
+
+	public void  onConfigurationChanged(Configuration config) {
+		super.onConfigurationChanged(config);
+		int orientation = config.orientation;
+		Window window = getWindow();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+		/*	window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+				| View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+			window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			window.setStatusBarColor(Color.TRANSPARENT);*/
+		}
+		if(orientation == 2){//横屏
+			window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+			//window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			if ( (window.getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN)
+				== WindowManager.LayoutParams.FLAG_FULLSCREEN) {
+				// 是全屏
+				//window.getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_VISIBLE);//View.SYSTEM_UI_FLAG_FULLSCREEN
+
+			}
+		}else{
+			window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+
+		}
+	}
+/*
+	public void onWindowAttributesChanged(LayoutParams params) {
+// TODO Auto-generated method stub
+		super.onWindowAttributesChanged(params);
+		Log.i("info", "onWindowAttributesChanged()" + getWindow().getAttributes().flags);
+		if (WindowManager.LayoutParams.FLAG_FULLSCREEN == getWindow().getAttributes().flags) {
+			Log.i("info", "onWindowAttributesChanged() FLAG_FULLSCREEN");
+
+		}
+	}
+*/
+
+	@Override
+	public void onPointerCaptureChanged(boolean hasCapture) {
+		super.onPointerCaptureChanged(hasCapture);
 	}
 
 	public WebView getWebview() {

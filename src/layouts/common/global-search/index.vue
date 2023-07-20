@@ -43,6 +43,7 @@ const query = ref({
   q: searchStore.q || route.query.q?.toString() || "",
 });
 function handleSearch() {
+  console.info("search====", query.value.q, props.showInput);
   if (!props.showInput) {
     // toggle();
     searchStore.setShow();
