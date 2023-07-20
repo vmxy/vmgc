@@ -1,6 +1,6 @@
 const ssr = import.meta.env.SSR;
 globalThis.ssr = ssr;
-//globalThis.env = {ANDROID: true};
+globalThis.env = {ANDROID: true};
 import { Buffer } from "buffer";
 globalThis.Buffer = Buffer;
 globalThis.wait = async (ttl: number) => {

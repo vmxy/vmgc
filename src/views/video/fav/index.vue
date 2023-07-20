@@ -6,9 +6,9 @@
       responsive="self"
       x-gap="6 m:12"
       y-gap="6 m:12"
-      class="min-h-250px"
+      class="min-h-250px h-full" 
     >
-      <n-gi span="1" v-for="item in dataList" :key="item.id" class="min-h-90px">
+      <n-gi span="1" v-for="item in dataList" :key="item.id" class="min-h-90px max-h-250px">
         <router-link :to="'/video/detail/' + item.id" class="v-item">
           <g-image :src="item.logo" :alt="item.title" />
           <p class="label">{{ item.title }}</p>

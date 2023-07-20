@@ -2,7 +2,7 @@
   <dark-mode-container class="global-header flex-y-center h-full" :inverted="theme.header.inverted">
     <global-logo v-if="showLogo" class="h-full ml-10px" :style="{ width: '50px' }" />
     <div class="flex justify-end h-full w-full">
-      <global-search />
+      <global-search :show-button="true && !app.inApp" :show-input="!app.isMobile" />
     </div>
 
   </dark-mode-container>

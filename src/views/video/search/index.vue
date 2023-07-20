@@ -9,6 +9,7 @@
           responsive="self"
           x-gap="3 x:6 s:9 m:12"
           y-gap="3 x:6 s:9 m:12"
+          class="h-full"
         >
           <n-gi v-for="item in searchStore.list" :key="item.id" span="1" class="min-h-90px">
             <router-link :to="'/video/detail/' + item.id" class="v-item" @click="onOpenNotify">
@@ -18,7 +19,7 @@
             </router-link>
           </n-gi>
         </n-grid>
-        <loading-empty-wrapper v-else class="h-360px" :loading="loading" empty />
+        <loading-empty-wrapper v-else class="h-420px" :loading="loading" empty />
       </n-card>
     </n-spin>
     <n-pagination

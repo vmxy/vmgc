@@ -16,7 +16,7 @@
     <header-menu v-else /-->
 
     <div v-if="!app.inSSR" class="flex justify-end h-full w-full">
-      <global-search />
+      <global-search :show-button="true && !app.inApp" :show-input="!app.isMobile" />
     </div>
 
     <div v-if="showQuickMenu" class="flex justify-end h-full mr-20px">

@@ -66,6 +66,7 @@ const enableTabs = import.meta.env.VITE_TABS == "Y";
 const inApp = globalThis.env && (globalThis.env.ANDROID || globalThis.env.IOS);
 const { mode, headerMode, isMobile, headerProps, siderVisible, siderWidth, siderCollapsedWidth } = useBasicLayout();
 
+globalThis.app = app;
 if (!ssr) {
   //移动端, 设置为horizontal模式
   theme.setScrollMode("wrapper");
