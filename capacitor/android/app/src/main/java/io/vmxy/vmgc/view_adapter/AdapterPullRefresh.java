@@ -58,7 +58,7 @@ public class AdapterPullRefresh {
 						@Override
 						public void run() {
 							//webview.reload();
-							evaluateJavascript("(()=>{var app = window.app; console.info('===reload====>', app);  app ? app.reloadPage() : location.reload(); })();", new Callback() {
+							evaluateJavascript("(()=>{var app = window.app; console.info('===reload====>', app, JSON.stringify(window.env));  app ? app.reloadPage() : location.reload(); })();", new Callback() {
 								@Override
 								public void callback(String s) {
 								}

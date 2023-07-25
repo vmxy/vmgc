@@ -169,14 +169,14 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .player {
-  min-height: 200px;
+  min-height: 20px;
   background-color: #000;
 }
 
 @media screen and (min-width: 640px) {
   .player {
-    min-height: 400px;
-    height: 400px;
+    min-height: 425px;
+    height: 425px;
   }
 }
 </style>

@@ -34,7 +34,7 @@ public class AdapterWebViewClient {
 
 	public void init() {
 		View view = adapter.webview;
-		String script = "Object.defineProperties(window, {\n" +
+		String script = "window.env || Object.defineProperties(window, {\n" +
 			"        env: {\n" +
 			"          value: {\n" +
 			"            ANDROID: true\n" +
@@ -43,7 +43,7 @@ public class AdapterWebViewClient {
 			"          enumerable: false,\n" +
 			"          configurable: false,\n" +
 			"        }\n" +
-			"      });";
+			"      }); document.querySelector('#appLoading').remove()";
 		BridgeWebViewClient webViewClient = new BridgeWebViewClient(adapter.bridge) {
 			@Override
 			public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
@@ -107,10 +107,11 @@ public class AdapterWebViewClient {
 			webview.setWebChromeClient(new com.tencent.smtt.sdk.WebChromeClient());
 			webview.setWebViewClient(new com.tencent.smtt.sdk.WebViewClient() {
 				@Override
-				public com.tencent.smtt.export.external.interfaces.WebResourceResponse shouldInterceptRequest(com.tencent.smtt.sdk.WebView view,//
-
-																																																			com.tencent.smtt.export.external.interfaces.WebResourceRequest request) {
+				public com.tencent.smtt.export.external.interfaces.WebResourceResponse //
+					shouldInterceptRequest(com.tencent.smtt.sdk.WebView view,//
+															 com.tencent.smtt.export.external.interfaces.WebResourceRequest request) {
 					String host = request.getUrl().getHost();
+					Logger.i("===>req start", request.getUrl());
 					if (host.matches("qq[.]com$") || !request.getUrl().getScheme().matches("https?")) {
 						//return super.shouldInterceptRequest(view, request);
 						return new com.tencent.smtt.export.external.interfaces.WebResourceResponse(
@@ -128,7 +129,12 @@ public class AdapterWebViewClient {
 					//return super.shouldInterceptRequest(view, request);
 					return super.shouldInterceptRequest(view, request);
 				}
+				@Override
+				public boolean shouldOverrideUrlLoading(com.tencent.smtt.sdk.WebView view, String url) {
+					view.loadUrl(url);
+					return super.shouldOverrideUrlLoading(view, url);
 
+				}
 				@Override
 				public void onPageStarted(com.tencent.smtt.sdk.WebView view, String url, Bitmap favicon) {
 					Logger.info("onPageStarted x5", url);
@@ -146,6 +152,41 @@ public class AdapterWebViewClient {
 					if (!view.getSettings().getLoadsImagesAutomatically()) {
 						view.getSettings().setLoadsImagesAutomatically(true);
 					}/**/
+				}
+
+				@Override
+				public void onReceivedHttpError(com.tencent.smtt.sdk.WebView view,//
+																				com.tencent.smtt.export.external.interfaces.WebResourceRequest request,//
+																				com.tencent.smtt.export.external.interfaces.WebResourceResponse errorResponse) {
+					super.onReceivedHttpError(view, request, errorResponse);
+					Logger.i("onReceivedHttpError", errorResponse.getStatusCode());
+				}
+
+				@Override
+				public void onReceivedError(com.tencent.smtt.sdk.WebView view, //
+																		int errorCode, String description, String failingUrl) {
+					Logger.i("onReceivedError", description);
+					super.onReceivedError(view, errorCode, description, failingUrl);
+				}
+
+				@Override
+				public void onReceivedClientCertRequest(com.tencent.smtt.sdk.WebView view,//
+																								com.tencent.smtt.export.external.interfaces.ClientCertRequest request) {
+					Logger.i("onReceivedClientCertRequest");
+					super.onReceivedClientCertRequest(view, request);
+				}
+
+				@Override
+				public void onReceivedSslError(com.tencent.smtt.sdk.WebView view,//
+																			 com.tencent.smtt.export.external.interfaces.SslErrorHandler handler, //
+																			 com.tencent.smtt.export.external.interfaces.SslError error) {
+					Logger.i("onReceivedSslError");
+					//https忽略证书问题
+					if (handler != null) {
+						handler.proceed();
+					} else {
+						super.onReceivedSslError(view, handler, error);
+					}
 				}
 			});
 		} else if (view instanceof WebView) {

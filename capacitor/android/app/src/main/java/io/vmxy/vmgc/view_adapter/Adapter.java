@@ -156,10 +156,6 @@ public class Adapter implements Serializable {
 				return isStart && !name.endsWith(".zip.temp");
 			}
 		});
-		Logger.i("info", "=========> apps has=", list.length);
-		for (String v : list) {
-			Logger.i("info", "===> app version=", v);
-		}
 		if (list.length < 1) return "";
 		Arrays.sort(list, new Comparator<String>() {
 			@Override

@@ -44,7 +44,7 @@ public class X5Activity extends AppCompatActivity {
 		adapter.setSwipeRefreshLayout(swipeRefreshLayout);
 		adapter.setWebView(webview);
 		adapter.init();
-		webview.loadUrl("http://localhost/");
+		webview.loadUrl("http://localhost/");//https://debugtbs.qq.com
 	}
 
 	@Override
