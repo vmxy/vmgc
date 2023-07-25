@@ -50,6 +50,7 @@ export default class Event {
             ele.className = ele.className.replace(/(h-full|w-full)/, "");
             break;
           case "resize":
+            console.info("===>resize", data);
             if (data && data.height) {
               ele.style.height = data.height + "px";
               ele.parentElement.style.height = data.height + "px";
