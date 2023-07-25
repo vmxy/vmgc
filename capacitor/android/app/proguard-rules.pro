@@ -19,3 +19,39 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-dontwarn dalvik.**
+-dontwarn com.tencent.smtt.**
+-dontwarn okhttp3.**
+-dontwarn javax.annotation.**
+-dontwarn io.netty.**
+-dontwarn com.maxmind.**
+-dontwarn net.lightnetwork.lproxy.**
+-dontwarn net.lightnetwork.view.**
+-dontwarn com.getcapacitor.**
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Service
+
+-keep class com.tencent.smtt.** {
+    *;
+}
+
+-keep class com.tencent.tbs.** {
+    *;
+}
+-keep class okhttp3.** {
+    *;
+}
+-keep class io.netty.** {
+    *;
+}
+-keep class com.maxmind.** {
+    *;
+}
+
+-keep class io.vmxy.vmgc.** {
+    *;
+}
+-keep class com.getcapacitor.** {
+    *;
+}

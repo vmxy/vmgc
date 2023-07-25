@@ -16,6 +16,9 @@ const config: CapacitorConfig = {
     webContentsDebuggingEnabled: true,
     minWebViewVersion: 80,
   },
+  cordova: {
+    staticPlugins: []
+  }
 };
 
 export default config;

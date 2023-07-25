@@ -27,7 +27,6 @@ public class FileUtil {
 			byte[] buf = new byte[1024];
 			while (zList.hasMoreElements()) {
 				ze = (ZipEntry) zList.nextElement();
-
 				if (ze.isDirectory()) {
 					String dirstr = folderPath +  File.separator + ze.getName();
 					dirstr = new String(dirstr.getBytes("8859_1"), "GB2312");
@@ -51,9 +50,8 @@ public class FileUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		//解压完成之后删除压缩包
-		deleteDir(zipFile);
+		//deleteDir(zipFile);
 	}
 	/**
 	 * 根据保存zip的文件路径和zip文件相对路径名，返回一个实际的文件

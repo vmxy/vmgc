@@ -4,16 +4,17 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context="com.getcapacitor.BridgeActivity"
-	>
+	android:background="@color/colorPrimary">
+
 	<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+		android:id="@+id/x5SwipeRefreshLayout"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:id="@+id/swipeRefreshLayout">
+		android:layout_height="match_parent">
 		<com.tencent.smtt.sdk.WebView
-			android:id="@+id/webview"
+			android:id="@+id/x5webview"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
+			android:background="#cfcfcf"
 			android:usesCleartextTraffic="true"
 			/>
 	</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
