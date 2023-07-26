@@ -9,7 +9,6 @@
         style="overflow: hidden"
         allowfullscreen
         class="player"
-        @load="onLoad"
       ></iframe>
     </div>
     <div v-else ref="videoRef" class="player"></div>
@@ -114,14 +113,16 @@ async function playInMe(urls: string[]) {
   });
 }
 async function playInIframe(url: string) {
+  onLoad(document.querySelector("#ifa-video"));
   //let el = createIframe(url);
   console.info("playInIframe", url);
   await notifyClose();
   playUrl.value = url;
 }
 function onLoad(el) {
+  hevent?.destroy();
   loading.value = false;
-  el = el || window.event.target || document.querySelector("#ifa-video");
+  el = el || document.querySelector("#ifa-video");
   console.info("===play inframe onload ===", el);
   hevent = new Event(el);
 }
