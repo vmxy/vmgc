@@ -38,8 +38,9 @@ export default class Event {
         window.removeEventListener("message", onMessage);
         return;
       }
-      if (!ele || !ele.style) return;
       let { event, data } = ev.data;
+      console.info("receive msg", event, data);
+      if (!ele || !ele.style) return;
       if (EventLists.has(event)) {
         event = event.replace(/^v_/, "");
         switch (event) {
