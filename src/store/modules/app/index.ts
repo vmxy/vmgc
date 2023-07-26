@@ -1,4 +1,4 @@
-import { nextTick } from "vue";
+import { nextTick, provide } from "vue";
 import { defineStore } from "pinia";
 import { LAYOUT_SCROLL_EL_ID } from "@soybeanjs/vue-materials";
 import { langList } from "@/locales/lang";
