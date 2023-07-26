@@ -34,18 +34,22 @@ public class AdapterSetting {
 
 		}
 		else if(view instanceof WebView webview){
-			webview.requestFocus();
+			/*webview.requestFocus();
 			webview.setVisibility(View.VISIBLE);
 			webview.setEnabled(true);  //  这里如果设置false, 则点击h5页面中的输入框时不能唤起软键盘
-			webview.requestFocusFromTouch();//支持获取手势焦点
+			webview.requestFocusFromTouch();//支持获取手势焦点*/
 			WebSettings wvSettings = webview.getSettings();
+			wvSettings.setSaveFormData(true);
 			wvSettings.setJavaScriptEnabled(true);
 			wvSettings.setDatabaseEnabled(true);
 			wvSettings.setDomStorageEnabled(true);
+			wvSettings.setBlockNetworkImage(false);
 			//wvSettings.setUserAgentString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54");
-			wvSettings.setUserAgentString(wvSettings.getUserAgentString() + adapter.getAppName());
-
+			wvSettings.setUserAgentString(wvSettings.getUserAgentString()); //+ "/" + adapter.getAppName()
 			wvSettings.setSavePassword(false);
+			wvSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+			wvSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 				if (0 != (adapter.activity.getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
 					webview.setWebContentsDebuggingEnabled(true);

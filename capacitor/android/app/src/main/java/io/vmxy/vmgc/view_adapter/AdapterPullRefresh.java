@@ -21,6 +21,12 @@ public class AdapterPullRefresh {
 	}
 
 	public void init() {
+		adapter.webview.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Logger.info("click===");
+			}
+		});
 		adapter.webview.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View view, MotionEvent event) {
@@ -57,8 +63,11 @@ public class AdapterPullRefresh {
 					new Handler().post(new Runnable() {
 						@Override
 						public void run() {
-							//webview.reload();
-							evaluateJavascript("(()=>{var app = window.app; console.info('===reload====>', app, JSON.stringify(window.env));  app ? app.reloadPage() : location.reload(); })();", new Callback() {
+							evaluateJavascript("(()=>{" +
+								"var app = window.app; console.info('===reload====>', app, JSON.stringify(window.env));  " +
+								//"app ? app.reloadPage() : location.reload(); " +
+								"location.reload();"+
+								"})();", new Callback() {
 								@Override
 								public void callback(String s) {
 								}

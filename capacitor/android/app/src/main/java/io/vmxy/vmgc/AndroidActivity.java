@@ -1,6 +1,7 @@
 package io.vmxy.vmgc;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -26,18 +27,10 @@ public class AndroidActivity extends BridgeActivity {
 	String APP_UPDATE_URL;
 	SwipeRefreshLayout swipeRefreshLayout;
 	WebView webview;
-	private int startX;
-	private int startY;
-	private int endX;
-	private int endY;
-	private int moveY;
-	private static Adapter adapter;
-	static Adapter getAdapter(){
-		return adapter;
-	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
 		Bridge bridge = getBridge();
 		Adapter adapter = new Adapter(this, bridge);
@@ -55,10 +48,9 @@ public class AndroidActivity extends BridgeActivity {
 		Intent intent = new Intent(AndroidActivity.this, X5Activity.class);
 		startActivity(intent);
 	}
-	
+
 	@Override
 	public void onBackPressed() {
-		Log.i("info", "=========back=======");
 		if (webview.canGoBack()) {
 			this.webview.goBack();
 		} else {
@@ -66,6 +58,7 @@ public class AndroidActivity extends BridgeActivity {
 		}
 	}
 
+	@Override
 	public void onConfigurationChanged(Configuration config) {
 		super.onConfigurationChanged(config);
 		int orientation = config.orientation;
@@ -85,7 +78,6 @@ public class AndroidActivity extends BridgeActivity {
 				== WindowManager.LayoutParams.FLAG_FULLSCREEN) {
 				// 是全屏
 				//window.getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_VISIBLE);//View.SYSTEM_UI_FLAG_FULLSCREEN
-
 			}
 		} else {
 			window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

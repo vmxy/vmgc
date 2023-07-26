@@ -59,6 +59,24 @@ export default class Event {
       }
     };
     window.addEventListener("message", onMessage);
+   /*  const onOrientationchange = () => {
+      if (this.state == "destroy") {
+        window.removeEventListener("orientationchange", onOrientationchange);
+        return;
+      }
+      var iframe = document.getElementById("ifa-video");
+      const orientation = window.orientation;
+      console.info("=====orientationchange", orientation, iframe?.requestFullscreen);
+      if (orientation == 90 || orientation == -90) {
+        console.info("=====横屏状态");
+        iframe?.requestFullscreen && iframe.requestFullscreen();
+      } else if (orientation == 180 || orientation == 0) {
+        console.info("=====竖屏状态");
+        document.exitFullscreen();
+      }
+     
+    }
+    window.addEventListener("orientationchange", onOrientationchange); */
   }
   destroy() {
     this.state = "destroy";
