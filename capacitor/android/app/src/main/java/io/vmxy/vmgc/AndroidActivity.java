@@ -55,7 +55,7 @@ public class AndroidActivity extends BridgeActivity {
 		Intent intent = new Intent(AndroidActivity.this, X5Activity.class);
 		startActivity(intent);
 	}
-
+	
 	@Override
 	public void onBackPressed() {
 		Log.i("info", "=========back=======");

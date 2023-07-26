@@ -5,17 +5,17 @@
     close-on-esc
     preset="card"
     footer-style="padding: 0; margin: 0"
-    class="fixed left-0 right-0"
+    class="fixed left-0 right-0 search-modal"
     :class="[app.isMobile ? 'wh-full top-0px rounded-0' : 'w-600px top-50px']"
     :style="app.isMobile ? 'top:0;bottom: 0; overflow-y: scroll; overflow-x: hidden;' : ''"
   >
     <n-input-group>
       <n-input
         ref="inputRef"
+        placeholder=""
         v-model:value="query.q"
         clearable
-        placeholder="请输入关键词搜索"
-        @keydown.enter.native="search"
+        @keydown.enter="search"
       >
         <template #prefix>
           <icon-uil-search class="text-15px text-#c2c2c2" />
@@ -97,8 +97,14 @@ onKeyStroke("Escape", handleClose);
 //onKeyStroke("ArrowDown", handleDown);
 </script>
 
-<style lang="scss" scoped>
-:deep(.n-card__content) {
-  padding: 6px !important;
+<style lang="scss">
+
+.search-modal {
+  .n-card__content:first-child {
+    padding: 6px !important;
+  }
+  :deep(.n-card__content:first-child) {
+    padding: 6px !important;
+  }
 }
 </style>

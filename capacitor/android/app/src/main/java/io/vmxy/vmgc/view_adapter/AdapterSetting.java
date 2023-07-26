@@ -34,6 +34,10 @@ public class AdapterSetting {
 
 		}
 		else if(view instanceof WebView webview){
+			webview.requestFocus();
+			webview.setVisibility(View.VISIBLE);
+			webview.setEnabled(true);  //  这里如果设置false, 则点击h5页面中的输入框时不能唤起软键盘
+			webview.requestFocusFromTouch();//支持获取手势焦点
 			WebSettings wvSettings = webview.getSettings();
 			wvSettings.setJavaScriptEnabled(true);
 			wvSettings.setDatabaseEnabled(true);

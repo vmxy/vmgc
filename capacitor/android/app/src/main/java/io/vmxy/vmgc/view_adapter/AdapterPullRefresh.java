@@ -23,7 +23,7 @@ public class AdapterPullRefresh {
 	public void init() {
 		adapter.webview.setOnTouchListener(new View.OnTouchListener() {
 			@Override
-			public boolean onTouch(View view, MotionEvent motionEvent) {
+			public boolean onTouch(View view, MotionEvent event) {
 				evaluateJavascript("(()=>{var el = document.querySelector('#__SCROLL_EL_ID__') || document.body; return el.scrollTop;})()", new Callback() {
 					@Override
 					public void callback(String s) {
