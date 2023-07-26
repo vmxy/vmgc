@@ -84,7 +84,15 @@ async function search() {
   let q = query.value.q;
   //let pageNo = parseInt(route.query.pageNo?.toString()) || 1;
   if (!q) return;
-  router.push(`/search?q=` + q + "&pageNo=1");
+  //router.push(`/search?q=` + q + "&pageNo=1");
+  let nquery = Object.assign({}, route.query, { q: q, pageNo: 1 });
+    router.push(
+      "/search" +
+        "?" +
+        Object.keys(nquery)
+          .map((key) => key + "=" + encodeURIComponent(nquery[key] as string))
+          .join("&"),
+    );
 }
 
 function handleClose() {

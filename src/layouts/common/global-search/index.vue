@@ -1,24 +1,20 @@
 <template>
-    <div v-if="showInput" class="w-full mt-12px mr-5px">
-      <n-input v-model:value="query.q" placeholder="" :min="1" :max="12" @keydown.enter="handleSearch" />
-    </div>
-    <div v-if="showButton">
-      <hover-container
-        class="w-40px h-full"
-        :inverted="theme.header.inverted"
-        @click="handleSearch"
-      >
-        <icon-uil-search class="text-20px" />
-      </hover-container>
-      <search-modal v-model:value="searchStore.show" />
-    </div>
+  <div v-if="showInput" class="w-full mt-12px mr-5px">
+    <n-input v-model:value="query.q" placeholder="" :min="1" :max="12" @keydown.enter="handleSearch" />
+  </div>
+  <div v-if="showButton">
+    <hover-container class="w-40px h-full" :inverted="theme.header.inverted" @click="handleSearch">
+      <icon-uil-search class="text-20px" />
+    </hover-container>
+    <search-modal v-model:value="searchStore.show" />
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { useThemeStore, useAppStore, useSearchStore } from "@/store";
 import { SearchModal } from "./components";
 import { ref, getCurrentInstance, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useBasicLayout } from "@/composables";
 const { mode, headerMode } = useBasicLayout();
 
@@ -30,24 +26,30 @@ const props = defineProps({
   },
   showInput: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 });
 const theme = useThemeStore();
 const app = useAppStore();
 const searchStore = useSearchStore();
 const route = useRoute();
-const { proxy } = getCurrentInstance();
+const router = useRouter();
 const query = ref({
   q: searchStore.q || route.query.q?.toString() || "",
 });
 function handleSearch() {
-  console.info("search====", query.value.q, props.showInput);
   if (!props.showInput) {
     // toggle();
     searchStore.setShow();
   } else {
-    proxy.$router.push(`/search?q=${encodeURIComponent(query.value.q)}`);
+    let nquery = Object.assign({}, route.query, { q: query.value.q });
+    router.push(
+      "/search" +
+        "?" +
+        Object.keys(nquery)
+          .map((key) => key + "=" + encodeURIComponent(nquery[key] as string))
+          .join("&"),
+    );
   }
 }
 watch(

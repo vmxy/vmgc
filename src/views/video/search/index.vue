@@ -82,9 +82,10 @@ onMounted(() => {
   search({ q: q, pageNo: pageNo });
 });
 
-async function onUpdatePage(pageNo: number) {
+async function onUpdatePage(pageNo: number) { 
+  console.info("=>>>>>>>", route.fullPath, route.query);
   let path = route.path;
-  let nquery = Object.assign({}, { q: searchStore.q, pageNo });
+  let nquery = Object.assign({}, route.query, { q: searchStore.q, pageNo });
   router.push(
     path +
       "?" +
