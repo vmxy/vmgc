@@ -22,8 +22,8 @@ export function fetchVideoHot(query: SearchPage) {
   });
 }
 /** 最热数据 */
-export function fetchVideoRec(vid: string) {
-  return request.get<{ list: NVideo.VideoInfo[]; page: Page }>(`/v/rec/${vid}`);
+export function fetchVideoRec(vid: string, page: {pageSize: number}) {
+  return request.get<{ list: NVideo.VideoInfo[]; page: Page }>(`/v/rec/${vid}?pageSize=${page.pageSize}`);
 }
 
 export function fetchVideoDetail(id: string) {
