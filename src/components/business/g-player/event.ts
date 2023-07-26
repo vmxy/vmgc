@@ -39,7 +39,6 @@ export default class Event {
         return;
       }
       let { event, data } = ev.data;
-      console.info("receive msg", event, data);
       if (!ele || !ele.style) return;
       if (EventLists.has(event)) {
         event = event.replace(/^v_/, "");
@@ -51,7 +50,6 @@ export default class Event {
             ele.className = ele.className.replace(/(h-full|w-full)/, "");
             break;
           case "resize":
-            console.info("===>resize", data);
             if (data && data.height) {
               ele.style.height = data.height + "px";
               ele.parentElement.style.height = data.height + "px";
