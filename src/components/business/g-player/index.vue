@@ -121,7 +121,8 @@ async function playInIframe(url: string) {
 }
 function onLoad(el) {
   loading.value = false;
-  el = el || window.event.target;
+  el = el || window.event.target || document.querySelector("#ifa-video");
+  console.info("===play inframe onload ===", el);
   hevent = new Event(el);
 }
 
