@@ -43,7 +43,7 @@ function handleScroll(clientX: number) {
     bsScroll.value?.instance.scrollBy(update, 0, 300);
   }
 }
-const activeTab = ref("home");
+const activeTab = ref(route.query.headerMode||"home");
 const menuOptions: MenuOption[] = [
   {
     label: "首页",

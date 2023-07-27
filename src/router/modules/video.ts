@@ -20,7 +20,7 @@ const video: AuthRoute.Route[] = [
     meta: {
       title: "收藏",
       requiresAuth: false,
-      keepAlive: true,
+      keepAlive: false,
       singleLayout: "basic",
       icon: "mdi:heart",
       order: 2,

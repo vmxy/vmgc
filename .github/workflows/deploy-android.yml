@@ -3,7 +3,7 @@ name: Build Android
 on:
   push:
     branches:
-      - masterx
+      - master
 
 jobs:
   build:
@@ -29,20 +29,23 @@ jobs:
           npm i -g yarn
           yarn
           yarn build 
-          npx cap update
-          npx cap copy
-          cd android && ./gradlew bundle
+          cd capacitor
+          yarn 
+          yarn build
+          yarn sync
+          cd android 
+          ./gradlew bundle
 
           #Extract Android signing key from env
-          echo "${{ secrets.RELEASE_KEYSTORE }}" > android/release.jks.base64
-          base64 -d android/release.jks.base64 > android/release.decrypted.jks
+          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.base64
+          base64 -d release.jks.base64 > release.decrypted.jks
 
           #Sign dev build
-          jarsigner -keystore android/release.decrypted.jks -storepass "${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" -signedjar ./android/app/build/outputs/bundle/release/app-release-signed.aab ./android/app/build/outputs/bundle/release/app-release.aab release
+          jarsigner -keystore release.decrypted.jks -storepass "${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" -signedjar app/build/outputs/bundle/release/app-release-signed.aab ./android/app/build/outputs/bundle/release/app-release.aab release
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v3
         with:
           name: app-release
-          path: android/app/build/outputs/bundle/release/app-release-signed.aab
+          path: capacitor/android/app/build/outputs/bundle/release/app-release-signed.apk
           retention-days: 60

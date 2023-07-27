@@ -42,15 +42,15 @@ export default defineConfig((configEnv) => {
     },
     optimizeDeps: {
       include: [
-        "@antv/data-set",
-        "@antv/g2",
+        //"@antv/data-set",
+        //"@antv/g2",
         "@better-scroll/core",
-        "echarts",
+        //"echarts",
         "swiper",
         "swiper/vue",
-        "vditor",
-        "wangeditor",
-        "xgplayer",
+        //"vditor",
+        //"wangeditor",
+        //"xgplayer",
         "@ai-lion/liondb"
       ],
     },

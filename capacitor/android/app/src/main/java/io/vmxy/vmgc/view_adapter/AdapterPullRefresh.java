@@ -30,6 +30,11 @@ public class AdapterPullRefresh {
 		adapter.webview.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View view, MotionEvent event) {
+				if(event.getAction()==MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_UP){
+					adapter.webview.requestFocus();
+					adapter.webview.requestFocusFromTouch();
+				}
+
 				evaluateJavascript("(()=>{var el = document.querySelector('#__SCROLL_EL_ID__') || document.body; return el.scrollTop;})()", new Callback() {
 					@Override
 					public void callback(String s) {

@@ -18,6 +18,8 @@ stats.html
 .env.development
 /cypress/videos/
 /cypress/screenshots/
+capacitor/android/app/office/
+capacitor/android/app/x5/
 
 # Editor directories and files
 .vscode/*

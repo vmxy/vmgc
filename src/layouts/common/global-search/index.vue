@@ -1,6 +1,6 @@
 <template>
   <div v-if="showInput" class="w-full mt-12px mr-5px">
-    <n-input v-model:value="query.q" placeholder="" :min="1" :max="12" @keydown.enter.native="handleSearch" />
+    <n-input id="q" v-model:value="query.q" placeholder="" :min="1" :max="12" @keydown.enter.native="handleSearch" />
   </div>
   <div v-if="showButton">
     <hover-container class="w-40px h-full" :inverted="theme.header.inverted" @click="handleSearch">
@@ -42,7 +42,8 @@ function handleSearch() {
     // toggle();
     searchStore.setShow();
   } else {
-    let nquery = Object.assign({}, route.query, { q: query.value.q });
+    let q = query.value.q || (document.querySelector("#q input") as HTMLInputElement)?.value || "";
+    let nquery = Object.assign({}, route.query, { q: q });
     router.push(
       "/search" +
         "?" +

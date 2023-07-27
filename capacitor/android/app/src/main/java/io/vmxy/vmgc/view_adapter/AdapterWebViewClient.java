@@ -48,7 +48,7 @@ public class AdapterWebViewClient {
 			"          enumerable: false,\n" +
 			"          configurable: false,\n" +
 			"        }\n" +
-			"      }); document.querySelector('#appLoading').remove()";
+			"      });";
 		BridgeWebViewClient webViewClient = new BridgeWebViewClient(adapter.bridge) {
 			@Override
 			public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
