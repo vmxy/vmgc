@@ -77,7 +77,7 @@ public class Adapter implements Serializable {
 		if (getLatestApp() != "") {
 			String appBase = getAPPsPath() + File.separator + getLatestApp();
 			if(bridge != null){
-				//bridge.setServerBasePath(appBase);
+				bridge.setServerBasePath(appBase);
 			}
 			if(LocalServer.getInstance()!=null){
 				LocalServer.getInstance().setServerBasePath(appBase);
