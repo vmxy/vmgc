@@ -37,7 +37,7 @@ jobs:
           cd android 
           pwd && ls -lh
           chmod +x ./gradlew
-          ./gradlew bundle
+          ./gradlew apk
           pwd && ls -lh
           app/build/outputs/
           pwd && ls -lh
