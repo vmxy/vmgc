@@ -22,6 +22,7 @@ android {
 
 	}
 
+
 	flavorDimensions "full"
 	productFlavors {
 		x5 {
