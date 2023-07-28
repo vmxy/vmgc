@@ -39,9 +39,9 @@ jobs:
           chmod +x ./gradlew
           ./gradlew bundle
           pwd && ls -lh
-          app/build/outputs/bundle/release/
+          app/build/outputs/
           pwd && ls -lh
-          cd ../../../../../
+          cd ../../../
           pwd && ls -lh
           #Extract Android signing key from env
           echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.base64
