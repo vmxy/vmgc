@@ -28,12 +28,15 @@ jobs:
         run: |
           npm i -g yarn
           yarn
+          pwd && ls -lh
           yarn build 
           cd capacitor
+          pwd && ls -lh
           yarn 
           yarn build
           yarn sync
           cd android 
+          pwd && ls -lh
           ./gradlew bundle
 
           #Extract Android signing key from env
