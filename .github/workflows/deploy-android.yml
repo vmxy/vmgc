@@ -41,7 +41,6 @@ jobs:
 
           #Extract Android signing key from env
           echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.base64
-          tail -300f release.jks.base64
           base64 -d release.jks.base64 > release.decrypted.jks
 
           #Sign dev build
@@ -51,5 +50,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-release
-          path: capacitor/android/app/build/outputs/bundle/release/app-release-signed.apk
+          path: capacitor/android/app/build/outputs/bundle/release/app-release-signed.aab
           retention-days: 60
