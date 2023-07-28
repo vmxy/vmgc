@@ -36,6 +36,7 @@ jobs:
           yarn sync
           cd android 
           pwd && ls -lh
+          chmod +x ./gradlew
           ./gradlew bundle
 
           #Extract Android signing key from env
