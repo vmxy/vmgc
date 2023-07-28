@@ -354,8 +354,62 @@ public class LocalServer {
 		register(Uri.withAppendedPath(uriPrefix, "/"), handler);
 		register(Uri.withAppendedPath(uriPrefix, "**"), handler);
 	}
+
+	public String getBasePath() {
+		return this.basePath;
+	}
+
+	public abstract static class LazyInputStream extends InputStream {
+
+		protected final WebViewLocalServer.PathHandler handler;
+		private InputStream is = null;
+
+		public LazyInputStream(WebViewLocalServer.PathHandler handler) {
+			this.handler = handler;
+		}
+
+		private InputStream getInputStream() {
+			if (is == null) {
+				is = handle();
+			}
+			return is;
+		}
+
+		protected abstract InputStream handle();
+
+		@Override
+		public int available() throws IOException {
+			InputStream is = getInputStream();
+			return (is != null) ? is.available() : -1;
+		}
+
+		@Override
+		public int read() throws IOException {
+			InputStream is = getInputStream();
+			return (is != null) ? is.read() : -1;
+		}
+
+		@Override
+		public int read(byte[] b) throws IOException {
+			InputStream is = getInputStream();
+			return (is != null) ? is.read(b) : -1;
+		}
+
+		@Override
+		public int read(byte[] b, int off, int len) throws IOException {
+			InputStream is = getInputStream();
+			return (is != null) ? is.read(b, off, len) : -1;
+		}
+
+		@Override
+		public long skip(long n) throws IOException {
+			InputStream is = getInputStream();
+			return (is != null) ? is.skip(n) : 0;
+		}
+	}
+
 	// For L and above.
-	private static class LollipopLazyInputStream extends WebViewLocalServer.LazyInputStream {
+	public static class LollipopLazyInputStream extends LazyInputStream {
 
 		private WebResourceRequest request;
 		private InputStream is;
@@ -399,10 +453,6 @@ public class LocalServer {
 				}
 			});
 		}
-	}
-
-	public String getBasePath() {
-		return this.basePath;
 	}
 
 }
