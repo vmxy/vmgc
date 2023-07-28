@@ -39,7 +39,7 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleRelease
           pwd && ls -lh
-          app/build/outputs/
+          app/office/release/
           pwd && ls -lh
           cd ../../../
           pwd && ls -lh
