@@ -33,7 +33,6 @@ jobs:
           cd capacitor
           pwd && ls -lh
           yarn 
-          yarn build
           yarn sync
           cd android 
           pwd && ls -lh
