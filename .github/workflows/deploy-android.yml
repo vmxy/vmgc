@@ -41,7 +41,7 @@ jobs:
           pwd && ls -lh
           cd app/
           pwd && ls -lh
-          cd ../../../
+          cd ../
           pwd && ls -lh
           #Extract Android signing key from env
           echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.base64
