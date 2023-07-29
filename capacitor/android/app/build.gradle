@@ -48,7 +48,7 @@ android {
 			keyAlias 'key'
 			keyPassword '123456'
 			storeFile file('release.jks')
-			storePassword 'password'
+			storePassword 'Cc123456'
 		}
 	}
 	flavorDimensions "full"
