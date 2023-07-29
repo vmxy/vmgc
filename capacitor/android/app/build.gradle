@@ -43,7 +43,14 @@ android {
 			}
 		}
 	}
-
+	signingConfigs {
+		release {
+			keyAlias 'key'
+			keyPassword '123456'
+			storeFile file('release.jks')
+			storePassword 'password'
+		}
+	}
 	flavorDimensions "full"
 	productFlavors {
 		x5 {
@@ -68,9 +75,7 @@ android {
 			minifyEnabled false
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 			//matchingFallbacks = ['debug', 'qa', 'release']
-
-			// 一定要写在android节点中
-
+			signingConfig signingConfigs.release
 		}
 	}
 }

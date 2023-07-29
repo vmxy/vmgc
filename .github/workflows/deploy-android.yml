@@ -34,20 +34,16 @@ jobs:
           pwd && ls -lh
           yarn 
           yarn sync
-          cd android 
+          cd android           
           pwd && ls -lh
+          cd app/
+          #Extract Android signing key from env
+          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.base64
+          base64 -d release.jks.base64 > release.jks
           chmod +x ./gradlew
           ./gradlew assembleRelease
           pwd && ls -lh
-          cd app/
-          pwd && ls -lh
-          cd build/outputs/
-          pwd && ls -lh && cd ../../
-          cd ../
-          pwd && ls -lh
-          #Extract Android signing key from env
-          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.base64
-          base64 -d release.jks.base64 > release.decrypted.jks
+          cd build/outputs/apk/office/release && pwd && ls -lh
 
           # Sign dev build
           # jarsigner -keystore release.decrypted.jks -storepass "${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" -signedjar app/build/outputs/bundle/release/app-release-signed.aab ./android/app/build/outputs/bundle/release/app-release.aab release
