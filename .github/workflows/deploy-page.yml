@@ -80,12 +80,12 @@ jobs:
           fi
           if [ $VITE_APP_CODE ];then
             sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./dist/caches/package.json
-            sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
+            # sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
             sed -i 's/app_name_/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
           fi
           if [ $VITE_APP_ORG ];then
             sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/caches/package.json
-            sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./capacitor/android/app/build.gradle
+            # sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./capacitor/android/app/build.gradle
           fi
           if [ $VITE_APP_UPDATE_URL ];then
             echo "replace VITE_APP_UPDATE_URL"
@@ -287,6 +287,7 @@ jobs:
           echo "============show github-pages=============="
           rm -rf github-pages/caches
           cd github-pages && ls -lh
+          cd apps && ls -lh
           
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
