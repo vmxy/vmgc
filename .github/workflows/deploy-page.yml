@@ -124,7 +124,7 @@ jobs:
           ls -lh app/build/outputs/apk
           ls -lh app/build/outputs/apk/office
           ls -lh app/build/outputs/apk/office/release
-          cp app/build/outputs/apk/office/release/*.apk ./dist
+          cp app/build/outputs/apk/office/release/*.apk ../dist
           echo "=== build android end ==="
           ls -ln dist
 
