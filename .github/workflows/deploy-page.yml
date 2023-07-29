@@ -103,7 +103,6 @@ jobs:
           mv app-v${{steps.version.outputs.value}}.asar ./dist
           mv app-v${{steps.version.outputs.value}}.zip ./dist
 
-
           ## build android start 
           echo "=== build android start ==="
           cd capacitor
@@ -125,9 +124,10 @@ jobs:
           ls -lh app/build/outputs/apk/office
           ls -lh app/build/outputs/apk/office/release
           cp app/build/outputs/apk/office/release/*.apk ../dist
+          cd ../
           echo "=== build android end ==="
-          ls -ln dist
 
+          ls -ln dist
 
           cd dist && ls -lh
       - name: Upload artifact
