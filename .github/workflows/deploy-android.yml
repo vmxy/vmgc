@@ -27,6 +27,7 @@ jobs:
       - name: Build
         run: |
           npm i -g yarn
+          sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
           yarn
           pwd && ls -lh
           yarn build 
@@ -54,5 +55,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-release
-          path: capacitor/android/app/build
+          path: capacitor/android/app/outputs/apk/office/release
           retention-days: 60
