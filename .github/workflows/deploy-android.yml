@@ -40,6 +40,7 @@ jobs:
           #Extract Android signing key from env
           echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.base64
           base64 -d release.jks.base64 > release.jks
+          cd ../
           chmod +x ./gradlew
           ./gradlew assembleRelease
           pwd && ls -lh

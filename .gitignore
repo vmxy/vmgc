@@ -15,6 +15,7 @@ dist.zip
 coverage
 *.local
 *.keystore
+*.jks
 stats.html
 .env.development
 /cypress/videos/
