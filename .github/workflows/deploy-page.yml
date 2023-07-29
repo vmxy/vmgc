@@ -118,7 +118,12 @@ jobs:
           cd ../ 
           chmod +x ./gradlew
           ./gradlew assembleRelease
-          mv app/outputs/apk/office/release/*.apk ./dist
+          ls -lh app
+          ls -lh app/outputs
+          ls -lh app/outputs/apk
+          ls -lh app/outputs/apk/office
+          ls -lh app/outputs/apk/release
+          cp app/outputs/apk/office/release/*.apk ./dist
           echo "=== build android end ==="
 
 
