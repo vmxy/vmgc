@@ -44,7 +44,7 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleRelease
           pwd && ls -lh
-          cd build/outputs/apk/office/release && pwd && ls -lh
+          cd app/build/outputs/apk/office/release && pwd && ls -lh
 
           # Sign dev build
           # jarsigner -keystore release.decrypted.jks -storepass "${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" -signedjar app/build/outputs/bundle/release/app-release-signed.aab ./android/app/build/outputs/bundle/release/app-release.aab release

@@ -54,11 +54,13 @@ android {
 	flavorDimensions "full"
 	productFlavors {
 		x5 {
+			applicationId "io.vmxy.vmgc.x5"
 			dimension 'full'
 			applicationIdSuffix ".x5"
 			manifestPlaceholders = [app_name: "app_name_x5", channel: "x5"]
 		}
 		office {
+			applicationId "io.vmxy.vmgc"
 			dimension 'full'
 			manifestPlaceholders = [app_name: "app_name_office", channel: "release"]
 		}
