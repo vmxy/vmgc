@@ -119,13 +119,12 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleRelease
           ls -lh 
-          ls -lh app
           ls -lh app/build
-          ls -lh app/outputs
-          ls -lh app/outputs/apk
-          ls -lh app/outputs/apk/office
-          ls -lh app/outputs/apk/release
-          cp app/outputs/apk/office/release/*.apk ./dist
+          ls -lh app/build/outputs
+          ls -lh app/build/outputs/apk
+          ls -lh app/build/outputs/apk/office
+          ls -lh app/build/outputs/apk/release
+          cp app/build/outputs/apk/office/release/*.apk ./dist
           echo "=== build android end ==="
 
 
