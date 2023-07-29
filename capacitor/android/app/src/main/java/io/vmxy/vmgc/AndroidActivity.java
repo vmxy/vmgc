@@ -12,14 +12,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
-
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import io.vmxy.vmgc.view_adapter.Adapter;
-
 import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeActivity;
-
 import java.util.ArrayList;
 import java.util.List;
 

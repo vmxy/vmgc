@@ -34,6 +34,7 @@ jobs:
           pwd && ls -lh
           yarn 
           yarn sync
+          cp -f android/app/src/main/res/layout/activity_main.xml ./node_modules/@capacitor/android/capacitor/src/main/res/layout/bridge_layout_main.xml
           cd android           
           pwd && ls -lh
           cd app/

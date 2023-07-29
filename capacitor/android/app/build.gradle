@@ -68,9 +68,10 @@ android {
 	}
 	buildTypes {
 		debug {
+			applicationIdSuffix ".debug"
 			debuggable true
 			minifyEnabled false
-			versionNameSuffix "-debug"
+			versionNameSuffix ".debug"
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 		release {
@@ -79,9 +80,6 @@ android {
 			//matchingFallbacks = ['debug', 'qa', 'release']
 			signingConfig signingConfigs.release
 		}
-	}
-	allprojects {
-		task hello
 	}
 }
 
