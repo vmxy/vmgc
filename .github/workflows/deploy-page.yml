@@ -81,6 +81,7 @@ jobs:
           if [ $VITE_APP_CODE ];then
             sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./dist/caches/package.json
             sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
+            sed -i 's/app_name_/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
           fi
           if [ $VITE_APP_ORG ];then
             sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/caches/package.json
