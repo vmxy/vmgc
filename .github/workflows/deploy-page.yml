@@ -118,7 +118,9 @@ jobs:
           cd ../ 
           chmod +x ./gradlew
           ./gradlew assembleRelease
+          ls -lh 
           ls -lh app
+          ls -lh app/build
           ls -lh app/outputs
           ls -lh app/outputs/apk
           ls -lh app/outputs/apk/office
