@@ -166,6 +166,7 @@ jobs:
             yarn build
 
             if [ $VITE_APP_ORG ];then
+              echo "org=${{ vars.APP_ORG }}"
               # sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./capacitor/android/app/build.gradle
             fi
             if [ $VITE_APP_UPDATE_URL ];then
