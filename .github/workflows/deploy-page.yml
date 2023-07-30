@@ -62,10 +62,6 @@ jobs:
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
           sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./package.json
           sed -i 's/"1.0.0"/"${{ steps.version.outputs.value }}"/g' ./capacitor/android/app/build.gradle
-          sed -i 's/appName/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
-          sed -i 's/app-/${{ vars.APP_CODE }}-/g' ./capacitor/android/app/build.gradle
-          sed -i 's/appid/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
-          sed -i 's/appName/${{ vars.APP_CODE }}/g' ./capacitor/android/app/src/main/res/values/strings.xml
 
           if [ $VITE_APP_SCRIPT_URL ];then
             replace-in-files --string='/js/head.js' --replacement='${{vars.APP_SCRIPT_URL}}'  ./index.html
@@ -106,36 +102,9 @@ jobs:
           mv app-v${{steps.version.outputs.value}}.asar ./dist
           mv app-v${{steps.version.outputs.value}}.zip ./dist
 
-          ## build android start 
-          echo "=== build android start ==="
-          cd capacitor
-          yarn 
-          yarn sync
-          cp -f android/app/src/main/res/layout/activity_main.xml ./node_modules/@capacitor/android/capacitor/src/main/res/layout/bridge_layout_main.xml
-          cd android           
-          cd app/
-          #Extract Android signing key from env
-          echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.base64
-          base64 -d release.jks.base64 > release.jks
-          cd ../ 
-          chmod +x ./gradlew
-          ./gradlew assembleRelease
-          ls -lh 
-          ls -lh app/build
-          ls -lh app/build/outputs
-          ls -lh app/build/outputs/apk
-          ls -lh app/build/outputs/apk/office
-          ls -lh app/build/outputs/apk/office/release
-          pwd
-          cp app/build/outputs/apk/office/release/*.apk ../../dist
-          cp app/build/outputs/apk/x5/release/*.apk ../../dist
-          cd ../../
-          echo "=== build android end ==="
           pwd
 
           ls -ln dist
-
-          cd dist && ls -lh
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         #uses: actions/upload-artifact@v3
@@ -143,6 +112,100 @@ jobs:
           # Upload entire repository
           path: "./dist"
           
+  android:
+      runs-on: ubuntu-latest
+      steps: 
+        - name: Checkout
+          id: project
+          uses: actions/checkout@v3
+          with:
+            persist-credentials: false # otherwise,  the token used is the GITHUB_TOKEN, instead of your personal access token.
+            fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+        - name: Setup java
+          uses: actions/setup-java@v3
+          with:
+            distribution: 'zulu'
+            java-version: '17'
+        - name: Setup node
+          uses: actions/setup-node@v3
+          with:
+            node-version: "16.x"
+            registry-url: "https://registry.npmjs.org"
+        - run: npm i -g yarn asar replace-in-files-cli
+  
+        - name: 读取当前版本号
+          id: version
+          uses: ashley-taylor/read-json-property-action@v1.0
+          with:
+            path: ./build/electron/package.json
+            property: version
+  
+        - name: Build Page
+          run: |
+            echo "version ${{ steps.version.outputs.value }} "
+            export VITE_API_SERVER=${{ vars.API_SERVER }}
+            export VITE_APP_TITLE=${{ vars.APP_TITLE }}
+            export VITE_APP_DESC=${{ vars.APP_DESC }}
+            export VITE_APP_CODE=${{ vars.APP_CODE }}
+            export VITE_APP_ORG="${{ vars.APP_ORG }}"
+            export VITE_APP_UPDATE_URL="${{ vars.APP_UPDATE_URL }}"
+            export VITE_APP_URL="${{ vars.APP_URL }}"
+            export VITE_APP_SCRIPT_URL="${{ vars.APP_SCRIPT_URL }}"
+
+            echo "pwd===" && pwd
+            echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
+            sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./package.json
+            sed -i 's/"1.0.0"/"${{ steps.version.outputs.value }}"/g' ./capacitor/android/app/build.gradle
+            sed -i 's/appName/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
+            sed -i 's/app-/${{ vars.APP_CODE }}-/g' ./capacitor/android/app/build.gradle
+            sed -i 's/appid/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
+            sed -i 's/appName/${{ vars.APP_CODE }}/g' ./capacitor/android/app/src/main/res/values/strings.xml
+
+            rm -rf node_modules && yarn install
+            mkdir artifact
+            yarn build
+
+            if [ $VITE_APP_ORG ];then
+              # sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./capacitor/android/app/build.gradle
+            fi
+            if [ $VITE_APP_UPDATE_URL ];then
+              echo "replace VITE_APP_UPDATE_URL"
+              #replace-in-files --string='APP_UPDATE_URL' --replacement='${{vars.APP_UPDATE_URL}}'  ./dist/caches/package.json
+            fi
+
+            ## build android start 
+            echo "=== build android start ==="
+            cd capacitor
+            yarn 
+            yarn sync
+            cp -f android/app/src/main/res/layout/activity_main.xml ./node_modules/@capacitor/android/capacitor/src/main/res/layout/bridge_layout_main.xml
+            cd android           
+            cd app/
+            #Extract Android signing key from env
+            echo "${{ secrets.RELEASE_KEYSTORE }}" > release.jks.base64
+            base64 -d release.jks.base64 > release.jks
+            cd ../ 
+            chmod +x ./gradlew
+            ./gradlew assembleRelease
+            ls -lh 
+            ls -lh app/build
+            ls -lh app/build/outputs
+            ls -lh app/build/outputs/apk
+            ls -lh app/build/outputs/apk/office
+            ls -lh app/build/outputs/apk/office/release
+            pwd
+            cp app/build/outputs/apk/office/release/*.apk ../../artifact
+            cp app/build/outputs/apk/x5/release/*.apk ../../artifact
+            cd ../../
+            echo "=== build android end ==="
+            pwd
+            ls -ln artifact
+        - name: Upload artifact
+          uses: actions/upload-pages-artifact@v1
+          #uses: actions/upload-artifact@v3
+          with:
+            name: android
+            path: "./artifact"
 
   # Deployment job
   electron:
@@ -254,7 +317,7 @@ jobs:
     environment:
       name: github-pages
     runs-on: ubuntu-latest
-    needs: [build, electron]
+    needs: [build, android, electron]
     steps:
       - name: Download
         uses: actions/download-artifact@v3
@@ -268,18 +331,27 @@ jobs:
           tar -xf artifact.tar && rm artifact.tar
           ls
           cd ..
+
           echo "===========handle linux"
           cd Linux
           tar -xf artifact.tar && rm artifact.tar
           ls
           cd ..
+
           echo "===========handle macOS"
           cd macOS
           tar -xf artifact.tar && rm artifact.tar
           ls    
           cd ..  
+
           echo "===========handle Windows"
           cd Windows
+          tar -xf artifact.tar && rm artifact.tar
+          ls    
+          cd .. 
+
+          echo "===========handle Android"
+          cd android
           tar -xf artifact.tar && rm artifact.tar
           ls    
           cd .. 
@@ -293,9 +365,11 @@ jobs:
           cp Linux/* github-pages/apps
           cp macOS/* github-pages/apps
           cp Windows/* github-pages/apps
+
+          cp android/*.apk github-pages/apps
           mv github-pages/*.asar github-pages/apps
           mv github-pages/*.zip github-pages/apps
-          mv github-pages/*.apk github-pages/apps
+
           echo "============show github-pages=============="
           rm -rf github-pages/caches
           cd github-pages && ls -lh
