@@ -170,7 +170,7 @@ jobs:
             fi
             if [ $VITE_APP_UPDATE_URL ];then
               echo "replace VITE_APP_UPDATE_URL"
-              #replace-in-files --string='APP_UPDATE_URL' --replacement='${{vars.APP_UPDATE_URL}}'  ./dist/caches/package.json
+              # replace-in-files --string='APP_UPDATE_URL' --replacement='${{vars.APP_UPDATE_URL}}'  ./dist/caches/package.json
             fi
 
             ## build android start 
@@ -276,7 +276,6 @@ jobs:
           cp -f build-app/*.snap artifact/
           cp -f app/app-*.asar artifact/
           cp -f app/app-*.zip artifact/
-          cp -f app/*.apk artifact/
           
       - name: Build Windows
         if: runner.os == 'windows'
