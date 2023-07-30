@@ -1,9 +1,8 @@
-package io.vmxy.vmgc.core;
+package io.vmxy.vmapp.core;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Environment;
 import android.telephony.TelephonyManager;
 
 import androidx.core.app.ActivityCompat;

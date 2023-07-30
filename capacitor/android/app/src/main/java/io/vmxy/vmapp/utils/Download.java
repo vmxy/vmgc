@@ -1,6 +1,5 @@
-package io.vmxy.vmgc.utils;
+package io.vmxy.vmapp.utils;
 
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -8,9 +7,6 @@ import android.util.Log;
 import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadSampleListener;
 import com.liulishuo.filedownloader.FileDownloader;
-import com.liulishuo.filedownloader.util.FileDownloadUtils;
-
-import java.io.File;
 
 public class Download {
 	BaseDownloadTask singleTask;

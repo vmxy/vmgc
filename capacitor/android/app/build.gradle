@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-	namespace "io.vmxy.vmgc"
+	namespace "io.vmxy.vmapp"
 	compileSdkVersion rootProject.ext.compileSdkVersion
 
 	defaultConfig {
-		applicationId "io.vmxy.vmgc"
+		applicationId "io.vmxy.appid"
 		minSdkVersion rootProject.ext.minSdkVersion
 		targetSdkVersion rootProject.ext.targetSdkVersion
 		versionCode 1
@@ -54,13 +54,13 @@ android {
 	flavorDimensions "full"
 	productFlavors {
 		x5 {
-			applicationId "io.vmxy.vmgc.x5"
+			applicationId "io.vmxy.appid.x5"
 			dimension 'full'
 			applicationIdSuffix ".x5"
 			manifestPlaceholders = [app_name: "appName-x5", channel: "x5"]
 		}
 		office {
-			applicationId "io.vmxy.vmgc"
+			applicationId "io.vmxy.appid"
 			dimension 'full'
 			manifestPlaceholders = [app_name: "appName", channel: "release"]
 		}
@@ -75,7 +75,7 @@ android {
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 		release {
-			minifyEnabled false
+			minifyEnabled true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 			//matchingFallbacks = ['debug', 'qa', 'release']
 			signingConfig signingConfigs.release

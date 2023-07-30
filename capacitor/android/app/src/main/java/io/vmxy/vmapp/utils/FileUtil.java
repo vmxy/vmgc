@@ -1,4 +1,4 @@
-package io.vmxy.vmgc.utils;
+package io.vmxy.vmapp.utils;
 
 import android.util.Log;
 

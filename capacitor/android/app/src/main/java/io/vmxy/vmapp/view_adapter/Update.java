@@ -1,17 +1,16 @@
-package io.vmxy.vmgc.view_adapter;
+package io.vmxy.vmapp.view_adapter;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.connection.FileDownloadUrlConnection;
 
-import io.vmxy.vmgc.core.Logger;
-import io.vmxy.vmgc.utils.Download;
-import io.vmxy.vmgc.utils.NumberUtil;
+import io.vmxy.vmapp.core.Logger;
+import io.vmxy.vmapp.utils.Download;
+import io.vmxy.vmapp.utils.NumberUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

@@ -1,14 +1,13 @@
-package io.vmxy.vmgc;
+package io.vmxy.vmapp;
 
 import android.app.Application;
-import android.content.Intent;
 import android.util.Log;
 
 import com.tencent.smtt.sdk.QbSdk;
 
 import java.util.HashMap;
-import io.vmxy.vmgc.core.Logger;
-import io.vmxy.vmgc.utils.ChannelUtil;
+import io.vmxy.vmapp.core.Logger;
+import io.vmxy.vmapp.utils.ChannelUtil;
 
 public class App extends Application {
 

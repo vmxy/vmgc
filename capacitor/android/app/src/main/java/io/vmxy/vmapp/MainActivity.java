@@ -1,4 +1,4 @@
-package io.vmxy.vmgc;
+package io.vmxy.vmapp;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,8 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import io.vmxy.vmgc.core.Logger;
-import io.vmxy.vmgc.utils.ChannelUtil;
+import io.vmxy.vmapp.core.Logger;
+import io.vmxy.vmapp.utils.ChannelUtil;
 
 public class MainActivity extends AppCompatActivity {
 	@Override

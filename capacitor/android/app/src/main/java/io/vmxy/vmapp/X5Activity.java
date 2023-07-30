@@ -1,22 +1,18 @@
-package io.vmxy.vmgc;
+package io.vmxy.vmapp;
 
 
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.getcapacitor.Bridge;
 import com.tencent.smtt.sdk.WebView;
 
-import java.io.File;
-
-import io.vmxy.vmgc.core.LocalServer;
-import io.vmxy.vmgc.core.Logger;
-import io.vmxy.vmgc.view_adapter.Adapter;
+import io.vmxy.vmapp.core.LocalServer;
+import io.vmxy.vmapp.core.Logger;
+import io.vmxy.vmapp.view_adapter.Adapter;
 
 public class X5Activity extends AppCompatActivity {
 	private Adapter adapter;

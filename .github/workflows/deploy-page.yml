@@ -64,7 +64,7 @@ jobs:
           sed -i 's/"1.0.0"/"${{ steps.version.outputs.value }}"/g' ./capacitor/android/app/build.gradle
           sed -i 's/appName/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
           sed -i 's/app-/${{ vars.APP_CODE }}-/g' ./capacitor/android/app/build.gradle
-          sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
+          sed -i 's/appid/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
 
           if [ $VITE_APP_SCRIPT_URL ];then
             replace-in-files --string='/js/head.js' --replacement='${{vars.APP_SCRIPT_URL}}'  ./index.html
@@ -87,7 +87,7 @@ jobs:
           fi
           if [ $VITE_APP_ORG ];then
             sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/caches/package.json
-            sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./capacitor/android/app/build.gradle
+            # sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./capacitor/android/app/build.gradle
           fi
           if [ $VITE_APP_UPDATE_URL ];then
             echo "replace VITE_APP_UPDATE_URL"
@@ -127,6 +127,7 @@ jobs:
           ls -lh app/build/outputs/apk/office/release
           pwd
           cp app/build/outputs/apk/office/release/*.apk ../../dist
+          cp app/build/outputs/apk/x5/release/*.apk ../../dist
           cd ../../
           echo "=== build android end ==="
           pwd

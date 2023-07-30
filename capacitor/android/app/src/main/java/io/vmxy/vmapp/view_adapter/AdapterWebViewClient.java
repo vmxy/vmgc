@@ -1,34 +1,25 @@
-package io.vmxy.vmgc.view_adapter;
+package io.vmxy.vmapp.view_adapter;
 
-import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.http.SslError;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.ClientCertRequest;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeWebViewClient;
 
 import java.io.ByteArrayInputStream;
 import java.util.HashMap;
-import java.util.Queue;
-import java.util.concurrent.LinkedBlockingQueue;
 
-import io.vmxy.vmgc.core.LocalServer;
-import io.vmxy.vmgc.core.Logger;
+import io.vmxy.vmapp.core.LocalServer;
+import io.vmxy.vmapp.core.Logger;
 
 public class AdapterWebViewClient {
 	Adapter adapter;

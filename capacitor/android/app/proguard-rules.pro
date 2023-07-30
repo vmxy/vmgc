@@ -49,7 +49,7 @@
     *;
 }
 
--keep class io.vmxy.vmgc.** {
+-keep class io.vmxy.vmapp.** {
     *;
 }
 -keep class com.getcapacitor.** {

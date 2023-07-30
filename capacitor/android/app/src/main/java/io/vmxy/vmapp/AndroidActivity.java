@@ -1,4 +1,4 @@
-package io.vmxy.vmgc;
+package io.vmxy.vmapp;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -13,7 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import io.vmxy.vmgc.view_adapter.Adapter;
+import io.vmxy.vmapp.view_adapter.Adapter;
 import com.getcapacitor.Bridge;
 import com.getcapacitor.BridgeActivity;
 import java.util.ArrayList;

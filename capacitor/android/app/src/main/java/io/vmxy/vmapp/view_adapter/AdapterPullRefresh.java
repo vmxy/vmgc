@@ -1,4 +1,4 @@
-package io.vmxy.vmgc.view_adapter;
+package io.vmxy.vmapp.view_adapter;
 
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import io.vmxy.vmgc.core.Logger;
+import io.vmxy.vmapp.core.Logger;
 
 public class AdapterPullRefresh {
 	Adapter adapter;

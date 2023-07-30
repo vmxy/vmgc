@@ -1,10 +1,9 @@
-package io.vmxy.vmgc.view_adapter;
+package io.vmxy.vmapp.view_adapter;
 
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -22,11 +21,11 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import io.vmxy.vmgc.R;
-import io.vmxy.vmgc.core.LocalServer;
-import io.vmxy.vmgc.core.Logger;
-import io.vmxy.vmgc.utils.FileUtil;
-import io.vmxy.vmgc.utils.NumberUtil;
+import io.vmxy.vmapp.R;
+import io.vmxy.vmapp.core.LocalServer;
+import io.vmxy.vmapp.core.Logger;
+import io.vmxy.vmapp.utils.FileUtil;
+import io.vmxy.vmapp.utils.NumberUtil;
 
 public class Adapter implements Serializable {
 	public Bridge bridge;

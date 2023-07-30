@@ -1,4 +1,4 @@
-package io.vmxy.vmgc.view_adapter;
+package io.vmxy.vmapp.view_adapter;
 
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import io.vmxy.vmgc.R;
+import io.vmxy.vmapp.R;
 
 public class AdapterSetting {
 	Adapter adapter;

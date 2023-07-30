@@ -1,12 +1,11 @@
-package io.vmxy.vmgc.utils;
+package io.vmxy.vmapp.utils;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
-import io.vmxy.vmgc.core.Logger;
-import kotlin.Metadata;
+import io.vmxy.vmapp.core.Logger;
 
 public class ChannelUtil {
 

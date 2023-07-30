@@ -1,4 +1,4 @@
-package io.vmxy.vmgc.utils;
+package io.vmxy.vmapp.utils;
 
 public class NumberUtil {
 	public static int toInt(String v, int df){

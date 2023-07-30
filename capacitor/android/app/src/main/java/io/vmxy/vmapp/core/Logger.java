@@ -1,9 +1,7 @@
-package io.vmxy.vmgc.core;
+package io.vmxy.vmapp.core;
 
-import android.os.Build;
 import android.util.Log;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
