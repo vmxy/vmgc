@@ -77,7 +77,6 @@ android {
 		release {
 			minifyEnabled true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-			//matchingFallbacks = ['debug', 'qa', 'release']
 			signingConfig signingConfigs.release
 		}
 	}

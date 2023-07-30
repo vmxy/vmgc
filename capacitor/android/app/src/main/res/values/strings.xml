@@ -1,8 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">vmgc</string>
-    <string name="title_activity_main">vmgc</string>
-    <string name="package_name">io.vmxy.vmgc</string>
-    <string name="custom_url_scheme">io.vmxy.vmgc</string>
+    <string name="app_name">appName</string>
+    <string name="package_name">io.vmxy.vmapp</string>
+    <string name="custom_url_scheme">io.vmxy.vmapp</string>
 		<string name="APP_UPDATE_URL">https://v.iuku.xyz/apps</string>
 </resources>
