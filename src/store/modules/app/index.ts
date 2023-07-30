@@ -55,6 +55,7 @@ export const useAppStore = defineStore("app-store", {
       isMobile: ssr ? false : globalThis.innerWidth <= 640,
       screenWidth: ssr ? 1024 : globalThis.innerWidth,
       apps: [
+        { label: "Android", key: `/apps/${pkg.name}-v${pkg.version}.apk` },
         { label: "Windows", key: `/apps/${pkg.name}-v${pkg.version}.exe` },
         { label: "Mac", key: `/apps/${pkg.name}-v${pkg.version}.dmg` },
         { label: "Linux", key: `/apps/${pkg.name}-v${pkg.version}.AppImage` },
