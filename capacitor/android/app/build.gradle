@@ -9,7 +9,7 @@ android {
 		minSdkVersion rootProject.ext.minSdkVersion
 		targetSdkVersion rootProject.ext.targetSdkVersion
 		versionCode 1
-		versionName "1.0"
+		versionName "1.0.0"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 		aaptOptions {
 			// Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -57,12 +57,12 @@ android {
 			applicationId "io.vmxy.vmgc.x5"
 			dimension 'full'
 			applicationIdSuffix ".x5"
-			manifestPlaceholders = [app_name: "app_name-x5", channel: "x5"]
+			manifestPlaceholders = [app_name: "appName-x5", channel: "x5"]
 		}
 		office {
 			applicationId "io.vmxy.vmgc"
 			dimension 'full'
-			manifestPlaceholders = [app_name: "app_name", channel: "release"]
+			manifestPlaceholders = [app_name: "appName", channel: "release"]
 		}
 
 	}

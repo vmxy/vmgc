@@ -61,7 +61,8 @@ jobs:
           echo "pwd===" && pwd
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
           sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./package.json
-          sed -i 's/app_name/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
+          sed -i 's/"1.0.0"/"${{ steps.version.outputs.value }}"/g' ./capacitor/android/app/build.gradle
+          sed -i 's/appName/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
           sed -i 's/app-/${{ vars.APP_CODE }}-/g' ./capacitor/android/app/build.gradle
 
           if [ $VITE_APP_SCRIPT_URL ];then
@@ -296,7 +297,7 @@ jobs:
           echo "============show github-pages=============="
           rm -rf github-pages/caches
           cd github-pages && ls -lh
-          cd apps && ls -lh
+          ls -lh apps
           
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v1
