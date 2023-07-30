@@ -64,6 +64,7 @@ jobs:
           sed -i 's/"1.0.0"/"${{ steps.version.outputs.value }}"/g' ./capacitor/android/app/build.gradle
           sed -i 's/appName/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
           sed -i 's/app-/${{ vars.APP_CODE }}-/g' ./capacitor/android/app/build.gradle
+          sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
 
           if [ $VITE_APP_SCRIPT_URL ];then
             replace-in-files --string='/js/head.js' --replacement='${{vars.APP_SCRIPT_URL}}'  ./index.html
