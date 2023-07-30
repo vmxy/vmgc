@@ -20,8 +20,12 @@ public class AdapterSetting {
 			wvSettings.setJavaScriptEnabled(true);
 			wvSettings.setDatabaseEnabled(true);
 			wvSettings.setDomStorageEnabled(true);
+			wvSettings.setDatabaseEnabled(true);
+			wvSettings.setDomStorageEnabled(true);
 			//wvSettings.setUserAgentString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54");
-			wvSettings.setUserAgentString(wvSettings.getUserAgentString() + adapter.getAppName());
+			wvSettings.setUserAgentString(wvSettings.getUserAgentString()); //+ "/" + adapter.getAppName()
+			wvSettings.setSavePassword(false);
+			wvSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
 			wvSettings.setSavePassword(false);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 				if (0 != (adapter.activity.getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
@@ -43,13 +47,12 @@ public class AdapterSetting {
 			wvSettings.setJavaScriptEnabled(true);
 			wvSettings.setDatabaseEnabled(true);
 			wvSettings.setDomStorageEnabled(true);
-			wvSettings.setBlockNetworkImage(false);
 			//wvSettings.setUserAgentString("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54");
 			wvSettings.setUserAgentString(wvSettings.getUserAgentString()); //+ "/" + adapter.getAppName()
 			wvSettings.setSavePassword(false);
 			wvSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
 			wvSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-
+			wvSettings.setAllowUniversalAccessFromFileURLs(true);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 				if (0 != (adapter.activity.getApplicationInfo().flags &= ApplicationInfo.FLAG_DEBUGGABLE)) {
 					webview.setWebContentsDebuggingEnabled(true);
