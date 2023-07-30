@@ -61,6 +61,8 @@ jobs:
           echo "pwd===" && pwd
           echo "VITE_APP_CODE [ $VITE_APP_CODE ] [ ${{ vars.APP_CODE }} ]"
           sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./package.json
+          sed -i 's/app_name/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
+          sed -i 's/app-/${{ vars.APP_CODE }}-/g' ./capacitor/android/app/build.gradle
 
           if [ $VITE_APP_SCRIPT_URL ];then
             replace-in-files --string='/js/head.js' --replacement='${{vars.APP_SCRIPT_URL}}'  ./index.html
@@ -81,7 +83,6 @@ jobs:
           if [ $VITE_APP_CODE ];then
             sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./dist/caches/package.json
             # sed -i 's/vmgc/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
-            sed -i 's/app_name_/${{ vars.APP_CODE }}/g' ./capacitor/android/app/build.gradle
           fi
           if [ $VITE_APP_ORG ];then
             sed -i 's/vmxy/${{ vars.APP_ORG }}/g' ./dist/caches/package.json

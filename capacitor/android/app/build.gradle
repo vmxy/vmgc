@@ -25,7 +25,7 @@ android {
 			def outputFile = output.outputFile
 			if (outputFile != null && outputFile.name.endsWith('.apk')) {
 				// 显示app名称+当前版本号
-				def fileName = "vmgc-v${variant.versionName}"
+				def fileName = "app-v${variant.versionName}"
 				// 如果有渠道，显示渠道名""
 				if (variant.flavorName != "office" && variant.flavorName!="release"){
 					fileName = fileName + "-${variant.flavorName}"
@@ -57,12 +57,12 @@ android {
 			applicationId "io.vmxy.vmgc.x5"
 			dimension 'full'
 			applicationIdSuffix ".x5"
-			manifestPlaceholders = [app_name: "app_name_x5", channel: "x5"]
+			manifestPlaceholders = [app_name: "app_name-x5", channel: "x5"]
 		}
 		office {
 			applicationId "io.vmxy.vmgc"
 			dimension 'full'
-			manifestPlaceholders = [app_name: "app_name_office", channel: "release"]
+			manifestPlaceholders = [app_name: "app_name", channel: "release"]
 		}
 
 	}
