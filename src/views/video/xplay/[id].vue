@@ -53,6 +53,7 @@ async function toggleFav(data) {
 }
 onMounted(async () => {
   let data = await fetchDetail(id.value);
+  //let data = await video.getRes(id.value);
   if (!data) return;
   //sessionStg.set(("playid-" + id.value) as any, "1");
   hasFav.value = await video.hasFav(data.vid);
@@ -62,7 +63,8 @@ onMounted(async () => {
 async function fetchDetail(id: string): Promise<any> {
   if (!id) return;
   globalThis.$loadingBar?.start();
-  let { data } = await service.fetchVideoRes(id);
+  //let { data } = await service.fetchVideoRes(id);
+  let data = await video.getRes(id);
   globalThis.$loadingBar?.finish();
   if (!data) {
     globalThis.$message?.warning("video is no data");

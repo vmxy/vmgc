@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import * as helper from "./helper";
 import model from "./models";
+import * as service from "@/service";
 
 export const useVideoStore = defineStore("video-store", {
   state: (): NVideo.VideoState => helper.initState(),
@@ -52,5 +53,39 @@ export const useVideoStore = defineStore("video-store", {
     async addPlayed(id: string) {
       model.played?.save(id, { id });
     },
+    async get(id: string) {
+      let detail;
+      if (model.video) {
+        detail = await model.video?.get(id);
+      }
+      if (detail) {
+        service.fetchVideoDetail(id).then((res) => {
+          model.video.save(id, res.data);
+        });
+      } else {
+        let { data } = await service.fetchVideoDetail(id);
+        detail = data;
+        model.video.save(id, detail);
+      }
+      return detail;
+    },
+    async getRes(id: string) {
+      let detail;
+      if (model.videoRes) {
+        detail = await model.videoRes?.get(id);
+      }
+      if (detail) {
+        service.fetchVideoRes(id).then(({data}) => {
+          //console.info("xxx", data);
+          model.videoRes.save(id, data);
+        });
+      } else {
+        let { data } = await service.fetchVideoRes(id);
+        detail = data;
+        //console.info("v", data);
+        model.videoRes.save(id, detail);
+      }
+      return detail;
+    }
   },
 });
