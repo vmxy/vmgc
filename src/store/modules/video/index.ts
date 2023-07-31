@@ -61,18 +61,20 @@ export const useVideoStore = defineStore("video-store", {
       if (detail) {
         service.fetchVideoDetail(id).then((res) => {
           model.video.save(id, res.data);
-        });
+        }).catch(err=>{});
       } else {
         let { data } = await service.fetchVideoDetail(id);
-        detail = data;
-        model.video.save(id, detail);
+        if(data){
+          detail = data;
+          model.video.save(id, detail);
+        }
       }
       return detail;
     },
     async getRes(id: string) {
       let detail;
       if (model.videoRes) {
-        detail = await model.videoRes?.get(id);
+        detail = await model.videoRes?.get(id).catch(err=>{});
       }
       if (detail) {
         service.fetchVideoRes(id).then(({data}) => {
@@ -81,9 +83,10 @@ export const useVideoStore = defineStore("video-store", {
         });
       } else {
         let { data } = await service.fetchVideoRes(id);
-        detail = data;
-        //console.info("v", data);
-        model.videoRes.save(id, detail);
+        if(data){
+          detail = data;
+          model.videoRes.save(id, detail);
+        }
       }
       return detail;
     }
