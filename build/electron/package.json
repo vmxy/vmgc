@@ -1,6 +1,6 @@
 {
   "name": "vmgc",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "author": "vmxy",
   "main": "app/electron/electron.js",
   "scripts": {
