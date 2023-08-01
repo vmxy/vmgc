@@ -64,7 +64,9 @@ async function fetchDetail(id: string): Promise<any> {
   if (!id) return;
   globalThis.$loadingBar?.start();
   //let { data } = await service.fetchVideoRes(id);
-  let data = await video.getRes(id);
+  let data = await video.getRes(id, (data) => {
+    Object.assign(res.value, data);
+  });
   globalThis.$loadingBar?.finish();
   if (!data) {
     globalThis.$message?.warning("video is no data");

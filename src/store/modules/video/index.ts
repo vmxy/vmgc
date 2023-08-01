@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import * as helper from "./helper";
-import model from "./models";
+import model, { Video, VideoRes } from "./models";
 import * as service from "@/service";
 
 export const useVideoStore = defineStore("video-store", {
@@ -53,42 +53,47 @@ export const useVideoStore = defineStore("video-store", {
     async addPlayed(id: string) {
       model.played?.save(id, { id });
     },
-    async get(id: string) {
+    async get(id: string, newHanle?: (data: Video) => void) {
       let detail;
       if (model.video) {
         detail = await model.video?.get(id);
       }
       if (detail) {
-        service.fetchVideoDetail(id).then((res) => {
-          model.video.save(id, res.data);
-        }).catch(err=>{});
+        service
+          .fetchVideoDetail(id)
+          .then((res) => {
+            model.video.save(id, res.data);
+            res?.data && newHanle && newHanle(res.data);
+          })
+          .catch((err) => {});
       } else {
         let { data } = await service.fetchVideoDetail(id);
-        if(data){
+        if (data) {
           detail = data;
           model.video.save(id, detail);
         }
       }
       return detail;
     },
-    async getRes(id: string) {
+    async getRes(id: string, newHandle?: (res: VideoRes) => void) {
       let detail;
       if (model.videoRes) {
-        detail = await model.videoRes?.get(id).catch(err=>{});
+        detail = await model.videoRes?.get(id).catch((err) => {});
       }
       if (detail) {
-        service.fetchVideoRes(id).then(({data}) => {
+        service.fetchVideoRes(id).then(({ data }) => {
           //console.info("xxx", data);
           model.videoRes.save(id, data);
+          data && newHandle && newHandle(data);
         });
       } else {
         let { data } = await service.fetchVideoRes(id);
-        if(data){
+        if (data) {
           detail = data;
           model.videoRes.save(id, detail);
         }
       }
       return detail;
-    }
+    },
   },
 });
