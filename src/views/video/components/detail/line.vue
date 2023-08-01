@@ -62,7 +62,7 @@
           :options="items"
           @update:value="openView"
         /-->
-        <n-scrollbar class="max-h-220px" :id="'id-' + line.id" ref="refScroll">
+        <n-scrollbar class="max-h-220px line-items" :id="'id-' + line.id" ref="refScroll" >
           <g-a
             v-for="item in line.items"
             v-if="line.id == selectLineId"
@@ -216,33 +216,10 @@ watch(
 </script>
 
 <style scoped lang="scss">
-.box-a {
-  display: inline-block;
-  padding: 3px 7px;
-  box-sizing: border-box;
-  //border-image: linear-gradient(to bottom, transparent 50%, #5a5959 50%) 0 0 100%/1px 0;
-  margin: 3px 3px;
-  position: relative;
-}
-.box-a::before {
-  content: " ";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 200%;
-  height: 200%;
-  border: 1px solid #5a5959;
-  transform-origin: 0 0;
-  transform: scale(0.5);
-}
-.box-a-red {
-  background-color: #bf1067;
-}
-.box-a-disabled {
-  cursor: not-allowed;
-  user-select: none;
-  pointer-events: none;
-  background-color: #5a5959 !important;
+.g-a {
+  min-width: 40px;
+  text-align: center;
+  margin-right: auto
 }
 .line {
   :deep(.inline-block) {
@@ -252,5 +229,12 @@ watch(
   :deep(.n-tabs) {
     max-height: 320px;
   }
+  :deep(.line-items .n-scrollbar-content){
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+  }
 }
+
 </style>
