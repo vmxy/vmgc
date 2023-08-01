@@ -216,12 +216,14 @@ watch(
 </script>
 
 <style scoped lang="scss">
-.g-a {
-  min-width: 40px;
-  text-align: center;
-  margin-right: auto
-}
 .line {
+  .g-a {
+    min-width: 40px;
+    text-align: center;
+  }
+  .g-a:last-child {
+    margin-right: auto
+  }
   :deep(.inline-block) {
     margin-top: 14px;
   }

@@ -1,7 +1,7 @@
 <template>
   <n-card :title="$t('video.top.hot')" class="mt-16px module">
     <n-grid 
-      cols="100:1 200:2 300:3 480:4 640:6 960:8 1024:12 1440:16 2048:24 "
+      cols="100:1 200:2 300:3 640:4 1024:6 1280:12 "
       responsive="self"
       x-gap="3 x:6 s:9 m:12"
       y-gap="3 x:6 s:9 m:12"
