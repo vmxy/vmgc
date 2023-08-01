@@ -17,17 +17,19 @@ import okhttp3.Response;
 
 public class Update {
 	private Adapter adapter;
-	public Update(Adapter adapter){
+
+	public Update(Adapter adapter) {
 		this.adapter = adapter;
 	}
+
 	public boolean checkUpdate(String latestVersion) {
 		String localLatest = adapter.getLatestApp();
 		localLatest = NumberUtil.toVersion(localLatest);
-		Logger.i("info", "check update===========>" + latestVersion + "->" + localLatest + "->" + NumberUtil.isLarge(latestVersion, localLatest));
+		Logger.i("info", "===>check update " + localLatest + ":" + latestVersion + ":" + NumberUtil.isLarge(latestVersion, localLatest));
 		return NumberUtil.isLarge(latestVersion, localLatest);
 	}
 
-	public void init(){
+	public void init() {
 		updateVersionToZip();
 	}
 
@@ -37,7 +39,7 @@ public class Update {
 			public void run() {
 				try {
 					OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象
-					Logger.i("info", "=====req url=" + adapter.APP_UPDATE_URL + "/latest.yml");
+					Logger.i("info", "=====req update url=" + adapter.APP_UPDATE_URL + "/latest.yml");
 					Request request = new Request.Builder()
 						.url(adapter.APP_UPDATE_URL + "/latest.yml")//请求接口。如果需要传参拼接到接口后面。
 						.build();//创建Request 对象
@@ -53,8 +55,7 @@ public class Update {
 						String name = "app-v" + version + ".zip";
 						String downloadUrl = adapter.APP_UPDATE_URL + "/" + name;
 						String baseDir = adapter.getAPPsPath();
-						Logger.i("info", "==========version " + version + ">->" + baseDir);
-						Logger.i("info", "======>dl=>" + downloadUrl + ">");
+						Logger.i("info", "======>dl=>" + downloadUrl, baseDir);
 
 						FileDownloader.setupOnApplicationOnCreate(adapter.activity.getApplication())
 							.connectionCreator(new FileDownloadUrlConnection.Creator())

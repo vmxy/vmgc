@@ -53,7 +53,7 @@ export const useVideoStore = defineStore("video-store", {
     async addPlayed(id: string) {
       model.played?.save(id, { id });
     },
-    async get(id: string, newHanle?: (data: Video) => void) {
+    async get(id: string, newHanle?: (data: NVideo.VideoDetail) => void) {
       let detail;
       if (model.video) {
         detail = await model.video?.get(id);
@@ -75,7 +75,7 @@ export const useVideoStore = defineStore("video-store", {
       }
       return detail;
     },
-    async getRes(id: string, newHandle?: (res: VideoRes) => void) {
+    async getRes(id: string, newHandle?: (res: NVideo.Res) => void) {
       let detail;
       if (model.videoRes) {
         detail = await model.videoRes?.get(id).catch((err) => {});
@@ -94,6 +94,34 @@ export const useVideoStore = defineStore("video-store", {
         }
       }
       return detail;
+    },
+    async search(opts: NVideo.Query): Promise<{ list: NVideo.VideoInfo[]; page: Page }> {
+      const searchFromLocal = async () => {
+        let limit = 24;
+        let pageNo = opts.pageNo || 1;
+        let start = (pageNo - 1) * limit;
+        let list = await model.video.find({ ...opts, start, limit: 24 });
+        let total = await model.video.count({});
+        return {
+          list,
+          page: {
+            total: total,
+            pageNo: pageNo,
+            pageSize: limit,
+            totalPage: Math.ceil(total / limit),
+          },
+        };
+      };
+      let res = await service.searchVideo(opts);
+      let data: any = res.data;
+      if (!data) data = await searchFromLocal();
+      else {
+        let list: NVideo.VideoInfo[] = data.list || [];
+        list.forEach((data) => {
+          model.video.save(data.id, data);
+        });
+      }
+      return data;
     },
   },
 });

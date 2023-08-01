@@ -75,6 +75,8 @@ public class Adapter implements Serializable {
 	public String setAppPath() {
 		if (getLatestApp() != "") {
 			String appBase = getAPPsPath() + File.separator + getLatestApp();
+			appBase = appBase.replaceAll("[.]zip$", "");
+			Logger.i("===>set app basedir ", appBase);
 			if(bridge != null){
 				bridge.setServerBasePath(appBase);
 			}

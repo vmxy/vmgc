@@ -17,9 +17,8 @@ public class App extends Application {
 		super.onCreate();
 		String channel = ChannelUtil.getMetaData(getPackageManager(), getPackageName()).getString("channel", "office").trim().toLowerCase();
 		Logger.i("==========>channel=", channel);
-		this.initX5(channel);
 		if("x5".equals(channel)){
-
+			this.initX5(channel);
 		}/*else{
 			//创建一个意图
 			Intent intent = new Intent(getApplicationContext(), AndroidActivity.class);

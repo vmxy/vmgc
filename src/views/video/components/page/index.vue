@@ -44,7 +44,7 @@
 
 <script setup lang="ts">
 import { ref, computed, Ref, onMounted, useSSRContext } from "vue";
-import { useAppStore } from "@/store";
+import { useAppStore, useVideoStore } from "@/store";
 import { VOption } from "../";
 import * as service from "@/service";
 import { useRoute, useRouter } from "vue-router";
@@ -66,6 +66,7 @@ const props = defineProps({
 const route = useRoute();
 const router = useRouter();
 const app = useAppStore();
+const video = useVideoStore();
 const ssrData = useSSRContext()?.useSSRContext || {};
 const page = ref({ pageNo: parseInt(route.query.pageNo as string) || 1, pageCount: 0, total: 0, pageSize: 24 });
 const dataList: Ref<NVideo.VideoInfo[]> = ref(ssrData.list || []);
@@ -123,7 +124,8 @@ async function search(opts: { cata?: string; type?: string; class?: string; year
   query.value.year = opts.year || "all";
   globalThis.$loadingBar?.start();
   loading.value = true;
-  let { data } = await service.searchVideo({
+  //let { data } = await service.searchVideo({
+  let data  = await video.search({
     cata: <any>props.id || "tv",
     class: opts.class, //
     type: opts.type,

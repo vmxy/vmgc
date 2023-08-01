@@ -44,6 +44,7 @@ function handleSearch() {
   } else {
     let q = query.value.q || (document.querySelector("#q input") as HTMLInputElement)?.value || "";
     let nquery = Object.assign({}, route.query, { q: q });
+    nquery.pageNo = "1";
     router.push(
       "/search" +
         "?" +

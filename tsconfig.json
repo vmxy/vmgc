@@ -56,7 +56,6 @@
       "@/*": ["./src/*"]
     },
     "types": [
-      "./src/typings",
       "vite/client",
       "node",
       "unplugin-icons/types/vue",
@@ -67,6 +66,6 @@
   "ts-node": {
     "files": true
   },
-  //"include": ["src/**/*", "pages/**/*", "build/**/*"],
+  "include": ["src/**/*", "pages/**/*", "build/**/*"],
   "exclude": ["node_modules", "dist", "dist-ssr", "pages", "public", "server.js", "build/electron"]
 }

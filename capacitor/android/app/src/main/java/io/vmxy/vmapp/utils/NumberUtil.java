@@ -1,5 +1,7 @@
 package io.vmxy.vmapp.utils;
 
+import io.vmxy.vmapp.core.Logger;
+
 public class NumberUtil {
 	public static int toInt(String v, int df){
 		try{
@@ -13,8 +15,8 @@ public class NumberUtil {
 		return s;
 	}
 	public static boolean isLarge(String s1, String s2){
-		String[] s0 = s1.split(".");
-		String[] t0 = s2.split(".");
+		String[] s0 = s1.split("[.]");
+		String[] t0 = s2.split("[.]");
 		if(s0.length != t0.length) return true;
 		for(int i=0;i<s0.length;i++){
 			int a = NumberUtil.toInt(s0[i], 0);

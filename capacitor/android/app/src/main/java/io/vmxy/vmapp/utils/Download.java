@@ -8,6 +8,8 @@ import com.liulishuo.filedownloader.BaseDownloadTask;
 import com.liulishuo.filedownloader.FileDownloadSampleListener;
 import com.liulishuo.filedownloader.FileDownloader;
 
+import io.vmxy.vmapp.core.Logger;
+
 public class Download {
 	BaseDownloadTask singleTask;
 	public int singleTaskId = 0;
@@ -35,14 +37,14 @@ public class Download {
 
 				@Override
 				protected void progress(BaseDownloadTask task, int soFarBytes, int totalBytes) {
-					Log.i("info", "----->progress taskId:" + task.getId() + ",soFarBytes:" + soFarBytes + ",totalBytes:" + totalBytes
+					Logger.i( "----->progress taskId:" + task.getId() + ",soFarBytes:" + soFarBytes + ",totalBytes:" + totalBytes
 						+ ",percent:" + soFarBytes * 1.0 / totalBytes + ",speed:" + task.getSpeed());
 					super.progress(task, soFarBytes, totalBytes);
 				}
 
 				@Override
 				protected void blockComplete(BaseDownloadTask task) {
-					Log.i("info","----------->blockComplete taskId:" + task.getId() + ",filePath:" + task.getPath() +
+					Logger.i("----------->blockComplete taskId:" + task.getId() + ",filePath:" + task.getPath() +
 						",fileName:" + task.getFilename() + ",speed:" + task.getSpeed() + ",isReuse:" + task.reuse());
 					fileName = task.getFilename();
 					super.blockComplete(task);
@@ -50,8 +52,8 @@ public class Download {
 
 				@Override
 				protected void completed(BaseDownloadTask task) {
-					Log.i("info","---------->completed taskId:" + task.getId() + ",isReuse:" + task.reuse());
 					super.completed(task);
+					Logger.i("===>download completed taskId:" + task.getId() + ",isReuse:" + task.reuse());
 					Message msg = new Message();
 					callback.handleMessage(msg);
 				}
