@@ -9,6 +9,7 @@ import com.liulishuo.filedownloader.FileDownloader;
 import com.liulishuo.filedownloader.connection.FileDownloadUrlConnection;
 
 import io.vmxy.vmapp.core.Logger;
+import io.vmxy.vmapp.utils.APKVersionInfoUtils;
 import io.vmxy.vmapp.utils.Download;
 import io.vmxy.vmapp.utils.NumberUtil;
 import okhttp3.OkHttpClient;
@@ -23,7 +24,8 @@ public class Update {
 	}
 
 	public boolean checkUpdate(String latestVersion) {
-		String localLatest = adapter.getLatestApp();
+		//String localLatest = adapter.getLatestApp();
+		String localLatest = APKVersionInfoUtils.getVersionName(adapter.activity);
 		localLatest = NumberUtil.toVersion(localLatest);
 		Logger.i("info", "===>check update " + localLatest + ":" + latestVersion + ":" + NumberUtil.isLarge(latestVersion, localLatest));
 		return NumberUtil.isLarge(latestVersion, localLatest);

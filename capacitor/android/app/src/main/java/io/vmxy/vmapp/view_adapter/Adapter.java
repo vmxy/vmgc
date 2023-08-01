@@ -24,6 +24,7 @@ import java.util.List;
 import io.vmxy.vmapp.R;
 import io.vmxy.vmapp.core.LocalServer;
 import io.vmxy.vmapp.core.Logger;
+import io.vmxy.vmapp.utils.APKVersionInfoUtils;
 import io.vmxy.vmapp.utils.FileUtil;
 import io.vmxy.vmapp.utils.NumberUtil;
 
@@ -39,11 +40,12 @@ public class Adapter implements Serializable {
 		this.bridge = bridge;
 		this.activity = activity;
 	}
+
 	public Adapter(AppCompatActivity activity) {
 		this.activity = activity;
 	}
 
-	public void init(){
+	public void init() {
 		APP_UPDATE_URL = activity.getResources().getString(R.string.APP_UPDATE_URL);
 		setAppPath();
 		new AdapterWebViewClient(this).init();
@@ -51,20 +53,25 @@ public class Adapter implements Serializable {
 		new AdapterPullRefresh(this).init();
 		new Update(this).init();
 	}
-	public String getAppName(){
+
+	public String getAppName() {
 		String appName = activity.getResources().getString(R.string.app_name);
 		Logger.i("appName===========", appName);
 		return appName;
 	}
-	public void setWebView(WebView webview){
+
+	public void setWebView(WebView webview) {
 		this.webview = webview;
 	}
-	public void setWebView(com.tencent.smtt.sdk.WebView webview){
+
+	public void setWebView(com.tencent.smtt.sdk.WebView webview) {
 		this.webview = webview;
 	}
-	public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout){
+
+	public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
 		this.swipeRefreshLayout = swipeRefreshLayout;
 	}
+
 	/**
 	 * 设置 WebViewClient
 	 */
@@ -73,20 +80,28 @@ public class Adapter implements Serializable {
 	}
 
 	public String setAppPath() {
+		if (APKVersionInfoUtils.isApkInDebug(activity)) return "";
 		if (getLatestApp() != "") {
-			String appBase = getAPPsPath() + File.separator + getLatestApp();
-			appBase = appBase.replaceAll("[.]zip$", "");
-			Logger.i("===>set app basedir ", appBase);
-			if(bridge != null){
-				bridge.setServerBasePath(appBase);
+			String latest = getLatestApp().replaceAll("^app-v", "")//
+				.replaceAll("[.]zip", "");
+			String appVersion = APKVersionInfoUtils.getVersionName(activity);
+			if (NumberUtil.isLarge(latest, appVersion)) {
+				String appBase = getAPPsPath() + File.separator + getLatestApp();
+				appBase = appBase.replaceAll("[.]zip$", "");
+				Logger.i("===>set app basedir ", appBase, latest, appVersion);
+				if (bridge != null) {
+					bridge.setServerBasePath(appBase);
+				}
+				if (LocalServer.getInstance() != null) {
+					LocalServer.getInstance().setServerBasePath(appBase);
+				}
+				return appBase;
 			}
-			if(LocalServer.getInstance()!=null){
-				LocalServer.getInstance().setServerBasePath(appBase);
-			}
-			return appBase;
+
 		}
 		return "";
 	}
+
 	public String getAppPath() {
 		if (getLatestApp() != "") {
 			//String apps = getAPPsPath();
@@ -132,7 +147,8 @@ public class Adapter implements Serializable {
 		}
 		return baseDir;
 	}
-	public static String getAPPsPath( File cacheDir) {
+
+	public static String getAPPsPath(File cacheDir) {
 		String baseDir = cacheDir.getParent() + File.separator + "apps";
 		File apps = new File(baseDir);
 		if (!apps.exists()) {
@@ -140,13 +156,14 @@ public class Adapter implements Serializable {
 		}
 		return baseDir;
 	}
+
 	/**
 	 * 获取本地最新版本应用路径
 	 *
 	 * @return
 	 */
 	public String getLatestApp() {
-		if(lastestAppVersion!=null && !lastestAppVersion.trim().equals("")){
+		if (lastestAppVersion != null && !lastestAppVersion.trim().equals("")) {
 			return lastestAppVersion;
 		}
 		String baseDir = getAPPsPath();
