@@ -2,7 +2,7 @@
   <div class="">
     <n-grid
       v-if="dataList.length > 0"
-      cols="240:1 280:2 480:3 640:4 1024:6 1280:12 "
+      cols="240:1 280:2 480:3 640:4 1024:6 1280:8 "
       responsive="self"
       x-gap="6 m:12"
       y-gap="6 m:12"
